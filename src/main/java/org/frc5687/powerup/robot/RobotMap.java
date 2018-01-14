@@ -10,8 +10,8 @@ public class RobotMap {
     }
 
     public class Intake {
-        public static final int RIGHT_MOTOR = 5 ;
-        public static final int LEFT_MOTOR = 6 ;
+        public static final int LEFT_MOTOR = 5 ;
+        public static final int RIGHT_MOTOR = 6 ;
     }
 
 

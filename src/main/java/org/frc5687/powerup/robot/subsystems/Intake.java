@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
+import org.frc5687.powerup.robot.commands.DriveIntake;
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
 
 /**
@@ -28,10 +29,10 @@ public class Intake extends Subsystem {
     @Override
     protected void initDefaultCommand() {
 
-        //setDefaultCommand(new DriveWith2Joysticks(this, oi));
+        setDefaultCommand(new DriveIntake(this, oi));
     }
 
-    public void tankDrive(double leftSpeed, double rightSpeed) {
+    public void drive(double leftSpeed, double rightSpeed) {
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
     }

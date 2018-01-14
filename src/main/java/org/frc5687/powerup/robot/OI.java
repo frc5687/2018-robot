@@ -12,21 +12,31 @@ public class OI {
         public static final int RIGHT_AXIS = 5;
     }
 
-    private Joystick gamepad;
+    private Joystick driveGamepad;
+    private Joystick intakeGamepad;
 
     public OI() {
-        gamepad = new Joystick(0);
+        driveGamepad = new Joystick(0);
+        intakeGamepad = new Joystick(1);
     }
 
     public double getLeftSpeed() {
-        return getSpeedFromAxis(ButtonNumbers.LEFT_AXIS);
+        return getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
     }
 
     public double getRightSpeed() {
-        return getSpeedFromAxis(ButtonNumbers.RIGHT_AXIS);
+        return getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
     }
 
-    private double getSpeedFromAxis(int axisNumber) {
+    public double getLeftIntakeSpeed() {
+        return getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
+    }
+
+    public double getRightIntakeSpeed() {
+        return getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
+    }
+
+    private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
         double raw = gamepad.getRawAxis(axisNumber);
         return applyDeadband(raw, Constants.DriveTrain.DEADBAND);
     }
