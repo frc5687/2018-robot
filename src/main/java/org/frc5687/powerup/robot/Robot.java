@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import com.kauailabs.navx.*;
+import org.frc5687.powerup.robot.subsystems.Intake;
 
 public class Robot extends IterativeRobot  {
 
@@ -16,6 +17,7 @@ public class Robot extends IterativeRobot  {
 
     private OI oi;
     private DriveTrain driveTrain;
+    private Intake intake;
     private AHRS imu;
 
     public Robot() {
@@ -32,6 +34,7 @@ public class Robot extends IterativeRobot  {
         imu = new AHRS(SPI.Port.kMXP);
         oi = new OI();
         driveTrain = new DriveTrain(imu, oi);
+        intake = new Intake(oi);
     }
 
     @Override
