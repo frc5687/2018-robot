@@ -27,6 +27,11 @@ public class DriveTrain extends Subsystem {
         rightFrontMotor = new VictorSP(RobotMap.DriveTrain.RIGHT_FRONT_MOTOR);
         rightRearMotor = new VictorSP(RobotMap.DriveTrain.RIGHT_REAR_MOTOR);
 
+        leftFrontMotor.setName("DriveTrain", "Left Front Victor");
+        leftRearMotor.setName("DriveTrain", "Left Rear Victor");
+        rightFrontMotor.setName("DriveTrain", "Right Front Victor");
+        rightRearMotor.setName("DriveTrain", "Right Rear Victor");
+
         this.imu = imu;
         this.oi = oi;
     }

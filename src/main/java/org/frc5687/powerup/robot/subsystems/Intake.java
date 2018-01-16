@@ -23,6 +23,9 @@ public class Intake extends Subsystem {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
 
+        leftMotor.setName("Intake", "Left Victor");
+        rightMotor.setName("Intake", "Right Victor");
+
         this.oi = oi;
     }
 
