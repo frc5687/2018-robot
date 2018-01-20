@@ -1,6 +1,8 @@
 package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.frc5687.powerup.robot.utils.Gamepad;
 
 import static org.frc5687.powerup.robot.OI.ButtonNumbers.BUTTON_A;
 
@@ -18,11 +20,18 @@ public class OI {
     }
 
     private Joystick driveGamepad;
-    private Joystick intakeGamepad;
+    private Gamepad intakeGamepad;
+
+    private JoystickButton carriageUpButton;
+    private JoystickButton carriageDownButton;
+
 
     public OI() {
         driveGamepad = new Joystick(0);
-        intakeGamepad = new Joystick(1);
+        intakeGamepad = new Gamepad(1);
+
+        carriageUpButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.Y.getNumber());
+        carriageDownButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -42,12 +51,12 @@ public class OI {
     }
 
     public double getCarriageSpeed() {
-        if (intakeGamepad.getRawButton(ButtonNumbers.BUTTON_Y)) {
-            return 0.1;
-        } else if (intakeGamepad.getRawButton(ButtonNumbers.BUTTON_A)) {
-            return -0.1;
+        if (carriageUpButton.get()) {
+            return -1.0;
+        } else if (carriageDownButton.get()) {
+            return 0.5;
         }
-        return 0;
+        return -0.1;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
