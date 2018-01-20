@@ -1,6 +1,8 @@
 package org.frc5687.powerup.robot;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import com.kauailabs.navx.*;
 import org.frc5687.powerup.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj.CameraServer;
 
 public class Robot extends IterativeRobot  {
 
@@ -19,6 +22,7 @@ public class Robot extends IterativeRobot  {
     private DriveTrain driveTrain;
     private Intake intake;
     private AHRS imu;
+    private UsbCamera camera;
 
     public Robot() {
     }
@@ -35,6 +39,13 @@ public class Robot extends IterativeRobot  {
         oi = new OI();
         driveTrain = new DriveTrain(imu, oi);
         intake = new Intake(oi);
+
+        try {
+            camera = CameraServer.getInstance().startAutomaticCapture(0);
+        } catch (Exception e) {
+            DriverStation.reportError(e.getMessage(), true);
+        }
+
     }
 
     @Override
