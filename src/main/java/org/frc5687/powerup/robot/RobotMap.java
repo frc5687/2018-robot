@@ -16,7 +16,9 @@ public class RobotMap {
 
     public class Carriage {
         public static final int MOTOR = 8;
-    }
 
+        public static final int ENCODER_A = 0;
+        public static final int ENCODER_B = 1;
+    }
 
 }

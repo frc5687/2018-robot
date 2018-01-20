@@ -2,6 +2,8 @@ package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
+import static org.frc5687.powerup.robot.OI.ButtonNumbers.BUTTON_A;
+
 /**
  * Created by Baxter on 3/22/2017.
  */
@@ -10,6 +12,9 @@ public class OI {
     public class ButtonNumbers {
         public static final int LEFT_AXIS = 1;
         public static final int RIGHT_AXIS = 5;
+
+        public static final int BUTTON_A = 0;
+        public static final int BUTTON_Y = 3;
     }
 
     private Joystick driveGamepad;
@@ -34,6 +39,15 @@ public class OI {
 
     public double getRightIntakeSpeed() {
         return getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
+    }
+
+    public double getCarriageSpeed() {
+        if (intakeGamepad.getRawButton(ButtonNumbers.BUTTON_Y)) {
+            return 0.5;
+        } else if (intakeGamepad.getRawButton(ButtonNumbers.BUTTON_A)) {
+            return -0.5;
+        }
+        return 0;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
