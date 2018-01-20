@@ -43,9 +43,9 @@ public class OI {
 
     public double getCarriageSpeed() {
         if (intakeGamepad.getRawButton(ButtonNumbers.BUTTON_Y)) {
-            return 0.5;
+            return 0.1;
         } else if (intakeGamepad.getRawButton(ButtonNumbers.BUTTON_A)) {
-            return -0.5;
+            return -0.1;
         }
         return 0;
     }
