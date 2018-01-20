@@ -11,6 +11,7 @@ import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import com.kauailabs.navx.*;
 import org.frc5687.powerup.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj.CameraServer;
+import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends IterativeRobot  {
 
@@ -23,6 +24,7 @@ public class Robot extends IterativeRobot  {
     private Intake intake;
     private AHRS imu;
     private UsbCamera camera;
+    private PDP pdp;
 
     public Robot() {
     }
@@ -36,6 +38,7 @@ public class Robot extends IterativeRobot  {
     public void robotInit() {
 
         imu = new AHRS(SPI.Port.kMXP);
+        pdp = new PDP();
         oi = new OI();
         driveTrain = new DriveTrain(imu, oi);
         intake = new Intake(oi);
@@ -93,6 +96,7 @@ public class Robot extends IterativeRobot  {
     }
 
     public void updateDashboard() {
+        pdp.updateDashboard();
     }
 
 }
