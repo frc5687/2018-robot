@@ -14,5 +14,9 @@ public class RobotMap {
         public static final int RIGHT_MOTOR = 6 ;
     }
 
+    public class Carriage {
+        public static final int MOTOR = 8;
+    }
+
 
 }
