@@ -11,6 +11,10 @@ import static org.frc5687.powerup.robot.OI.ButtonNumbers.BUTTON_A;
  */
 public class OI {
 
+    public double getArmSpeed() {
+        return 0;
+    }
+
     public class ButtonNumbers {
         public static final int LEFT_AXIS = 1;
         public static final int RIGHT_AXIS = 5;

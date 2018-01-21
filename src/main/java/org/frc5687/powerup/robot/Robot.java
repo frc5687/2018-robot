@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc5687.powerup.robot.subsystems.Carriage;
+import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import com.kauailabs.navx.*;
 import org.frc5687.powerup.robot.subsystems.Intake;
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot  {
     private DriveTrain driveTrain;
     private Intake intake;
     private Carriage carriage;
+    private Arm _arm;
     private AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
@@ -42,6 +44,7 @@ public class Robot extends IterativeRobot  {
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI();
+        _arm = new Arm(oi);
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi);
         intake = new Intake(oi);
