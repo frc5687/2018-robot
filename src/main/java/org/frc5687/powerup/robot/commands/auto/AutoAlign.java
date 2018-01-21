@@ -1,4 +1,4 @@
-package org.frc5687.powerup.robot.commands;
+package org.frc5687.powerup.robot.commands.auto;
 
 /**
  * Created by Ben Bernard on 1/14/2018.

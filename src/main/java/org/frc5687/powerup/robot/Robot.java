@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.frc5687.powerup.robot.commands.auto.AutoAlign;
 import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
@@ -54,6 +55,8 @@ public class Robot extends IterativeRobot  {
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
+
+        autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
 
     }
 

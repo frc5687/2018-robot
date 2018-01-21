@@ -1,4 +1,4 @@
-package org.frc5687.powerup.robot.commands;
+package org.frc5687.powerup.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;

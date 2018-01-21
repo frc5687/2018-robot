@@ -12,10 +12,8 @@ public class RobotMap {
         public static final int LEFT_ENCODER_CHANNEL_B = 6;
         public static final int RIGHT_ENCODER_CHANNEL_A = 7;
         public static final int RIGHT_ENCODER_CHANNEL_B = 8;
-
-    }
-
 	}
+
     public class Intake {
         public static final int LEFT_MOTOR = 5 ;
         public static final int RIGHT_MOTOR = 7 ;
