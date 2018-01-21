@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
-        autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
+        autoCommand = new AutoAlign(driveTrain, imu, 5.0, 0.5);
 
     }
 

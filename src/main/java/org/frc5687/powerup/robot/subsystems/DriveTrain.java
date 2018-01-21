@@ -159,6 +159,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
 
+        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
+        SmartDashboard.putData("IMU", imu);
     }
 
 
