@@ -11,7 +11,9 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = false;
     }
 
-    public class Climber {
+    public class Intake {
+        public static final boolean LEFT_MOTORS_INVERTED = true;
+        public static final boolean RIGHT_MOTORS_INVERTED = false;
     }
 
     public class Auto {
