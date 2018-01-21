@@ -14,5 +14,8 @@ public class RobotMap {
         public static final int RIGHT_MOTOR = 6 ;
     }
 
+    public class Arm {
+        public static final int MOTOR = 9;
+    }
 
 }
