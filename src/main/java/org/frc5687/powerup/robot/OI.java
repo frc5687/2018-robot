@@ -4,23 +4,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
-import static org.frc5687.powerup.robot.OI.ButtonNumbers.BUTTON_A;
-
 /**
  * Created by Baxter on 3/22/2017.
  */
 public class OI {
-
-    public double getArmSpeed() {
-        return 0;
-    }
-
     public class ButtonNumbers {
         public static final int LEFT_AXIS = 1;
         public static final int RIGHT_AXIS = 5;
 
-        public static final int BUTTON_A = 0;
-        public static final int BUTTON_Y = 3;
     }
 
     private Joystick driveGamepad;
@@ -29,6 +20,8 @@ public class OI {
     private JoystickButton carriageUpButton;
     private JoystickButton carriageDownButton;
 
+    private JoystickButton armUpButton;
+    private JoystickButton armDownButton;
 
     public OI() {
         driveGamepad = new Joystick(0);
@@ -36,6 +29,9 @@ public class OI {
 
         carriageUpButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.Y.getNumber());
         carriageDownButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
+
+        armUpButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.X.getNumber());
+        armDownButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -60,7 +56,16 @@ public class OI {
         } else if (carriageDownButton.get()) {
             return 0.5;
         }
-        return -0.1;
+        return -.1;
+    }
+
+    public double getArmSpeed() {
+        if (armUpButton.get()) {
+            return 1;
+        } else if (armDownButton.get()) {
+            return -.5;
+        }
+        return .1;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {

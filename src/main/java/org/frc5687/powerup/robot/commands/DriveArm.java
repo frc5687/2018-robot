@@ -8,6 +8,7 @@ public class DriveArm extends Command {
     private Arm _arm;
     private OI _oi;
     public DriveArm(Arm arm, OI oi){
+        requires(arm);
         _arm=arm;
         _oi=oi;
     }

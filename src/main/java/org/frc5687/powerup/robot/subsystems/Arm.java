@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
+import org.frc5687.powerup.robot.commands.DriveArm;
 
 public class Arm extends Subsystem {
     private VictorSP _motor;
@@ -21,6 +22,6 @@ public class Arm extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
+        setDefaultCommand(new DriveArm(this, _oi));
     }
 }

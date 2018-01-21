@@ -11,7 +11,7 @@ public class RobotMap {
 
     public class Intake {
         public static final int LEFT_MOTOR = 5 ;
-        public static final int RIGHT_MOTOR = 6 ;
+        public static final int RIGHT_MOTOR = 7 ;
     }
 
     public class Carriage {
@@ -21,7 +21,7 @@ public class RobotMap {
         public static final int ENCODER_B = 1;
     }
     public class Arm {
-        public static final int MOTOR = 9;
+        public static final int MOTOR = 6;
     }
 
 }
