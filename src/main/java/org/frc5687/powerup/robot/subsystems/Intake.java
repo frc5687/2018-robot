@@ -50,7 +50,7 @@ public class Intake extends Subsystem {
         return cubeSensor.getValue();
     }
     public void updateDashboard(){
-        SmartDashboard.putNumber("IR distance", getInfaredValue());
+        SmartDashboard.putNumber("IR raw", getInfaredValue());
     }
 
 }
