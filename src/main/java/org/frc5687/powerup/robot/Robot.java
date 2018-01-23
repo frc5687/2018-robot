@@ -103,6 +103,7 @@ public class Robot extends IterativeRobot  {
 
     public void updateDashboard() {
         pdp.updateDashboard();
+        carriage.updateDashboard();
     }
 
 }
