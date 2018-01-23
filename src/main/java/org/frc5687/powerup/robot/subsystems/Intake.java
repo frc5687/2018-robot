@@ -6,20 +6,19 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
 
-/**
- * Created by Baxter on 3/22/2017.
- */
+
 public class Intake extends Subsystem {
 
     private VictorSP leftMotor;
     private VictorSP rightMotor;
-    private AnalogInput cubeSensor;
+    private AnalogInput irBack;
+    private AnalogInput irSide;
 
     private OI oi;
 
@@ -32,7 +31,8 @@ public class Intake extends Subsystem {
 
         this.oi = oi;
 
-        cubeSensor = new AnalogInput(RobotMap.Intake.INFARED_SENSOR);
+        irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
+        irSide = new AnalogInput(RobotMap.Intake.IR_SIDE);
     }
 
     @Override
@@ -46,11 +46,9 @@ public class Intake extends Subsystem {
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
     }
 
-    public int getInfaredValue(){
-        return cubeSensor.getValue();
-    }
     public void updateDashboard(){
-        SmartDashboard.putNumber("IR raw", getInfaredValue());
+        SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
+        SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
     }
 
 }

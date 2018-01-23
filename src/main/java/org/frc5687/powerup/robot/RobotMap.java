@@ -12,7 +12,8 @@ public class RobotMap {
     public class Intake {
         public static final int LEFT_MOTOR = 5 ;
         public static final int RIGHT_MOTOR = 7 ;
-        public static final int INFARED_SENSOR = 0;
+        public static final int IR_SIDE = 2;
+        public static final int IR_BACK = 3;
     }
 
     public class Carriage {
