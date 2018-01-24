@@ -20,8 +20,8 @@ public class RobotMap {
         public static final int ENCODER_A = 0;
         public static final int ENCODER_B = 1;
 
-        public static final int HALL_EFFECT_TOP = 8;
-        public static final int HALL_EFFECT_BOTTOM = 9;
+        public static final int HALL_EFFECT_TOP = 2;
+        public static final int HALL_EFFECT_BOTTOM = 3;
     }
     public class Arm {
         public static final int MOTOR = 6;
