@@ -40,7 +40,7 @@ public class OI {
 
         if (intakeLeftOut.get()) {
             return -0.7;
-        } else if (trigger > 0.05) {
+        } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
         return 0;
@@ -50,7 +50,7 @@ public class OI {
         double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
         if (intakeRightOut.get()) {
             return -0.7;
-        } else if (trigger > 0.05) {
+        } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
         return 0;
@@ -58,7 +58,7 @@ public class OI {
 
     public double getCarriageSpeed() {
         double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
-        if (Math.abs(speed) > 0.05) {
+        if (Math.abs(speed) > Constants.Carriage.DEADBAND) {
             return speed;
         }
         return -.1;
