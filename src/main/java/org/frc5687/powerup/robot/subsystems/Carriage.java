@@ -34,8 +34,16 @@ public class Carriage extends Subsystem {
         motor.setSpeed(speed);
     }
 
+    public boolean isAtTop() {
+        return !hallEffectTop.get();
+    }
+
+    public boolean isAtBottom() {
+        return !hallEffectBottom.get();
+    }
+
     public void updateDashboard () {
-        SmartDashboard.putBoolean("Carriage/At top", !hallEffectTop.get());
-        SmartDashboard.putBoolean("Carriage/At bottom", !hallEffectBottom.get());
+        SmartDashboard.putBoolean("Carriage/At top", isAtTop());
+        SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
     }
 }
