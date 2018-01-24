@@ -4,12 +4,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
-/**
- * Created by Baxter on 3/22/2017.
- */
 public class OI {
     public class ButtonNumbers {
         public static final int LEFT_AXIS = 1;
+        public static final int LEFT_TRIGGER_AXIS = 2;
+        public static final int RIGHT_TRIGGER_AXIS = 3;
         public static final int RIGHT_AXIS = 5;
 
     }
@@ -17,21 +16,15 @@ public class OI {
     private Joystick driveGamepad;
     private Gamepad intakeGamepad;
 
-    private JoystickButton carriageUpButton;
-    private JoystickButton carriageDownButton;
-
-    private JoystickButton armUpButton;
-    private JoystickButton armDownButton;
+    private JoystickButton intakeLeftOut;
+    private JoystickButton intakeRightOut;
 
     public OI() {
         driveGamepad = new Joystick(0);
         intakeGamepad = new Gamepad(1);
 
-        carriageUpButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.Y.getNumber());
-        carriageDownButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
-
-        armUpButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.X.getNumber());
-        armDownButton = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
+        intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -43,27 +36,38 @@ public class OI {
     }
 
     public double getLeftIntakeSpeed() {
-        return getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
+        double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
+
+        if (intakeLeftOut.get()) {
+            return -0.7;
+        } else if (trigger > 0.05) {
+            return trigger;
+        }
+        return 0;
     }
 
     public double getRightIntakeSpeed() {
-        return getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
+        double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
+        if (intakeRightOut.get()) {
+            return -0.7;
+        } else if (trigger > 0.05) {
+            return trigger;
+        }
+        return 0;
     }
 
     public double getCarriageSpeed() {
-        if (carriageUpButton.get()) {
-            return -1.0;
-        } else if (carriageDownButton.get()) {
-            return 0.5;
+        double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
+        if (Math.abs(speed) > 0.05) {
+            return speed;
         }
         return -.1;
     }
 
     public double getArmSpeed() {
-        if (armUpButton.get()) {
-            return 1;
-        } else if (armDownButton.get()) {
-            return -.5;
+        double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
+        if (Math.abs(speed) > 0.05) {
+            return -speed;
         }
         return .1;
     }
