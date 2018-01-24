@@ -37,7 +37,6 @@ public class Intake extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-
         setDefaultCommand(new DriveIntake(this, oi));
     }
 
@@ -46,9 +45,18 @@ public class Intake extends Subsystem {
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
     }
 
+    /**
+     * Checks if cube is detected
+     * @return Whether or not the infrared sensor sees anything
+     */
+    public boolean cubeIsDetected() {
+        return irBack.getValue() < Constants.InfraRedConstants.DETECTION_THRESHOLD;
+    }
+
     public void updateDashboard(){
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
+        SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
     }
 
 }

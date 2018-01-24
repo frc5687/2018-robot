@@ -12,18 +12,18 @@ public class RobotMap {
     public class Intake {
         public static final int LEFT_MOTOR = 5 ;
         public static final int RIGHT_MOTOR = 7 ;
-        public static final int IR_SIDE = 2;
-        public static final int IR_BACK = 3;
+        public static final int IR_SIDE = 0; // Analog
+        public static final int IR_BACK = 1; // Analog
     }
 
     public class Carriage {
         public static final int MOTOR = 8;
 
-        public static final int ENCODER_A = 0;
-        public static final int ENCODER_B = 1;
+        public static final int ENCODER_A = 0; // DIO
+        public static final int ENCODER_B = 1; // DIO
 
-        public static final int HALL_EFFECT_TOP = 8;
-        public static final int HALL_EFFECT_BOTTOM = 9;
+        public static final int HALL_EFFECT_TOP = 2; // DIO
+        public static final int HALL_EFFECT_BOTTOM = 3; // DIO
     }
     public class Arm {
         public static final int MOTOR = 6;
