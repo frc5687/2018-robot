@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot.subsystems;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveArm;
@@ -34,6 +35,14 @@ public class Arm extends Subsystem {
 
     public boolean inStartingPosition () {
         return !hallEffect.get();
+    }
+
+    public boolean atTop() {
+        return encoder.get() > Constants.Arm.ENCODER_TOP;
+    }
+
+    public boolean atBottom() {
+        return encoder.get() > Constants.Arm.ENCODER_BOTTOM;
     }
 
     public void updateDashboard () {
