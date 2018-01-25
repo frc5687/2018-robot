@@ -28,6 +28,8 @@ public class RobotMap {
         public static final int MOTOR = 6;
         public static final int HALL_EFFECT_STARTING_POSITION = 4;
         public static final int STARTING_POSITION_LED = 5;
+        public static final int ENCODER_A = 6;
+        public static final int ENCODER_B = 7;
     }
 
 }
