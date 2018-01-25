@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -12,11 +11,6 @@
       <entry name="!?*.java" />
       <entry name="!?*.groovy" />
     </wildcardResourcePatterns>
-    <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-    </annotationProcessing>
     <bytecodeTargetLevel target="1.8" />
   </component>
   <component name="CopyrightManager" default="" />
@@ -24,8 +18,18 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
-  <component name="EntryPointsManager">
-    <entry_points version="2.0" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
   </component>
   <component name="GradleUISettings">
     <setting name="root" />
@@ -34,6 +38,12 @@
     <setting name="root" />
   </component>
   <component name="IdProvider" IDEtalkID="11DA1DB66DD62DDA1ED602B7079FE97C" />
+  <component name="InspectionProjectProfileManager">
+    <profile version="1.0">
+      <option name="myName" value="Project Default" />
+    </profile>
+    <version value="1.0" />
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />
@@ -56,7 +66,7 @@
       <module fileurl="file://$PROJECT_DIR$/2018-robot.iml" filepath="$PROJECT_DIR$/2018-robot.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="SvnBranchConfigurationManager">
@@ -64,6 +74,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="masterDetails">
     <states>

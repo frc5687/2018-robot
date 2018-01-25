@@ -25,6 +25,8 @@ public class RobotMap {
     }
     public class Arm {
         public static final int MOTOR = 6;
+        public static final int ENCODER_A = 4;
+        public static final int ENCODER_B = 5;
     }
 
 }
