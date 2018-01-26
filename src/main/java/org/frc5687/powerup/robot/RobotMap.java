@@ -12,7 +12,7 @@ public class RobotMap {
     public class Intake {
         public static final int LEFT_MOTOR = 5 ;
         public static final int RIGHT_MOTOR = 7 ;
-        public static final int SERVO = 10;
+        public static final int SERVO = 9;
     }
 
     public class Carriage {
