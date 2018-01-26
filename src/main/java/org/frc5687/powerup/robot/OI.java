@@ -78,9 +78,9 @@ public class OI {
 
     public double getServoSpeed() {
         if (servoDown.get()) {
-            return 0.0;
+            return Constants.Intake.SERVO_BOTTOM;
         }
-        return 0.4;
+        return Constants.Intake.SERVO_UP;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {

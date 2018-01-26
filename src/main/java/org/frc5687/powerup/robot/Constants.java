@@ -12,6 +12,8 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
+        public static final double SERVO_BOTTOM = 0.0;
+        public static final double SERVO_UP = 0.4;
     }
 
     public class Carriage {
