@@ -1,8 +1,5 @@
 package org.frc5687.powerup.robot;
 
-/**
- * Created by Baxter on 3/22/2017.
- */
 public class Constants {
 
     public class DriveTrain {
@@ -12,6 +9,7 @@ public class Constants {
     }
 
     public class Intake {
+        public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
     }
@@ -99,7 +97,7 @@ public class Constants {
         public class RightDrive {
 
             public static final boolean REVERSED = Defaults.REVERSED;
-            public static final double INCHES_PER_PULSE_TONY =  0.03609; //Encoders.Defaults.INCHES_PER_PULSE;
+            public static final double INCHES_PER_PULSE_TONY = 0.03609; //Encoders.Defaults.INCHES_PER_PULSE;
             public static final double INCHES_PER_PULSE_RHODY = 0.0406;
 
         }
@@ -111,7 +109,10 @@ public class Constants {
             public static final double INCHES_PER_PULSE_RHODY = 0.1145;
 
         }
+    }
 
+    public class Carriage {
+        public static final double DEADBAND = 0.05;
     }
 
 }
