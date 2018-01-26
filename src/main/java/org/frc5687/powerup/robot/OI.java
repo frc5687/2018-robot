@@ -19,12 +19,18 @@ public class OI {
     private JoystickButton intakeLeftOut;
     private JoystickButton intakeRightOut;
 
+    private JoystickButton servoUp;
+    private JoystickButton servoDown;
+
     public OI() {
         driveGamepad = new Joystick(0);
         intakeGamepad = new Gamepad(1);
 
         intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+
+        servoUp = new JoystickButton(intakeGamepad, Gamepad.Buttons.X.getNumber());
+        servoDown = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -70,6 +76,15 @@ public class OI {
             return -speed;
         }
         return .1;
+    }
+
+    public double getServoSpeed() {
+        if (servoUp.get()) {
+            return 0.0;
+        } else if (servoDown.get()) {
+            return 1.0;
+        }
+        return 0.1;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {

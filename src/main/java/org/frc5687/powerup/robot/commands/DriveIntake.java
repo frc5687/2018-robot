@@ -20,6 +20,7 @@ public class DriveIntake extends Command {
     @Override
     protected void execute() {
         intake.drive(oi.getLeftIntakeSpeed(), oi.getRightIntakeSpeed());
+        intake.driveServo(oi.getServoSpeed());
     }
 
     @Override
