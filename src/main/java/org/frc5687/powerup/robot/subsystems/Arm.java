@@ -1,9 +1,6 @@
 package org.frc5687.powerup.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.VictorSP;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.OI;
@@ -20,7 +17,7 @@ public class Arm extends Subsystem {
     public Arm (OI oi){
         _oi=oi;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
-        encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B, false);
+        encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
     }
@@ -40,7 +37,7 @@ public class Arm extends Subsystem {
     }
 
     public void updateDashboard () {
-        SmartDashboard.putNumber("encoder value", encoder.getRaw());
+        SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
         led.set(inStartingPosition());
     }
