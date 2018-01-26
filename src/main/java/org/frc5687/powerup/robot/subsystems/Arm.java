@@ -49,5 +49,7 @@ public class Arm extends Subsystem {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
         led.set(inStartingPosition());
+        SmartDashboard.putBoolean("Arm/atTop()", atTop());
+        SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
     }
 }
