@@ -23,10 +23,13 @@ public class RobotMap {
         public static final int HALL_EFFECT_TOP = 2;
         public static final int HALL_EFFECT_BOTTOM = 3;
     }
+
     public class Arm {
         public static final int MOTOR = 6;
-        public static final int ENCODER_A = 4;
-        public static final int ENCODER_B = 5;
+        public static final int HALL_EFFECT_STARTING_POSITION = 4;
+        public static final int STARTING_POSITION_LED = 5;
+        public static final int ENCODER_A = 6;
+        public static final int ENCODER_B = 7;
     }
 
 }
