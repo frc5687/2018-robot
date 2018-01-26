@@ -42,7 +42,7 @@ public class Arm extends Subsystem {
     }
 
     public boolean atBottom() {
-        return encoder.get() > Constants.Arm.ENCODER_BOTTOM;
+        return encoder.get() < Constants.Arm.ENCODER_BOTTOM;
     }
 
     public void updateDashboard () {

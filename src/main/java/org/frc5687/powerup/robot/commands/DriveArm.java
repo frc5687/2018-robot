@@ -6,13 +6,13 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Arm;
 
 public class DriveArm extends Command {
-    private Arm _arm;
-    private OI _oi;
+    private Arm arm;
+    private OI oi;
 
     public DriveArm(Arm arm, OI oi){
         requires(arm);
-        _arm=arm;
-        _oi=oi;
+        this.arm = arm;
+        this.oi = oi;
     }
 
     @Override
@@ -22,13 +22,13 @@ public class DriveArm extends Command {
 
     @Override
     protected void execute() {
-        double speed = _oi.getArmSpeed();
-        if (speed > 0 && _arm.atTop()) {
+        double speed = oi.getArmSpeed();
+        if(arm.atTop() && speed > 0) {
             speed = 0;
-        } else if (speed < 0 && _arm.atBottom()) {
+        } else if (arm.atBottom() && speed < 0) {
             speed = 0;
         }
         SmartDashboard.putNumber("Arm/Speed", speed);
-        _arm.drive(speed);
+        arm.drive(speed);
     }
 }
