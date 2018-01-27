@@ -21,7 +21,7 @@ public class Constants {
     public class Arm {
         public static final int ENCODER_BOTTOM = 0;
         public static final int ENCODER_MIDDLE = 133;
-        public static final int ENCODER_TOP = 350;
+        public static final int ENCODER_TOP = 340;
     }
 
 }
