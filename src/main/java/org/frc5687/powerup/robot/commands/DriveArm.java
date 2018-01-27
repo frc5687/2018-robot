@@ -23,6 +23,9 @@ public class DriveArm extends Command {
     @Override
     protected void execute() {
         double speed = oi.getArmSpeed();
+        if (oi.zeroArmEncoderRequested()) {
+            arm.zeroEncoder();
+        }
         if(arm.atTop() && speed > 0) {
             speed = 0;
         } else if (arm.atBottom() && speed < 0) {

@@ -45,6 +45,11 @@ public class Arm extends Subsystem {
         return encoder.get() < Constants.Arm.ENCODER_BOTTOM;
     }
 
+    public void zeroEncoder() {
+        encoder.reset();
+    }
+
+
     public void updateDashboard () {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());

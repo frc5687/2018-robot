@@ -19,12 +19,16 @@ public class OI {
     private JoystickButton intakeLeftOut;
     private JoystickButton intakeRightOut;
 
+    private JoystickButton resetArmEncoder;
+
     public OI() {
         driveGamepad = new Joystick(0);
         intakeGamepad = new Gamepad(1);
 
         intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+
+        resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -70,6 +74,10 @@ public class OI {
             return -speed;
         }
         return .1;
+    }
+
+    public boolean zeroArmEncoderRequested() {
+        return resetArmEncoder.get();
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
