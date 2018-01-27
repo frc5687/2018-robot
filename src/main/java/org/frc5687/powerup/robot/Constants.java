@@ -18,4 +18,8 @@ public class Constants {
         public static final double DEADBAND = 0.05;
     }
 
+    public class Climber {
+        public static final boolean MOTOR_INVERT = false;
+    }
+
 }

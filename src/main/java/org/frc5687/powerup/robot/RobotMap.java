@@ -32,4 +32,8 @@ public class RobotMap {
         public static final int ENCODER_B = 7;
     }
 
+    public class Climber {
+        public static final int MOTOR = 9;
+    }
+
 }

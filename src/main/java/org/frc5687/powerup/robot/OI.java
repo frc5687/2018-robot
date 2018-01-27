@@ -10,7 +10,6 @@ public class OI {
         public static final int LEFT_TRIGGER_AXIS = 2;
         public static final int RIGHT_TRIGGER_AXIS = 3;
         public static final int RIGHT_AXIS = 5;
-
     }
 
     private Joystick driveGamepad;
@@ -70,6 +69,11 @@ public class OI {
             return -speed;
         }
         return .1;
+    }
+
+    public double getClimberSpeed() {
+        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
+        return speed;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
