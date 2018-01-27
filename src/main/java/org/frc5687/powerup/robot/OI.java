@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -19,7 +20,11 @@ public class OI {
     private JoystickButton intakeLeftOut;
     private JoystickButton intakeRightOut;
 
-    private JoystickButton servoDown;
+    private JoystickButton servoHoldCubeToggle;
+    private JoystickButton servoClimbToggle;
+
+    private boolean servoHoldCubeToggled;
+    private boolean servoClimbToggled;
 
     public OI() {
         driveGamepad = new Joystick(0);
@@ -28,7 +33,8 @@ public class OI {
         intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
 
-        servoDown = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
+        servoHoldCubeToggle = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
+        servoClimbToggle = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -77,8 +83,21 @@ public class OI {
     }
 
     public double getServoSpeed() {
-        if (servoDown.get()) {
+        if (servoHoldCubeToggle.get()) {
+            servoHoldCubeToggled = !servoHoldCubeToggled;
+            servoClimbToggled = false;
+        }
+        if (servoClimbToggle.get()) {
+            servoClimbToggled = !servoClimbToggled;
+            servoHoldCubeToggled = false;
+        }
+        SmartDashboard.putBoolean("Intake/servoHoldCubeToggled", servoHoldCubeToggled);
+        SmartDashboard.putBoolean("Intake/servoClimbToggled", servoClimbToggled);
+        if (servoHoldCubeToggled) {
             return Constants.Intake.SERVO_BOTTOM;
+        }
+        if (servoClimbToggled) {
+            return Constants.Intake.SERVO_CLIMB_POSITION;
         }
         return Constants.Intake.SERVO_UP;
     }
