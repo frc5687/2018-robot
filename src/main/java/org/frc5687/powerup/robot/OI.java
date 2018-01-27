@@ -43,7 +43,7 @@ public class OI {
         double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
 
         if (intakeLeftOut.get()) {
-            return -0.7;
+            return Constants.Intake.OUTTAKE_SPEED;
         } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
@@ -53,7 +53,7 @@ public class OI {
     public double getRightIntakeSpeed() {
         double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
         if (intakeRightOut.get()) {
-            return -0.7;
+            return Constants.Intake.OUTTAKE_SPEED;
         } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
