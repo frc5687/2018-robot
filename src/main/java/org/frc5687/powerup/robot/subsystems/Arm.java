@@ -50,7 +50,7 @@ public class Arm extends Subsystem {
     }
 
     public double getEncoderValue(){
-        return encoder.get()/Constants.Arm.ENCODER_TOP;
+        return (double) encoder.get()/(double) Constants.Arm.ENCODER_TOP;
     }
     public void updateDashboard () {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
