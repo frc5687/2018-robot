@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.commands.Servo.MoveToClimb;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -83,6 +84,7 @@ public class OI {
     }
 
     public double getServoSpeed() {
+        servoClimbToggle.toggleWhenPressed(MoveToClimb());
         if (servoHoldCubeToggle.get()) {
             servoHoldCubeToggled = !servoHoldCubeToggled;
             servoClimbToggled = false;
