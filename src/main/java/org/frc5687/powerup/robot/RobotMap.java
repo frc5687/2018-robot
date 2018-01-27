@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot;
 
 public class RobotMap {
 
+
     public class DriveTrain {
         public static final int LEFT_FRONT_MOTOR = 3;
         public static final int LEFT_REAR_MOTOR = 4;
@@ -27,7 +28,7 @@ public class RobotMap {
     public class Arm {
         public static final int MOTOR = 6;
         public static final int HALL_EFFECT_STARTING_POSITION = 4;
-        public static final int STARTING_POSITION_LED = 5;
+        public static final int STARTING_POSITION_LED = 10;
         public static final int ENCODER_A = 6;
         public static final int ENCODER_B = 7;
     }
