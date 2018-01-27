@@ -69,7 +69,7 @@ public class OI {
 
     public double getArmSpeed() {
         double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
-        return applyDeadband(speed, 0.05, .1);
+        return applyDeadband(-speed, 0.05, .1);
     }
 
     public boolean zeroArmEncoderRequested() {
