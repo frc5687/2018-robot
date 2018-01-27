@@ -18,12 +18,18 @@ public class OI {
     private JoystickButton intakeLeftOut;
     private JoystickButton intakeRightOut;
 
+    private JoystickButton climberWind;
+    private JoystickButton climberUnwind;
+
     public OI() {
         driveGamepad = new Joystick(0);
         intakeGamepad = new Gamepad(1);
 
         intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+
+        climberWind = new JoystickButton(intakeGamepad, Gamepad.Buttons.Y.getNumber());
+        climberUnwind = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -72,7 +78,12 @@ public class OI {
     }
 
     public double getClimberSpeed() {
-        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
+        double speed = 0;
+        if (climberWind.get()) {
+            speed = 1.0;
+        } else if (climberUnwind.get()) {
+            speed = -1.0;
+        }
         return speed;
     }
 
