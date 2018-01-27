@@ -32,11 +32,13 @@ public class OI {
     }
 
     public double getLeftSpeed() {
-        return getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
+        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
+        return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getRightSpeed() {
-        return getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
+        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
+        return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getLeftIntakeSpeed() {
@@ -62,18 +64,12 @@ public class OI {
 
     public double getCarriageSpeed() {
         double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
-        if (Math.abs(speed) > Constants.Carriage.DEADBAND) {
-            return speed;
-        }
-        return -.1;
+        return applyDeadband(speed, Constants.Carriage.DEADBAND, -.1);
     }
 
     public double getArmSpeed() {
         double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
-        if (Math.abs(speed) > 0.05) {
-            return -speed;
-        }
-        return .1;
+        return applyDeadband(speed, 0.05, .1);
     }
 
     public boolean zeroArmEncoderRequested() {
@@ -81,12 +77,15 @@ public class OI {
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
-        double raw = gamepad.getRawAxis(axisNumber);
-        return applyDeadband(raw, Constants.DriveTrain.DEADBAND);
+        return gamepad.getRawAxis(axisNumber);
     }
 
     private double applyDeadband(double value, double deadband) {
         return Math.abs(value) >= deadband ? value : 0;
+    }
+
+    private double applyDeadband(double value, double deadband, double _default) {
+        return Math.abs(value) >= deadband ? value : _default;
     }
 
 }
