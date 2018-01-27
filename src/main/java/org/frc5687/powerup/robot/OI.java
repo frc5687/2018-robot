@@ -3,7 +3,6 @@ package org.frc5687.powerup.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.powerup.robot.commands.Servo.MoveToClimb;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -26,6 +25,9 @@ public class OI {
 
     private boolean servoHoldCubeToggled;
     private boolean servoClimbToggled;
+
+    private boolean servoHoldCubeState;
+    private boolean servoClimbState;
 
     public OI() {
         driveGamepad = new Joystick(0);
@@ -84,15 +86,22 @@ public class OI {
     }
 
     public double getServoSpeed() {
-        servoClimbToggle.toggleWhenPressed(MoveToClimb());
         if (servoHoldCubeToggle.get()) {
+            servoHoldCubeState = true;
+        } else if (servoHoldCubeState && !servoHoldCubeToggle.get()) {
             servoHoldCubeToggled = !servoHoldCubeToggled;
             servoClimbToggled = false;
+            servoHoldCubeState = false;
         }
+
         if (servoClimbToggle.get()) {
+            servoClimbState = true;
+        } else if (servoClimbState && !servoClimbToggle.get()) {
             servoClimbToggled = !servoClimbToggled;
             servoHoldCubeToggled = false;
+            servoClimbState = false;
         }
+
         SmartDashboard.putBoolean("Intake/servoHoldCubeToggled", servoHoldCubeToggled);
         SmartDashboard.putBoolean("Intake/servoClimbToggled", servoClimbToggled);
         if (servoHoldCubeToggled) {
