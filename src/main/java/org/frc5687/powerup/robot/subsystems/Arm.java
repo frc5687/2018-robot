@@ -49,10 +49,21 @@ public class Arm extends Subsystem {
         encoder.reset();
     }
 
-    public int getAngle() { return encoder.get(); }
+    public int getAngle() {
+        return encoder.get();
+    }
+
+    /**
+     * Get the position of the arm in the range of 0 to 1.
+     * @return the position of the arm in the range of 0 to 1. 0 is the bottom and 1 is the top.
+     */
+    public double getPosition() {
+        return (double) encoder.get() / (double) Constants.Arm.ENCODER_TOP;
+    }
 
     public void updateDashboard () {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
+        SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
         led.set(inStartingPosition());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());

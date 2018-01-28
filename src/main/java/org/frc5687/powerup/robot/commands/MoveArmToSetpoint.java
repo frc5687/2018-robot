@@ -33,7 +33,7 @@ public class MoveArmToSetpoint extends Command {
         super.initialize();
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
-        int current = _arm.getAngle();
+        double current = _arm.getPosition();
 
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(current, current, 0),
