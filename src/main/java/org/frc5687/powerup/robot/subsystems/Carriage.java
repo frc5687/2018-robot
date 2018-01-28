@@ -35,7 +35,7 @@ public class Carriage extends Subsystem {
     }
 
     public int encoderValue(){
-        return encoder.get()
+        return encoder.get();
     }
 
     public boolean isAtTop() {
