@@ -49,6 +49,7 @@ public class Arm extends Subsystem {
         encoder.reset();
     }
 
+    public int getAngle() { return encoder.get(); }
 
     public void updateDashboard () {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
