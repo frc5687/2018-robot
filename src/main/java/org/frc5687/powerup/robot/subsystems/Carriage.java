@@ -47,7 +47,7 @@ public class Carriage extends Subsystem {
     }
 
     public void updateDashboard () {
-        SmartDashboard.putNumber("Carriage/encoder raw", encoderValue())
+        SmartDashboard.putNumber("Carriage/encoder raw", encoderValue());
         SmartDashboard.putBoolean("Carriage/At top", isAtTop());
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
     }
