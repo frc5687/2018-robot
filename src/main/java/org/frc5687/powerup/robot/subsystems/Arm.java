@@ -49,9 +49,12 @@ public class Arm extends Subsystem {
         encoder.reset();
     }
 
-
+    public double getEncoderValue(){
+        return (double) encoder.get()/(double) Constants.Arm.ENCODER_TOP;
+    }
     public void updateDashboard () {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
+        SmartDashboard.putNumber("Arm/encoder value", getEncoderValue());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
         led.set(inStartingPosition());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());
