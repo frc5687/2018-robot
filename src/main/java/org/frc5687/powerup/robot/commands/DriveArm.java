@@ -26,11 +26,6 @@ public class DriveArm extends Command {
         if (oi.zeroArmEncoderRequested()) {
             arm.zeroEncoder();
         }
-        if(arm.atTop() && speed > 0) {
-            speed = 0;
-        } else if (arm.atBottom() && speed < 0) {
-            speed = 0;
-        }
         SmartDashboard.putNumber("Arm/Speed", speed);
         arm.drive(speed);
     }

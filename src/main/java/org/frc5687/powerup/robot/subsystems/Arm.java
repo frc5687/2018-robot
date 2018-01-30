@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.hal.ControlWord;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
@@ -25,7 +26,7 @@ public class Arm extends PIDSubsystem {
         super("Arm", kP, kI, kD, kF);
         setAbsoluteTolerance(5);
         setInputRange(0, 340);
-        setOutputRange(-.5, 0.5);
+        setOutputRange(-.75, 0.75);
         _oi=oi;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
@@ -34,6 +35,14 @@ public class Arm extends PIDSubsystem {
     }
 
     public void drive(double speed) {
+        if(atTop() && speed > 0) {
+            SmartDashboard.putString("Arm/Capped)", "Top");
+            speed = Constants.Arm.HOLD_SPEED;
+        } else if (atBottom() && speed < 0) {
+            SmartDashboard.putString("Arm/Capped)", "Bottom");
+            speed = Constants.Arm.HOLD_SPEED;
+        }
+        SmartDashboard.putNumber("Arm/speed", _motor.get());
         _motor.setSpeed(speed);
     }
 
@@ -89,5 +98,6 @@ public class Arm extends PIDSubsystem {
         led.set(inStartingPosition());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
+
     }
 }
