@@ -10,14 +10,14 @@ import org.frc5687.powerup.robot.subsystems.Arm;
 /**
  * Created by Ben Bernard on 1/28/2018.
  */
-public class MoveArmToSetpoint extends Command {
+public class MoveArmToSetpointTrajectory extends Command {
 
     private int _target;
     private Arm _arm;
     private Trajectory _trajectory;
     private int _segment = 0;
 
-    public MoveArmToSetpoint(Arm arm, int target) {
+    public MoveArmToSetpointTrajectory(Arm arm, int target) {
         requires(arm);
         _arm = arm;
         _target = target;
