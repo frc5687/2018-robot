@@ -20,9 +20,9 @@ public class Constants {
     }
 
     public class Arm {
-        public static final int ENCODER_BOTTOM = 0;
-        public static final int ENCODER_MIDDLE = 133;
-        public static final int ENCODER_TOP = 340;
+        public static final double ENCODER_START = 0;
+        public static final double ENCODER_MIDDLE = 133;
+        public static final double ENCODER_TOP = 340;
     }
 
 }

@@ -2,7 +2,6 @@ package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
@@ -16,14 +15,17 @@ public class Arm extends PIDSubsystem {
     private DigitalInput hallEffect;
     private DigitalOutput led;
 
-    public static final double kP = 0.0;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
-    public static final double kF = 0.0;
+    public static final double kP = 0.5;
+    public static final double kI = 0.1;
+    public static final double kD = 0.1;
+    public static final double kF = 0.5;
 
 
     public Arm (OI oi) {
         super("Arm", kP, kI, kD, kF);
+        setAbsoluteTolerance(5);
+        setInputRange(0, 340);
+        setOutputRange(-.5, 0.5);
         _oi=oi;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
@@ -50,7 +52,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean atBottom() {
-        return encoder.get() < Constants.Arm.ENCODER_BOTTOM;
+        return encoder.get() < Constants.Arm.ENCODER_START;
     }
 
     public void zeroEncoder() {
@@ -76,6 +78,7 @@ public class Arm extends PIDSubsystem {
 
     @Override
     protected void usePIDOutput(double output) {
+        DriverStation.reportError("Arm PID output at " + output, false);
         drive(output);
     }
 

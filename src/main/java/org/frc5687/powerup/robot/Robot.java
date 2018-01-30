@@ -49,6 +49,8 @@ public class Robot extends IterativeRobot  {
         carriage = new Carriage(oi);
         intake = new Intake(oi);
 
+        oi.initializeButtons(_arm);
+
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
         } catch (Exception e) {

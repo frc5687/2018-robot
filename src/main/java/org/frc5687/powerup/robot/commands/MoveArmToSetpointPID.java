@@ -1,24 +1,27 @@
 package org.frc5687.powerup.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 import org.frc5687.powerup.robot.subsystems.Arm;
+import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.opencv.core.KeyPoint;
+import sun.rmi.runtime.Log;
 
 /**
  * Created by Ben Bernard on 1/28/2018.
  */
 public class MoveArmToSetpointPID extends Command {
 
-    private int _target;
+    private double _target;
     private Arm _arm;
 
 
 
-    public MoveArmToSetpointPID(Arm arm, int target) {
+    public MoveArmToSetpointPID(Arm arm, double target) {
         requires(arm);
         _arm = arm;
         _target = target;
@@ -38,7 +41,7 @@ public class MoveArmToSetpointPID extends Command {
     protected void initialize() {
         super.initialize();
 
-        double current = _arm.getAngle();
+        DriverStation.reportError("Starting MoveArmToSetpointPID", false);
         _arm.setSetpoint(_target);
         _arm.enable();
     }
@@ -46,6 +49,6 @@ public class MoveArmToSetpointPID extends Command {
     @Override
     protected void execute() {
         // Add logging here
-
+        DriverStation.reportError("MoveArmToSetpointPID at " + _arm.getAngle(), false);
     }
 }

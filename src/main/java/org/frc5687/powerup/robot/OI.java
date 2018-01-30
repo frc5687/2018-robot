@@ -2,6 +2,8 @@ package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
+import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -21,6 +23,10 @@ public class OI {
 
     private JoystickButton resetArmEncoder;
 
+    private JoystickButton armToScaleButton;
+    private JoystickButton armToIntakeButton;
+
+
     public OI() {
         driveGamepad = new Joystick(0);
         intakeGamepad = new Gamepad(1);
@@ -29,6 +35,10 @@ public class OI {
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
 
         resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
+
+        armToScaleButton = new JoystickButton(driveGamepad, Gamepad.Buttons.Y.getNumber());
+        armToIntakeButton = new JoystickButton(driveGamepad, Gamepad.Buttons.A.getNumber());
+
     }
 
     public double getLeftSpeed() {
@@ -88,4 +98,8 @@ public class OI {
         return Math.abs(value) >= deadband ? value : _default;
     }
 
+    public void initializeButtons(Arm arm) {
+        // armToScaleButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_TOP));
+        armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
+    }
 }
