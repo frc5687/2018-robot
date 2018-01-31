@@ -18,8 +18,8 @@ public class RobotMap {
     public class Carriage {
         public static final int MOTOR = 8;
 
-        public static final int ENCODER_A = 0;
-        public static final int ENCODER_B = 1;
+        public static final int ENCODER_A = 0; // YELLOW
+        public static final int ENCODER_B = 1; // BLUE
 
         public static final int HALL_EFFECT_TOP = 2;
         public static final int HALL_EFFECT_BOTTOM = 3;
