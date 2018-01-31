@@ -42,7 +42,12 @@ public class Carriage extends Subsystem {
         return !hallEffectBottom.get();
     }
 
+    public int position() {
+        return encoder.get();
+    }
+
     public void updateDashboard () {
+        SmartDashboard.putNumber("Carriage/position", position());
         SmartDashboard.putBoolean("Carriage/At top", isAtTop());
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
     }
