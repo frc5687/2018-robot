@@ -23,6 +23,8 @@ public class Constants {
         public static final double ENCODER_START = 0;
         public static final double ENCODER_MIDDLE = 133;
         public static final double ENCODER_TOP = 340;
+
+        public static final double HOLD_SPEED = 0.15;
     }
 
 }
