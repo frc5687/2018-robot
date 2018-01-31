@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointTrajectory;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
@@ -99,7 +100,8 @@ public class OI {
     }
 
     public void initializeButtons(Arm arm) {
-        // armToScaleButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_TOP));
-        armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
+        //armToScaleButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_TOP));
+        //armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
+        armToIntakeButton.whenPressed(new MoveArmToSetpointTrajectory(arm, (int) Constants.Arm.ENCODER_MIDDLE));
     }
 }

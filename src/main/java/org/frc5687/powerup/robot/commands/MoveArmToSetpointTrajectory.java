@@ -1,6 +1,8 @@
 package org.frc5687.powerup.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -25,15 +27,16 @@ public class MoveArmToSetpointTrajectory extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return _segment >= 49;
     }
 
 
     @Override
     protected void initialize() {
         super.initialize();
+        DriverStation.reportError("Starting MoveArmToSetpointPID", false);
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, 50, 0.02, 0.3, 2.0, 60.0);
         double current = _arm.getAngle();
 
         Waypoint[] points = new Waypoint[] {
@@ -47,7 +50,11 @@ public class MoveArmToSetpointTrajectory extends Command {
 
     @Override
     protected void execute() {
-
+        DriverStation.reportError("MoveArmToSetpointTrajectory at " + _arm.getAngle(), false);
+        Trajectory.Segment segment = _trajectory.get(_segment);
+        SmartDashboard.putNumber("MoveArmToSetpointTrajectory/velocity", segment.velocity);
+        _arm.drive(segment.velocity);
+        _segment++;
         // Read the
 
         /*
