@@ -9,7 +9,6 @@ import jaci.pathfinder.Waypoint;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.opencv.core.KeyPoint;
-import sun.rmi.runtime.Log;
 
 /**
  * Created by Ben Bernard on 1/28/2018.
