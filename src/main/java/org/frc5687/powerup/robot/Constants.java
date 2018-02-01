@@ -16,15 +16,18 @@ public class Constants {
     }
 
     public class Carriage {
-        public static final double DEADBAND = 0.05;
+        public static final double DEADBAND = 0.13;
+        public static final boolean MOTOR_INVERTED = true;
         public static final int ENCODER_TOP = 967;
         public static final double RUNWAY = 25.5; // in
     }
 
     public class Arm {
-        public static final int ENCODER_BOTTOM = 0;
-        public static final int ENCODER_MIDDLE = 133;
-        public static final int ENCODER_TOP = 340;
+        public static final double ENCODER_START = 0;
+        public static final double ENCODER_MIDDLE = 133;
+        public static final double ENCODER_TOP = 340;
+
+        public static final double HOLD_SPEED = 0.15;
     }
 
 }
