@@ -2,9 +2,11 @@ package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointTrajectory;
+import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import org.frc5687.powerup.robot.subsystems.Arm;
+import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -27,6 +29,10 @@ public class OI {
     private JoystickButton armToScaleButton;
     private JoystickButton armToIntakeButton;
 
+    private JoystickButton carriagePID;
+
+    private JoystickButton carriageZeroEncoder;
+
 
     public OI() {
         driveGamepad = new Joystick(0);
@@ -36,10 +42,12 @@ public class OI {
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
 
         resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
+        carriageZeroEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.BACK.getNumber());
 
         armToScaleButton = new JoystickButton(driveGamepad, Gamepad.Buttons.Y.getNumber());
         armToIntakeButton = new JoystickButton(driveGamepad, Gamepad.Buttons.A.getNumber());
 
+        carriagePID = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -75,7 +83,7 @@ public class OI {
 
     public double getCarriageSpeed() {
         double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
-        return applyDeadband(speed, Constants.Carriage.DEADBAND, -.10);
+        return applyDeadband(-speed, Constants.Carriage.DEADBAND, .1);
     }
 
     public double getArmSpeed() {
@@ -99,9 +107,12 @@ public class OI {
         return Math.abs(value) >= deadband ? value : _default;
     }
 
-    public void initializeButtons(Arm arm) {
-        //armToScaleButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_TOP));
-        //armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
-        armToIntakeButton.whenPressed(new MoveArmToSetpointTrajectory(arm, (int) Constants.Arm.ENCODER_MIDDLE));
+    public void initializeCarriageButtons(Carriage carriage) {
+        carriageZeroEncoder.whenPressed(new CarriageZeroEncoder(carriage));
+        carriagePID.whenPressed(new MoveCarriageToSetpointPID(carriage, 500));
+    }
+
+    public void initializeArmButtons(Arm arm) {
+        armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
     }
 }

@@ -19,7 +19,7 @@ public class TestCarriageSpeed extends Command {
     @Override
     protected boolean isFinished() {
         if (_tick >= _ticks) {
-            _carriage.drive(-0.1);
+            _carriage.drive(0.1);
             return true;
         }
         return false;
@@ -29,7 +29,7 @@ public class TestCarriageSpeed extends Command {
     protected void initialize() {
         super.initialize();
         DriverStation.reportError("TestCarriageSpeed starting", false);
-        _carriage.drive(-1);
+        _carriage.drive(1);
     }
 
     @Override
