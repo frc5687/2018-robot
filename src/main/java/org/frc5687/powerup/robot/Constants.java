@@ -16,7 +16,7 @@ public class Constants {
     }
 
     public class Carriage {
-        public static final double DEADBAND = 0.05;
+        public static final double DEADBAND = 0.13;
         public static final int ENCODER_TOP = 967;
         public static final double RUNWAY = 25.5; // in
     }

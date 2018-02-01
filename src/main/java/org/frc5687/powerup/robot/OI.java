@@ -75,7 +75,7 @@ public class OI {
 
     public double getCarriageSpeed() {
         double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
-        return applyDeadband(speed, Constants.Carriage.DEADBAND, -.1);
+        return applyDeadband(speed, Constants.Carriage.DEADBAND, -.10);
     }
 
     public double getArmSpeed() {
