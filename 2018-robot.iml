@@ -12,11 +12,11 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.1.1/359c51bfd879c57dbc63157df3df66235980865/wpilibj-java-2018.1.1.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.2.2/98e6b7dc417354e5eb5e25744749f2522f5bd21/wpilibj-java-2018.2.2.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.1.1/beb4907631b352f07723679c3e90632c0533e725/wpilibj-java-2018.1.1-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.2.2/896380ab80105b170e9570ac4aacc1ab92189abf/wpilibj-java-2018.2.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -67,33 +67,55 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.1.2.1/420d7e83c54d4a19446355e6f544c2a92e18a65d/CTRE-phoenix-java-5.1.2.1.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.2.1.1/469f4905ff49fe297be19c0c6724e27b444fbb5c/CTRE-phoenix-java-5.2.1.1.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.1.2.1/a6524440658bcd925d5bbd06e84b3cd6ba80c4a7/CTRE-phoenix-java-5.1.2.1-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.2.1.1/6ef53967acb57f11e0be1e3d825d8a013945bc27/CTRE-phoenix-java-5.2.1.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.342/4af029f506ed05dda2625ba93692b3a31f40e71a/navx-java-3.0.342.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.346/b29a636918ae632c90be1b0e4161ac7bd0853731/navx-java-3.0.346.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.342/35a06a0b5be816d2e88139e1a3529148fab3a675/navx-java-3.0.342-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.346/bf97f8511e36c87629248aa073f92660a413547d/navx-java-3.0.346-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/1.8/c37dcf790766dd0c023cc00c57bb2e2e4e58f487/Pathfinder-Java-1.8.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/1.8/f99c341d8a52f2445060989aef1af8ab7bb458ed/Pathfinder-Java-1.8-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.powerup/MatchData/2018.01.07/30351a05ab4661f0ee307e782747fe4ba8bfe866/MatchData-2018.01.07.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.powerup/MatchData/2018.01.07/5621fbfada81352fb32981607a0ae4310163e9e9/MatchData-2018.01.07-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.1.1/359c51bfd879c57dbc63157df3df66235980865/wpilibj-java-2018.1.1.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.2.2/98e6b7dc417354e5eb5e25744749f2522f5bd21/wpilibj-java-2018.2.2.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.1.1/beb4907631b352f07723679c3e90632c0533e725/wpilibj-java-2018.1.1-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.2.2/896380ab80105b170e9570ac4aacc1ab92189abf/wpilibj-java-2018.2.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -144,33 +166,55 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.1.2.1/420d7e83c54d4a19446355e6f544c2a92e18a65d/CTRE-phoenix-java-5.1.2.1.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.2.1.1/469f4905ff49fe297be19c0c6724e27b444fbb5c/CTRE-phoenix-java-5.2.1.1.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.1.2.1/a6524440658bcd925d5bbd06e84b3cd6ba80c4a7/CTRE-phoenix-java-5.1.2.1-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.2.1.1/6ef53967acb57f11e0be1e3d825d8a013945bc27/CTRE-phoenix-java-5.2.1.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.342/4af029f506ed05dda2625ba93692b3a31f40e71a/navx-java-3.0.342.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.346/b29a636918ae632c90be1b0e4161ac7bd0853731/navx-java-3.0.346.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.342/35a06a0b5be816d2e88139e1a3529148fab3a675/navx-java-3.0.342-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.346/bf97f8511e36c87629248aa073f92660a413547d/navx-java-3.0.346-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/1.8/c37dcf790766dd0c023cc00c57bb2e2e4e58f487/Pathfinder-Java-1.8.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/1.8/f99c341d8a52f2445060989aef1af8ab7bb458ed/Pathfinder-Java-1.8-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.powerup/MatchData/2018.01.07/30351a05ab4661f0ee307e782747fe4ba8bfe866/MatchData-2018.01.07.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.powerup/MatchData/2018.01.07/5621fbfada81352fb32981607a0ae4310163e9e9/MatchData-2018.01.07-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.1.1/359c51bfd879c57dbc63157df3df66235980865/wpilibj-java-2018.1.1.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.2.2/98e6b7dc417354e5eb5e25744749f2522f5bd21/wpilibj-java-2018.2.2.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.1.1/beb4907631b352f07723679c3e90632c0533e725/wpilibj-java-2018.1.1-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2018.2.2/896380ab80105b170e9570ac4aacc1ab92189abf/wpilibj-java-2018.2.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
@@ -221,22 +265,44 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.1.2.1/420d7e83c54d4a19446355e6f544c2a92e18a65d/CTRE-phoenix-java-5.1.2.1.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.2.1.1/469f4905ff49fe297be19c0c6724e27b444fbb5c/CTRE-phoenix-java-5.2.1.1.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.1.2.1/a6524440658bcd925d5bbd06e84b3cd6ba80c4a7/CTRE-phoenix-java-5.1.2.1-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.2.1.1/6ef53967acb57f11e0be1e3d825d8a013945bc27/CTRE-phoenix-java-5.2.1.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.342/4af029f506ed05dda2625ba93692b3a31f40e71a/navx-java-3.0.342.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.346/b29a636918ae632c90be1b0e4161ac7bd0853731/navx-java-3.0.346.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.342/35a06a0b5be816d2e88139e1a3529148fab3a675/navx-java-3.0.342-sources.jar!/"/>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.kauailabs/navx-java/3.0.346/bf97f8511e36c87629248aa073f92660a413547d/navx-java-3.0.346-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/1.8/c37dcf790766dd0c023cc00c57bb2e2e4e58f487/Pathfinder-Java-1.8.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/jaci.pathfinder/Pathfinder-Java/1.8/f99c341d8a52f2445060989aef1af8ab7bb458ed/Pathfinder-Java-1.8-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.powerup/MatchData/2018.01.07/30351a05ab4661f0ee307e782747fe4ba8bfe866/MatchData-2018.01.07.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/Ben Bernard/.gradle/caches/modules-2/files-2.1/openrio.powerup/MatchData/2018.01.07/5621fbfada81352fb32981607a0ae4310163e9e9/MatchData-2018.01.07-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
