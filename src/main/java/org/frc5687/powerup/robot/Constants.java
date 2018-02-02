@@ -117,6 +117,8 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
         public static final int ENCODER_TOP = 967;
         public static final double RUNWAY = 25.5; // in
+
+        public static final double HOLD_SPEED = 0.15;
     }
 
     public class Arm {

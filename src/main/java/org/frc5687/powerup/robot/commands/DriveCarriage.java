@@ -20,12 +20,6 @@ public class DriveCarriage extends Command {
     @Override
     protected void execute() {
         double speed = oi.getCarriageSpeed();
-        if (speed < 0 && carriage.isAtTop()) {
-            speed = 0;
-        } else if (speed > 0 && carriage.isAtBottom()) {
-            speed = 0;
-        }
-        SmartDashboard.putNumber("CarriageSpeed", speed);
         carriage.drive(speed);
     }
 
