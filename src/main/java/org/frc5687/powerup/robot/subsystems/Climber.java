@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,9 +16,7 @@ public class Climber extends Subsystem {
 
     public Climber(OI oi) {
         motor = new VictorSP(RobotMap.Climber.MOTOR);
-
         motor.setName("Climber");
-
         this.oi = oi;
     }
 
@@ -27,6 +26,9 @@ public class Climber extends Subsystem {
     }
 
     public void drive(double speed) {
-        motor.set(speed * (Constants.Climber.MOTOR_INVERT ? -1 : 1));
+        speed *= (Constants.Climber.MOTOR_INVERT ? -1 : 1);
+        SmartDashboard.putNumber("Climber/rawSpeed", speed);
+        SmartDashboard.putNumber("Climber/speed", speed * (Constants.Climber.MOTOR_INVERT ? -1 : 1));
+        motor.set(speed);
     }
 }

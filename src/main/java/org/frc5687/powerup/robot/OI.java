@@ -100,9 +100,9 @@ public class OI {
     public double getClimberSpeed() {
         double speed = 0;
         if (climberWind.get()) {
-            speed = 1.0;
+            speed = Constants.Climber.WIND_SPEED;
         } else if (climberUnwind.get()) {
-            speed = -1.0;
+            speed = Constants.Climber.UNWIND_SPEED;
         }
         return speed;
     }

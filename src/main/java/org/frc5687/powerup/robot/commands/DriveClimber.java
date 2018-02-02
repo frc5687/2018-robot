@@ -18,7 +18,6 @@ public class DriveClimber extends Command {
     @Override
     protected void execute() {
         double speed = oi.getClimberSpeed();
-        SmartDashboard.putNumber("Climber/speed", speed);
         climber.drive(speed);
     }
 

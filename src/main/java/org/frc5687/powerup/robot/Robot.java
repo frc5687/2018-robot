@@ -10,10 +10,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.auto.AutoAlign;
 import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
-import org.frc5687.powerup.robot.subsystems.Carriage;
-import org.frc5687.powerup.robot.subsystems.Arm;
-import org.frc5687.powerup.robot.subsystems.DriveTrain;
-import org.frc5687.powerup.robot.subsystems.Intake;
+import org.frc5687.powerup.robot.subsystems.*;
 import edu.wpi.first.wpilibj.CameraServer;
 import org.frc5687.powerup.robot.utils.PDP;
 
@@ -27,6 +24,7 @@ public class Robot extends IterativeRobot  {
     private DriveTrain driveTrain;
     private Intake intake;
     private Carriage carriage;
+    private Climber _climber;
     private Arm _arm;
     private AHRS imu;
     private UsbCamera camera;
@@ -50,6 +48,7 @@ public class Robot extends IterativeRobot  {
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi);
         intake = new Intake(oi);
+        _climber = new Climber(oi);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
