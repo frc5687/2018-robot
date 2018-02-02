@@ -112,6 +112,10 @@ public class Constants {
         }
     }
 
+    public class IR {
+        public static final int DETECTION_THRESHOLD = 600;
+    }
+
     public class Carriage {
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;

@@ -1,21 +1,24 @@
 package org.frc5687.powerup.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
 
-/**
- * Created by Baxter on 3/22/2017.
- */
+
 public class Intake extends Subsystem {
 
     private VictorSP leftMotor;
     private VictorSP rightMotor;
+    private AnalogInput irBack;
+    private AnalogInput irSide;
 
     private OI oi;
 
@@ -27,17 +30,33 @@ public class Intake extends Subsystem {
         rightMotor.setName("Intake", "Right Victor");
 
         this.oi = oi;
+
+        irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
+        irSide = new AnalogInput(RobotMap.Intake.IR_SIDE);
     }
 
     @Override
     protected void initDefaultCommand() {
-
         setDefaultCommand(new DriveIntake(this, oi));
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
+    }
+
+    /**
+     * Checks if cube is detected
+     * @return Whether or not the infrared sensor sees anything
+     */
+    public boolean cubeIsDetected() {
+        return irBack.getValue() < Constants.IR.DETECTION_THRESHOLD;
+    }
+
+    public void updateDashboard(){
+        SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
+        SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
+        SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
     }
 
 }
