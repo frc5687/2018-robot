@@ -1,7 +1,6 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
