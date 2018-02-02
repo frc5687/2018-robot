@@ -37,8 +37,15 @@ public class Carriage extends PIDSubsystem {
     }
 
     public void drive(double speed) {
-        double _speed = speed * (Constants.Carriage.MOTOR_INVERTED ? -1 : 1);
-        SmartDashboard.putNumber("Carriage/speed", _speed);
+        double _speed = speed;
+        if (_speed > 0 && isAtTop()) {
+            _speed = Constants.Carriage.HOLD_SPEED;
+        } else if (_speed < 0 && isAtBottom()) {
+            _speed = -Constants.Carriage.HOLD_SPEED;
+        }
+        _speed *= (Constants.Carriage.MOTOR_INVERTED ? -1 : 1);
+        SmartDashboard.putNumber("Carriage/rawSpeed", _speed);
+        SmartDashboard.putNumber("Carriage/speed", -_speed);
         _motor.setSpeed(_speed);
     }
 

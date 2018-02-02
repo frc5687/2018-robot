@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
@@ -82,8 +83,9 @@ public class OI {
     }
 
     public double getCarriageSpeed() {
-        double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
-        return applyDeadband(-speed, Constants.Carriage.DEADBAND, .1);
+        double speed = -getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
+        SmartDashboard.putNumber("OI/LEFT AXIS", speed);
+        return applyDeadband(speed, Constants.Carriage.DEADBAND, .1);
     }
 
     public double getArmSpeed() {
