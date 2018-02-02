@@ -77,7 +77,7 @@ public class Carriage extends PIDSubsystem {
 
     @Override
     protected void usePIDOutput(double output) {
-        DriverStation.reportError("Arm PID output at " + output, false);
+        SmartDashboard.putNumber("Arm PID output at ", output);
         drive(output);
     }
 
