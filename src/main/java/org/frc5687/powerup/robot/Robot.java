@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
+import org.frc5687.powerup.robot.commands.auto.AutoAlign;
+import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
 import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
@@ -55,7 +57,8 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
-        autoCommand = new CarriageZeroEncoder(carriage);
+        autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
+
     }
 
     @Override
@@ -65,6 +68,7 @@ public class Robot extends IterativeRobot  {
 
     @Override
     public void autonomousInit() {
+        imu.reset();
         if (autoCommand != null) {
             autoCommand.start();
         }
@@ -104,6 +108,7 @@ public class Robot extends IterativeRobot  {
 
     public void updateDashboard() {
         pdp.updateDashboard();
+        driveTrain.updateDashboard();
         carriage.updateDashboard();
         _arm.updateDashboard();
     }
