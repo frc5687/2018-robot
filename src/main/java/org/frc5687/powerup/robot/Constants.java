@@ -112,10 +112,8 @@ public class Constants {
         }
     }
 
-    public class InfraRedConstants {
+    public class IR {
         public static final int DETECTION_THRESHOLD = 600;
-        public static final int CAPTURED_OPTIMAL = 1400; // Optimal position of boulder for storing bolder and traversing defenses
-        public static final int CAPTURED_TOLERANCE = 100; // Tolerance in either direction of boulder position for carrying boulder
     }
 
     public class Carriage {

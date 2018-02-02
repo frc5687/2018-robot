@@ -50,7 +50,7 @@ public class Intake extends Subsystem {
      * @return Whether or not the infrared sensor sees anything
      */
     public boolean cubeIsDetected() {
-        return irBack.getValue() < Constants.InfraRedConstants.DETECTION_THRESHOLD;
+        return irBack.getValue() < Constants.IR.DETECTION_THRESHOLD;
     }
 
     public void updateDashboard(){
