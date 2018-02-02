@@ -62,7 +62,7 @@ public class AutoAlign extends Command implements PIDOutput {
     protected void execute() {
         // if(!controller.onTarget()) endTime = System.currentTimeMillis() + Align.STEADY_TIME;
 //        DriverStation.reportError("Align: " + pidOut + "," + -pidOut, false);
-        driveTrain.tankDrive(pidOut, -pidOut); // positive output is counterclockwise
+        driveTrain.tankDrive(-pidOut, pidOut); // positive output is counterclockwise
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
         SmartDashboard.putData("AutoAlign/pid", controller);
@@ -70,6 +70,8 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
+        return false;
+        /*
         if (!controller.onTarget()) {
             onTargetMillis = 0;
             return false;
@@ -78,6 +80,7 @@ public class AutoAlign extends Command implements PIDOutput {
             onTargetMillis = System.currentTimeMillis();
         }
         return System.currentTimeMillis() > onTargetMillis + Constants.Auto.Drive.ALIGN_STEADY_TIME;
+        */
     }
 
     @Override
