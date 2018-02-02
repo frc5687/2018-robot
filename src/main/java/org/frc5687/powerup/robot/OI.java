@@ -16,7 +16,6 @@ public class OI {
         public static final int LEFT_TRIGGER_AXIS = 2;
         public static final int RIGHT_TRIGGER_AXIS = 3;
         public static final int RIGHT_AXIS = 5;
-
     }
 
     private Joystick driveGamepad;
@@ -24,6 +23,9 @@ public class OI {
 
     private JoystickButton intakeLeftOut;
     private JoystickButton intakeRightOut;
+
+    private JoystickButton climberWind;
+    private JoystickButton climberUnwind;
 
     private JoystickButton resetArmEncoder;
 
@@ -34,20 +36,18 @@ public class OI {
 
     private JoystickButton carriageZeroEncoder;
 
-
     public OI() {
         driveGamepad = new Joystick(0);
-        intakeGamepad = new Gamepad(1);
-
-        intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
-        intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
-
-        resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
-        carriageZeroEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.BACK.getNumber());
-
         armToScaleButton = new JoystickButton(driveGamepad, Gamepad.Buttons.Y.getNumber());
         armToIntakeButton = new JoystickButton(driveGamepad, Gamepad.Buttons.A.getNumber());
+        climberUnwind = new JoystickButton(driveGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        climberWind = new JoystickButton(driveGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
 
+        intakeGamepad = new Gamepad(1);
+        intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+        resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
+        carriageZeroEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.BACK.getNumber());
         carriagePID = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
     }
 
@@ -95,6 +95,16 @@ public class OI {
 
     public boolean zeroArmEncoderRequested() {
         return resetArmEncoder.get();
+    }
+
+    public double getClimberSpeed() {
+        double speed = 0;
+        if (climberWind.get()) {
+            speed = Constants.Climber.WIND_SPEED;
+        } else if (climberUnwind.get()) {
+            speed = Constants.Climber.UNWIND_SPEED;
+        }
+        return speed;
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
