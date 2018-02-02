@@ -1,16 +1,18 @@
 package org.frc5687.powerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Arm;
 
 public class DriveArm extends Command {
-    private Arm _arm;
-    private OI _oi;
+    private Arm arm;
+    private OI oi;
+
     public DriveArm(Arm arm, OI oi){
         requires(arm);
-        _arm=arm;
-        _oi=oi;
+        this.arm = arm;
+        this.oi = oi;
     }
 
     @Override
@@ -20,6 +22,11 @@ public class DriveArm extends Command {
 
     @Override
     protected void execute() {
-        _arm.drive(_oi.getArmSpeed());
+        double speed = oi.getArmSpeed();
+        if (oi.zeroArmEncoderRequested()) {
+            arm.zeroEncoder();
+        }
+        SmartDashboard.putNumber("Arm/Speed", speed);
+        arm.drive(speed);
     }
 }
