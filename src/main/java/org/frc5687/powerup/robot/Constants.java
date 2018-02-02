@@ -84,12 +84,12 @@ public class Constants {
 
             public static final boolean REVERSED = true; //TODO change to new robot specifications
             public static final int SAMPLES_TO_AVERAGE = 20;
-            public static final int PULSES_PER_ROTATION = 1440;
+            public static final int PULSES_PER_ROTATION = 1024;
             public static final double WHEEL_DIAMETER = 6;
             public static final double INCHES_PER_ROTATION = Math.PI * WHEEL_DIAMETER;
             public static final double SCALAR_RATIO = 8;
             //            public static final double INCHES_PER_PULSE_TONY = INCHES_PER_ROTATION * SCALAR_RATIO / PULSES_PER_ROTATION;
-            public static final double INCHES_PER_PULSE = 0.1076;
+            public static final double INCHES_PER_PULSE = (1/INCHES_PER_ROTATION)*PULSES_PER_ROTATION;
             // public static final double INCHES_PER_PULSE_TONY = 0.12371134;
             public static final double MAX_PERIOD = 5;
 
@@ -98,8 +98,7 @@ public class Constants {
         public class RightDrive {
 
             public static final boolean REVERSED = Defaults.REVERSED;
-            public static final double INCHES_PER_PULSE_TONY = 0.03609; //Encoders.Defaults.INCHES_PER_PULSE;
-            public static final double INCHES_PER_PULSE_RHODY = 0.0406;
+            public static final double INCHES_PER_PULSE_TONY = Defaults.INCHES_PER_PULSE; //Encoders.Defaults.INCHES_PER_PULSE;
 
         }
 
@@ -107,7 +106,6 @@ public class Constants {
 
             public static final boolean REVERSED = Defaults.REVERSED;
             public static final double INCHES_PER_PULSE_TONY = Defaults.INCHES_PER_PULSE;
-            public static final double INCHES_PER_PULSE_RHODY = 0.1145;
 
         }
     }
