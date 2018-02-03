@@ -13,6 +13,9 @@ public class Constants {
         public static final boolean LEFT_MOTORS_INVERTED = false;
         public static final boolean RIGHT_MOTORS_INVERTED = true;
         public static final double OUTTAKE_SPEED = -0.75;
+        public static final long EJECT_TIME = 250;
+
+        public static final double HOLD_SPEED = 0.1;
     }
 
     public class Auto {
@@ -118,23 +121,55 @@ public class Constants {
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
         public static final int ENCODER_TOP = 967;
+        // public static
         public static final double RUNWAY = 25.5; // in
 
-        public static final double HOLD_SPEED = 0.15;
+        public static final int CLEAR_BUMPERS = 250;
+
+        public static final double HOLD_SPEED = 0.05;
     }
 
     public class Arm {
         public static final double ENCODER_START = 0;
         public static final double ENCODER_MIDDLE = 133;
+        public static final double ENCODER_FENCE = 90;
         public static final double ENCODER_TOP = 340;
 
-        public static final double HOLD_SPEED = 0.15;
+        public static final double HOLD_SPEED = 0.1;
     }
 
     public class Climber {
         public static final boolean MOTOR_INVERT = true;
         public static final double WIND_SPEED = 1.0;
         public static final double UNWIND_SPEED = -1.0;
+    }
+
+    public class RotarySwitch {
+        public static final double TOLERANCE = 0.06;
+    }
+
+    public class AutoChooser {
+        public static final int LEFT = -1;
+        public static final int RIGHT = 1;
+
+        public class Position {
+            public static final int FAR_LEFT = 1;
+            public static final int MID_LEFT = 2;
+            public static final int CENTER = 3;
+            public static final int NEAR_RIGHT = 4;
+            public static final int MID_RIGHT = 5;
+            public static final int FAR_RIGHT = 6;
+        }
+
+        public class Mode {
+            public static final int STAY_PUT = 0;
+            public static final int CROSS_AUTOLINE = 1;
+            public static final int SWITCH_ONLY = 2;
+            public static final int SCALE_ONLY = 3;
+            public static final int SWITCH_THEN_SCALE = 4;
+            public static final int SCALE_THEN_SWITCH = 5;
+            public static final int SWITCH_OR_SCALE = 6;
+        }
     }
 
 }
