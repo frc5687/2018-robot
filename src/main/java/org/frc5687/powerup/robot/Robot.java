@@ -12,6 +12,13 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.frc5687.powerup.robot.subsystems.Intake;
+import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
+import org.frc5687.powerup.robot.commands.auto.AutoAlign;
+import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
+import org.frc5687.powerup.robot.commands.auto.AutoDrive;
+import org.frc5687.powerup.robot.commands.auto.AutoDriveSimple;
+import org.frc5687.powerup.robot.subsystems.*;
+import edu.wpi.first.wpilibj.CameraServer;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends IterativeRobot {
@@ -24,8 +31,9 @@ public class Robot extends IterativeRobot {
     private DriveTrain driveTrain;
     private Intake intake;
     private Carriage carriage;
+    private Climber _climber;
     private Arm _arm;
-    private AHRS imu;
+    public static AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
 
@@ -47,6 +55,7 @@ public class Robot extends IterativeRobot {
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi);
         intake = new Intake(oi);
+        _climber = new Climber(oi);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -54,6 +63,11 @@ public class Robot extends IterativeRobot {
             DriverStation.reportError(e.getMessage(), true);
         }
 
+        //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
+        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
+        // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
+        autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
+        // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
     }
 
     @Override
@@ -63,6 +77,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
+        imu.reset();
         if (autoCommand != null) {
             autoCommand.start();
         }
@@ -102,6 +117,8 @@ public class Robot extends IterativeRobot {
 
     public void updateDashboard() {
         pdp.updateDashboard();
+        intake.updateDashboard();
+        driveTrain.updateDashboard();
         carriage.updateDashboard();
         _arm.updateDashboard();
     }

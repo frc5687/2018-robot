@@ -1,30 +1,29 @@
 package org.frc5687.powerup.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.OI;
-import org.frc5687.powerup.robot.subsystems.Carriage;
+import org.frc5687.powerup.robot.subsystems.Climber;
 
-public class DriveCarriage extends Command {
-    private Carriage carriage;
+public class DriveClimber extends Command {
+    private Climber climber;
     private OI oi;
 
-    public DriveCarriage(Carriage carriage, OI oi) {
-        requires(carriage);
-
+    public DriveClimber(Climber climber, OI oi){
+        requires(climber);
+        this.climber = climber;
         this.oi = oi;
-        this.carriage = carriage;
     }
 
     @Override
     protected void execute() {
-        double speed = oi.getCarriageSpeed();
-        carriage.drive(speed);
+        double speed = oi.getClimberSpeed();
+        climber.drive(speed);
     }
 
     @Override
     protected boolean isFinished() {
         return false;
     }
+
 }
