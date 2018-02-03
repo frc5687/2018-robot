@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.auto.AutoAlign;
 import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
+import org.frc5687.powerup.robot.commands.auto.AutoGroup;
 import org.frc5687.powerup.robot.subsystems.*;
 import edu.wpi.first.wpilibj.CameraServer;
+import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends IterativeRobot  {
@@ -29,6 +31,7 @@ public class Robot extends IterativeRobot  {
     private AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
+    private AutoChooser _autoChooser;
 
     public Robot() {
     }
@@ -49,6 +52,7 @@ public class Robot extends IterativeRobot  {
         carriage = new Carriage(oi);
         intake = new Intake(oi);
         _climber = new Climber(oi);
+        _autoChooser = new AutoChooser();
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -74,9 +78,22 @@ public class Robot extends IterativeRobot  {
     @Override
     public void autonomousInit() {
         imu.reset();
-        if (autoCommand != null) {
-            autoCommand.start();
+        String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        int switchSide = 0;
+        int scaleSide = 0;
+        if (gameData.length()>0) {
+           switchSide = gameData.charAt(0)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
         }
+        if (gameData.length()>1) {
+            scaleSide = gameData.charAt(1)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
+        }
+
+        int autoPosition = _autoChooser.positionSwitchValue();
+        int autoMode = _autoChooser.modeSwitchValue();
+
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
+
+        autoCommand.start();
     }
 
     @Override
