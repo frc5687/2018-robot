@@ -87,7 +87,7 @@ public class Arm extends PIDSubsystem {
 
     @Override
     protected void usePIDOutput(double output) {
-        SmartDashboard.putNumber("Arm PID output at ", output);
+        SmartDashboard.putNumber("Arm/PID output", output);
         drive(output);
     }
 
