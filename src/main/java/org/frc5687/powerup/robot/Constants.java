@@ -13,6 +13,9 @@ public class Constants {
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
         public static final double OUTTAKE_SPEED = -0.75;
+
+        public static final double SERVO_BOTTOM = 0.0;
+        public static final double SERVO_UP = 1.0;
     }
 
     public class Auto {

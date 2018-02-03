@@ -6,8 +6,8 @@ public class RobotMap {
     public class DriveTrain {
         public static final int LEFT_FRONT_MOTOR = 3;
         public static final int LEFT_REAR_MOTOR = 4;
-        public static final int RIGHT_FRONT_MOTOR = 0;
-        public static final int RIGHT_REAR_MOTOR = 1;
+        public static final int RIGHT_FRONT_MOTOR = 1;
+        public static final int RIGHT_REAR_MOTOR = 2;
 
         public static final int LEFT_ENCODER_CHANNEL_A = 7;
         public static final int LEFT_ENCODER_CHANNEL_B = 8;
@@ -20,6 +20,7 @@ public class RobotMap {
         public static final int RIGHT_MOTOR = 7 ;
         public static final int IR_SIDE = 0; // Analog
         public static final int IR_BACK = 1; // Analog
+        public static final int SERVO = 0;
     }
 
     public class Carriage {
