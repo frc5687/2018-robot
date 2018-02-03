@@ -11,6 +11,10 @@ import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.auto.AutoAlign;
 import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
 import org.frc5687.powerup.robot.commands.auto.AutoDrive;
+<<<<<<< HEAD
+=======
+import org.frc5687.powerup.robot.commands.auto.AutoDriveSimple;
+>>>>>>> master
 import org.frc5687.powerup.robot.subsystems.*;
 import edu.wpi.first.wpilibj.CameraServer;
 import org.frc5687.powerup.robot.utils.PDP;
@@ -58,7 +62,10 @@ public class Robot extends IterativeRobot  {
         }
 
         //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
-        autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
+        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
+        // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
+        autoCommand = new AutoDrive(driveTrain, 120.0, .5, false, true, 5000, "cross auto");
+        // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
     }
 
     @Override
