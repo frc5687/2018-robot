@@ -56,6 +56,7 @@ public class AutoDrive extends Command {
         this.angle = angle;
         this.maxMillis = maxMillis;
         this.debug = debug;
+        this.driveTrain = driveTrain;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot  {
         }
 
         //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
-        autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auton line");
+        autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
     }
 
     @Override
