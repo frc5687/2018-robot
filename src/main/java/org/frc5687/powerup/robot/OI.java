@@ -73,7 +73,7 @@ public class OI {
         } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
-        return 0;
+        return Constants.Intake.HOLD_SPEED;
     }
 
     public double getRightIntakeSpeed() {
@@ -83,7 +83,7 @@ public class OI {
         } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
-        return 0;
+        return Constants.Intake.HOLD_SPEED;
     }
 
     public double getCarriageSpeed() {
