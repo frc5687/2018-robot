@@ -70,7 +70,7 @@ public class Constants {
                 public static final double kI = 0.006;
                 public static final double kD = 0.09;
 
-                public static final double MAX_DIFFERENCE = 0.2;
+                public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }
 
