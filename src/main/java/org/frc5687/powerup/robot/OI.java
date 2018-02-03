@@ -52,12 +52,12 @@ public class OI {
     }
 
     public double getLeftSpeed() {
-        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
+        double speed = -getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getRightSpeed() {
-        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
+        double speed = -getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
@@ -69,7 +69,7 @@ public class OI {
         } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
-        return 0;
+        return Constants.Intake.HOLD_SPEED;
     }
 
     public double getRightIntakeSpeed() {
@@ -79,7 +79,7 @@ public class OI {
         } else if (trigger > Constants.Intake.DEADBAND) {
             return trigger;
         }
-        return 0;
+        return Constants.Intake.HOLD_SPEED;
     }
 
     public double getCarriageSpeed() {

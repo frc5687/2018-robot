@@ -33,8 +33,13 @@ public class DriveTrain extends Subsystem implements PIDSource {
         rightFrontMotor = new VictorSP(RobotMap.DriveTrain.RIGHT_FRONT_MOTOR);
         rightRearMotor = new VictorSP(RobotMap.DriveTrain.RIGHT_REAR_MOTOR);
 
-        rightEncoder = initializeEncoder(RobotMap.DriveTrain.RIGHT_ENCODER_CHANNEL_A, RobotMap.DriveTrain.RIGHT_ENCODER_CHANNEL_B, Constants.Encoders.RightDrive.REVERSED, Constants.Encoders.RightDrive.INCHES_PER_PULSE_TONY);
-        leftEncoder = initializeEncoder(RobotMap.DriveTrain.LEFT_ENCODER_CHANNEL_A, RobotMap.DriveTrain.LEFT_ENCODER_CHANNEL_B, Constants.Encoders.LeftDrive.REVERSED, Constants.Encoders.LeftDrive.INCHES_PER_PULSE_TONY);
+        leftFrontMotor.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
+        leftRearMotor.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
+        rightFrontMotor.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
+        rightRearMotor.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
+
+        rightEncoder = initializeEncoder(RobotMap.DriveTrain.RIGHT_ENCODER_CHANNEL_A, RobotMap.DriveTrain.RIGHT_ENCODER_CHANNEL_B, Constants.Encoders.RightDrive.REVERSED, Constants.Encoders.RightDrive.INCHES_PER_PULSE);
+        leftEncoder = initializeEncoder(RobotMap.DriveTrain.LEFT_ENCODER_CHANNEL_A, RobotMap.DriveTrain.LEFT_ENCODER_CHANNEL_B, Constants.Encoders.LeftDrive.REVERSED, Constants.Encoders.LeftDrive.INCHES_PER_PULSE);
 
         this.imu = imu;
         this.oi = oi;
@@ -46,10 +51,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        leftFrontMotor.set(leftSpeed * (Constants.DriveTrain.LEFT_MOTORS_INVERTED ? -1 : 1));
-        leftRearMotor.set(leftSpeed * (Constants.DriveTrain.LEFT_MOTORS_INVERTED ? -1 : 1));
-        rightFrontMotor.set(rightSpeed * (Constants.DriveTrain.RIGHT_MOTORS_INVERTED ? -1 : 1));
-        rightRearMotor.set(rightSpeed * (Constants.DriveTrain.RIGHT_MOTORS_INVERTED ? -1 : 1));
+        leftFrontMotor.set(leftSpeed);
+        leftRearMotor.set(leftSpeed);
+        rightFrontMotor.set(rightSpeed);
+        rightRearMotor.set(rightSpeed);
     }
 
 
@@ -84,7 +89,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public double getLeftSpeed() {
-        return leftFrontMotor.getSpeed() * (Constants.DriveTrain.LEFT_MOTORS_INVERTED ? -1 : 1);
+        return leftFrontMotor.getSpeed();
     }
 
     public double getRightDistance() {
@@ -100,7 +105,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public double getRightSpeed() {
-        return rightFrontMotor.getSpeed() * (Constants.DriveTrain.RIGHT_MOTORS_INVERTED ? -1 : 1);
+        return rightFrontMotor.getSpeed();
     }
 
     public double getLeftRPS() {

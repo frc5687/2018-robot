@@ -7,10 +7,13 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.auto.AutoAlign;
 import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
 import org.frc5687.powerup.robot.commands.auto.AutoGroup;
+import org.frc5687.powerup.robot.commands.auto.AutoDrive;
+import org.frc5687.powerup.robot.commands.auto.AutoDriveSimple;
 import org.frc5687.powerup.robot.subsystems.*;
 import edu.wpi.first.wpilibj.CameraServer;
 import org.frc5687.powerup.robot.utils.AutoChooser;
@@ -28,7 +31,7 @@ public class Robot extends IterativeRobot  {
     private Carriage carriage;
     private Climber _climber;
     private Arm _arm;
-    private AHRS imu;
+    public static AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
@@ -60,11 +63,17 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
+        //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
+        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
+        // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
+        autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
+        // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
     }
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
     public Carriage getCarriage() { return carriage; }
     public Climber getClimber() { return _climber; }
+    public Intake getIntake() { return intake; }
 
 
     @Override
@@ -75,6 +84,8 @@ public class Robot extends IterativeRobot  {
     @Override
     public void autonomousInit() {
         imu.reset();
+        driveTrain.resetDriveEncoders();
+        carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         int switchSide = 0;
         int scaleSide = 0;
@@ -85,8 +96,12 @@ public class Robot extends IterativeRobot  {
             scaleSide = gameData.charAt(1)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
         }
 
-        int autoPosition = _autoChooser.positionSwitchValue();
-        int autoMode = _autoChooser.modeSwitchValue();
+        int autoPosition = _autoChooser.positionSwitchValue() + 1;
+        int autoMode = _autoChooser.modeSwitchValue() + 1;
+        SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
+        SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
+        SmartDashboard.putNumber("Auto/Position", autoPosition);
+        SmartDashboard.putNumber("Auto/Mode", autoMode);
 
         autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
 
