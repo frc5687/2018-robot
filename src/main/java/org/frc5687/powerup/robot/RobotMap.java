@@ -43,4 +43,9 @@ public class RobotMap {
         public static final int MOTOR = 9;
     }
 
+    public class AutoChooser {
+        public static final int POSITION_SWITCH = 2;
+        public static final int MODE_SWITCH = 3;
+    }
+
 }

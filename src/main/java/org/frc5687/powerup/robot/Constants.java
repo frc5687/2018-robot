@@ -139,4 +139,31 @@ public class Constants {
         public static final double UNWIND_SPEED = -1.0;
     }
 
+    public class RotarySwitch {
+        public static final double TOLERANCE = 0.06;
+    }
+
+    public class AutoChooser {
+        public static final int LEFT = -1;
+        public static final int RIGHT = 1;
+
+        public class Position {
+            public static final int FAR_LEFT = 0;
+            public static final int MID_LEFT = 1;
+            public static final int CENTER = 2;
+            public static final int MID_RIGHT = 3;
+            public static final int RIGHT = 4;
+        }
+
+        public class Mode {
+            public static final int STAY_PUT = 0;
+            public static final int CROSS_AUTOLINE = 1;
+            public static final int SWITCH_ONLY = 2;
+            public static final int SCALE_ONLY = 3;
+            public static final int SWITCH_THEN_SCALE = 4;
+            public static final int SCALE_THEN_SWITCH = 5;
+            public static final int SWITCH_OR_SCALE = 6;
+        }
+    }
+
 }

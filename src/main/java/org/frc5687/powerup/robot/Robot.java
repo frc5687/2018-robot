@@ -60,6 +60,12 @@ public class Robot extends IterativeRobot  {
 
     }
 
+    public Arm getArm() { return _arm; }
+    public DriveTrain getDriveTrain() { return driveTrain; }
+    public Carriage getCarriage() { return carriage; }
+    public Climber getClimber() { return _climber; }
+
+
     @Override
     public void disabledInit() {
 
