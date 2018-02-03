@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.Constants;
@@ -19,20 +20,24 @@ public class Intake extends Subsystem {
     private VictorSP rightMotor;
     private AnalogInput irBack;
     private AnalogInput irSide;
+    private Servo servo;
 
     private OI oi;
 
     public Intake(OI oi) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
+        servo = new Servo(RobotMap.Intake.SERVO);
 
         leftMotor.setName("Intake", "Left Victor");
         rightMotor.setName("Intake", "Right Victor");
 
         this.oi = oi;
+        this.oi.initializeIntakeButtons(this);
 
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irSide = new AnalogInput(RobotMap.Intake.IR_SIDE);
+
     }
 
     @Override
@@ -43,6 +48,11 @@ public class Intake extends Subsystem {
     public void drive(double leftSpeed, double rightSpeed) {
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
+    }
+
+    public void driveServo(double val) {
+        SmartDashboard.putNumber("Intake/Servo", val);
+        servo.set(val);
     }
 
     /**

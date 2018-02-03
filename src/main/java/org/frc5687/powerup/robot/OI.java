@@ -3,11 +3,10 @@ package org.frc5687.powerup.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
-import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
+import org.frc5687.powerup.robot.commands.*;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.Carriage;
+import org.frc5687.powerup.robot.subsystems.Intake;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -36,6 +35,9 @@ public class OI {
 
     private JoystickButton carriageZeroEncoder;
 
+    private JoystickButton servoHoldCube;
+    private JoystickButton servoReleaseCube;
+
     public OI() {
         driveGamepad = new Joystick(0);
         armToScaleButton = new JoystickButton(driveGamepad, Gamepad.Buttons.Y.getNumber());
@@ -48,7 +50,9 @@ public class OI {
         intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
         carriageZeroEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.BACK.getNumber());
-        carriagePID = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
+        carriagePID = new JoystickButton(intakeGamepad, Gamepad.Buttons.X.getNumber());
+        servoHoldCube = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
+        servoReleaseCube = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
     }
 
     public double getLeftSpeed() {
@@ -126,5 +130,10 @@ public class OI {
 
     public void initializeArmButtons(Arm arm) {
         armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
+    }
+
+    public void initializeIntakeButtons(Intake intake) {
+        servoHoldCube.whenPressed(new ServoHoldCube(intake));
+        servoReleaseCube.whenPressed(new ServoReleaseCube(intake));
     }
 }

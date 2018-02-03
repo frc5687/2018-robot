@@ -20,6 +20,7 @@ public class RobotMap {
         public static final int RIGHT_MOTOR = 7 ;
         public static final int IR_SIDE = 0; // Analog
         public static final int IR_BACK = 1; // Analog
+        public static final int SERVO = 0;
     }
 
     public class Carriage {
