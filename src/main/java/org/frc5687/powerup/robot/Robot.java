@@ -28,7 +28,7 @@ public class Robot extends IterativeRobot  {
     private Carriage carriage;
     private Climber _climber;
     private Arm _arm;
-    private AHRS imu;
+    public static AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
 
@@ -58,8 +58,10 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
+        //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
+        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
         // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
-        autoCommand = new AutoDrive(driveTrain, 120.0, .5, false, true, 5000, "cross auto");
+        autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
         // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
     }
 
