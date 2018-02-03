@@ -38,6 +38,7 @@ public class Constants {
         public class Drive {
 
             public static final double SPEED = 1.0;
+            public static final double MAX_VEL = 0.0; // m/s
 
             public static final long STEADY_TIME = 100;
             public static final long ALIGN_STEADY_TIME = 100;
@@ -62,6 +63,8 @@ public class Constants {
                 public static final double kP = 0.05;
                 public static final double kI = 0;
                 public static final double kD = .02;
+                public static final double kV = 1.0 / Drive.MAX_VEL;
+                public static final double kA = 0.0;
                 public static final double TOLERANCE = 1;
             }
 
@@ -92,6 +95,7 @@ public class Constants {
             public static final double INCHES_PER_PULSE = INCHES_PER_ROTATION/PULSES_PER_ROTATION;
             // public static final double INCHES_PER_PULSE_TONY = 0.12371134;
             public static final double MAX_PERIOD = 5;
+            public static final double TRACK = 0.6096; // 24 in
 
         }
 
