@@ -60,10 +60,7 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
-        autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
-
     }
-
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
     public Carriage getCarriage() { return carriage; }
@@ -134,6 +131,7 @@ public class Robot extends IterativeRobot  {
         driveTrain.updateDashboard();
         carriage.updateDashboard();
         _arm.updateDashboard();
+        _autoChooser.updateDashboard();
     }
 
 }
