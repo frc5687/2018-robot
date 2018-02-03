@@ -52,12 +52,12 @@ public class OI {
     }
 
     public double getLeftSpeed() {
-        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
+        double speed = -getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getRightSpeed() {
-        double speed = getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
+        double speed = -getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 

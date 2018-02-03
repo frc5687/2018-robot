@@ -4,14 +4,14 @@ public class Constants {
 
     public class DriveTrain {
         public static final double DEADBAND = 0.15;
-        public static final boolean LEFT_MOTORS_INVERTED = true;
-        public static final boolean RIGHT_MOTORS_INVERTED = false;
+        public static final boolean LEFT_MOTORS_INVERTED = false;
+        public static final boolean RIGHT_MOTORS_INVERTED = true;
     }
 
     public class Intake {
         public static final double DEADBAND = 0.05;
-        public static final boolean LEFT_MOTORS_INVERTED = true;
-        public static final boolean RIGHT_MOTORS_INVERTED = false;
+        public static final boolean LEFT_MOTORS_INVERTED = false;
+        public static final boolean RIGHT_MOTORS_INVERTED = true;
         public static final double OUTTAKE_SPEED = -0.75;
     }
 
@@ -98,14 +98,14 @@ public class Constants {
         public class RightDrive {
 
             public static final boolean REVERSED = Defaults.REVERSED;
-            public static final double INCHES_PER_PULSE_TONY = Defaults.INCHES_PER_PULSE; //Encoders.Defaults.INCHES_PER_PULSE;
+            public static final double INCHES_PER_PULSE = Defaults.INCHES_PER_PULSE; //Encoders.Defaults.INCHES_PER_PULSE;
 
         }
 
         public class LeftDrive {
 
             public static final boolean REVERSED = Defaults.REVERSED;
-            public static final double INCHES_PER_PULSE_TONY = Defaults.INCHES_PER_PULSE;
+            public static final double INCHES_PER_PULSE = Defaults.INCHES_PER_PULSE;
 
         }
     }
