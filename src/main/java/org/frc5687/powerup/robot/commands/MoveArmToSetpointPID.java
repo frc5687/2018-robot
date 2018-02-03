@@ -47,7 +47,6 @@ public class MoveArmToSetpointPID extends Command {
 
     @Override
     protected void execute() {
-        // Add logging here
         DriverStation.reportError("MoveArmToSetpointPID at " + _arm.getAngle(), false);
     }
 }
