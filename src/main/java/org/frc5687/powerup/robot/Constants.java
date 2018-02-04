@@ -133,7 +133,9 @@ public class Constants {
 
 
         public static final int ENCODER_TOP = 0; //  967;
+        public static final int ENCODER_MIDDLE = -480; //
         public static final int ENCODER_CLEAR_BUMPERS = -717; //
+        public static final int ENCODER_DRIVE = -891; //
         public static final int ENCODER_BOTTOM = -967; //
 
         // public static

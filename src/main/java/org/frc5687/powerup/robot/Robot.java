@@ -64,6 +64,8 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
+        oi.initializeButtons(this);
+
         //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
         //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
         // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
