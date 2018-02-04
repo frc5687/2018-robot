@@ -17,6 +17,8 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
+        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.CLEAR_BUMPERS));
+
         // Start with the "always" operations
         // addParallel(new CarriageZeroEncoder(robot.getCarriage()));
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP));
