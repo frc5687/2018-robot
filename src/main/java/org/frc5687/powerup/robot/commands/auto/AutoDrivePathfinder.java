@@ -19,18 +19,13 @@ public class AutoDrivePathfinder extends Command {
     private EncoderFollower _leftEncoderFollower;
     private EncoderFollower _rightEncoderFollower;
 
-    public AutoDrivePathfinder(DriveTrain driveTrain, double startingAngle, double xTarget, double yTarget, double aTarget) {
+    public AutoDrivePathfinder(DriveTrain driveTrain, Waypoint[] points) {
         requires(driveTrain);
         _driveTrain = driveTrain;
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MAX_VEL, 2.0, 6.0);
-
-        Waypoint[] points = new Waypoint[] {
-                new Waypoint(0, 0, startingAngle),
-                new Waypoint(xTarget, yTarget, aTarget)
-        };
-
         _trajectory = Pathfinder.generate(points, config);
+
         Pathfinder.writeToCSV(new File("/home/lvuser/bert.csv"), _trajectory);
 
         TankModifier modifier = new TankModifier(_trajectory).modify(Constants.Encoders.Defaults.TRACK);
@@ -50,7 +45,7 @@ public class AutoDrivePathfinder extends Command {
         double leftSpeed = _leftEncoderFollower.calculate((int) _driveTrain.getLeftTicks());
         double rightSpeed = _rightEncoderFollower.calculate((int) _driveTrain.getRightTicks());
 
-        double heading = Robot.imu.getYaw();
+        double heading = -Robot.imu.getYaw();
         double desired_heading = Pathfinder.r2d(_leftEncoderFollower.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - heading);

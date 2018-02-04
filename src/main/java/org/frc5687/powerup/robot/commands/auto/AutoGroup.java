@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot.commands.auto;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Waypoint;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
@@ -85,10 +86,14 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void sideSwitch(Robot robot) {
-        double distance = Helpers.i2m(0, 168);
-        DriverStation.reportError("Started sideSwitch" + distance, false);
-        addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), 0, distance, 0, 0));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 0.25));
+        DriverStation.reportError("Started sideSwitch", false);
+        Waypoint[] points = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90),
+                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90)
+        };
+        addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), points));
+        addSequential(new AutoEject(robot.getIntake()));
     }
 
 }
