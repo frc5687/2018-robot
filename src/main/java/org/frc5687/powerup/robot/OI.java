@@ -1,12 +1,15 @@
 package org.frc5687.powerup.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
-import org.frc5687.powerup.robot.subsystems.Arm;
-import org.frc5687.powerup.robot.subsystems.Carriage;
-import org.frc5687.powerup.robot.subsystems.Intake;
+import org.frc5687.powerup.robot.commands.auto.IntakeToDrive;
+import org.frc5687.powerup.robot.commands.auto.IntakeToFloor;
+import org.frc5687.powerup.robot.commands.auto.IntakeToScale;
+import org.frc5687.powerup.robot.commands.auto.IntakeToSwitch;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
@@ -17,8 +20,8 @@ public class OI {
         public static final int RIGHT_AXIS = 5;
     }
 
-    private Joystick driveGamepad;
-    private Gamepad intakeGamepad;
+    private Joystick driverGamepad;
+    private Gamepad operatorGamepad;
 
     private JoystickButton intakeLeftOut;
     private JoystickButton intakeRightOut;
@@ -30,6 +33,8 @@ public class OI {
 
     private JoystickButton armToScaleButton;
     private JoystickButton armToIntakeButton;
+    private JoystickButton armToSwitchButton;
+    private JoystickButton armToDriveButton;
 
     private JoystickButton carriagePID;
 
@@ -39,34 +44,38 @@ public class OI {
     private JoystickButton servoReleaseCube;
 
     public OI() {
-        driveGamepad = new Joystick(0);
-        armToScaleButton = new JoystickButton(driveGamepad, Gamepad.Buttons.Y.getNumber());
-        armToIntakeButton = new JoystickButton(driveGamepad, Gamepad.Buttons.A.getNumber());
-        climberUnwind = new JoystickButton(driveGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
-        climberWind = new JoystickButton(driveGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+        driverGamepad = new Joystick(0);
+        operatorGamepad = new Gamepad(1);
 
-        intakeGamepad = new Gamepad(1);
-        intakeLeftOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
-        intakeRightOut = new JoystickButton(intakeGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
-        resetArmEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.START.getNumber());
-        carriageZeroEncoder = new JoystickButton(intakeGamepad, Gamepad.Buttons.BACK.getNumber());
-        carriagePID = new JoystickButton(intakeGamepad, Gamepad.Buttons.X.getNumber());
-        servoHoldCube = new JoystickButton(intakeGamepad, Gamepad.Buttons.B.getNumber());
-        servoReleaseCube = new JoystickButton(intakeGamepad, Gamepad.Buttons.A.getNumber());
+        armToScaleButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.Y.getNumber());
+        armToSwitchButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.B.getNumber());
+        armToDriveButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
+        armToIntakeButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.A.getNumber());
+
+        climberUnwind = new JoystickButton(driverGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        climberWind = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+
+        intakeLeftOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        intakeRightOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+        resetArmEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
+        carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
+        carriagePID = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
+        servoHoldCube = new JoystickButton(operatorGamepad, Gamepad.Buttons.B.getNumber());
+        servoReleaseCube = new JoystickButton(operatorGamepad, Gamepad.Buttons.A.getNumber());
     }
 
     public double getLeftSpeed() {
-        double speed = -getSpeedFromAxis(driveGamepad, ButtonNumbers.LEFT_AXIS);
+        double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getRightSpeed() {
-        double speed = -getSpeedFromAxis(driveGamepad, ButtonNumbers.RIGHT_AXIS);
+        double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_AXIS);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getLeftIntakeSpeed() {
-        double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
+        double trigger = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
 
         if (intakeLeftOut.get()) {
             return Constants.Intake.OUTTAKE_SPEED;
@@ -77,7 +86,7 @@ public class OI {
     }
 
     public double getRightIntakeSpeed() {
-        double trigger = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
+        double trigger = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
         if (intakeRightOut.get()) {
             return Constants.Intake.OUTTAKE_SPEED;
         } else if (trigger > Constants.Intake.DEADBAND) {
@@ -87,13 +96,13 @@ public class OI {
     }
 
     public double getCarriageSpeed() {
-        double speed = -getSpeedFromAxis(intakeGamepad, ButtonNumbers.LEFT_AXIS);
+        double speed = -getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
         SmartDashboard.putNumber("OI/LEFT AXIS", speed);
         return applyDeadband(speed, Constants.Carriage.DEADBAND, .1);
     }
 
     public double getArmSpeed() {
-        double speed = getSpeedFromAxis(intakeGamepad, ButtonNumbers.RIGHT_AXIS);
+        double speed = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         return applyDeadband(-speed, 0.05, .1);
     }
 
@@ -123,17 +132,26 @@ public class OI {
         return Math.abs(value) >= deadband ? value : _default;
     }
 
-    public void initializeCarriageButtons(Carriage carriage) {
-        carriageZeroEncoder.whenPressed(new CarriageZeroEncoder(carriage));
-        carriagePID.whenPressed(new MoveCarriageToSetpointPID(carriage, 500));
+    public void initializeButtons(Robot robot) {
+        carriageZeroEncoder.whenPressed(new CarriageZeroEncoder(robot.getCarriage()));
+        carriagePID.whenPressed(new MoveCarriageToSetpointPID(robot.getCarriage(), 500));
+
+        DriverStation.reportError("armToIntakeButton " + (armToIntakeButton==null), false);
+        DriverStation.reportError("armToDriveButton " + (armToDriveButton==null), false);
+        DriverStation.reportError("armToSwitchButton " + (armToSwitchButton==null), false);
+        DriverStation.reportError("armToScaleButton " + (armToScaleButton==null), false);
+
+        DriverStation.reportError("robot " + (robot==null), false);
+        DriverStation.reportError("carriage " + (robot.getCarriage()==null), false);
+        DriverStation.reportError("arm " + (robot.getArm()==null), false);
+
+            armToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        armToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        armToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+        armToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
+
+        servoHoldCube.whenPressed(new ServoHoldCube(robot.getIntake()));
+        servoReleaseCube.whenPressed(new ServoReleaseCube(robot.getIntake()));
     }
 
-    public void initializeArmButtons(Arm arm) {
-        armToIntakeButton.whenPressed(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
-    }
-
-    public void initializeIntakeButtons(Intake intake) {
-        servoHoldCube.whenPressed(new ServoHoldCube(intake));
-        servoReleaseCube.whenPressed(new ServoReleaseCube(intake));
-    }
 }

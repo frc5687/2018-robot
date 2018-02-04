@@ -33,7 +33,6 @@ public class Carriage extends PIDSubsystem {
         encoder = new Encoder(RobotMap.Carriage.ENCODER_A, RobotMap.Carriage.ENCODER_B);
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
-        _oi.initializeCarriageButtons(this);
     }
 
     public void drive(double speed) {
