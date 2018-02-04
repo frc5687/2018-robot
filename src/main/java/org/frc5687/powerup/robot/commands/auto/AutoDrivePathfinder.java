@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
@@ -9,6 +10,8 @@ import jaci.pathfinder.modifiers.TankModifier;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
+
+import java.io.File;
 
 public class AutoDrivePathfinder extends Command {
     private DriveTrain _driveTrain;
@@ -22,15 +25,16 @@ public class AutoDrivePathfinder extends Command {
         _driveTrain = driveTrain;
         _target = target;
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MAX_VEL, 1000, 1000.0);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MAX_VEL, 2.0, 6.0);
         double current = 0;
 
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(current, current, 0),
-                new Waypoint(_target, _target, 0)
+                new Waypoint(_target, current, 0)
         };
 
         _trajectory = Pathfinder.generate(points, config);
+        Pathfinder.writeToCSV(new File("/home/lvuser/bert.csv"), _trajectory);
 
         TankModifier modifier = new TankModifier(_trajectory).modify(Constants.Encoders.Defaults.TRACK);
 
@@ -53,13 +57,28 @@ public class AutoDrivePathfinder extends Command {
         double desired_heading = Pathfinder.r2d(_leftEncoderFollower.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - heading);
+        SmartDashboard.putNumber("AutoDrivePF/angleDifferent", angleDifference);
         double turn = 0.8 * (-1.0 / 80.0) * angleDifference;
+        SmartDashboard.putNumber("AutoDrivePF/turn", turn);
 
-        _driveTrain.tankDrive(leftSpeed + turn, rightSpeed - turn);
+        leftSpeed += turn;
+        rightSpeed -= turn;
+
+        SmartDashboard.putNumber("AutoDrivePF/leftSpeed", leftSpeed);
+        SmartDashboard.putNumber("AutoDrivePF/rightSpeed", rightSpeed);
+
+        _driveTrain.tankDrive(leftSpeed, rightSpeed);
+    }
+
+    @Override
+    protected void end() {
+        _driveTrain.tankDrive(0, 0);
     }
 
     @Override
     protected boolean isFinished() {
-        return _leftEncoderFollower.isFinished() && _rightEncoderFollower.isFinished();
+        boolean finished = _leftEncoderFollower.isFinished() && _rightEncoderFollower.isFinished();
+        SmartDashboard.putBoolean("AutoDrivePF/finished", finished);
+        return finished;
     }
 }

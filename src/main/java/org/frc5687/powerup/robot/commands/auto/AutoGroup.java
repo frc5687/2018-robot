@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -7,6 +8,7 @@ import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
+import org.frc5687.powerup.robot.utils.Helpers;
 
 /**
  * Created by Ben Bernard on 2/2/2018.
@@ -44,6 +46,7 @@ public class AutoGroup extends CommandGroup {
                 SmartDashboard.putString("Auto/Mode", "Switch Only");
                 switch(switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT: // Position 1, left side
+                        sideSwitch(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:  // Position 1, right side
                         break;
@@ -79,6 +82,12 @@ public class AutoGroup extends CommandGroup {
         double distance = 95.0;
         addSequential(new AutoDrive(robot.getDriveTrain(), distance, 0.4, true, true, 5000, "auto"));
         addSequential(new AutoEject(robot.getIntake()));
+    }
+
+    private void sideSwitch(Robot robot) {
+        double distance = Helpers.i2m(0, 168);
+        DriverStation.reportError("Started sideSwitch" + distance, false);
+        addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), distance));
     }
 
 }

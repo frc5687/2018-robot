@@ -43,7 +43,7 @@ public class Constants {
         public class Drive {
 
             public static final double SPEED = 1.0;
-            public static final double MAX_VEL = 2.33; // m/s
+            public static final double MAX_VEL = 2.33; // m/s (5m/s if you want to run it slow)
 
             public static final long STEADY_TIME = 100;
             public static final long ALIGN_STEADY_TIME = 100;
@@ -93,7 +93,7 @@ public class Constants {
             public static final boolean REVERSED = true; //TODO change to new robot specifications
             public static final int SAMPLES_TO_AVERAGE = 20;
             public static final int PULSES_PER_ROTATION = 1024;
-            public static final double WHEEL_DIAMETER = 6;
+            public static final double WHEEL_DIAMETER = 0.1524; // 6in
             public static final double INCHES_PER_ROTATION = Math.PI * WHEEL_DIAMETER;
             public static final double SCALAR_RATIO = 8;
             //            public static final double INCHES_PER_PULSE_TONY = INCHES_PER_ROTATION * SCALAR_RATIO / PULSES_PER_ROTATION;
