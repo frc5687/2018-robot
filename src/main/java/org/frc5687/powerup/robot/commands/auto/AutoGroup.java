@@ -90,8 +90,9 @@ public class AutoGroup extends CommandGroup {
         DriverStation.reportError("Started sideSwitch", false);
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90),
-                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90)
+                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, 0), 0),
+                new Waypoint(Helpers.i2m(13, 6), Helpers.i2m(0, -2), -30),
+                //new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90)
         };
         addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), points));
         addSequential(new AutoEject(robot.getIntake()));
