@@ -25,12 +25,22 @@ public class AutoEject extends Command {
 
     @Override
     protected void execute() {
-        _intake.drive(-Constants.Intake.OUTTAKE_SPEED, -Constants.Intake.OUTTAKE_SPEED);
+        _intake.drive(Constants.Intake.DROP_SPEED, Constants.Intake.DROP_SPEED);
     }
 
     @Override
     protected boolean isFinished() {
         return System.currentTimeMillis() > _endMillis;
 
+    }
+
+    @Override
+    protected void end() {
+        _intake.drive(0, 0);
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
     }
 }
