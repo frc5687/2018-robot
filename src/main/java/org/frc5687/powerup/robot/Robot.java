@@ -69,6 +69,7 @@ public class Robot extends IterativeRobot  {
     public Carriage getCarriage() { return carriage; }
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
+    public AHRS getIMU() { return imu; }
 
 
     @Override
