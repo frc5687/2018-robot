@@ -96,9 +96,7 @@ public class Constants {
             public static final double WHEEL_DIAMETER = 0.1524; // 6in
             public static final double INCHES_PER_ROTATION = Math.PI * WHEEL_DIAMETER;
             public static final double SCALAR_RATIO = 8;
-            //            public static final double INCHES_PER_PULSE_TONY = INCHES_PER_ROTATION * SCALAR_RATIO / PULSES_PER_ROTATION;
             public static final double INCHES_PER_PULSE = INCHES_PER_ROTATION/PULSES_PER_ROTATION;
-            // public static final double INCHES_PER_PULSE_TONY = 0.12371134;
             public static final double MAX_PERIOD = 5;
             public static final double TRACK = 0.6096; // 24 in
 
