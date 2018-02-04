@@ -87,7 +87,7 @@ public class AutoGroup extends CommandGroup {
     private void sideSwitch(Robot robot) {
         double distance = Helpers.i2m(0, 168);
         DriverStation.reportError("Started sideSwitch" + distance, false);
-        addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), distance));
+        addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), 0, distance, distance, 0));
     }
 
 }

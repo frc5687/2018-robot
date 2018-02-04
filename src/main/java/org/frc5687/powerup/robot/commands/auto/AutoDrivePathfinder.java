@@ -15,22 +15,19 @@ import java.io.File;
 
 public class AutoDrivePathfinder extends Command {
     private DriveTrain _driveTrain;
-    private double _target;
     private Trajectory _trajectory;
     private EncoderFollower _leftEncoderFollower;
     private EncoderFollower _rightEncoderFollower;
 
-    public AutoDrivePathfinder(DriveTrain driveTrain, double target) {
+    public AutoDrivePathfinder(DriveTrain driveTrain, double startingAngle, double xTarget, double yTarget, double aTarget) {
         requires(driveTrain);
         _driveTrain = driveTrain;
-        _target = target;
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MAX_VEL, 2.0, 6.0);
-        double current = 0;
 
         Waypoint[] points = new Waypoint[] {
-                new Waypoint(current, current, 0),
-                new Waypoint(_target, current, 0)
+                new Waypoint(0, 0, startingAngle),
+                new Waypoint(xTarget, yTarget, aTarget)
         };
 
         _trajectory = Pathfinder.generate(points, config);
