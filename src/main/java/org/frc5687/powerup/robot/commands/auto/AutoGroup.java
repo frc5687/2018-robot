@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
-import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 
 /**
@@ -17,7 +15,8 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.CLEAR_BUMPERS));
+        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS));
 
         // Start with the "always" operations
         // addParallel(new CarriageZeroEncoder(robot.getCarriage()));
