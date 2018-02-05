@@ -38,6 +38,7 @@ public class RobotMap {
         public static final int STARTING_POSITION_LED = 10;
         public static final int ENCODER_A = 12;
         public static final int ENCODER_B = 11;
+        public static final int POTENTIOMETER = 4;
     }
 
     public class Climber {
