@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
@@ -14,6 +15,7 @@ public class Arm extends PIDSubsystem {
     private OI _oi;
     private DigitalInput hallEffect;
     private DigitalOutput led;
+    private Potentiometer _pot;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -31,6 +33,7 @@ public class Arm extends PIDSubsystem {
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
+        _pot = new AnalogPotentiometer(RobotMap.Arm.POTENTIOMETER, 360, 30);
     }
 
     public void drive(double speed) {
@@ -67,6 +70,8 @@ public class Arm extends PIDSubsystem {
         encoder.reset();
     }
 
+    public double getPot() { return _pot.get(); }
+
     public int getAngle() {
         return encoder.get();
     }
@@ -97,6 +102,6 @@ public class Arm extends PIDSubsystem {
         led.set(inStartingPosition());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
-
+        SmartDashboard.putNumber("Arm/getPot()", getPot());
     }
 }
