@@ -6,6 +6,8 @@ import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -14,6 +16,8 @@ import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.frc5687.powerup.robot.utils.Helpers;
 
 public class DynamicPathCommand extends Command {
+    private PIDController angleController;
+    private PIDListener anglePID;
     private TrajectoryFollower followerLeft = new TrajectoryFollower();
     private TrajectoryFollower followerRight = new TrajectoryFollower();
     private double starting_heading;
@@ -45,6 +49,16 @@ public class DynamicPathCommand extends Command {
         _imu.reset();
 
         starting_heading = -_driveTrain.getYaw();
+
+        anglePID = new PIDListener();
+        angleController = new PIDController(Constants.Auto.Drive.AnglePID.kP, Constants.Auto.Drive.AnglePID.kI, Constants.Auto.Drive.AnglePID.kD, Robot.imu, anglePID);
+        angleController.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
+        double maxAngleSpeed = 1.0 * Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE;
+        angleController.setOutputRange(-maxAngleSpeed, maxAngleSpeed);
+        angleController.setContinuous();
+        angleController.setSetpoint(starting_heading);
+        angleController.enable();
+
         followerLeft.configure(
                 Constants.Auto.Drive.EncoderPID.kP,
                 Constants.Auto.Drive.EncoderPID.kI,
@@ -77,6 +91,8 @@ public class DynamicPathCommand extends Command {
         Trajectory.Segment left = followerLeft.getSegment();
         Trajectory.Segment right = followerRight.getSegment();
 
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeft", left.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRight", right.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
         SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", left.pos - distanceL);
         SmartDashboard.putNumber("AADynamicPathCommand/errorRight", right.pos - distanceR);
 
@@ -111,10 +127,16 @@ public class DynamicPathCommand extends Command {
 
         double goalHeading = Math.toDegrees(followerLeft.getHeading());
         double observedHeading = ChezyMath.getDifferenceInAngleDegrees(-_driveTrain.getYaw(), starting_heading);
+        SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
-        double turn = Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * -1;
+        double turn = 0;//Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * -1;
+        //angleController.setSetpoint(left.heading);
+        //double turn = anglePID.get();
+
+        SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
         /*
         if (turn > 0) {
             turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
@@ -159,6 +181,23 @@ public class DynamicPathCommand extends Command {
 
     public boolean isReversed() {
         return false;
+    }
+
+    private class PIDListener implements PIDOutput {
+
+        private double value;
+
+        public double get() {
+            return value;
+        }
+
+        @Override
+        public void pidWrite(double output) {
+            synchronized (this) {
+                value = output;
+            }
+        }
+
     }
 
 }

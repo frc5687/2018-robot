@@ -92,14 +92,14 @@ public class Constants {
             }
 
             public class AnglePID {
-                public static final double kP = 0.04;
+                public static final double kP = 0.4;
                 public static final double kI = 0.006;
                 public static final double kD = 0.09;
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double PATH_TURN = 0.4;
+                public static final double PATH_TURN = 0.3;
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }

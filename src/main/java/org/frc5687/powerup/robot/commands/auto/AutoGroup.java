@@ -3,11 +3,9 @@ package org.frc5687.powerup.robot.commands.auto;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Waypoint;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
-import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
-import org.frc5687.powerup.robot.utils.Helpers;
+import org.frc5687.powerup.robot.commands.auto.paths.*;
 
 /**
  * Created by Ben Bernard on 2/2/2018.
@@ -18,12 +16,12 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        addSequential(new AutoZeroCarriage(robot.getCarriage()));
-        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS));
+        //addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS));
 
         // Start with the "always" operations
         // addParallel(new CarriageZeroEncoder(robot.getCarriage()));
-        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP));
+        //addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP));
         // addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_FENCE));
         double distance = 0.0;
 
@@ -88,13 +86,37 @@ public class AutoGroup extends CommandGroup {
 
     private void sideSwitch(Robot robot) {
         DriverStation.reportError("Started sideSwitch", false);
+        /*
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, 0), 0),
-                new Waypoint(Helpers.i2m(13, 6), Helpers.i2m(0, -2), -30),
+                new Waypoint(Helpers.i2m(8, 0), Helpers.i2m(-2, 0), 0),
+                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, 0), -90),
+                //new Waypoint(Helpers.i2m(15, 18), Helpers.i2m(0, 0), 0),
+                //new Waypoint(Helpers.i2m(15, 24), Helpers.i2m(0, -13), -98),
                 //new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90)
+        };*/
+        /*
+        Waypoint[] points = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(2.5424083958182, 0, 0),
+                new Waypoint(3.084588239110182, -0.5421798432919818, -45),
+                new Waypoint(3.084588239110182, -1.3982532800672618, -90),
+                new Waypoint(3.084588239110182, -1.6605652574133019, -90)
+        };*/
+        /*
+        Waypoint[] points = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(0.8903701938049481, -0.17807403876066294, -11.309932474),
+                new Waypoint(1.1495796451130043, -0.6224330981464236, -59.7435628365),
+                new Waypoint(1.280737731258663, -0.870176149755179, -62.10272896908),
+                new Waypoint(1.315877242423729, -1.256710772572013, -84.80557109227999),
+                new Waypoint(1.3158772424236513, -1.702453924713593, -90.00000000000999),
+                new Waypoint(1.3158772424235319, -2.388500634697693, -90.00000000000999)
         };
         addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), points));
+        addSequential(new AutoEject(robot.getIntake()));
+        */
+        addSequential(new LeftArc(robot));
         addSequential(new AutoEject(robot.getIntake()));
     }
 
