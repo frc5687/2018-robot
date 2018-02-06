@@ -108,8 +108,12 @@ public class DynamicPathCommand extends Command {
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
-        double turn = 0.8 * (-1.0 / 80.0) * angleDiff;
-        turn *= Constants.Auto.Drive.AnglePID.kV.IPS;
+        double turn = Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * -1;
+        if (turn > 0) {
+            turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
+        } else {
+            turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
+        }
         double requestedLeft = speedLeft + turn;
         double requestedRight = speedRight - turn;
 
