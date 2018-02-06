@@ -83,25 +83,31 @@ public class DynamicPathCommand extends Command {
         double speedLeft = followerLeft.calculate(distanceL);
         double speedRight = followerRight.calculate(distanceR);
 
+        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftIPS", speedLeft);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedRightIPS", speedRight);
+
         speedLeft *= Constants.Auto.Drive.EncoderPID.kV.IPS;
         speedRight *= Constants.Auto.Drive.EncoderPID.kV.IPS;
 
         /*
         if (speedLeft < 0) {
-            speedLeft = speedLeft > -MOTOR_MIN ? -MOTOR_MIN : speedLeft;
+            speedLeft = speedLeft > -Constants.Auto.Drive.MIN_SPEED ? -Constants.Auto.Drive.MIN_SPEED : speedLeft;
         } else {
-            speedLeft = speedLeft < MOTOR_MIN ? MOTOR_MIN : speedLeft;
+            speedLeft = speedLeft < Constants.Auto.Drive.MIN_SPEED ? Constants.Auto.Drive.MIN_SPEED : speedLeft;
         }
 
         if (speedRight < 0) {
-            speedRight = speedRight > -MOTOR_MIN ? -MOTOR_MIN : speedRight;
+            speedRight = speedRight > -Constants.Auto.Drive.MIN_SPEED ? -Constants.Auto.Drive.MIN_SPEED : speedRight;
         } else {
-            speedRight = speedRight < MOTOR_MIN ? MOTOR_MIN : speedRight;
+            speedRight = speedRight < Constants.Auto.Drive.MIN_SPEED ? Constants.Auto.Drive.MIN_SPEED : speedRight;
         }
         */
 
-        speedLeft = Helpers.applyMinSpeed(speedLeft, Constants.Auto.Drive.MIN_SPEED);
-        speedRight = Helpers.applyMinSpeed(speedRight, Constants.Auto.Drive.MIN_SPEED);
+        //speedLeft = Helpers.applyMinSpeed(speedLeft, Constants.Auto.Drive.MIN_SPEED);
+        //speedRight = Helpers.applyMinSpeed(speedRight, Constants.Auto.Drive.MIN_SPEED);
+
+        SmartDashboard.putNumber("AADynamicPathCommand/speedLeft", speedLeft);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedRight", speedRight);
 
         double goalHeading = Math.toDegrees(followerLeft.getHeading());
         double observedHeading = ChezyMath.getDifferenceInAngleDegrees(-_driveTrain.getYaw(), starting_heading);
@@ -109,11 +115,14 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
         double turn = Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * -1;
+        /*
         if (turn > 0) {
             turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
         } else {
             turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
         }
+        */
+
         double requestedLeft = speedLeft + turn;
         double requestedRight = speedRight - turn;
 
@@ -121,12 +130,14 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", requestedRight);
 
         _driveTrain.tankDrive(requestedLeft, requestedRight);
+        SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
     @Override
     protected void end() {
-        SmartDashboard.putNumber("AADynamicPathCommand/requestLeft", 0);
-        SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", 0);
+        //SmartDashboard.putNumber("AADynamicPathCommand/requestLeft", 0);
+        //SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", 0);
+        SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
         DriverStation.reportError("DynamicPathCommand ended", false);
         DriverStation.reportError("DynamicPathCommand ended", false);
         DriverStation.reportError("DynamicPathCommand ended", false);

@@ -80,9 +80,9 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 0.40;
+                public static final double kP = 1.70;//0.80;
                 public static final double kI = 0;
-                public static final double kD = .02;
+                public static final double kD = 0.3;//.2;
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
@@ -99,7 +99,7 @@ public class Constants {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double PATH_TURN = 0.8;
+                public static final double PATH_TURN = 0.4;
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }
