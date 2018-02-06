@@ -23,7 +23,7 @@ public class AutoDrivePathfinder extends Command {
         requires(driveTrain);
         _driveTrain = driveTrain;
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MaxVel.MPS, 2.0, 6.0);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MaxVel.MPS, Constants.Auto.Drive.MaxAcceleration.METERS, Constants.Auto.Drive.MaxJerk.METERS);
         _trajectory = Pathfinder.generate(points, config);
 
         Pathfinder.writeToCSV(new File("/home/lvuser/bert.csv"), _trajectory);

@@ -52,6 +52,14 @@ public class Constants {
                 public static final double IPS = 91; // Inches Per Second
             }
 
+            public class MaxAcceleration {
+                public static final double METERS = 2.0; // Meters Per Second Squared
+            }
+
+            public class MaxJerk {
+                public static final double METERS = 6.0; // Meters Per Second Cubed
+            }
+
             public static final long STEADY_TIME = 100;
             public static final long ALIGN_STEADY_TIME = 100;
 
