@@ -13,4 +13,12 @@ public class Helpers {
         return (feet * .3048) + (inches * .0254);
     }
 
+    public static double applyMinSpeed(double speed, double min) {
+        if (speed < 0) {
+            return Math.max(speed, min);
+        } else {
+            return Math.min(speed, -min);
+        }
+    }
+
 }

@@ -23,21 +23,21 @@ public class AutoDrivePathfinder extends Command {
         requires(driveTrain);
         _driveTrain = driveTrain;
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MAX_VEL, 2.0, 6.0);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MaxVel.MPS, 2.0, 6.0);
         _trajectory = Pathfinder.generate(points, config);
 
         Pathfinder.writeToCSV(new File("/home/lvuser/bert.csv"), _trajectory);
 
-        TankModifier modifier = new TankModifier(_trajectory).modify(Constants.Encoders.Defaults.TRACK);
+        TankModifier modifier = new TankModifier(_trajectory).modify(Constants.Encoders.Defaults.Track.METERS);
 
         _leftEncoderFollower = new EncoderFollower(modifier.getLeftTrajectory());
         _rightEncoderFollower = new EncoderFollower(modifier.getRightTrajectory());
 
-        _leftEncoderFollower.configureEncoder((int) _driveTrain.getLeftTicks(), Constants.Encoders.Defaults.PULSES_PER_ROTATION, Constants.Encoders.Defaults.WHEEL_DIAMETER);
-        _rightEncoderFollower.configureEncoder((int) _driveTrain.getRightTicks(), Constants.Encoders.Defaults.PULSES_PER_ROTATION, Constants.Encoders.Defaults.WHEEL_DIAMETER);
+        _leftEncoderFollower.configureEncoder((int) _driveTrain.getLeftTicks(), Constants.Encoders.Defaults.PULSES_PER_ROTATION, Constants.Encoders.Defaults.WheelDiameter.METERS);
+        _rightEncoderFollower.configureEncoder((int) _driveTrain.getRightTicks(), Constants.Encoders.Defaults.PULSES_PER_ROTATION, Constants.Encoders.Defaults.WheelDiameter.METERS);
 
-        _leftEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV, Constants.Auto.Drive.EncoderPID.kA);
-        _rightEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV, Constants.Auto.Drive.EncoderPID.kA);
+        _leftEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA);
+        _rightEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA);
     }
 
     @Override
