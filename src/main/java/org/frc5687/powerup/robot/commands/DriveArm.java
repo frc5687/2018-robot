@@ -33,7 +33,7 @@ public class DriveArm extends Command {
 
         if(oi.getArmSpeed() != 0) {
             target = target + oi.getArmSpeed();
-            if(target<Constants.Arm.Pot.TOP && target>Constants.Arm.Pot.BOTTOM) {
+            if(target<Constants.Arm.ENCODER_TOP && target>Constants.Arm.ENCODER_START) {
 
                 arm.setSetpoint(target);
             }
