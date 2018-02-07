@@ -29,8 +29,8 @@ public class Constants {
 
             public static final double SPEED = 0.6;
 
-            public static final double kP = 0.04;
-            public static final double kI = 0.006;
+            public static final double kP = 0.05;
+            public static final double kI = 0.0;
             public static final double kD = 0.1;
             public static final double TOLERANCE = .5;
             public static final double MAX_OUTPUT = 0;
