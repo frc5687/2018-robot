@@ -184,7 +184,7 @@ public class Constants {
         public static final double ENCODER_TOP = 340;
 
         public static final double HOLD_SPEED = 0.1;
-        public static final double SPEED_SCALAR = 3.0;
+        public static final double SPEED_SCALAR = 1.0;
 
         public class Pot {
             public static final double TOP = 391.0;
