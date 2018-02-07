@@ -26,7 +26,7 @@ public class Arm extends PIDSubsystem {
     public Arm (OI oi) {
         super("Arm", kP, kI, kD, kF);
         setAbsoluteTolerance(5);
-        setInputRange(0, 340);
+        setInputRange(Constants.Arm.Pot.BOTTOM, Constants.Arm.Pot.TOP);
         setOutputRange(-.75, 0.75);
         _oi=oi;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
@@ -59,11 +59,11 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean atTop() {
-        return encoder.get() > Constants.Arm.ENCODER_TOP;
+        return getPot() >= Constants.Arm.Pot.TOP;
     }
 
     public boolean atBottom() {
-        return encoder.get() < Constants.Arm.ENCODER_START;
+        return getPot() <= Constants.Arm.Pot.BOTTOM;
     }
 
     public void zeroEncoder() {
@@ -76,17 +76,9 @@ public class Arm extends PIDSubsystem {
         return encoder.get();
     }
 
-    /**
-     * Get the position of the arm in the range of 0 to 1.
-     * @return the position of the arm in the range of 0 to 1. 0 is the bottom and 1 is the top.
-     */
-    public double getPosition() {
-        return (double) encoder.get() / (double) Constants.Arm.ENCODER_TOP;
-    }
-
     @Override
     protected double returnPIDInput() {
-        return encoder.get();
+        return getPot();
     }
 
     @Override
@@ -97,7 +89,6 @@ public class Arm extends PIDSubsystem {
 
     public void updateDashboard () {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
-        SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
         led.set(inStartingPosition());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());

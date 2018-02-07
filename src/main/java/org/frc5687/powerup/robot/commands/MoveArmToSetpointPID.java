@@ -17,6 +17,8 @@ public class MoveArmToSetpointPID extends Command {
 
     private double _target;
     private Arm _arm;
+    private boolean _delayFinish;
+    private boolean _isFinished;
 
 
 
@@ -26,13 +28,26 @@ public class MoveArmToSetpointPID extends Command {
         _target = target;
     }
 
+    public MoveArmToSetpointPID(Arm arm, double target, boolean delayFinish) {
+        requires(arm);
+        _arm = arm;
+        _target = target;
+        _delayFinish = delayFinish;
+    }
+
     @Override
     protected boolean isFinished() {
-        if (_arm.onTarget()) {
+        if (_delayFinish) {
+            return _isFinished;
+        } else if (_arm.onTarget()) {
             _arm.disable();
             return true;
         }
         return false;
+    }
+
+    public void finish() {
+        _isFinished = true;
     }
 
 

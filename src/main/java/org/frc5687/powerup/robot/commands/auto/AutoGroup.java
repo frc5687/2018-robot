@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -91,16 +92,18 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_MIDDLE));
+                        addParallel(new MoveArmToSetpointPID(robot.getArm(), 320));
                         addSequential(new LeftSwitchCenter(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_MIDDLE));
+                        MoveArmToSetpointPID arm = new MoveArmToSetpointPID(robot.getArm(), 386, true);
+                        addParallel(arm);
                         addSequential(new RightSwitchCenter(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
+                        arm.finish();
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;
