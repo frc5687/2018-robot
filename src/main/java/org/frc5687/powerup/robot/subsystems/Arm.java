@@ -33,7 +33,7 @@ public class Arm extends PIDSubsystem {
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
-        _pot = new AnalogPotentiometer(RobotMap.Arm.POTENTIOMETER, 360, 30);
+        _pot = new AnalogPotentiometer(RobotMap.Arm.POTENTIOMETER, 360, -2);
     }
 
     public void drive(double speed) {
@@ -59,11 +59,13 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean atTop() {
-        return encoder.get() > Constants.Arm.ENCODER_TOP;
+        double diff = getPot() - Constants.Arm.Pot.TOP;
+        return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public boolean atBottom() {
-        return encoder.get() < Constants.Arm.ENCODER_START;
+        double diff = getPot() - Constants.Arm.Pot.BOTTOM;
+        return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public void zeroEncoder() {
