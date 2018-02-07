@@ -216,5 +216,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
         }
     }
 
-
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("DriveTrain/observedHeadingCheesy", -getYaw());
+    }
 }
