@@ -78,6 +78,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
         return imu.getYaw();
     }
 
+    /**
+     *
+     * @return The left distance in Inches.
+     */
     public double getLeftDistance() {
         return leftEncoder.getDistance();
     }
@@ -94,6 +98,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
         return leftFrontMotor.getSpeed();
     }
 
+    /**
+     *
+     * @return The right distance in Inches.
+     */
     public double getRightDistance() {
         return rightEncoder.getDistance();
     }
@@ -111,11 +119,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public double getLeftRPS() {
-        return getLeftRate() / (Constants.Encoders.Defaults.PULSES_PER_ROTATION * Constants.Encoders.Defaults.INCHES_PER_PULSE);
+        return getLeftRate() / (Constants.Encoders.Defaults.PULSES_PER_ROTATION * Constants.Encoders.Defaults.DistancePerPulse.INCHES);
     }
 
     public double getRightRPS() {
-        return getRightRate() / (Constants.Encoders.Defaults.PULSES_PER_ROTATION * Constants.Encoders.Defaults.INCHES_PER_PULSE);
+        return getRightRate() / (Constants.Encoders.Defaults.PULSES_PER_ROTATION * Constants.Encoders.Defaults.DistancePerPulse.INCHES);
     }
 
 
@@ -208,5 +216,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
         }
     }
 
-
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("DriveTrain/observedHeadingCheesy", -getYaw());
+    }
 }

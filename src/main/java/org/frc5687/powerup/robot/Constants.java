@@ -12,7 +12,7 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
-        public static final double DROP_SPEED = -0.75;
+        public static final double DROP_SPEED = -1;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.0;
         public static final double SERVO_UP = 1.0;
@@ -32,7 +32,7 @@ public class Constants {
             public static final double kP = 0.05;
             public static final double kI = 0.0;
             public static final double kD = 0.1;
-            public static final double TOLERANCE = .5;
+            public static final double TOLERANCE = 5.5; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
@@ -44,7 +44,21 @@ public class Constants {
         public class Drive {
 
             public static final double SPEED = 1.0;
-            public static final double MAX_VEL = 0.0; // m/s
+
+            public static final double MIN_SPEED = 0.25;
+
+            public class MaxVel {
+                public static final double MPS = 2.33; // Meters Per Second
+                public static final double IPS = 91; // Inches Per Second
+            }
+
+            public class MaxAcceleration {
+                public static final double METERS = 2.0; // Meters Per Second Squared
+            }
+
+            public class MaxJerk {
+                public static final double METERS = 6.0; // Meters Per Second Cubed
+            }
 
             public static final long STEADY_TIME = 100;
             public static final long ALIGN_STEADY_TIME = 100;
@@ -66,19 +80,26 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 0.05;
+                public static final double kP = 1.70;//0.80;
                 public static final double kI = 0;
-                public static final double kD = .02;
-                public static final double kV = 1.0 / Drive.MAX_VEL;
+                public static final double kD = 0.3;//.2;
+                public class kV {
+                    public static final double MPS = 1.0 / MaxVel.MPS;
+                    public static final double IPS = 1.0 / MaxVel.IPS;
+                }
                 public static final double kA = 0.0;
                 public static final double TOLERANCE = 1;
             }
 
             public class AnglePID {
-                public static final double kP = 0.04;
+                public static final double kP = 0.4;
                 public static final double kI = 0.006;
                 public static final double kD = 0.09;
-
+                public class kV {
+                    public static final double MPS = 1.0 / MaxVel.MPS;
+                    public static final double IPS = 1.0 / MaxVel.IPS;
+                }
+                public static final double PATH_TURN = 0.3; // 1.0
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }
@@ -94,28 +115,40 @@ public class Constants {
             public static final boolean REVERSED = true; //TODO change to new robot specifications
             public static final int SAMPLES_TO_AVERAGE = 20;
             public static final int PULSES_PER_ROTATION = 1024;
-            public static final double WHEEL_DIAMETER = 6;
-            public static final double INCHES_PER_ROTATION = Math.PI * WHEEL_DIAMETER;
+
+            public class WheelDiameter {
+                public static final double INCHES = 6;
+                public static final double METERS = 0.1524;
+            }
+            public class DistancePerRotation {
+                public static final double INCHES = Math.PI * WheelDiameter.INCHES;
+                public static final double METERS = Math.PI * WheelDiameter.METERS;
+            }
+
+            public class DistancePerPulse {
+                public static final double INCHES = DistancePerRotation.INCHES / PULSES_PER_ROTATION;
+                public static final double METERS = DistancePerRotation.METERS / PULSES_PER_ROTATION;
+            }
+
             public static final double SCALAR_RATIO = 8;
-            //            public static final double INCHES_PER_PULSE_TONY = INCHES_PER_ROTATION * SCALAR_RATIO / PULSES_PER_ROTATION;
-            public static final double INCHES_PER_PULSE = INCHES_PER_ROTATION/PULSES_PER_ROTATION;
-            // public static final double INCHES_PER_PULSE_TONY = 0.12371134;
             public static final double MAX_PERIOD = 5;
-            public static final double TRACK = 0.6096; // 24 in
+
+            public class Track {
+                public static final double INCHES = 24;
+                public static final double METERS = 0.6096;
+            }
 
         }
 
         public class RightDrive {
-
             public static final boolean REVERSED = Defaults.REVERSED;
-            public static final double INCHES_PER_PULSE = Defaults.INCHES_PER_PULSE; //Encoders.Defaults.INCHES_PER_PULSE;
+            public static final double INCHES_PER_PULSE = Defaults.DistancePerPulse.INCHES;
 
         }
 
         public class LeftDrive {
-
             public static final boolean REVERSED = Defaults.REVERSED;
-            public static final double INCHES_PER_PULSE = Defaults.INCHES_PER_PULSE;
+            public static final double INCHES_PER_PULSE = Defaults.DistancePerPulse.INCHES;
 
         }
     }

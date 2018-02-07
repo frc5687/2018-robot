@@ -64,6 +64,7 @@ public class Robot extends IterativeRobot  {
             DriverStation.reportError(e.getMessage(), true);
         }
 
+
         oi.initializeButtons(this);
 
         //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
@@ -72,13 +73,14 @@ public class Robot extends IterativeRobot  {
         // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
         //autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
         //autoCommand = new TestDriveTrainSpeed(driveTrain);
-        autoCommand = new TestDriveTrainSpeed(driveTrain, 288.0, 1.0, true, true, 8000, "null zone");
+        //autoCommand = new TestDriveTrainSpeed(driveTrain, 288.0, 1.0, true, true, 8000, "null zone");
     }
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
     public Carriage getCarriage() { return carriage; }
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
+    public AHRS getIMU() { return imu; }
 
 
     @Override

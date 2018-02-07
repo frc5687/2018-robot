@@ -70,8 +70,6 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
-        return false;
-        /*
         if (!controller.onTarget()) {
             onTargetMillis = 0;
             return false;
@@ -80,7 +78,6 @@ public class AutoAlign extends Command implements PIDOutput {
             onTargetMillis = System.currentTimeMillis();
         }
         return System.currentTimeMillis() > onTargetMillis + Constants.Auto.Drive.ALIGN_STEADY_TIME;
-        */
     }
 
     @Override
