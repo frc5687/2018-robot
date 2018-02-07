@@ -17,7 +17,7 @@ public class DriveArm extends Command {
     }
 
     protected void initialize(){
-        target = 0;
+        target = Constants.Arm.Pot.BOTTOM;
         super.initialize();
         arm.enable();
 
