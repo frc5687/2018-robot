@@ -86,7 +86,7 @@ public class Arm extends PIDSubsystem {
 
     @Override
     protected double returnPIDInput() {
-        return encoder.get();
+        return getPot();
     }
 
     @Override
