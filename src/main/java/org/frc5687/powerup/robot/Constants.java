@@ -12,7 +12,7 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
-        public static final double DROP_SPEED = -0.45;
+        public static final double DROP_SPEED = -1;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.0;
         public static final double SERVO_UP = 1.0;
@@ -32,7 +32,7 @@ public class Constants {
             public static final double kP = 0.05;
             public static final double kI = 0.0;
             public static final double kD = 0.1;
-            public static final double TOLERANCE = .5;
+            public static final double TOLERANCE = 5.5; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
@@ -99,7 +99,7 @@ public class Constants {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double PATH_TURN = 0.3;
+                public static final double PATH_TURN = 0.3; // 1.0
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }

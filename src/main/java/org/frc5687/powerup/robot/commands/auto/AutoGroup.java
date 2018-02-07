@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
+import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
 
 /**
@@ -16,7 +18,7 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        //addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        addSequential(new AutoZeroCarriage(robot.getCarriage()));
         //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS));
 
         // Start with the "always" operations
@@ -46,7 +48,6 @@ public class AutoGroup extends CommandGroup {
                 SmartDashboard.putString("Auto/Mode", "Switch Only");
                 switch(switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT: // Position 1, left side
-                        sideSwitch(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:  // Position 1, right side
                         break;
@@ -56,8 +57,16 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
+                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_MIDDLE));
+                        addSequential(new LeftSwitchCenter(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
+                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_MIDDLE));
+                        addSequential(new RightSwitchCenter(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;
@@ -81,42 +90,6 @@ public class AutoGroup extends CommandGroup {
     private void straightSwitch(Robot robot) {
         double distance = 95.0;
         addSequential(new AutoDrive(robot.getDriveTrain(), distance, 0.4, true, true, 5000, "auto"));
-        addSequential(new AutoEject(robot.getIntake()));
-    }
-
-    private void sideSwitch(Robot robot) {
-        DriverStation.reportError("Started sideSwitch", false);
-        /*
-        Waypoint[] points = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(Helpers.i2m(8, 0), Helpers.i2m(-2, 0), 0),
-                new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, 0), -90),
-                //new Waypoint(Helpers.i2m(15, 18), Helpers.i2m(0, 0), 0),
-                //new Waypoint(Helpers.i2m(15, 24), Helpers.i2m(0, -13), -98),
-                //new Waypoint(Helpers.i2m(14, 0), Helpers.i2m(0, -6), -90)
-        };*/
-        /*
-        Waypoint[] points = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(2.5424083958182, 0, 0),
-                new Waypoint(3.084588239110182, -0.5421798432919818, -45),
-                new Waypoint(3.084588239110182, -1.3982532800672618, -90),
-                new Waypoint(3.084588239110182, -1.6605652574133019, -90)
-        };*/
-        /*
-        Waypoint[] points = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(0.8903701938049481, -0.17807403876066294, -11.309932474),
-                new Waypoint(1.1495796451130043, -0.6224330981464236, -59.7435628365),
-                new Waypoint(1.280737731258663, -0.870176149755179, -62.10272896908),
-                new Waypoint(1.315877242423729, -1.256710772572013, -84.80557109227999),
-                new Waypoint(1.3158772424236513, -1.702453924713593, -90.00000000000999),
-                new Waypoint(1.3158772424235319, -2.388500634697693, -90.00000000000999)
-        };
-        addSequential(new AutoDrivePathfinder(robot.getDriveTrain(), points));
-        addSequential(new AutoEject(robot.getIntake()));
-        */
-        addSequential(new LeftArc(robot));
         addSequential(new AutoEject(robot.getIntake()));
     }
 
