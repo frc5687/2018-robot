@@ -63,6 +63,17 @@ public class Robot extends IterativeRobot  {
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
+
+
+        oi.initializeButtons(this);
+
+        //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
+        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
+        // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
+        // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
+        //autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
+        //autoCommand = new TestDriveTrainSpeed(driveTrain);
+        //autoCommand = new TestDriveTrainSpeed(driveTrain, 288.0, 1.0, true, true, 8000, "null zone");
     }
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }

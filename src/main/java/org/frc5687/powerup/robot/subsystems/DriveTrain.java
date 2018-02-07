@@ -55,6 +55,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
         leftRearMotor.set(leftSpeed);
         rightFrontMotor.set(rightSpeed);
         rightRearMotor.set(rightSpeed);
+        SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
+        SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
     }
 
 
@@ -161,9 +163,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
         SmartDashboard.putNumber("DriveTrain/Rate/Right", getRightRate());
         SmartDashboard.putNumber("DriveTrain/Rate/Left", getLeftRate());
-
-        SmartDashboard.putNumber("DriveTrain/Speed/Right", getRightSpeed());
-        SmartDashboard.putNumber("DriveTrain/Speed/Left", getLeftSpeed());
 
         SmartDashboard.putNumber("DriveTrain/RPS/Right", getRightRPS());
         SmartDashboard.putNumber("DriveTrain/RPS/Left", getLeftRPS());

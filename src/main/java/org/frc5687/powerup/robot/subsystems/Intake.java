@@ -33,8 +33,6 @@ public class Intake extends Subsystem {
         rightMotor.setName("Intake", "Right Victor");
 
         this.oi = oi;
-        this.oi.initializeIntakeButtons(this);
-
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irSide = new AnalogInput(RobotMap.Intake.IR_SIDE);
 

@@ -29,8 +29,8 @@ public class Constants {
 
             public static final double SPEED = 0.6;
 
-            public static final double kP = 0.04;
-            public static final double kI = 0.006;
+            public static final double kP = 0.05;
+            public static final double kI = 0.0;
             public static final double kD = 0.1;
             public static final double TOLERANCE = .5;
             public static final double MAX_OUTPUT = 0;
@@ -166,7 +166,9 @@ public class Constants {
 
 
         public static final int ENCODER_TOP = 0; //  967;
+        public static final int ENCODER_MIDDLE = -480; //
         public static final int ENCODER_CLEAR_BUMPERS = -717; //
+        public static final int ENCODER_DRIVE = -891; //
         public static final int ENCODER_BOTTOM = -967; //
 
         // public static
@@ -182,6 +184,11 @@ public class Constants {
         public static final double ENCODER_TOP = 340;
 
         public static final double HOLD_SPEED = 0.1;
+
+        public class Pot {
+            public static final double TOP = 391.0;
+            public static final double BOTTOM = 265.0;
+        }
     }
 
     public class Climber {
