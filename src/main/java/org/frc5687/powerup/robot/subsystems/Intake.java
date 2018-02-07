@@ -24,6 +24,7 @@ public class Intake extends Subsystem {
 
     private OI oi;
 
+
     public Intake(OI oi) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);

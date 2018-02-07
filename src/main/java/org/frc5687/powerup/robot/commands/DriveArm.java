@@ -4,15 +4,22 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Arm;
+import org.frc5687.powerup.robot.Constants;
 
 public class DriveArm extends Command {
     private Arm arm;
     private OI oi;
-
+    private double target;
     public DriveArm(Arm arm, OI oi){
         requires(arm);
         this.arm = arm;
         this.oi = oi;
+    }
+
+    protected void initialize(){
+        target = 0;
+        super.initialize();
+
     }
 
     @Override
@@ -22,11 +29,10 @@ public class DriveArm extends Command {
 
     @Override
     protected void execute() {
-        double speed = oi.getArmSpeed();
-        if (oi.zeroArmEncoderRequested()) {
-            arm.zeroEncoder();
+
+        if(oi.getArmSpeed() != 0) {
+            target = target + oi.getArmSpeed();
         }
-        SmartDashboard.putNumber("Arm/Speed", speed);
-        arm.drive(speed);
+
     }
 }
