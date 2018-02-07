@@ -19,6 +19,7 @@ public class DriveArm extends Command {
     protected void initialize(){
         target = 0;
         super.initialize();
+        arm.enable();
 
     }
 
@@ -32,6 +33,10 @@ public class DriveArm extends Command {
 
         if(oi.getArmSpeed() != 0) {
             target = target + oi.getArmSpeed();
+            if(target<Constants.Arm.Pot.TOP && target>Constants.Arm.Pot.BOTTOM) {
+
+                arm.setSetpoint(target);
+            }
         }
 
     }
