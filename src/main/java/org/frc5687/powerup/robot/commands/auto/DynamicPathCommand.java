@@ -22,6 +22,7 @@ public class DynamicPathCommand extends Command {
     public Path path;
     private DriveTrain _driveTrain;
     private AHRS _imu;
+    public double lastHeading;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -67,6 +68,8 @@ public class DynamicPathCommand extends Command {
         followerLeft.reset();
         followerRight.setTrajectory(path.getRightWheelTrajectory());
         followerRight.reset();
+
+        lastHeading = followerLeft.getLastSegment().heading;
     }
 
 
@@ -83,6 +86,7 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/navxVelocity", _imu.getVelocityX() * 39.370079);
         SmartDashboard.putNumber("AADynamicPathCommand/navxXDisplacement", _imu.getDisplacementX() * 39.370079);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeft", left.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftMotor", left.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftIPS", left.vel);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRight", right.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
         SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", left.pos - distanceL);

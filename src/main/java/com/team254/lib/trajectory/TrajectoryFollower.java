@@ -67,4 +67,8 @@ public class TrajectoryFollower {
   public Trajectory.Segment getSegment() {
     return profile_.getSegment(current_segment);
   }
+
+  public Trajectory.Segment getLastSegment() {
+    return profile_.getSegment(profile_.getNumSegments() - 1);
+  }
 }
