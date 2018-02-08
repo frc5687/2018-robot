@@ -95,7 +95,8 @@ public class Arm extends PIDSubsystem {
         drive(output);
     }
 
-    public void updateDashboard () {
+    @Override
+    public void periodic() {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
