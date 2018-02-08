@@ -149,10 +149,6 @@ public class Robot extends IterativeRobot  {
 
     public void updateDashboard() {
         pdp.updateDashboard();
-        intake.periodic();
-        driveTrain.periodic();
-        carriage.periodic();
-        _arm.periodic();
         _autoChooser.updateDashboard();
     }
 
