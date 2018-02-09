@@ -11,6 +11,8 @@ import jaci.pathfinder.followers.EncoderFollower;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.Arm;
+import org.frc5687.powerup.robot.utils.PathfinderTrajectoryFollower;
+
 import java.io.File;
 
 public class MoveArmToSetpointTrajectory extends Command {
@@ -18,8 +20,9 @@ public class MoveArmToSetpointTrajectory extends Command {
     private double _target;
     private Arm _arm;
     private Trajectory _trajectory;
-    private DistanceFollower _follower;
-    private int mV = 138;
+    //private DistanceFollower _follower;
+    private PathfinderTrajectoryFollower follower;
+    private int mV = 200;
 
     public MoveArmToSetpointTrajectory(Robot robot, double target) {
         _arm = robot.getArm();
@@ -29,7 +32,7 @@ public class MoveArmToSetpointTrajectory extends Command {
 
     @Override
     protected boolean isFinished() {
-        return _follower.isFinished();
+        return follower.isFinishedTrajectory();
     }
 
 
@@ -48,6 +51,17 @@ public class MoveArmToSetpointTrajectory extends Command {
 
         _trajectory = Pathfinder.generate(points, config);
         Pathfinder.writeToCSV(new File("/home/lvuser/bert.csv"), _trajectory);
+        follower = new PathfinderTrajectoryFollower();
+        follower.configure(
+                Constants.Arm.Pot.kP,
+                Constants.Arm.Pot.kI,
+                Constants.Arm.Pot.kD,
+                Constants.Arm.Pot.kV,
+                Constants.Arm.Pot.kA
+        );
+        follower.setTrajectory(_trajectory);
+        follower.reset();
+        /*
         _follower = new DistanceFollower(_trajectory);
         _follower.configurePIDVA(
                 Constants.Arm.Pot.kP,
@@ -56,19 +70,22 @@ public class MoveArmToSetpointTrajectory extends Command {
                 Constants.Arm.Pot.kV,
                 Constants.Arm.Pot.kA
         );
+        */
     }
 
     @Override
     protected void execute() {
         DriverStation.reportError("MoveArmToSetpointTrajectory at " + _arm.getPot(), false);
-        double speed = _follower.calculate(_arm.getPot()) * Constants.Arm.Pot.kV;
+        double speed = follower.calculate(_arm.getPot());
+        speed *=  Constants.Arm.Pot.kV; // converts the velocity from m/s to our speed.
         try {
-            SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealPos", _follower.getSegment().x);
+            SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealPos", follower.getSegment().position); //
+            SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealMSpeed", follower.getSegment().velocity * Constants.Arm.Pot.kV);
         } catch (Exception e) {
 
         }
         SmartDashboard.putNumber("MoveArmToSetpointTrajectory/actualPos", _arm.getPot());
-        SmartDashboard.putNumber("MoveArmToSetpointTrajectory/Requested Speed", speed);
+        SmartDashboard.putNumber("MoveArmToSetpointTrajectory/actualMSpeed", speed);
         _arm.drive(speed);
     }
 }
