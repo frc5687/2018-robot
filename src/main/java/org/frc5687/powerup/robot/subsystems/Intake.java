@@ -60,8 +60,8 @@ public class Intake extends Subsystem {
     public boolean cubeIsDetected() {
         return irBack.getValue() < Constants.IR.DETECTION_THRESHOLD;
     }
-
-    public void updateDashboard(){
+    @Override
+    public void periodic(){
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
