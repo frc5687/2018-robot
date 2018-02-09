@@ -155,23 +155,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void updateDashboard() {
-        SmartDashboard.putNumber("DriveTrain/Distance/Right", getRightDistance());
-        SmartDashboard.putNumber("DriveTrain/Distance/Left", getLeftDistance());
-
-        SmartDashboard.putNumber("DriveTrain/Ticks/Right", getRightTicks());
-        SmartDashboard.putNumber("DriveTrain/Ticks/Left", getLeftTicks());
-
-        SmartDashboard.putNumber("DriveTrain/Rate/Right", getRightRate());
-        SmartDashboard.putNumber("DriveTrain/Rate/Left", getLeftRate());
-
-        SmartDashboard.putNumber("DriveTrain/RPS/Right", getRightRPS());
-        SmartDashboard.putNumber("DriveTrain/RPS/Left", getLeftRPS());
-
-        SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
-        SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
-
-        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
-        SmartDashboard.putData("IMU", imu);
     }
 
 
@@ -219,5 +202,23 @@ public class DriveTrain extends Subsystem implements PIDSource {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("DriveTrain/observedHeadingCheesy", -getYaw());
+        SmartDashboard.putNumber("DriveTrain/Distance/Right", getRightDistance());
+        SmartDashboard.putNumber("DriveTrain/Distance/Left", getLeftDistance());
+
+        SmartDashboard.putNumber("DriveTrain/Ticks/Right", getRightTicks());
+        SmartDashboard.putNumber("DriveTrain/Ticks/Left", getLeftTicks());
+
+        SmartDashboard.putNumber("DriveTrain/Rate/Right", getRightRate());
+        SmartDashboard.putNumber("DriveTrain/Rate/Left", getLeftRate());
+
+        SmartDashboard.putNumber("DriveTrain/RPS/Right", getRightRPS());
+        SmartDashboard.putNumber("DriveTrain/RPS/Left", getLeftRPS());
+
+        SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
+        SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
+
+        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
+        SmartDashboard.putData("IMU", imu);
+
     }
 }
