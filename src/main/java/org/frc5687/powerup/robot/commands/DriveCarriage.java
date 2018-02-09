@@ -19,8 +19,9 @@ public class DriveCarriage extends Command {
 
     @Override
     protected void execute() {
-        double speed = oi.getCarriageSpeed();
-        carriage.drive(speed);
+        double target = oi.getCarriageTarget(carriage.getSetpoint());
+        carriage.setSetpoint(target);
+        carriage.enable();
     }
 
     @Override

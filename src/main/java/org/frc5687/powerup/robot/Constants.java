@@ -188,6 +188,7 @@ public class Constants {
         public static final double RUNWAY = 25.5; // in
 
 
+        public static final double SETPOINT_SPEED = 0.5;
     }
 
     public class Arm {

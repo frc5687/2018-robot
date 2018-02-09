@@ -13,6 +13,7 @@ import org.frc5687.powerup.robot.commands.auto.IntakeToSwitch;
 import org.frc5687.powerup.robot.utils.Gamepad;
 
 public class OI {
+
     public class ButtonNumbers {
         public static final int LEFT_AXIS = 1;
         public static final int LEFT_TRIGGER_AXIS = 2;
@@ -93,6 +94,12 @@ public class OI {
             return trigger;
         }
         return Constants.Intake.HOLD_SPEED;
+    }
+
+    public double getCarriageTarget(double setpoint) {
+        double setpointSpeed = -getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
+        return setpoint + setpointSpeed * Constants.Carriage.SETPOINT_SPEED;
+
     }
 
     public double getCarriageSpeed() {
