@@ -55,10 +55,11 @@ public class Intake extends Subsystem {
      * @return Whether or not the infrared sensor sees anything
      */
     public boolean cubeIsDetected() {
-
-        return
-                Constants.Intake.BACK_IR.ENABLED && irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD
-                || Constants.Intake.SIDE_IR.ENABLED && irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD;
+        // If we have no IRs enabled, always return false
+        if (!Constants.Intake.BACK_IR.ENABLED && !Constants.Intake.SIDE_IR.ENABLED) { return false; }
+        
+        return  (!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD)
+             && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD);
     }
 
     public void updateDashboard(){
