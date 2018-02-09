@@ -22,7 +22,7 @@ public class MoveArmToSetpointTrajectory extends Command {
     private Trajectory _trajectory;
     //private DistanceFollower _follower;
     private PathfinderTrajectoryFollower follower;
-    private int mV = 200;
+    private double mV = Constants.Arm.Pot.MAX_VELOCITY;
 
     public MoveArmToSetpointTrajectory(Robot robot, double target) {
         _arm = robot.getArm();
@@ -41,7 +41,7 @@ public class MoveArmToSetpointTrajectory extends Command {
         super.initialize();
         DriverStation.reportError("Starting MoveArmToSetpointTrajectory", false);
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, 42, 0.02, mV, 200, 200.0);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, 42, 0.02, mV, Constants.Arm.Pot.MAX_ACC, Constants.Arm.Pot.MAX_JERK);
         double current = _arm.getPot();
 
         Waypoint[] points = new Waypoint[] {
@@ -61,6 +61,7 @@ public class MoveArmToSetpointTrajectory extends Command {
         );
         follower.setTrajectory(_trajectory);
         follower.reset();
+        SmartDashboard.putNumber("MoveArmToSetpointTrajectory/trajectoryLength", _trajectory.length());
         /*
         _follower = new DistanceFollower(_trajectory);
         _follower.configurePIDVA(
@@ -79,7 +80,7 @@ public class MoveArmToSetpointTrajectory extends Command {
         double speed = follower.calculate(_arm.getPot());
         speed *=  Constants.Arm.Pot.kV; // converts the velocity from m/s to our speed.
         try {
-            SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealPos", follower.getSegment().position); //
+            SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealPos", follower.getSegment().x); //
             SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealMSpeed", follower.getSegment().velocity * Constants.Arm.Pot.kV);
         } catch (Exception e) {
 

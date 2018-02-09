@@ -203,11 +203,14 @@ public class Constants {
             public static final double BOTTOM = 31.8;
             public static final double TOLERANCE = 4.2;
             public static final double RANGE = TOP - BOTTOM;
+            public static final double MAX_VELOCITY = 200.0;
+            public static final double MAX_ACC = 400.0;
+            public static final double MAX_JERK = 400.0;
 
             public static final double kP = 2;
             public static final double kI = 0;
             public static final double kD = 0;
-            public static final double kV = 1/200;
+            public static final double kV = 1.0 / MAX_VELOCITY;
             public static final double kA = 0;
         }
     }

@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.utils;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Trajectory;
 
 /**
@@ -42,18 +43,20 @@ public class PathfinderTrajectoryFollower {
 
     public double calculate(double distance_so_far) {
         if (current_segment < profile_.length()) {
-            Trajectory.Segment segment = profile_.get(current_segment);
-            double error = segment.position - distance_so_far;
+            SmartDashboard.putBoolean("PathfinderTrajectoryFollower/calcReturnedDefault", false);
+            Trajectory.Segment segment = getSegment(); //profile_.get(current_segment);
+            double error = segment.x - distance_so_far;
             double output = kp_ * error + kd_ * ((error - last_error_)
                     / segment.dt - segment.velocity) + (kv_ * segment.velocity
                     + ka_ * segment.acceleration);
-
+            SmartDashboard.putNumber("PathfinderTrajectoryFollower/pidOutput", output);
             last_error_ = error;
             current_heading = segment.heading;
             current_segment++;
             //System.out.println("so far: " + distance_so_far + "; output: " + output);
             return output;
         } else {
+            SmartDashboard.putBoolean("PathfinderTrajectoryFollower/calcReturnedDefault", true);
             return 0;
         }
     }
