@@ -8,11 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
-import org.frc5687.powerup.robot.commands.auto.AutoAlign;
-import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
-import org.frc5687.powerup.robot.commands.auto.AutoGroup;
-import org.frc5687.powerup.robot.commands.auto.AutoDrive;
-import org.frc5687.powerup.robot.commands.auto.AutoDriveSimple;
+import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
@@ -34,7 +30,7 @@ public class Robot extends IterativeRobot  {
     private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
-    public static JeVoisProxy jeVoisProxy;
+    public JeVoisProxy jeVoisProxy;
 
 
     public Robot() {
@@ -82,6 +78,7 @@ public class Robot extends IterativeRobot  {
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public JeVoisProxy getJevois() { return jeVoisProxy; }
 
 
     @Override
@@ -111,8 +108,8 @@ public class Robot extends IterativeRobot  {
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
 
-        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
-
+        //autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
+        autoCommand = new CubeTest(this, 0, 0.2);
         autoCommand.start();
     }
 
