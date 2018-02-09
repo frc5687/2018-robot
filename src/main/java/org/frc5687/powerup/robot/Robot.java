@@ -8,11 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
-import org.frc5687.powerup.robot.commands.auto.AutoAlign;
-import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
-import org.frc5687.powerup.robot.commands.auto.AutoGroup;
-import org.frc5687.powerup.robot.commands.auto.AutoDrive;
-import org.frc5687.powerup.robot.commands.auto.AutoDriveSimple;
+import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
@@ -95,6 +91,7 @@ public class Robot extends IterativeRobot  {
         driveTrain.resetDriveEncoders();
         carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        /*
         int switchSide = 0;
         int scaleSide = 0;
         if (gameData.length()>0) {
@@ -112,7 +109,8 @@ public class Robot extends IterativeRobot  {
         SmartDashboard.putNumber("Auto/Mode", autoMode);
 
         autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
-
+        */
+        autoCommand = new AutoIntake(intake);
         autoCommand.start();
     }
 
