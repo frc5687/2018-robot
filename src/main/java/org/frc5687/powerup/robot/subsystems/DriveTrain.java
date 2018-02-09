@@ -154,10 +154,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
     public void setPIDSourceType(PIDSourceType pidSource) {
     }
 
-    public void updateDashboard() {
-    }
-
-
     protected class EncoderPIDSource implements PIDSource {
         private DriveTrain _driveTrain;
 
