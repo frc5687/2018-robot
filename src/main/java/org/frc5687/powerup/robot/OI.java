@@ -145,10 +145,10 @@ public class OI {
         DriverStation.reportError("carriage " + (robot.getCarriage()==null), false);
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
 
-            armToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        armToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         armToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
         armToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
-        armToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
+        armToScaleButton.whenPressed(new MoveArmToSetpointTrajectory(robot, Constants.Arm.Pot.TOP));
 
         servoHoldCube.whenPressed(new ServoHoldCube(robot.getIntake()));
         servoReleaseCube.whenPressed(new ServoReleaseCube(robot.getIntake()));

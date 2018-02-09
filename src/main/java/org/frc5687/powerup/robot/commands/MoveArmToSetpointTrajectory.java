@@ -6,31 +6,30 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.followers.DistanceFollower;
 import jaci.pathfinder.followers.EncoderFollower;
+import org.frc5687.powerup.robot.Constants;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import java.io.File;
 
-/**
- * Created by Ben Bernard on 1/28/2018.
- */
 public class MoveArmToSetpointTrajectory extends Command {
 
-    private int _target;
+    private double _target;
     private Arm _arm;
     private Trajectory _trajectory;
-    private EncoderFollower _encoderFollower;
-    private int _samples = 42;
-    private int _max_velocity = 400;
+    private DistanceFollower _follower;
+    private int mV = 138;
 
-    public MoveArmToSetpointTrajectory(Arm arm, int target) {
-        requires(arm);
-        _arm = arm;
+    public MoveArmToSetpointTrajectory(Robot robot, double target) {
+        _arm = robot.getArm();
+        requires(_arm);
         _target = target;
     }
 
     @Override
     protected boolean isFinished() {
-        return _encoderFollower.isFinished();
+        return _follower.isFinished();
     }
 
 
@@ -39,8 +38,8 @@ public class MoveArmToSetpointTrajectory extends Command {
         super.initialize();
         DriverStation.reportError("Starting MoveArmToSetpointTrajectory", false);
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, _samples, 0.02, _max_velocity, 1000, 1000.0);
-        double current = _arm.getAngle();
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, 42, 0.02, mV, 200, 200.0);
+        double current = _arm.getPot();
 
         Waypoint[] points = new Waypoint[] {
                 new Waypoint(current, current, 0),
@@ -49,15 +48,26 @@ public class MoveArmToSetpointTrajectory extends Command {
 
         _trajectory = Pathfinder.generate(points, config);
         Pathfinder.writeToCSV(new File("/home/lvuser/bert.csv"), _trajectory);
-        _encoderFollower = new EncoderFollower(_trajectory);
-        _encoderFollower.configureEncoder((int) current, 4096, 4096 / Math.PI);
-        _encoderFollower.configurePIDVA(1.0, 0.0, 0.0, 1 / _max_velocity, 0);
+        _follower = new DistanceFollower(_trajectory);
+        _follower.configurePIDVA(
+                Constants.Arm.Pot.kP,
+                Constants.Arm.Pot.kI,
+                Constants.Arm.Pot.kD,
+                Constants.Arm.Pot.kV,
+                Constants.Arm.Pot.kA
+        );
     }
 
     @Override
     protected void execute() {
-        DriverStation.reportError("MoveArmToSetpointTrajectory at " + _arm.getAngle(), false);
-        double speed = _encoderFollower.calculate(_arm.getAngle());
+        DriverStation.reportError("MoveArmToSetpointTrajectory at " + _arm.getPot(), false);
+        double speed = _follower.calculate(_arm.getPot()) * Constants.Arm.Pot.kV;
+        try {
+            SmartDashboard.putNumber("MoveArmToSetpointTrajectory/idealPos", _follower.getSegment().x);
+        } catch (Exception e) {
+
+        }
+        SmartDashboard.putNumber("MoveArmToSetpointTrajectory/actualPos", _arm.getPot());
         SmartDashboard.putNumber("MoveArmToSetpointTrajectory/Requested Speed", speed);
         _arm.drive(speed);
     }

@@ -189,6 +189,13 @@ public class Constants {
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
             public static final double TOLERANCE = 4.2;
+            public static final double RANGE = TOP - BOTTOM;
+
+            public static final double kP = 2;
+            public static final double kI = 0;
+            public static final double kD = 0;
+            public static final double kV = .5 / RANGE;
+            public static final double kA = 0;
         }
     }
 
