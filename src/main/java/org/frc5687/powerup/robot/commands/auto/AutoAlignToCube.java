@@ -1,55 +1,74 @@
 package org.frc5687.powerup.robot.commands.auto;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
+import org.frc5687.powerup.robot.Constants.Auto.Align;
+import org.frc5687.powerup.robot.utils.JeVoisProxy;
 
-public class AutoAlignToCube extends Command {
-    private CubeSource _cubeSource;
+/**
+ * Autonomous command to turn to specified angle
+ */
+public class AutoAlignToCube extends Command implements PIDOutput {
+
     private PIDController controller;
+    private double endTime;
+    private double angle;
     private double speed;
-    private PIDListener listener;
-    private AHRS imu;
-    private double initialAngle;
+
+    private double pidOut;
+
+    private long onTargetMillis;
+    private long startTimeMillis;
 
     private DriveTrain driveTrain;
+    private AHRS imu;
+    private JeVoisProxy jevois;
 
-    public AutoAlignToCube(Robot robot, double speed) {
-        driveTrain = robot.getDriveTrain();
-        imu = robot.getIMU();
-        _cubeSource = new CubeSource(robot);
+    public AutoAlignToCube(Robot robot, double angle, double speed) {
+        this.driveTrain = robot.getDriveTrain();
+        this.imu = robot.getIMU();
+        this.jevois = robot.getJevois();
+        requires(driveTrain);
+        this.angle = angle;
         this.speed = speed;
     }
 
     @Override
     protected void initialize() {
-        initialAngle = imu.getYaw();
-        double kP = 0.4; // Double.parseDouble(SmartDashboard.getString("DB/String 0", ".04"));
-        double kI = Constants.Auto.Align.kI; // Double.parseDouble(SmartDashboard.getString("DB/String 1", ".006"));
-        double kD = Constants.Auto.Align.kD; //Double.parseDouble(SmartDashboard.getString("DB/String 2", ".09"));
-        listener = new PIDListener();
+        double kP = Align.kP; // Double.parseDouble(SmartDashboard.getString("DB/String 0", ".04"));
+        double kI = Align.kI; // Double.parseDouble(SmartDashboard.getString("DB/String 1", ".006"));
+        double kD = Align.kD; //Double.parseDouble(SmartDashboard.getString("DB/String 2", ".09"));
 
-        controller = new PIDController(kP, kI, kD, imu, listener);
-        controller.setInputRange(-30, 30);
+        controller = new PIDController(kP, kI, kD, imu, this);
+        controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         controller.setOutputRange(-speed, speed);
-        controller.setAbsoluteTolerance(1);
+        controller.setAbsoluteTolerance(Align.TOLERANCE);
         controller.setContinuous();
-        controller.setSetpoint(initialAngle);
+        controller.setSetpoint(angle);
         controller.enable();
-        DriverStation.reportError("kP="+kP+" , kI="+kI+", kD="+kD + ",T="+ Constants.Auto.Align.TOLERANCE, false);
+        DriverStation.reportError("AutoAlignToCube initialized to " + angle + " at " + speed, false);
+        DriverStation.reportError("kP="+kP+" , kI="+kI+", kD="+kD + ",T="+ Align.TOLERANCE, false);
+        startTimeMillis = System.currentTimeMillis();
     }
 
     @Override
     protected void execute() {
-        double targetAngle = _cubeSource.pidGet() + initialAngle;
-        controller.setSetpoint(targetAngle);
-        double turn = listener.get();
-        driveTrain.tankDrive(turn, -turn); // positive output is clockwise
+        // if(!controller.onTarget()) endTime = System.currentTimeMillis() + Align.STEADY_TIME;
+//        DriverStation.reportError("Align: " + pidOut + "," + -pidOut, false);
+        double targetAngle = imu.getYaw() + jevois.GetX();
+        if (Math.abs(targetAngle) > 3) {
+            controller.setSetpoint(targetAngle);
+        }
+        driveTrain.tankDrive(pidOut, -pidOut); // positive output is clockwise
         SmartDashboard.putBoolean("AutoAlignToCube/onTarget", controller.onTarget());
+        SmartDashboard.putNumber("AutoAlignToCube/imu", imu.getYaw());
         SmartDashboard.putData("AutoAlignToCube/pid", controller);
     }
 
@@ -60,47 +79,16 @@ public class AutoAlignToCube extends Command {
 
     @Override
     protected void end() {
+        DriverStation.reportError("AutoAlignToCube finished: angle = " + imu.getYaw() + ", time = " + (System.currentTimeMillis() - startTimeMillis), false);
         controller.disable();
         driveTrain.tankDrive(0,0);
     }
 
-
-    private class CubeSource implements PIDSource {
-        Robot _robot;
-        PIDSourceType _pidSourceType;
-
-        public CubeSource(Robot robot) {
-            _robot = robot;
-        }
-
-        public void setPIDSourceType(PIDSourceType pidSource) {
-            _pidSourceType = pidSource;
-        }
-
-        public PIDSourceType getPIDSourceType() {
-            return _pidSourceType;
-        }
-
-        public double pidGet() {
-            return _robot.jeVoisProxy.GetX();
+    @Override
+    public void pidWrite(double output) {
+        synchronized (this) {
+            pidOut = output;
+            SmartDashboard.putNumber("AutoAlignToCube/pidOut", pidOut);
         }
     }
-
-    private class PIDListener implements PIDOutput {
-
-        private double value;
-
-        public double get() {
-            return value;
-        }
-
-        @Override
-        public void pidWrite(double output) {
-            synchronized (this) {
-                value = output;
-            }
-        }
-
-    }
-
 }

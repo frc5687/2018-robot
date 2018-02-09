@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
-import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
@@ -109,7 +107,7 @@ public class Robot extends IterativeRobot  {
         SmartDashboard.putNumber("Auto/Mode", autoMode);
 
         //autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
-        autoCommand = new CubeTest(this, 0, 0.2);
+        autoCommand = new AutoAlignToCube(this, 0, 0.2);
         autoCommand.start();
     }
 
