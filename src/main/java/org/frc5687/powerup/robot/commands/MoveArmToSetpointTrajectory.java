@@ -22,7 +22,6 @@ public class MoveArmToSetpointTrajectory extends Command {
     private Trajectory _trajectory;
     //private DistanceFollower _follower;
     private PathfinderTrajectoryFollower follower;
-    private double mV = Constants.Arm.Pot.MAX_VELOCITY;
 
     public MoveArmToSetpointTrajectory(Robot robot, double target) {
         _arm = robot.getArm();
@@ -41,12 +40,12 @@ public class MoveArmToSetpointTrajectory extends Command {
         super.initialize();
         DriverStation.reportError("Starting MoveArmToSetpointTrajectory", false);
 
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, 42, 0.02, mV, Constants.Arm.Pot.MAX_ACC, Constants.Arm.Pot.MAX_JERK);
+        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Arm.Pot.MAX_VELOCITY, Constants.Arm.Pot.MAX_ACC, Constants.Arm.Pot.MAX_JERK);
         double current = _arm.getPot();
 
         Waypoint[] points = new Waypoint[] {
-                new Waypoint(current, current, 0),
-                new Waypoint(_target, _target, 0)
+                new Waypoint(current, 0, 0),
+                new Waypoint(_target, 0, 0)
         };
 
         _trajectory = Pathfinder.generate(points, config);
