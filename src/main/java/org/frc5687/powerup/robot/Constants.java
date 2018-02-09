@@ -188,7 +188,7 @@ public class Constants {
         public class Pot {
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
-            public static final double TOLERANCE = 4.2;
+            public static final double TOLERANCE = 0.5;
         }
     }
 
