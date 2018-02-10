@@ -22,6 +22,9 @@ public class Arm extends PIDSubsystem {
     public static final double kD = 0.1;
     public static final double kF = 0.5;
 
+    private double _lastLastPot;
+    private double _lastPot;
+
 
     public Arm (OI oi) {
         super("Arm", kP, kI, kD, kF);
@@ -74,6 +77,14 @@ public class Arm extends PIDSubsystem {
 
     public double getPot() { return _pot.get(); }
 
+    /**
+     * Get the rate of the pot's changing values.
+     * @return (curPos - lastPos) * 50.
+     */
+    public double getPotRate() {
+        return (getPot() - _lastLastPot) * 50;
+    }
+
     public int getAngle() {
         return encoder.get();
     }
@@ -99,6 +110,8 @@ public class Arm extends PIDSubsystem {
 
     @Override
     public void periodic() {
+        _lastLastPot = _lastPot;
+        _lastPot = getPot();
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
@@ -106,5 +119,6 @@ public class Arm extends PIDSubsystem {
         SmartDashboard.putBoolean("Arm/atTop()", atTop());
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
         SmartDashboard.putNumber("Arm/getPot()", getPot());
+        SmartDashboard.putNumber("Arm/getPotRate()", getPotRate());
     }
 }
