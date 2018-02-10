@@ -2,22 +2,16 @@ package org.frc5687.powerup.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
-import org.frc5687.powerup.robot.commands.auto.AutoAlign;
-import org.frc5687.powerup.robot.commands.auto.AutoAlignToSwitch;
-import org.frc5687.powerup.robot.commands.auto.AutoGroup;
-import org.frc5687.powerup.robot.commands.auto.AutoDrive;
-import org.frc5687.powerup.robot.commands.auto.AutoDriveSimple;
+import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
-import edu.wpi.first.wpilibj.CameraServer;
 import org.frc5687.powerup.robot.utils.AutoChooser;
+import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends IterativeRobot  {
@@ -36,6 +30,8 @@ public class Robot extends IterativeRobot  {
     private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
+    public static JeVoisProxy jeVoisProxy;
+
 
     public Robot() {
     }
@@ -51,6 +47,7 @@ public class Robot extends IterativeRobot  {
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI();
+        jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         _arm = new Arm(oi);
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi);
@@ -111,7 +108,6 @@ public class Robot extends IterativeRobot  {
         SmartDashboard.putNumber("Auto/Mode", autoMode);
 
         autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
-
         autoCommand.start();
     }
 
@@ -131,6 +127,7 @@ public class Robot extends IterativeRobot  {
 
     @Override
     public void disabledPeriodic() {
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -149,10 +146,6 @@ public class Robot extends IterativeRobot  {
 
     public void updateDashboard() {
         pdp.updateDashboard();
-        intake.updateDashboard();
-        driveTrain.updateDashboard();
-        carriage.updateDashboard();
-        _arm.updateDashboard();
         _autoChooser.updateDashboard();
     }
 
