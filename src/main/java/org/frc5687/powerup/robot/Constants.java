@@ -19,6 +19,19 @@ public class Constants {
         public static final long EJECT_TIME = 250;
 
         public static final double HOLD_SPEED = 0.1;
+        public static final double INTAKE_SPEED = 0.75;
+        public static final long SETTLE_TIME = 500;
+
+        public class SIDE_IR {
+            public static final boolean ENABLED = true;
+            public static final int DETECTION_THRESHOLD = 1200;
+        }
+
+        public class BACK_IR {
+            public static final boolean ENABLED = true;
+            public static final int DETECTION_THRESHOLD = 1200;
+        }
+
     }
 
     public class Auto {
@@ -187,8 +200,9 @@ public class Constants {
         public static final double SPEED_SCALAR = 1.0;
 
         public class Pot {
-            public static final double TOP = 391.0;
-            public static final double BOTTOM = 265.0;
+            public static final double TOP = 170.5;
+            public static final double BOTTOM = 31.8;
+            public static final double TOLERANCE = 4.2;
         }
     }
 

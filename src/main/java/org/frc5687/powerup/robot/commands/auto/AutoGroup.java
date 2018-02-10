@@ -33,6 +33,7 @@ public class AutoGroup extends CommandGroup {
                 break;
 
             case Constants.AutoChooser.Mode.CROSS_AUTOLINE:
+                /*
                 distance = 120;
                 if (position>0 && position<5) { distance = 80.0; }
 
@@ -41,7 +42,40 @@ public class AutoGroup extends CommandGroup {
                 } else {
                     addParallel(new AutoDrive(robot.getDriveTrain(), distance, 0.75, true, true, 5000, "auto"));
                 }
-
+                */
+                DynamicPathCommand path;
+                switch (position) {
+                    case 1:
+                        path = new CrossAutoLine(robot);
+                        addSequential(path);
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        break;
+                    case 2:
+                        path = new CrossAutoLine(robot);
+                        addSequential(path);
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        break;
+                    case 3:
+                        path = new CrossAutoLineToLeftOfPowerCube(robot);
+                        addSequential(path);
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        break;
+                    case 4:
+                        path = new CrossAutoLine(robot);
+                        addSequential(path);
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        break;
+                    case 5:
+                        path = new CrossAutoLine(robot);
+                        addSequential(path);
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        break;
+                    case 6:
+                        path = new CrossAutoLine(robot);
+                        addSequential(path);
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        break;
+                }
                 break;
 
             case Constants.AutoChooser.Mode.SWITCH_ONLY:

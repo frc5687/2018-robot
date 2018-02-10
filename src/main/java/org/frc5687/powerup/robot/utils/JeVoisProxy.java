@@ -9,13 +9,25 @@ public class JeVoisProxy {
     private int lastReadX;
     private int lastReadY;
 
+    private boolean initializedProperly;
+
     private JeVoisListener listener;
     private Thread listenerThread;
 
-    public JeVoisProxy() {
-        listener = new JeVoisListener(this);
-        listenerThread = new Thread(listener);
-        listenerThread.start();
+    public JeVoisProxy(SerialPort.Port port) {
+        setup(port);
+    }
+
+    public void setup(SerialPort.Port port) {
+        try {
+            listener = new JeVoisListener(this, port);
+            listenerThread = new Thread(listener);
+            listenerThread.start();
+            initializedProperly = true;
+        } catch (Exception e) {
+            initializedProperly = false;
+        }
+        SmartDashboard.putBoolean("JeVois/initializedProperly", initializedProperly);
     }
 
 
@@ -30,6 +42,8 @@ public class JeVoisProxy {
     synchronized protected void Set(int x, int y) {
         lastReadX = x;
         lastReadY = y;
+        SmartDashboard.putNumber("JeVois/x", lastReadX);
+        SmartDashboard.putNumber("JeVois/y", lastReadY);
     }
 
     class BufferBuffer {
@@ -66,9 +80,9 @@ public class JeVoisProxy {
 
         private BufferBuffer buffer;
 
-        protected JeVoisListener(JeVoisProxy proxy) {
+        protected JeVoisListener(JeVoisProxy proxy, SerialPort.Port port) {
             this.proxy = proxy;
-            jevoisPort = new SerialPort(115200, SerialPort.Port.kUSB);
+            jevoisPort = new SerialPort(115200, port);
             char[] delim = new char[] {'\r', '\n'};
             buffer = new BufferBuffer(new String(delim));
         }
