@@ -91,7 +91,6 @@ public class Robot extends IterativeRobot  {
         driveTrain.resetDriveEncoders();
         carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
-        /*
         int switchSide = 0;
         int scaleSide = 0;
         if (gameData.length()>0) {
@@ -109,8 +108,6 @@ public class Robot extends IterativeRobot  {
         SmartDashboard.putNumber("Auto/Mode", autoMode);
 
         autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
-        */
-        autoCommand = new AutoIntake(intake);
         autoCommand.start();
     }
 
