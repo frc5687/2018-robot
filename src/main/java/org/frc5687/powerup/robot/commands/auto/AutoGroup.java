@@ -97,10 +97,12 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SWITCH_HEIGHT));
+                        MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SWITCH_HEIGHT, true);
+                        addParallel(armPid);
                         addSequential(new RightSwitchCenter(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
+                        armPid.permitFinish();
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;

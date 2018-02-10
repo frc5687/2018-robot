@@ -57,7 +57,7 @@ public class MoveArmToSetpointTrajectory extends Command {
     @Override
     protected void execute() {
         DriverStation.reportError("MoveArmToSetpointTrajectory at " + _arm.getAngle(), false);
-        double speed = _encoderFollower.calculate(_arm.getAngle());
+        double speed = _encoderFollower.calculate((int)_arm.getAngle());
         SmartDashboard.putNumber("MoveArmToSetpointTrajectory/Requested Speed", speed);
         _arm.drive(speed);
     }
