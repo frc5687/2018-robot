@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
+import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.opencv.core.KeyPoint;
@@ -17,6 +18,7 @@ public class MoveArmToSetpointPID extends Command {
 
     private double _target;
     private Arm _arm;
+    private boolean canFinish;
 
 
 
@@ -24,15 +26,31 @@ public class MoveArmToSetpointPID extends Command {
         requires(arm);
         _arm = arm;
         _target = target;
+        canFinish = true;
+    }
+
+    public MoveArmToSetpointPID(Arm arm, double target, boolean delayFinish) {
+        requires(arm);
+        _arm = arm;
+        _target = target;
+        canFinish = false;
+    }
+
+    public void permitFinish() {
+        canFinish = true;
+    }
+
+    @Override
+    protected void end() {
+        DriverStation.reportError("MoveArmToSetpointPID Ending", false);
+        DriverStation.reportError("MoveArmToSetpointPID Ending", false);
+        DriverStation.reportError("MoveArmToSetpointPID Ending", false);
+        _arm.disable();
     }
 
     @Override
     protected boolean isFinished() {
-        if (_arm.onTarget()) {
-            _arm.disable();
-            return true;
-        }
-        return false;
+        return canFinish && _arm.onTarget();
     }
 
 

@@ -196,12 +196,13 @@ public class Constants {
         public static final double ENCODER_FENCE = 90;
         public static final double ENCODER_TOP = 340;
 
-        public static final double HOLD_SPEED = 0.1;
+        public static final double HOLD_SPEED = 0.0;
 
         public class Pot {
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
             public static final double TOLERANCE = 4.2;
+            public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
         }
     }
 

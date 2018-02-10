@@ -17,17 +17,17 @@ public class Arm extends PIDSubsystem {
     private DigitalOutput led;
     private Potentiometer _pot;
 
-    public static final double kP = 0.5;
-    public static final double kI = 0.1;
-    public static final double kD = 0.1;
-    public static final double kF = 0.5;
+    public static final double kP = 0.04;
+    public static final double kI = 0.002;
+    public static final double kD = 0.0002;
+    public static final double kF = 0;
 
 
     public Arm (OI oi) {
-        super("Arm", kP, kI, kD, kF);
+        super("Arm", kP, kI, kD, kF, 0.01);
         setAbsoluteTolerance(5);
-        setInputRange(0, 340);
-        setOutputRange(-.75, 0.75);
+        setInputRange(Constants.Arm.Pot.BOTTOM, Constants.Arm.Pot.TOP);
+        setOutputRange(-.25, 0.75);
         _oi=oi;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
@@ -44,7 +44,6 @@ public class Arm extends PIDSubsystem {
             SmartDashboard.putString("Arm/Capped)", "Bottom");
             speed = Constants.Arm.HOLD_SPEED;
         }
-        SmartDashboard.putNumber("Arm/speed", _motor.get());
         _motor.setSpeed(speed);
     }
 
@@ -74,8 +73,8 @@ public class Arm extends PIDSubsystem {
 
     public double getPot() { return _pot.get(); }
 
-    public int getAngle() {
-        return encoder.get();
+    public double getAngle() {
+        return getPot();
     }
 
     /**
@@ -88,7 +87,7 @@ public class Arm extends PIDSubsystem {
 
     @Override
     protected double returnPIDInput() {
-        return encoder.get();
+        return getPot();
     }
 
     @Override
@@ -100,6 +99,7 @@ public class Arm extends PIDSubsystem {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
+        SmartDashboard.putNumber("Arm/setpoint", getSetpoint());
         SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
         led.set(inStartingPosition());
