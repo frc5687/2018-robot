@@ -36,8 +36,8 @@ public class AutoDrivePathfinder extends Command {
         _leftEncoderFollower.configureEncoder((int) _driveTrain.getLeftTicks(), Constants.Encoders.Defaults.PULSES_PER_ROTATION, Constants.Encoders.Defaults.WheelDiameter.METERS);
         _rightEncoderFollower.configureEncoder((int) _driveTrain.getRightTicks(), Constants.Encoders.Defaults.PULSES_PER_ROTATION, Constants.Encoders.Defaults.WheelDiameter.METERS);
 
-        _leftEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA);
-        _rightEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA);
+        _leftEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA.METERS);
+        _rightEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA.METERS);
     }
 
     @Override

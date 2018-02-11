@@ -100,7 +100,10 @@ public class Constants {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double kA = 0.0;
+                public class kA {
+                    public static final double METERS = 1.0 / MaxAcceleration.METERS;
+                    public static final double INCHES = 1.0 / MaxAcceleration.INCHES;
+                }
                 public static final double TOLERANCE = 1;
             }
 
