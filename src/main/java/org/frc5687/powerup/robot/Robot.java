@@ -164,4 +164,7 @@ public class Robot extends IterativeRobot  {
     public double pickConstant(double competitionValue, double practiceValue){
         return _isCompetitionBot?competitionValue:practiceValue;
     }
+    public boolean isCompetition(){
+        return _isCompetitionBot;
+    }
 }
