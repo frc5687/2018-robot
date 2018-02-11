@@ -99,7 +99,7 @@ public class AutoGroup extends CommandGroup {
                         armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
                         addParallel(armPid);
-                        addSequential(new LeftSwitchCenterFast(robot));
+                        addSequential(new LeftSwitchCenter(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         addSequential(new FinishArmPid(armPid));
