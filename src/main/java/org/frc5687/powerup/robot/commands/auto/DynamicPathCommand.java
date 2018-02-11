@@ -70,6 +70,8 @@ public class DynamicPathCommand extends Command {
         followerRight.reset();
 
         lastHeading = followerLeft.getLastSegment().heading;
+
+        SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
     private double calculateTurn() {
@@ -97,52 +99,82 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected void execute() {
+        /*
+         * Log Left & Right Distance
+         */
+        Trajectory.Segment left = followerLeft.getSegment();
+        Trajectory.Segment right = followerRight.getSegment();
+
         double distanceL = _driveTrain.getLeftDistance();
         double distanceR = _driveTrain.getRightDistance();
+
+        double goalDistanceLeft = left.pos;
+        double goalDistanceRight = right.pos;
+
         SmartDashboard.putNumber("AADynamicPathCommand/distanceL", distanceL);
         SmartDashboard.putNumber("AADynamicPathCommand/distanceR", distanceR);
 
-        Trajectory.Segment left = followerLeft.getSegment();
-        Trajectory.Segment right = followerRight.getSegment();
-        SmartDashboard.putNumber("AADynamicPathCommand/goalPosLeft", left.pos);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalPosRight", right.pos);
-        SmartDashboard.putNumber("AADynamicPathCommand/navxVelocity", _imu.getVelocityX() * 39.370079);
-        SmartDashboard.putNumber("AADynamicPathCommand/navxXDisplacement", _imu.getDisplacementX() * 39.370079);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftMotor", left.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftIPS", left.vel);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRight", right.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
-        SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", left.pos - distanceL);
-        SmartDashboard.putNumber("AADynamicPathCommand/errorRight", right.pos - distanceR);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalDistanceLeft", goalDistanceLeft);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalDistanceRight", goalDistanceRight);
+
+        /*
+         * Log Distance Error
+         */
+
+        double leftError = left.pos - distanceL;
+        double rightError = right.pos - distanceR;
+
+        SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", leftError);
+        SmartDashboard.putNumber("AADynamicPathCommand/errorRight", rightError);
+
+        /*
+         * Log Goal Velocity
+         */
+
+        double goalVelocityLeftIPS = left.vel;
+        double goalVelocityLeftMotor = goalVelocityLeftIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
+
+        double goalVelocityRightIPS = right.vel;
+        double goalVelocityRightMotor  = goalVelocityRightIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
+
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftMotor", goalVelocityLeftMotor);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftIPS", goalVelocityLeftIPS);
+
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightMotor", goalVelocityRightMotor);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightIPS", goalVelocityRightIPS);
+
+        /*
+         * Log Calculated Speed
+         */
 
         double speedIPSLeft = followerLeft.calculate(distanceL);
         double speedIPSRight = followerRight.calculate(distanceR);
 
+        double speedLeftMotor = speedIPSLeft * Constants.Auto.Drive.EncoderPID.kV.IPS;
+        double speedRightMotor = speedIPSRight * Constants.Auto.Drive.EncoderPID.kV.IPS;
+
         SmartDashboard.putNumber("AADynamicPathCommand/speedLeftIPS", speedIPSLeft);
         SmartDashboard.putNumber("AADynamicPathCommand/speedRightIPS", speedIPSRight);
 
-        double speedLeft = speedIPSLeft * Constants.Auto.Drive.EncoderPID.kV.IPS;
-        double speedRight = speedIPSRight * Constants.Auto.Drive.EncoderPID.kV.IPS;
+        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotor", speedLeftMotor);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotor", speedRightMotor);
 
-        double requestedLeft = speedLeft;// - turn;
-        double requestedRight = speedRight;// + turn;
-
-        _driveTrain.tankDrive(speedLeft, speedRight);
-
-        //speedLeft = Helpers.applyMinSpeed(speedLeft, Constants.Auto.Drive.MIN_SPEED);
-        //speedRight = Helpers.applyMinSpeed(speedRight, Constants.Auto.Drive.MIN_SPEED);
-
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeft", 0);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRight", 0);
-
-        SmartDashboard.putNumber("AADynamicPathCommand/requestLeft", speedLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", speedRight);
-
+        /*
+         * Log Turn
+         */
         double turn = calculateTurn();
+        double speedLeftMotorWithTurn = speedLeftMotor - turn;
+        double speedRightMotorWithTurn = speedRightMotor + turn;
+
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotorWithTurn", speedLeftMotorWithTurn);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotorWithTurn", speedRightMotorWithTurn);
 
-        SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
-        DriverStation.reportError("Yes, we got here.", false);
+        /*
+         * Drive
+         */
 
+        _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
     }
 
     @Override
