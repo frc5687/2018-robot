@@ -33,6 +33,8 @@ public class Robot extends IterativeRobot  {
     private PDP pdp;
     private AutoChooser _autoChooser;
     public static JeVoisProxy jeVoisProxy;
+    private DigitalInput _identityFlag;
+    private boolean _isCompetitionBot;
 
 
     public Robot() {
@@ -45,7 +47,8 @@ public class Robot extends IterativeRobot  {
 
     @Override
     public void robotInit() {
-
+        _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
+        _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI();
@@ -149,6 +152,7 @@ public class Robot extends IterativeRobot  {
     public void updateDashboard() {
         pdp.updateDashboard();
         _autoChooser.updateDashboard();
+        SmartDashboard.putBoolean("Competition bot", _isCompetitionBot);
     }
 
 }
