@@ -154,5 +154,14 @@ public class Robot extends IterativeRobot  {
         _autoChooser.updateDashboard();
         SmartDashboard.putBoolean("Competition bot", _isCompetitionBot);
     }
+    public boolean pickConstant(boolean competitionValue, boolean practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
+    public int pickConstant(int competitionValue, int practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
 
+    public double pickConstant(double competitionValue, double practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
 }
