@@ -54,14 +54,14 @@ public class DynamicPathCommand extends Command {
                 Constants.Auto.Drive.EncoderPID.kI,
                 Constants.Auto.Drive.EncoderPID.kD,
                 Constants.Auto.Drive.EncoderPID.kV.IPS,
-                Constants.Auto.Drive.EncoderPID.kA
+                Constants.Auto.Drive.EncoderPID.kA.INCHES
         );
         followerRight.configure(
                 Constants.Auto.Drive.EncoderPID.kP,
                 Constants.Auto.Drive.EncoderPID.kI,
                 Constants.Auto.Drive.EncoderPID.kD,
                 Constants.Auto.Drive.EncoderPID.kV.IPS,
-                Constants.Auto.Drive.EncoderPID.kA
+                Constants.Auto.Drive.EncoderPID.kA.INCHES
         );
 
         followerLeft.setTrajectory(path.getLeftWheelTrajectory());
@@ -70,6 +70,28 @@ public class DynamicPathCommand extends Command {
         followerRight.reset();
 
         lastHeading = followerLeft.getLastSegment().heading;
+    }
+
+    private double calculateTurn() {
+        double goalHeading = Math.toDegrees(followerLeft.getHeading());
+        double observedHeading = ChezyMath.getDifferenceInAngleDegrees(-_driveTrain.getYaw(), starting_heading);
+        SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
+        double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
+        SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
+
+        double turn = Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * 1; // multiply by -1 if self correcting, multiply by 1 if following turns
+
+        // Attempts to cap the turn
+        /*
+        if (turn > 0) {
+            turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
+        } else {
+            turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
+        }
+        */
+
+        return turn;
     }
 
 
@@ -83,70 +105,44 @@ public class DynamicPathCommand extends Command {
         Trajectory.Segment left = followerLeft.getSegment();
         Trajectory.Segment right = followerRight.getSegment();
         SmartDashboard.putNumber("AADynamicPathCommand/goalPosLeft", left.pos);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalPosRight", right.pos);
         SmartDashboard.putNumber("AADynamicPathCommand/navxVelocity", _imu.getVelocityX() * 39.370079);
         SmartDashboard.putNumber("AADynamicPathCommand/navxXDisplacement", _imu.getDisplacementX() * 39.370079);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeft", left.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftMotor", left.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftIPS", left.vel);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRight", right.vel * Constants.Auto.Drive.EncoderPID.kV.IPS);
         SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", left.pos - distanceL);
         SmartDashboard.putNumber("AADynamicPathCommand/errorRight", right.pos - distanceR);
 
-        double speedLeft = followerLeft.calculate(distanceL);
-        double speedRight = followerRight.calculate(distanceR);
+        double speedIPSLeft = followerLeft.calculate(distanceL);
+        double speedIPSRight = followerRight.calculate(distanceR);
 
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftIPS", speedLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRightIPS", speedRight);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftIPS", speedIPSLeft);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedRightIPS", speedIPSRight);
 
-        speedLeft *= Constants.Auto.Drive.EncoderPID.kV.IPS;
-        speedRight *= Constants.Auto.Drive.EncoderPID.kV.IPS;
+        double speedLeft = speedIPSLeft * Constants.Auto.Drive.EncoderPID.kV.IPS;
+        double speedRight = speedIPSRight * Constants.Auto.Drive.EncoderPID.kV.IPS;
 
-        /*
-        if (speedLeft < 0) {
-            speedLeft = speedLeft > -Constants.Auto.Drive.MIN_SPEED ? -Constants.Auto.Drive.MIN_SPEED : speedLeft;
-        } else {
-            speedLeft = speedLeft < Constants.Auto.Drive.MIN_SPEED ? Constants.Auto.Drive.MIN_SPEED : speedLeft;
-        }
+        double requestedLeft = speedLeft;// - turn;
+        double requestedRight = speedRight;// + turn;
 
-        if (speedRight < 0) {
-            speedRight = speedRight > -Constants.Auto.Drive.MIN_SPEED ? -Constants.Auto.Drive.MIN_SPEED : speedRight;
-        } else {
-            speedRight = speedRight < Constants.Auto.Drive.MIN_SPEED ? Constants.Auto.Drive.MIN_SPEED : speedRight;
-        }
-        */
+        _driveTrain.tankDrive(speedLeft, speedRight);
 
         //speedLeft = Helpers.applyMinSpeed(speedLeft, Constants.Auto.Drive.MIN_SPEED);
         //speedRight = Helpers.applyMinSpeed(speedRight, Constants.Auto.Drive.MIN_SPEED);
 
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeft", speedLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRight", speedRight);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedLeft", 0);
+        SmartDashboard.putNumber("AADynamicPathCommand/speedRight", 0);
 
-        double goalHeading = Math.toDegrees(followerLeft.getHeading());
-        double observedHeading = ChezyMath.getDifferenceInAngleDegrees(-_driveTrain.getYaw(), starting_heading);
-        SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
-        double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
-        SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
+        SmartDashboard.putNumber("AADynamicPathCommand/requestLeft", speedLeft);
+        SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", speedRight);
 
-        double turn = Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * 1; // multiply by -1 if self correcting, multiply by 1 if following turns
-
+        double turn = calculateTurn();
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
-        /*
-        if (turn > 0) {
-            turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        } else {
-            turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        }
-        */
 
-        double requestedLeft = speedLeft - turn;
-        double requestedRight = speedRight + turn;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/requestLeft", requestedLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", requestedRight);
-
-        _driveTrain.tankDrive(requestedLeft, requestedRight);
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
+        DriverStation.reportError("Yes, we got here.", false);
+
     }
 
     @Override
