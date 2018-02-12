@@ -18,7 +18,7 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        addParallel(new AutoZeroCarriage(robot.getCarriage()));
+        addSequential(new AutoZeroCarriage(robot.getCarriage()));
         //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS));
 
         // Start with the "always" operations
@@ -139,11 +139,13 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
-                        addSequential(new SixRightScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        armPid = new MoveArmToSetpointPID(robot.getArm(), 168, true);
+                        addParallel(armPid);
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -5));
-                        addSequential(new MoveArmToSetpointPID(robot.getArm(), 163));
+                        addSequential(new SixToScaleSlow(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
+                        addSequential(new FinishArmPid(armPid));
                         break;
                 }
         }

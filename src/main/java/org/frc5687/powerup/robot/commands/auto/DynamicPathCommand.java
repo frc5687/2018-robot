@@ -16,8 +16,8 @@ import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.frc5687.powerup.robot.utils.Helpers;
 
 public class DynamicPathCommand extends Command {
-    private TrajectoryFollower followerLeft = new TrajectoryFollower();
-    private TrajectoryFollower followerRight = new TrajectoryFollower();
+    private TrajectoryFollower followerLeft = new TrajectoryFollower("left");
+    private TrajectoryFollower followerRight = new TrajectoryFollower("right");
     private double starting_heading;
     public Path path;
     private DriveTrain _driveTrain;
@@ -143,6 +143,9 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightMotor", goalVelocityRightMotor);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightIPS", goalVelocityRightIPS);
 
+        // Entirely feed forward
+        //_driveTrain.tankDrive(goalVelocityLeftMotor, goalVelocityRightMotor);
+
         /*
          * Log Calculated Speed
          */
@@ -150,8 +153,8 @@ public class DynamicPathCommand extends Command {
         double speedIPSLeft = followerLeft.calculate(distanceL);
         double speedIPSRight = followerRight.calculate(distanceR);
 
-        double speedLeftMotor = speedIPSLeft * Constants.Auto.Drive.EncoderPID.kV.IPS;
-        double speedRightMotor = speedIPSRight * Constants.Auto.Drive.EncoderPID.kV.IPS;
+        double speedLeftMotor = speedIPSLeft;//speedIPSLeft * Constants.Auto.Drive.EncoderPID.kV.IPS;
+        double speedRightMotor = speedIPSRight;//speedIPSRight * Constants.Auto.Drive.EncoderPID.kV.IPS;
 
         SmartDashboard.putNumber("AADynamicPathCommand/speedLeftIPS", speedIPSLeft);
         SmartDashboard.putNumber("AADynamicPathCommand/speedRightIPS", speedIPSRight);
@@ -159,12 +162,17 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotor", speedLeftMotor);
         SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotor", speedRightMotor);
 
+        // Feed Forward + PID for Sides
+        //_driveTrain.tankDrive(speedLeftMotor, speedRightMotor);
+
         /*
          * Log Turn
          */
         double turn = calculateTurn();
         double speedLeftMotorWithTurn = speedLeftMotor - turn;
         double speedRightMotorWithTurn = speedRightMotor + turn;
+
+        _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
 
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
         SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotorWithTurn", speedLeftMotorWithTurn);
@@ -174,18 +182,12 @@ public class DynamicPathCommand extends Command {
          * Drive
          */
 
-        _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
+        //_driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
     }
 
     @Override
     protected void end() {
-        //SmartDashboard.putNumber("AADynamicPathCommand/requestLeft", 0);
-        //SmartDashboard.putNumber("AADynamicPathCommand/requestedRight", 0);
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
-        DriverStation.reportError("DynamicPathCommand ended", false);
-        DriverStation.reportError("DynamicPathCommand ended", false);
-        DriverStation.reportError("DynamicPathCommand ended", false);
-        DriverStation.reportError("DynamicPathCommand ended", false);
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.tankDrive(0, 0);
     }
@@ -197,8 +199,7 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected boolean isFinished() {
-        return followerLeft.isFinishedTrajectory() && 
-                followerRight.isFinishedTrajectory();
+        return followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
     }
 
     public boolean isReversed() {
