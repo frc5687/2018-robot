@@ -218,7 +218,7 @@ public class Constants {
     }
 
     public class RotarySwitch {
-        public static final double TOLERANCE = 0.06;
+        public static final double TOLERANCE = 0.02;
     }
 
     public class AutoChooser {
