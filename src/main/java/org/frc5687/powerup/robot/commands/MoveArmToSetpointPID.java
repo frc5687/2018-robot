@@ -17,19 +17,19 @@ public class MoveArmToSetpointPID extends Command {
 
     private double _target;
     private Arm _arm;
+    private boolean _wait;
 
 
-
-    public MoveArmToSetpointPID(Arm arm, double target) {
+    public MoveArmToSetpointPID(Arm arm, double target, boolean wait) {
         requires(arm);
         _arm = arm;
         _target = target;
+        _wait = wait;
     }
 
     @Override
     protected boolean isFinished() {
-        if (_arm.onTarget()) {
-            _arm.disable();
+        if (!_wait || _arm.onTarget()) {
             return true;
         }
         return false;

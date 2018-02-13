@@ -17,7 +17,7 @@ public class IntakeToSwitch extends CommandGroup {
             addSequential(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_CLEAR_BUMPERS));
         }
         addParallel(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_MIDDLE));
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
+        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE, true));
     }
 }
 

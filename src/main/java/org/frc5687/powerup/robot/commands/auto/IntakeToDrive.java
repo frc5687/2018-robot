@@ -15,7 +15,7 @@ public class IntakeToDrive extends CommandGroup {
         if (carriage.getPos() > Constants.Carriage.ENCODER_CLEAR_BUMPERS) {
             addParallel(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_CLEAR_BUMPERS));
         }
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_START));
+        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_START, true));
 
         addSequential(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_DRIVE));
 

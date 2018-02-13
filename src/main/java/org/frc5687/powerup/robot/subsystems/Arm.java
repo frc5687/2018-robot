@@ -25,7 +25,7 @@ public class Arm extends PIDSubsystem {
 
     public Arm (OI oi) {
         super("Arm", kP, kI, kD, kF);
-        setAbsoluteTolerance(5);
+        setAbsoluteTolerance(Constants.Arm.Pot.TOLERANCE);
         setInputRange(0, 340);
         setOutputRange(-.75, 0.75);
         _oi=oi;
