@@ -169,7 +169,7 @@ public class Robot extends IterativeRobot  {
         return _isCompetitionBot?competitionValue:practiceValue;
     }
 
-    public boolean isCompetition(){
+    public boolean isCompetitionBot(){
         return _isCompetitionBot;
     }
 }
