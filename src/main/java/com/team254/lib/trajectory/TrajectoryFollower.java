@@ -61,6 +61,7 @@ public class TrajectoryFollower {
       current_heading = segment.heading;
       current_segment++;
       SmartDashboard.putNumber("TF/" + _name + "/kp", kp);
+      SmartDashboard.putNumber("TF/" + _name + "/kd", kd);
       SmartDashboard.putNumber("TF/" + _name + "/kv", kv);
       SmartDashboard.putNumber("TF/" + _name + "/output", output);
       SmartDashboard.putNumber("TF/" + _name + "/current_segment", current_segment);
