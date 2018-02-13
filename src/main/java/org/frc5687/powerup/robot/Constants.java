@@ -62,15 +62,17 @@ public class Constants {
 
             public class MaxVel {
                 public static final double MPS = 2.33; // Meters Per Second
-                public static final double IPS = 91; // Inches Per Second
+                public static final double IPS = 130; // Inches Per Second
             }
 
             public class MaxAcceleration {
                 public static final double METERS = 2.0; // Meters Per Second Squared
+                public static final double INCHES = 80.0;
             }
 
             public class MaxJerk {
                 public static final double METERS = 6.0; // Meters Per Second Cubed
+                public static final double INCHES = 200.0;
             }
 
             public static final long STEADY_TIME = 100;
@@ -93,14 +95,17 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 1.70;//0.80;
+                public static final double kP = 0.0065;//1.06;//0.001;//1.70;//0.80;
                 public static final double kI = 0;
-                public static final double kD = 0.3;//.2;
+                public static final double kD = 0;//.3;
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double kA = 0.0;
+                public class kA {
+                    public static final double METERS = 1.0 / MaxAcceleration.METERS;
+                    public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
+                }
                 public static final double TOLERANCE = 1;
             }
 
@@ -112,7 +117,7 @@ public class Constants {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double PATH_TURN = 0.3; // 1.0
+                public static final double PATH_TURN = 0.1; // 1.0
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }

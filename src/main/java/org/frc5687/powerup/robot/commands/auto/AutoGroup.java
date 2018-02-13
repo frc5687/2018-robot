@@ -31,9 +31,9 @@ public class AutoGroup extends CommandGroup {
         switch (mode) {
             case Constants.AutoChooser.Mode.STAY_PUT:
                 // Nothing to do here but look sad
-                armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
+                //armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
                 addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
-                addParallel(armPid);
+                //addParallel(armPid);
                 //addSequential(new FinishArmPid(armPid));
                 break;
 
@@ -99,7 +99,7 @@ public class AutoGroup extends CommandGroup {
                         armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
                         addParallel(armPid);
-                        addSequential(new LeftSwitchCenterFast(robot));
+                        addSequential(new LeftSwitchCenter(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         addSequential(new FinishArmPid(armPid));
@@ -139,10 +139,9 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
+                        addParallel(new PrepIntakeForScale(robot, 150.0, 10000));
                         addSequential(new SixRightScale(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5));
-                        addSequential(new MoveArmToSetpointPID(robot.getArm(), 163));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                 }
