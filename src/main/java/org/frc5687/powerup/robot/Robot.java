@@ -33,6 +33,8 @@ public class Robot extends TimedRobot  {
     private PDP pdp;
     private AutoChooser _autoChooser;
     public static JeVoisProxy jeVoisProxy;
+    private DigitalInput _identityFlag;
+    private boolean _isCompetitionBot;
 
 
     public Robot() {
@@ -45,7 +47,8 @@ public class Robot extends TimedRobot  {
 
     @Override
     public void robotInit() {
-
+        _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
+        _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI();
@@ -56,6 +59,8 @@ public class Robot extends TimedRobot  {
         intake = new Intake(oi);
         _climber = new Climber(oi);
         _autoChooser = new AutoChooser();
+        SmartDashboard.putBoolean("Competition bot", _isCompetitionBot);
+
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -142,6 +147,22 @@ public class Robot extends TimedRobot  {
     public void updateDashboard() {
         pdp.updateDashboard();
         _autoChooser.updateDashboard();
+
+    }
+    public boolean pickConstant(boolean competitionValue, boolean practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
     }
 
+    public int pickConstant(int competitionValue, int practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
+
+
+    public double pickConstant(double competitionValue, double practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
+
+    public boolean isCompetitionBot(){
+        return _isCompetitionBot;
+    }
 }
