@@ -39,10 +39,10 @@ public class Arm extends PIDSubsystem {
     public void drive(double speed) {
         if(atTop() && speed > 0) {
             SmartDashboard.putString("Arm/Capped)", "Top");
-            speed = Constants.Arm.HOLD_SPEED;
+            speed = 0.0;
         } else if (atBottom() && speed < 0) {
             SmartDashboard.putString("Arm/Capped)", "Bottom");
-            speed = Constants.Arm.HOLD_SPEED;
+            speed = 0.0;
         }
         _motor.setSpeed(speed);
     }
