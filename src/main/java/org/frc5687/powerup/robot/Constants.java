@@ -202,6 +202,8 @@ public class Constants {
         public static final double ENCODER_TOP = 340;
         public static final double HOLD_SPEED_COMP = 0.0;
         public static final double HOLD_SPEED_PROTO = 0.1;
+        public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.1;
+        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
 
         public class Pot {
             public static final double TOP = 170.5;
