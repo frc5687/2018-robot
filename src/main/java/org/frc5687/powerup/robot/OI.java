@@ -53,7 +53,10 @@ public class OI {
     private JoystickButton driverCarriageUp;
     private JoystickButton driverCarriageDown;
 
-    public OI() {
+    private Robot _robot;
+
+    public OI(Robot robot) {
+        _robot = robot;
         driverGamepad = new Joystick(0);
         operatorGamepad = new Gamepad(1);
 
@@ -143,7 +146,7 @@ public class OI {
         double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.3 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
-        return applyDeadband(-speed, 0.05, .1);
+        return applyDeadband(-speed, 0.05, _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO));
     }
 
     public boolean zeroArmEncoderRequested() {

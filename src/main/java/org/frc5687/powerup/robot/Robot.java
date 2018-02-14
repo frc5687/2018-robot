@@ -51,7 +51,7 @@ public class Robot extends TimedRobot  {
         _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
-        oi = new OI();
+        oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         _arm = new Arm(oi);
         driveTrain = new DriveTrain(imu, oi);
@@ -150,16 +150,16 @@ public class Robot extends TimedRobot  {
 
     }
     public boolean pickConstant(boolean competitionValue, boolean practiceValue){
-        return _isCompetitionBot?competitionValue:practiceValue;
+        return _isCompetitionBot ? competitionValue : practiceValue;
     }
 
     public int pickConstant(int competitionValue, int practiceValue){
-        return _isCompetitionBot?competitionValue:practiceValue;
+        return _isCompetitionBot ? competitionValue : practiceValue;
     }
 
 
     public double pickConstant(double competitionValue, double practiceValue){
-        return _isCompetitionBot?competitionValue:practiceValue;
+        return _isCompetitionBot ? competitionValue : practiceValue;
     }
 
     public boolean isCompetitionBot(){
