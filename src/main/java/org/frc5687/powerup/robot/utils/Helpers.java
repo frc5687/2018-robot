@@ -21,4 +21,15 @@ public class Helpers {
         }
     }
 
+    public static double absMax(double a, double b) {
+        double absA = Math.abs(a);
+        double absB = Math.abs(b);
+
+        if (absA > absB) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
 }

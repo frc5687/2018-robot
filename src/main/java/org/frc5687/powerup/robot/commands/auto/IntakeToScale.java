@@ -19,7 +19,7 @@ public class IntakeToScale extends CommandGroup {
             addSequential(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_CLEAR_BUMPERS));
         }
         addParallel(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_TOP));
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_TOP, true));
+        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.Angles.SCALE, true));
     }
 }
 

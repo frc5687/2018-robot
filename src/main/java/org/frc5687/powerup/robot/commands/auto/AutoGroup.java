@@ -1,10 +1,10 @@
 package org.frc5687.powerup.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
+import org.frc5687.powerup.robot.commands.FinishArmPid;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
@@ -30,6 +30,10 @@ public class AutoGroup extends CommandGroup {
         switch (mode) {
             case Constants.AutoChooser.Mode.STAY_PUT:
                 // Nothing to do here but look sad
+                //armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
+                addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
+                //addParallel(armPid);
+                //addSequential(new FinishArmPid(armPid));
                 break;
 
             case Constants.AutoChooser.Mode.CROSS_AUTOLINE:
@@ -91,14 +95,14 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_MIDDLE, true));
+                        addParallel(new PrepIntakeForSwitch(robot, 0, 1000));
                         addSequential(new LeftSwitchCenter(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_MIDDLE, true));
-                        addSequential(new RightSwitchCenter(robot));
+                        addParallel(new PrepIntakeForSwitch(robot, 0, 1000));
+                        addSequential(new RightSwitchCenterFast(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
@@ -117,7 +121,22 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
-
+            case Constants.AutoChooser.Mode.SCALE_ONLY:
+                SmartDashboard.putString("Auto/Mode", "Scale Only");
+                switch (scaleFactor) {
+                    case Constants.AutoChooser.Position.CENTER:
+                        addParallel(new PrepIntakeForScale(robot, 150.0, 5000));
+                        addSequential(new CenterRightScale(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        addParallel(new PrepIntakeForScale(robot, 150.0, 5000));
+                        addSequential(new SixRightScale(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
+                        break;
+                }
         }
     }
 

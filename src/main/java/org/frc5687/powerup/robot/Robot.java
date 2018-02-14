@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointTrajectory;
 import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
@@ -14,7 +16,7 @@ import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.PDP;
 
-public class Robot extends IterativeRobot  {
+public class Robot extends TimedRobot  {
 
     // I really don't like the idea of public static refrences to subsystems...
 
@@ -31,6 +33,8 @@ public class Robot extends IterativeRobot  {
     private PDP pdp;
     private AutoChooser _autoChooser;
     public static JeVoisProxy jeVoisProxy;
+    private DigitalInput _identityFlag;
+    private boolean _isCompetitionBot;
 
 
     public Robot() {
@@ -43,7 +47,8 @@ public class Robot extends IterativeRobot  {
 
     @Override
     public void robotInit() {
-
+        _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
+        _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI();
@@ -53,7 +58,9 @@ public class Robot extends IterativeRobot  {
         carriage = new Carriage(oi);
         intake = new Intake(oi);
         _climber = new Climber(oi);
-        _autoChooser = new AutoChooser();
+        _autoChooser = new AutoChooser(_isCompetitionBot);
+        SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
+
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -64,13 +71,6 @@ public class Robot extends IterativeRobot  {
 
         oi.initializeButtons(this);
 
-        //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
-        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
-        // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
-        // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
-        //autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
-        //autoCommand = new TestDriveTrainSpeed(driveTrain);
-        //autoCommand = new TestDriveTrainSpeed(driveTrain, 288.0, 1.0, true, true, 8000, "null zone");
     }
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
@@ -147,6 +147,22 @@ public class Robot extends IterativeRobot  {
     public void updateDashboard() {
         pdp.updateDashboard();
         _autoChooser.updateDashboard();
+
+    }
+    public boolean pickConstant(boolean competitionValue, boolean practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
     }
 
+    public int pickConstant(int competitionValue, int practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
+
+
+    public double pickConstant(double competitionValue, double practiceValue){
+        return _isCompetitionBot?competitionValue:practiceValue;
+    }
+
+    public boolean isCompetitionBot(){
+        return _isCompetitionBot;
+    }
 }

@@ -29,6 +29,17 @@ public class DriveArm extends Command {
     }
 
     @Override
+    protected void interrupted() {
+        arm.disable();
+    }
+
+    @Override
+    protected void end() {
+        arm.disable();
+    }
+
+
+    @Override
     protected void execute() {
 
         if(oi.getArmSpeed() != 0) {

@@ -1,5 +1,7 @@
 package org.frc5687.powerup.robot;
 
+import jdk.internal.dynalink.support.BottomGuardingDynamicLinker;
+
 public class Constants {
 
     public class DriveTrain {
@@ -43,7 +45,7 @@ public class Constants {
             public static final double SPEED = 0.6;
 
             public static final double kP = 0.05;
-            public static final double kI = 0.0;
+            public static final double kI = 0.15;
             public static final double kD = 0.1;
             public static final double TOLERANCE = 5.5; // 0.5
             public static final double MAX_OUTPUT = 0;
@@ -62,15 +64,17 @@ public class Constants {
 
             public class MaxVel {
                 public static final double MPS = 2.33; // Meters Per Second
-                public static final double IPS = 91; // Inches Per Second
+                public static final double IPS = 130; // Inches Per Second
             }
 
             public class MaxAcceleration {
                 public static final double METERS = 2.0; // Meters Per Second Squared
+                public static final double INCHES = 80.0;
             }
 
             public class MaxJerk {
                 public static final double METERS = 6.0; // Meters Per Second Cubed
+                public static final double INCHES = 200.0;
             }
 
             public static final long STEADY_TIME = 100;
@@ -93,14 +97,17 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 1.70;//0.80;
+                public static final double kP = 0.0065;//1.06;//0.001;//1.70;//0.80;
                 public static final double kI = 0;
-                public static final double kD = 0.3;//.2;
+                public static final double kD = 0;//.3;
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double kA = 0.0;
+                public class kA {
+                    public static final double METERS = 1.0 / MaxAcceleration.METERS;
+                    public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
+                }
                 public static final double TOLERANCE = 1;
             }
 
@@ -112,7 +119,7 @@ public class Constants {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double PATH_TURN = 0.3; // 1.0
+                public static final double PATH_TURN = 0.1; // 1.0
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }
@@ -191,18 +198,28 @@ public class Constants {
     }
 
     public class Arm {
-        public static final double ENCODER_START = 0;
-        public static final double ENCODER_MIDDLE = 133;
-        public static final double ENCODER_FENCE = 90;
-        public static final double ENCODER_TOP = 340;
+        public class Angles {
+            public static final double BOTTOM = 37.0;
+            public static final double INTAKE = 37.0;
+            public static final double DRIVE = 37.0;
+            public static final double SWITCH = 80.0;
+            public static final double SCALE = 160.0;
+        }
 
-        public static final double HOLD_SPEED = 0.1;
+        public class Encoder {
+            public static final double ENCODER_START = 0;
+            public static final double ENCODER_MIDDLE = 133;
+            public static final double ENCODER_FENCE = 90;
+            public static final double ENCODER_TOP = 340;
+        }
+        public static final double HOLD_SPEED = 0.0;
         public static final double SPEED_SCALAR = 1.0;
 
         public class Pot {
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
             public static final double TOLERANCE = 4.2;
+            public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
         }
     }
 
@@ -213,7 +230,7 @@ public class Constants {
     }
 
     public class RotarySwitch {
-        public static final double TOLERANCE = 0.06;
+        public static final double TOLERANCE = 0.02;
     }
 
     public class AutoChooser {

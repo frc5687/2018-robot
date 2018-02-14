@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot;
 
 public class RobotMap {
 
+    public static final int IDENTITY_FLAG = 9;
 
     public class DriveTrain {
         public static final int LEFT_FRONT_MOTOR = 3;
@@ -48,6 +49,7 @@ public class RobotMap {
     public class AutoChooser {
         public static final int POSITION_SWITCH = 2;
         public static final int MODE_SWITCH = 3;
+        public static final int DELAY_SWITCH = 5;
     }
 
 }
