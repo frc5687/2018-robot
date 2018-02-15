@@ -179,8 +179,8 @@ public class DynamicPathCommand extends Command {
          * Log Turn
          */
         double turn = calculateTurn();
-        double speedLeftMotorWithTurn = speedLeftMotor - turn;
-        double speedRightMotorWithTurn = speedRightMotor + turn;
+        double speedLeftMotorWithTurn = speedLeftMotor + turn;
+        double speedRightMotorWithTurn = speedRightMotor - turn;
 
         _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
 
