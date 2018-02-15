@@ -27,7 +27,7 @@ public class Arm extends PIDSubsystem {
         super("Arm", kP, kI, kD, kF, 0.02);
         setAbsoluteTolerance(5);
         setInputRange(Constants.Arm.Pot.BOTTOM, Constants.Arm.Pot.TOP);
-        setOutputRange(-.25, 0.75);
+        setOutputRange(-.25, 1.0);
         _oi=oi;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
