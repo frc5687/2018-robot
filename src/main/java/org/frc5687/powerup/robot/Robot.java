@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        //setPeriod(0.01);
+        setPeriod(0.02);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
