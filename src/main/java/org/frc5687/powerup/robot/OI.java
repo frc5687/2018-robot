@@ -146,7 +146,10 @@ public class OI {
         double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.3 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
-        return applyDeadband(-speed, 0.05, _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO));
+        double holdSpeed = _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO);
+        double holdSpeedWithCube = _robot.pickConstant(Constants.Arm.HOLD_SPEED_WITH_CUBE_COMP, Constants.Arm.HOLD_SPEED_WITH_CUBE_PROTO);
+        double final_speed = _robot.getIntake().cubeIsDetected() ? holdSpeedWithCube : holdSpeed;
+        return applyDeadband(-speed, 0.05, final_speed);
     }
 
     public boolean zeroArmEncoderRequested() {

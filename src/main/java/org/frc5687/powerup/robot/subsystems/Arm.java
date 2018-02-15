@@ -24,7 +24,7 @@ public class Arm extends PIDSubsystem {
 
 
     public Arm (OI oi) {
-        super("Arm", kP, kI, kD, kF, 0.01);
+        super("Arm", kP, kI, kD, kF, 0.02);
         setAbsoluteTolerance(5);
         setInputRange(Constants.Arm.Pot.BOTTOM, Constants.Arm.Pot.TOP);
         setOutputRange(-.25, 0.75);
@@ -96,15 +96,18 @@ public class Arm extends PIDSubsystem {
         drive(output);
     }
 
-    @Override
-    public void periodic() {
+    public void updateDashboard() {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putNumber("Arm/setpoint", getSetpoint());
         SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
-        led.set(inStartingPosition());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
         SmartDashboard.putNumber("Arm/getPot()", getPot());
+    }
+
+    @Override
+    public void periodic() {
+        led.set(inStartingPosition());
     }
 }
