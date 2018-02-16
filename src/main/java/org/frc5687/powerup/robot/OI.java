@@ -103,7 +103,7 @@ public class OI {
         if(getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS)>Constants.Intake.AXIS_THRESHHOLD){
             return Constants.Intake.INTAKE_SPEED;
         }
-        if(getSpeedFromAxis(driverGamepad,ButtonNumbers.RIGHT_TRIGGER_AXIS){
+        if(getSpeedFromAxis(driverGamepad,ButtonNumbers.RIGHT_TRIGGER_AXIS> Constants.Intake.AXIS_THRESHHOLD)){
             return Constants.Intake.OUTTAKE_SPEED;
         }
         return 0;
