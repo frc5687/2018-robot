@@ -43,9 +43,9 @@ public class Constants {
             public static final double SPEED = 0.6;
 
             public static final double kP = 0.05;
-            public static final double kI = 0.15;
-            public static final double kD = 0.1;
-            public static final double TOLERANCE = 5.5; // 0.5
+            public static final double kI = 0.0;// is pretty darn good at just 0.0 // 0.008 ;//01;
+            public static final double kD = 0.0;// is pretty darn good at just 0.0 // 0.004 ;//01;
+            public static final double TOLERANCE = 1.0; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
