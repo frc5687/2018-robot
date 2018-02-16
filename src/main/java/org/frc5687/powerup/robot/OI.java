@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
@@ -96,11 +97,18 @@ public class OI {
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
+    public double getDriverIntake(){
+        if(getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS)>Constants.Intake.AXIS_THRESHHOLD){
+            return Constants.Intake.INTAKE_SPEED;
+        }
+        if(getSpeedFromAxis(driverGamepad,ButtonNumbers.RIGHT_TRIGGER_AXIS> Constants.Intake.AXIS_THRESHHOLD)){
+            return Constants.Intake.OUTTAKE_SPEED;
+        }
+        return 0;
+    }
+
     public double getLeftIntakeSpeed() {
-        double driver = Helpers.absMax(
-                getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS),
-                -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)
-        );
+        double driver = getDriverIntake();
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
         SmartDashboard.putNumber("Intake/left/driver", driver);
         SmartDashboard.putNumber("Intake/left/operator", operator);
@@ -115,10 +123,7 @@ public class OI {
     }
 
     public double getRightIntakeSpeed() {
-        double driver = Helpers.absMax(
-                getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS),
-                -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)
-        );
+        double driver = getDriverIntake();
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
         SmartDashboard.putNumber("Intake/right/driver", driver);
         SmartDashboard.putNumber("Intake/right/operator", operator);

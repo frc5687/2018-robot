@@ -19,8 +19,10 @@ public class Constants {
         public static final long EJECT_TIME = 250;
 
         public static final double HOLD_SPEED = 0.1;
-        public static final double INTAKE_SPEED = 0.75;
+        public static final double INTAKE_SPEED = 1;
         public static final long SETTLE_TIME = 500;
+
+        public static final double AXIS_THRESHHOLD = 0.1;
 
         public class SIDE_IR {
             public static final boolean ENABLED = true;
