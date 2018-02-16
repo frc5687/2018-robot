@@ -42,9 +42,9 @@ public class Carriage extends PIDSubsystem {
     public void drive(double speed) {
         double _speed = speed;
         if (_speed > 0 && isAtTop()) {
-            _speed = 0;//Constants.Carriage.HOLD_SPEED;
+            _speed = 0;
         } else if (_speed < 0 && isAtBottom()) {
-            _speed = 0;//-Constants.Carriage.HOLD_SPEED;
+            _speed = 0;
         }
         _speed *= (Constants.Carriage.MOTOR_INVERTED ? -1 : 1);
         SmartDashboard.putNumber("Carriage/rawSpeed", _speed);
