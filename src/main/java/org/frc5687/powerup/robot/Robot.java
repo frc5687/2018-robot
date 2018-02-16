@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         _arm = new Arm(oi, _isCompetitionBot);
         driveTrain = new DriveTrain(imu, oi);
-        carriage = new Carriage(oi);
+        carriage = new Carriage(oi, _isCompetitionBot);
         intake = new Intake(oi);
         _climber = new Climber(oi);
         _autoChooser = new AutoChooser(_isCompetitionBot);
