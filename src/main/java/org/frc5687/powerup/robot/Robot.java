@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
 
     public void updateDashboard() {
         updateTick++;
-        if (updateTick == 5) {
+        if (updateTick == ticksPerUpdate) {
             pdp.updateDashboard();
             _autoChooser.updateDashboard();
             _arm.updateDashboard();
