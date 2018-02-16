@@ -52,4 +52,8 @@ public class RobotMap {
         public static final int DELAY_SWITCH = 5;
     }
 
+    public class  Lights {
+        public static final int LEFT = 15;
+        public static final int RIGHT = 16;
+    }
 }
