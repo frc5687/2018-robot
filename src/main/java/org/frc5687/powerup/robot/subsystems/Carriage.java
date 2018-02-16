@@ -79,10 +79,16 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putNumber("Carriage/PID output", output);
         drive(output);
     }
-    @Override
-    public void periodic () {
+
+    public void updateDashboard() {
         SmartDashboard.putNumber("Carriage/position", getPos());
         SmartDashboard.putBoolean("Carriage/At top", isAtTop());
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
+    }
+
+
+    @Override
+    public void periodic () {
+
     }
 }

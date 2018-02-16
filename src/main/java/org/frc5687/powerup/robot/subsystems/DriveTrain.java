@@ -195,8 +195,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
         }
     }
 
-    @Override
-    public void periodic() {
+    public void updateDashboard() {
         SmartDashboard.putNumber("DriveTrain/observedHeadingCheesy", -getYaw());
         SmartDashboard.putNumber("DriveTrain/Distance/Right", getRightDistance());
         SmartDashboard.putNumber("DriveTrain/Distance/Left", getLeftDistance());
@@ -215,6 +214,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
         SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);
+    }
+
+    @Override
+    public void periodic() {
 
     }
 }

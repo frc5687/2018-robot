@@ -18,6 +18,7 @@ public class Intake extends Subsystem {
     private AnalogInput irBack;
     private AnalogInput irSide;
     private Servo servo;
+    private double _lastServoPos;
 
     private OI oi;
 
@@ -46,8 +47,13 @@ public class Intake extends Subsystem {
     }
 
     public void driveServo(double val) {
+        _lastServoPos = val;
         SmartDashboard.putNumber("Intake/Servo", val);
         servo.set(val);
+    }
+
+    public double getServoPosition() {
+        return _lastServoPos;
     }
 
     /**
@@ -61,11 +67,16 @@ public class Intake extends Subsystem {
         return  (!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD)
              && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD);
     }
-    @Override
-    public void periodic(){
+
+    public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
+    }
+
+    @Override
+    public void periodic(){
+
     }
 
 }

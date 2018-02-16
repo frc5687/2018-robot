@@ -14,7 +14,7 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = false;
         public static final double DROP_SPEED = -1;
         public static final double OUTTAKE_SPEED = -0.75;
-        public static final double SERVO_BOTTOM = 0.0;
+        public static final double SERVO_BOTTOM = 0.4;
         public static final double SERVO_UP = 1.0;
         public static final long EJECT_TIME = 250;
 
@@ -95,9 +95,9 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 0.0065;//1.06;//0.001;//1.70;//0.80;
+                public static final double kP = 0.008;//1.06;//0.001;//1.70;//0.80;
                 public static final double kI = 0;
-                public static final double kD = 0;//.3;
+                public static final double kD = 0.0;//.3;
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
@@ -117,7 +117,7 @@ public class Constants {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
                 }
-                public static final double PATH_TURN = 0.1; // 1.0
+                public static final double PATH_TURN = 0.4; // 1.0
                 public static final double MAX_DIFFERENCE = 0.4;
                 public static final double TOLERANCE = .5;
             }
@@ -202,6 +202,8 @@ public class Constants {
         public static final double ENCODER_TOP = 340;
         public static final double HOLD_SPEED_COMP = 0.0;
         public static final double HOLD_SPEED_PROTO = 0.1;
+        public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.1;
+        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
 
         public class Pot {
             public static final double TOP = 170.5;

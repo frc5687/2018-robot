@@ -5,6 +5,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
@@ -15,8 +16,9 @@ import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.PDP;
+import sun.util.resources.ca.CalendarData_ca;
 
-public class Robot extends TimedRobot  {
+public class Robot extends TimedRobot {
 
     // I really don't like the idea of public static refrences to subsystems...
 
@@ -35,6 +37,9 @@ public class Robot extends TimedRobot  {
     public static JeVoisProxy jeVoisProxy;
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
+    private long lastPeriod;
+    private int ticksPerUpdate = 5;
+    private int updateTick = 0;
 
 
     public Robot() {
@@ -53,14 +58,15 @@ public class Robot extends TimedRobot  {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
-        _arm = new Arm(oi);
+        _arm = new Arm(oi, _isCompetitionBot);
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi);
         intake = new Intake(oi);
         _climber = new Climber(oi);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
-
+        lastPeriod = System.currentTimeMillis();
+        //setPeriod(0.01);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -70,6 +76,7 @@ public class Robot extends TimedRobot  {
 
 
         oi.initializeButtons(this);
+        LiveWindow.disableAllTelemetry();
 
     }
     public Arm getArm() { return _arm; }
@@ -123,6 +130,9 @@ public class Robot extends TimedRobot  {
     @Override
     public void robotPeriodic() {
         updateDashboard();
+        long now = System.currentTimeMillis();
+        SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
+        lastPeriod = now;
     }
 
     @Override
@@ -145,9 +155,16 @@ public class Robot extends TimedRobot  {
     }
 
     public void updateDashboard() {
-        pdp.updateDashboard();
-        _autoChooser.updateDashboard();
-
+        updateTick++;
+        if (updateTick == ticksPerUpdate) {
+            pdp.updateDashboard();
+            _autoChooser.updateDashboard();
+            _arm.updateDashboard();
+            carriage.updateDashboard();
+            driveTrain.updateDashboard();
+            intake.updateDashboard();
+            updateTick = 0;
+        }
     }
     public boolean pickConstant(boolean competitionValue, boolean practiceValue){
         return _isCompetitionBot ? competitionValue : practiceValue;

@@ -23,6 +23,7 @@ public class DynamicPathCommand extends Command {
     private DriveTrain _driveTrain;
     private AHRS _imu;
     public double lastHeading;
+    public long lastExecute;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -71,6 +72,8 @@ public class DynamicPathCommand extends Command {
 
         lastHeading = followerLeft.getLastSegment().heading;
 
+        lastExecute = System.currentTimeMillis();
+
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
@@ -99,6 +102,13 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected void execute() {
+        /*
+         * Log time since last execute
+         */
+        long now = System.currentTimeMillis();
+        SmartDashboard.putNumber("AADynamicPathCommand/timeSinceLastExec", now - lastExecute);
+        lastExecute = now;
+
         /*
          * Log Left & Right Distance
          */
