@@ -52,6 +52,13 @@ public class Intake extends Subsystem {
         servo.set(val);
     }
 
+    public boolean isIntaking(){
+        return leftMotor.getSpeed()>0;
+    }
+    public boolean isOutaking(){
+        return leftMotor.getSpeed() < 0;
+    }
+
     public double getServoPosition() {
         return _lastServoPos;
     }
@@ -67,6 +74,7 @@ public class Intake extends Subsystem {
         return  (!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD)
              && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD);
     }
+
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());

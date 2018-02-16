@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
     private Intake intake;
     private Carriage carriage;
     private Climber _climber;
+    private Lights lights;
     private Arm _arm;
     public static AHRS imu;
     private UsbCamera camera;
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
+        lights = new Lights(intake);
         //setPeriod(0.01);
 
         try {
