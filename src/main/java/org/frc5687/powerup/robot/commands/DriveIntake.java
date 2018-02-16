@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Intake;
 
@@ -19,7 +20,9 @@ public class DriveIntake extends Command {
 
     @Override
     protected void execute() {
-        intake.drive(oi.getLeftIntakeSpeed(), oi.getRightIntakeSpeed());
+        double left = oi.getLeftIntakeSpeed();
+        double right = oi.getRightIntakeSpeed();
+        intake.drive(left, right);
     }
 
     @Override
