@@ -15,7 +15,7 @@ public class AnglePotentiometer implements PIDSource {
     private double _scale;
 
     public AnglePotentiometer(int channel, double bottomAngle, double bottomValue, double topAngle, double topValue) {
-        _scale = (topAngle - bottomAngle) / topValue - bottomValue ;
+        _scale = (topAngle - bottomAngle) / (topValue - bottomValue) ;
         _minAngle = bottomAngle;
         _bottomValue = bottomValue;
 
