@@ -1,7 +1,6 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -17,22 +16,27 @@ public class Carriage extends PIDSubsystem {
     private OI _oi;
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
+    private boolean _isCompetitionBot;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
     public static final double kD = 0.1;
     public static final double kF = 0.5;
 
-    public Carriage(OI oi) {
+    public Carriage(OI oi, boolean isCompetitionBot) {
         super("Carriage", kP, kI, kD, kF);
         setAbsoluteTolerance(15);
-        setInputRange(0, Constants.Carriage.ENCODER_TOP);
+        setInputRange(
+                isCompetitionBot ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO,
+                isCompetitionBot ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO
+        );
         setOutputRange(-.50, 0.75);
         _oi = oi;
         _motor = new VictorSP(RobotMap.Carriage.MOTOR);
         encoder = new Encoder(RobotMap.Carriage.ENCODER_A, RobotMap.Carriage.ENCODER_B);
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
+        _isCompetitionBot = isCompetitionBot;
     }
 
     public void drive(double speed) {
@@ -86,9 +90,8 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
     }
 
-
-    @Override
-    public void periodic () {
-
+    public boolean isCompetitionBot() {
+        return _isCompetitionBot;
     }
+
 }

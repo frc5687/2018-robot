@@ -19,11 +19,11 @@ public class AutoGroup extends CommandGroup {
         int scaleFactor = scaleSide * (position);
 
         addSequential(new AutoZeroCarriage(robot.getCarriage()));
-        //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS));
+        //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO));
 
         // Start with the "always" operations
         // addParallel(new CarriageZeroEncoder(robot.getCarriage()));
-        //addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP));
+        //addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_PROTO));
         // addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_FENCE));
         double distance = 0.0;
         MoveArmToSetpointPID armPid;
