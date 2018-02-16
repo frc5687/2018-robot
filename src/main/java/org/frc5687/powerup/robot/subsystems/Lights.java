@@ -35,8 +35,8 @@ public class Lights extends Subsystem {
     }
     public void runLights(){
 
-        _left.set(lightStatus[_status][_alert]);
-        _right.set(lightStatus[_status][_alert]);
+        _left.setSpeed(lightStatus[_status][_alert]);
+        _right.setSpeed(lightStatus[_status][_alert]);
         SmartDashboard.putNumber("Ligts/value", lightStatus[_status][_alert] );
     }
 
