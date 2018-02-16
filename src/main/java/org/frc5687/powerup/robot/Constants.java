@@ -22,6 +22,8 @@ public class Constants {
         public static final double INTAKE_SPEED = 1;
         public static final long SETTLE_TIME = 500;
 
+        public static final double AXIS_THRESHHOLD = 0.1;
+
         public class SIDE_IR {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
