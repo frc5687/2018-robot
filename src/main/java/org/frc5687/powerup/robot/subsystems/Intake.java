@@ -18,6 +18,7 @@ public class Intake extends Subsystem {
     private AnalogInput irBack;
     private AnalogInput irSide;
     private Servo servo;
+    private double _lastServoPos;
 
     private OI oi;
 
@@ -46,8 +47,13 @@ public class Intake extends Subsystem {
     }
 
     public void driveServo(double val) {
+        _lastServoPos = val;
         SmartDashboard.putNumber("Intake/Servo", val);
         servo.set(val);
+    }
+
+    public double getServoPosition() {
+        return _lastServoPos;
     }
 
     /**

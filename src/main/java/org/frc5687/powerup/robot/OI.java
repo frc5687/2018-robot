@@ -45,8 +45,7 @@ public class OI {
 
     private JoystickButton carriageZeroEncoder;
 
-    private JoystickButton servoHoldCube;
-    private JoystickButton servoReleaseCube;
+    private JoystickButton servoToggle;
 
     private JoystickButton driverArmUp;
     private JoystickButton driverArmDown;
@@ -78,8 +77,7 @@ public class OI {
         resetArmEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
         carriagePID = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
-        servoHoldCube = new JoystickButton(operatorGamepad, Gamepad.Buttons.B.getNumber());
-        servoReleaseCube = new JoystickButton(operatorGamepad, Gamepad.Buttons.A.getNumber());
+        servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
 
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         driverArmDown = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_STICK.getNumber());
@@ -201,8 +199,7 @@ public class OI {
         operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
-        servoHoldCube.whenPressed(new ServoHoldCube(robot.getIntake()));
-        servoReleaseCube.whenPressed(new ServoReleaseCube(robot.getIntake()));
+        servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
     }
 
 }
