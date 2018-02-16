@@ -144,10 +144,6 @@ public class OI {
         return applyDeadband(-speed, 0.05, final_speed);
     }
 
-    public boolean zeroArmEncoderRequested() {
-        return false;
-    }
-
     public double getClimberSpeed() {
         double speed = 0;
         if (climberWind.get()) {
