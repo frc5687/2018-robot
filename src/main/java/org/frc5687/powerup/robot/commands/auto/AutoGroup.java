@@ -96,13 +96,23 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
-                        armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
-                        addParallel(armPid);
-                        addSequential(new LeftSwitchCenter(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                        addSequential(new AutoEject(robot.getIntake()));
-                        addSequential(new FinishArmPid(armPid));
+                        if (robot.getCarriage().isHealthy()) {
+                            // If the Carriage is working
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
+                            addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
+                            addParallel(armPid);
+                            addSequential(new LeftSwitchCenter(robot));
+                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                            addSequential(new AutoEject(robot.getIntake()));
+                            addSequential(new FinishArmPid(armPid));
+                        } else {
+                            // If the Carriage is not working...
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
+                            addParallel(armPid);
+                            //addSequential(new LeftSwitchCenter(robot));addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                            addSequential(new AutoEject(robot.getIntake()));
+                            addSequential(new FinishArmPid(armPid));
+                        }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
                         armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);

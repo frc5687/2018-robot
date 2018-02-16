@@ -94,4 +94,8 @@ public class Carriage extends PIDSubsystem {
         return _isCompetitionBot;
     }
 
+    public boolean isHealthy() {
+        return false;
+    }
+
 }
