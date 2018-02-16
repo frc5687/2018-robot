@@ -12,12 +12,15 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
  */
 public class IntakeToSwitch extends CommandGroup {
     public IntakeToSwitch(Carriage carriage, Arm arm) {
+        int ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
         // If the carriage is below bumper heights, raise it!
-        if (carriage.getPos() < Constants.Carriage.ENCODER_CLEAR_BUMPERS) {
-            addSequential(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_CLEAR_BUMPERS));
+        if (carriage.getPos() < ENCODER_CLEAR_BUMPERS) {
+            addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
         }
-        addParallel(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_MIDDLE));
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_MIDDLE));
+
+        int ENCODER_MIDDLE = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_MIDDLE_COMP : Constants.Carriage.ENCODER_MIDDLE_PROTO;
+        addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_MIDDLE));
+        addParallel(new MoveArmToSetpointPID(arm, 78));
     }
 }
 

@@ -12,13 +12,16 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
  */
 public class IntakeToFloor extends CommandGroup {
     public IntakeToFloor(Carriage carriage, Arm arm) {
-        // If the carriag is below bumper heights, raise it!
-        if (carriage.getPos() > Constants.Carriage.ENCODER_CLEAR_BUMPERS) {
-            addParallel(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_CLEAR_BUMPERS));
+        // If the carriage is below bumper heights, raise it!
+        int ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
+        if (carriage.getPos() > ENCODER_CLEAR_BUMPERS) {
+            addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
         }
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_START));
 
-        addSequential(new MoveCarriageToSetpointPID(carriage, Constants.Carriage.ENCODER_BOTTOM));
+        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.Pot.BOTTOM));
+
+        int ENCODER_BOTTOM = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
+        addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_BOTTOM));
     }
 }
 

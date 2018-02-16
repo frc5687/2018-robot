@@ -183,11 +183,17 @@ public class Constants {
         public static final double ZERO_SPEED = 0.9;
 
 
-        public static final int ENCODER_TOP = 0; //  967;
-        public static final int ENCODER_MIDDLE = -480; //
-        public static final int ENCODER_CLEAR_BUMPERS = -717; //
-        public static final int ENCODER_DRIVE = -891; //
-        public static final int ENCODER_BOTTOM = -967; //
+        public static final int ENCODER_TOP_PROTO = 0;
+        public static final int ENCODER_MIDDLE_PROTO = -480;
+        public static final int ENCODER_CLEAR_BUMPERS_PROTO = -717;
+        public static final int ENCODER_DRIVE_PROTO = -891;
+        public static final int ENCODER_BOTTOM_PROTO = -967;
+
+        public static final int ENCODER_TOP_COMP = 0;
+        public static final int ENCODER_MIDDLE_COMP = -443;
+        public static final int ENCODER_CLEAR_BUMPERS_COMP = -251;
+        public static final int ENCODER_DRIVE_COMP = -482;
+        public static final int ENCODER_BOTTOM_COMP = -857;
 
         // public static
         public static final double RUNWAY = 25.5; // in
