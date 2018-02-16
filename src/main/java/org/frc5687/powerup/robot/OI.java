@@ -5,10 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
-import org.frc5687.powerup.robot.commands.auto.IntakeToDrive;
-import org.frc5687.powerup.robot.commands.auto.IntakeToFloor;
-import org.frc5687.powerup.robot.commands.auto.IntakeToScale;
-import org.frc5687.powerup.robot.commands.auto.IntakeToSwitch;
+import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.utils.Gamepad;
 import org.frc5687.powerup.robot.utils.Helpers;
 
@@ -28,8 +25,6 @@ public class OI {
 
     private JoystickButton climberWind;
     private JoystickButton climberUnwind;
-
-    private JoystickButton resetArmEncoder;
 
     private JoystickButton driverArmToScaleButton;
     private JoystickButton driverArmToIntakeButton;
@@ -74,7 +69,6 @@ public class OI {
 
         intakeLeftOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
-        resetArmEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
         carriagePID = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
         servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
@@ -151,7 +145,7 @@ public class OI {
     }
 
     public boolean zeroArmEncoderRequested() {
-        return resetArmEncoder.get();
+        return false;
     }
 
     public double getClimberSpeed() {
@@ -177,17 +171,8 @@ public class OI {
     }
 
     public void initializeButtons(Robot robot) {
-        carriageZeroEncoder.whenPressed(new CarriageZeroEncoder(robot.getCarriage()));
+        carriageZeroEncoder.whenPressed(new AutoZeroCarriage(robot.getCarriage()));
         carriagePID.whenPressed(new MoveCarriageToSetpointPID(robot.getCarriage(), 500));
-
-        DriverStation.reportError("driverArmToIntakeButton " + (driverArmToIntakeButton ==null), false);
-        DriverStation.reportError("driverArmToDriveButton " + (driverArmToDriveButton ==null), false);
-        DriverStation.reportError("driverArmToSwitchButton " + (driverArmToSwitchButton ==null), false);
-        DriverStation.reportError("driverArmToScaleButton " + (driverArmToScaleButton ==null), false);
-
-        DriverStation.reportError("robot " + (robot==null), false);
-        DriverStation.reportError("carriage " + (robot.getCarriage()==null), false);
-        DriverStation.reportError("arm " + (robot.getArm()==null), false);
 
         driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         driverArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
@@ -200,6 +185,15 @@ public class OI {
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
         servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
+
+        DriverStation.reportError("driverArmToIntakeButton " + (driverArmToIntakeButton ==null), false);
+        DriverStation.reportError("driverArmToDriveButton " + (driverArmToDriveButton ==null), false);
+        DriverStation.reportError("driverArmToSwitchButton " + (driverArmToSwitchButton ==null), false);
+        DriverStation.reportError("driverArmToScaleButton " + (driverArmToScaleButton ==null), false);
+
+        DriverStation.reportError("robot " + (robot==null), false);
+        DriverStation.reportError("carriage " + (robot.getCarriage()==null), false);
+        DriverStation.reportError("arm " + (robot.getArm()==null), false);
     }
 
 }
