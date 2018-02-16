@@ -16,7 +16,7 @@ public class IntakeToDrive extends CommandGroup {
         if (carriage.getPos() > ENCODER_CLEAR_BUMPERS) {
             addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
         }
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_START));
+        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.Pot.BOTTOM));
 
         int ENCODER_DRIVE = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_DRIVE_COMP : Constants.Carriage.ENCODER_DRIVE_PROTO;
         addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_DRIVE));
