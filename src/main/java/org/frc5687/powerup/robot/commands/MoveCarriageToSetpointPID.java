@@ -37,6 +37,11 @@ public class MoveCarriageToSetpointPID extends Command {
     }
 
     @Override
+    protected void end() {
+        DriverStation.reportError("Ending MoveCarriageToSetpointPID", false);
+    }
+
+    @Override
     protected void execute() {
         // Add logging here
         DriverStation.reportError("MoveCarriageToSetpointPID at " + _carriage.getPosition(), false);
