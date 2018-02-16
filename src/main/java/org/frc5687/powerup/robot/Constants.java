@@ -190,7 +190,7 @@ public class Constants {
         public static final int ENCODER_BOTTOM_PROTO = -967;
 
         public static final int ENCODER_TOP_COMP = 0;
-        public static final int ENCODER_MIDDLE_COMP = -430;
+        public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -251;
         public static final int ENCODER_DRIVE_COMP = -482;
         public static final int ENCODER_BOTTOM_COMP = -857;
