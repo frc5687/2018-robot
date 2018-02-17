@@ -48,7 +48,7 @@ public class DynamicPathCommand extends Command {
         _driveTrain.resetDriveEncoders();
         _imu.reset();
 
-        starting_heading = -_driveTrain.getYaw();
+        starting_heading = _driveTrain.getCheesyYaw();
 
         followerLeft.configure(
                 Constants.Auto.Drive.EncoderPID.kP,
@@ -79,13 +79,13 @@ public class DynamicPathCommand extends Command {
 
     private double calculateTurn() {
         double goalHeading = Math.toDegrees(followerLeft.getHeading());
-        double observedHeading = ChezyMath.getDifferenceInAngleDegrees(-_driveTrain.getYaw(), starting_heading);
+        double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
         SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
-        double turn = Constants.Auto.Drive.AnglePID.PATH_TURN * Constants.Auto.Drive.AnglePID.kV.IPS * angleDiff * 1; // multiply by -1 if self correcting, multiply by 1 if following turns
+        double turn = Constants.Auto.Drive.EncoderPID.kT * angleDiff * -1; // multiply by -1 if self correcting, multiply by 1 if following turns
 
         // Attempts to cap the turn
         /*
@@ -141,6 +141,7 @@ public class DynamicPathCommand extends Command {
          * Log Goal Velocity
          */
 
+        /*
         double goalVelocityLeftIPS = left.vel;
         double goalVelocityLeftMotor = goalVelocityLeftIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
 
@@ -153,6 +154,8 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightMotor", goalVelocityRightMotor);
         SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightIPS", goalVelocityRightIPS);
 
+        */
+
         // Entirely feed forward
         //_driveTrain.tankDrive(goalVelocityLeftMotor, goalVelocityRightMotor);
 
@@ -160,14 +163,8 @@ public class DynamicPathCommand extends Command {
          * Log Calculated Speed
          */
 
-        double speedIPSLeft = followerLeft.calculate(distanceL);
-        double speedIPSRight = followerRight.calculate(distanceR);
-
-        double speedLeftMotor = speedIPSLeft;//speedIPSLeft * Constants.Auto.Drive.EncoderPID.kV.IPS;
-        double speedRightMotor = speedIPSRight;//speedIPSRight * Constants.Auto.Drive.EncoderPID.kV.IPS;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftIPS", speedIPSLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRightIPS", speedIPSRight);
+        double speedLeftMotor = followerLeft.calculate(distanceL, _driveTrain.getLeftRate());
+        double speedRightMotor = followerRight.calculate(distanceR, _driveTrain.getRightRate());
 
         SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotor", speedLeftMotor);
         SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotor", speedRightMotor);
@@ -179,8 +176,8 @@ public class DynamicPathCommand extends Command {
          * Log Turn
          */
         double turn = calculateTurn();
-        double speedLeftMotorWithTurn = speedLeftMotor - turn;
-        double speedRightMotorWithTurn = speedRightMotor + turn;
+        double speedLeftMotorWithTurn = speedLeftMotor + turn;
+        double speedRightMotorWithTurn = speedRightMotor - turn;
 
         _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
 
