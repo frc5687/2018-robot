@@ -42,6 +42,10 @@ public class Intake extends Subsystem {
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
+        if (cubeIsDetected()) {
+            if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
+            if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
+        }
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
     }

@@ -105,7 +105,7 @@ public class OI {
         } else if (Math.abs(trigger) > Constants.Intake.DEADBAND) {
             return trigger;
         }
-        return Constants.Intake.HOLD_SPEED;
+        return 0;
     }
 
     public double getRightIntakeSpeed() {
@@ -123,7 +123,7 @@ public class OI {
         } else if (Math.abs(trigger) > Constants.Intake.DEADBAND) {
             return trigger;
         }
-        return Constants.Intake.HOLD_SPEED;
+        return 0;
     }
 
     public double getCarriageSpeed() {

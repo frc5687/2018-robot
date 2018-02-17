@@ -18,12 +18,12 @@ public class Constants {
         public static final double SERVO_UP = 1.0;
         public static final long EJECT_TIME = 250;
 
-        public static final double HOLD_SPEED = 0.1;
+        public static final double HOLD_SPEED = 0.2;
         public static final double INTAKE_SPEED = 0.75;
         public static final long SETTLE_TIME = 500;
 
         public class SIDE_IR {
-            public static final boolean ENABLED = true;
+            public static final boolean ENABLED = false;
             public static final int DETECTION_THRESHOLD = 1200;
         }
 

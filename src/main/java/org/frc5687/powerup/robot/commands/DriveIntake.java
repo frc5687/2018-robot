@@ -22,6 +22,7 @@ public class DriveIntake extends Command {
     protected void execute() {
         double left = oi.getLeftIntakeSpeed();
         double right = oi.getRightIntakeSpeed();
+
         intake.drive(left, right);
     }
 
