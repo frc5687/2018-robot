@@ -42,10 +42,15 @@ public class Carriage extends PIDSubsystem {
     public void drive(double speed) {
         double _speed = speed;
         if (_speed > 0 && isAtTop()) {
-            _speed = 0;//Constants.Carriage.HOLD_SPEED;
+            _speed = Constants.Carriage.HOLD_SPEED;
         } else if (_speed < 0 && isAtBottom()) {
-            _speed = 0;//-Constants.Carriage.HOLD_SPEED;
+            _speed = -Constants.Carriage.HOLD_SPEED;
+        } else if (_speed > 0 && isInTopZone()) {
+            _speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
+        } else if (_speed < 0 && isInBottomZone()) {
+            _speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
         }
+
         _speed *= (Constants.Carriage.MOTOR_INVERTED ? -1 : 1);
         SmartDashboard.putNumber("Carriage/rawSpeed", _speed);
         SmartDashboard.putNumber("Carriage/speed", -_speed);
@@ -92,6 +97,14 @@ public class Carriage extends PIDSubsystem {
 
     public boolean isCompetitionBot() {
         return _isCompetitionBot;
+    }
+
+    public boolean isInTopZone() {
+        return getPos() > (_isCompetitionBot ? Constants.Carriage.START_TOP_ZONE_COMP : Constants.Carriage.START_TOP_ZONE_PROTO);
+    }
+
+    public boolean isInBottomZone() {
+        return getPos() < (_isCompetitionBot ? Constants.Carriage.START_BOTTOM_ZONE_COMP : Constants.Carriage.START_BOTTOM_ZONE_PROTO);
     }
 
 }

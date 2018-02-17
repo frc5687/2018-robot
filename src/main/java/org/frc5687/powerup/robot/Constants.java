@@ -182,6 +182,7 @@ public class Constants {
         public static final double HOLD_SPEED = 0.05;
         public static final double ZERO_SPEED = 0.9;
 
+        public static final double ZONE_SPEED_LIMIT = 0.75;
 
         public static final int ENCODER_TOP_PROTO = 0;
         public static final int ENCODER_MIDDLE_PROTO = -480;
@@ -199,6 +200,10 @@ public class Constants {
         public static final double RUNWAY = 25.5; // in
 
 
+        public static final int START_TOP_ZONE_COMP = -200;
+        public static final int START_TOP_ZONE_PROTO = -200;
+        public static final int START_BOTTOM_ZONE_COMP = -600;
+        public static final int START_BOTTOM_ZONE_PROTO = -600;
     }
 
     public class Arm {
