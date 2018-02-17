@@ -1,5 +1,7 @@
 package org.frc5687.powerup.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.RobotMap;
@@ -12,8 +14,8 @@ import org.frc5687.powerup.robot.subsystems.Intake;
  * Created by Ben Bernard on 2/14/2018.
  */
 public class Lights extends Subsystem {
-    private Blinkin _left;
-    private Blinkin _right;
+    private Talon _left;
+    private Talon _right;
     private Intake _intake;
 
     private AutoChooser autoChooser;
@@ -24,9 +26,9 @@ public class Lights extends Subsystem {
     private double[][] lightStatus;
 
     public Lights(Intake _intake) {
-        _left = new Blinkin(RobotMap.Lights.LEFT);
-        _right = new Blinkin(RobotMap.Lights.RIGHT);
-        lightStatus = new double[][]{{0.19, 0.71, 0.69, 0.61}};
+        _left = new Talon(RobotMap.Lights.LEFT);
+        _right = new Talon(RobotMap.Lights.RIGHT);
+        lightStatus = new double[][]{{-0.19, 0.71, 0.69, 0.61}};
     }
 
     @Override
@@ -35,8 +37,8 @@ public class Lights extends Subsystem {
     }
     public void runLights(){
 
-        _left.setSpeed(lightStatus[_status][_alert]);
-        _right.setSpeed(lightStatus[_status][_alert]);
+        _left.setSpeed(-.73);
+        _right.setSpeed(-.75);
         SmartDashboard.putNumber("Ligts/value", lightStatus[_status][_alert] );
     }
 

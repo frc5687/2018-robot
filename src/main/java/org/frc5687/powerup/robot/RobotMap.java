@@ -43,7 +43,7 @@ public class RobotMap {
     }
 
     public class Climber {
-        public static final int MOTOR = 9;
+        public static final int MOTOR = 13;
     }
 
     public class AutoChooser {
@@ -53,7 +53,7 @@ public class RobotMap {
     }
 
     public class  Lights {
-        public static final int LEFT = 15;
+        public static final int LEFT = 9;
         public static final int RIGHT = 16;
     }
 }
