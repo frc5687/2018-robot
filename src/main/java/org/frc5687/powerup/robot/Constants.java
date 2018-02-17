@@ -193,9 +193,9 @@ public class Constants {
 
         public static final int ENCODER_TOP_COMP = 0;
         public static final int ENCODER_MIDDLE_COMP = -443;
-        public static final int ENCODER_CLEAR_BUMPERS_COMP = -251;
-        public static final int ENCODER_DRIVE_COMP = -482;
-        public static final int ENCODER_BOTTOM_COMP = -857;
+        public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
+        public static final int ENCODER_DRIVE_COMP = -582;
+        public static final int ENCODER_BOTTOM_COMP = -795;
 
         // public static
         public static final double RUNWAY = 25.5; // in
