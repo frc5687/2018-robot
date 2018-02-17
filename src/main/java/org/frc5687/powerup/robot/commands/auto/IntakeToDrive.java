@@ -13,7 +13,7 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
 public class IntakeToDrive extends CommandGroup {
     public IntakeToDrive(Carriage carriage, Arm arm) {
         int ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
-        if (carriage.getPos() > ENCODER_CLEAR_BUMPERS) {
+        if (carriage.getPos() < ENCODER_CLEAR_BUMPERS) {
             addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
         }
         addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.Pot.BOTTOM));
