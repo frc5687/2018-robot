@@ -99,6 +99,10 @@ public class Carriage extends PIDSubsystem {
         return _isCompetitionBot;
     }
 
+    public boolean isHealthy() {
+        return false;
+    }
+
     public boolean isInTopZone() {
         return getPos() > (_isCompetitionBot ? Constants.Carriage.START_TOP_ZONE_COMP : Constants.Carriage.START_TOP_ZONE_PROTO);
     }
