@@ -15,7 +15,7 @@ public class IntakeToFloor extends CommandGroup {
         // If the carriage is below bumper heights, raise it!
         int ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
         if (carriage.getPos() < ENCODER_CLEAR_BUMPERS) {
-            addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
+            addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
         }
 
         addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.Pot.BOTTOM));

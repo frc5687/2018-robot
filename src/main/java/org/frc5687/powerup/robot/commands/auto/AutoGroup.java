@@ -18,7 +18,7 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        if (robot.getCarriage().isHealthy()) {
+        if (true) {//robot.getCarriage().isHealthy()) {
             addSequential(new AutoZeroCarriage(robot.getCarriage()));
         }
         //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO));
@@ -110,10 +110,10 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
                         } else {
                             // If the Carriage is not working...
-                            armPid = new MoveArmToSetpointPID(robot.getArm(), 96, true);
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
                             addParallel(armPid);
                             addSequential(new CenterToLeftSwitchTarget(robot));
-                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6));
+                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6), 3);
                             addSequential(new AutoEject(robot.getIntake()));
                             addSequential(new FinishArmPid(armPid));
                             addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
@@ -133,7 +133,7 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
                         } else {
                             // If the Carriage is not working...
-                            armPid = new MoveArmToSetpointPID(robot.getArm(), 96, true);
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
                             addParallel(armPid);
                             addSequential(new RightSwitchCenterFast(robot));
                             //addSequential(new CenterToRightSwitchTarget(robot));
