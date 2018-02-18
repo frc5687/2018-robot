@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.subsystems.Intake;
@@ -21,6 +22,7 @@ public class AutoEject extends Command {
     protected void initialize() {
         super.initialize();
         _endMillis = System.currentTimeMillis() + Constants.Intake.EJECT_TIME;
+        DriverStation.reportError("AutoEject initializing", false);
     }
 
     @Override
@@ -37,6 +39,7 @@ public class AutoEject extends Command {
     @Override
     protected void end() {
         _intake.drive(0, 0);
+        DriverStation.reportError("AutoEject ending", false);
     }
 
     @Override

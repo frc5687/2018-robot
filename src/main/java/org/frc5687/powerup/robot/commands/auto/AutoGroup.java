@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -18,7 +19,9 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        if (true) {//robot.getCarriage().isHealthy()) {
+            addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        }
         //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO));
 
         // Start with the "always" operations
@@ -53,32 +56,32 @@ public class AutoGroup extends CommandGroup {
                     case 1:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                     case 2:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                     case 3:
                         path = new CrossAutoLineToLeftOfPowerCube(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                     case 4:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                     case 5:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                     case 6:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                 }
                 break;
@@ -96,22 +99,54 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
-                        armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
-                        addParallel(armPid);
-                        addSequential(new LeftSwitchCenter(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                        addSequential(new AutoEject(robot.getIntake()));
-                        addSequential(new FinishArmPid(armPid));
+                        DriverStation.reportError("Switch Only. Position 3. Left Side", false);
+                        if (robot.getCarriage().isHealthy()) {
+                            // If the Carriage is working
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
+                            addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
+                            addParallel(armPid);
+                            addSequential(new LeftSwitchCenter(robot));
+                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                            addSequential(new AutoEject(robot.getIntake()));
+                            addSequential(new FinishArmPid(armPid));
+                            addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        } else {
+                            DriverStation.reportError("Switch Only. Position 3. Left Side. Unhealthy Carriage", false);
+                            // If the Carriage is not working...
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
+                            addParallel(armPid);
+                            addSequential(new CenterToLeftSwitchTarget(robot));
+                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6));
+                            addSequential(new AutoEject(robot.getIntake()));
+                            addSequential(new FinishArmPid(armPid));
+                            addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
-                        armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
-                        addParallel(armPid);
-                        addSequential(new RightSwitchCenterFast(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                        addSequential(new AutoEject(robot.getIntake()));
-                        addSequential(new FinishArmPid(armPid));
+                        DriverStation.reportError("Switch Only. Position 3. Right Side", false);
+                        if (robot.getCarriage().isHealthy()) {
+                            // If the Carriage is working
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
+                            addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
+                            addParallel(armPid);
+                            addSequential(new RightSwitchCenterFast(robot));
+                            //addSequential(new CenterToRightSwitchTarget(robot));
+                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                            addSequential(new AutoEject(robot.getIntake()));
+                            addSequential(new FinishArmPid(armPid));
+                            addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        } else {
+                            // If the Carriage is not working...
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
+                            addParallel(armPid);
+                            addSequential(new RightSwitchCenterFast(robot));
+                            //addSequential(new CenterToRightSwitchTarget(robot));
+                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                            addSequential(new AutoEject(robot.getIntake()));
+                            addSequential(new FinishArmPid(armPid));
+                            addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        }
+
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;

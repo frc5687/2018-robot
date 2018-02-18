@@ -11,16 +11,26 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
  * Created by Ben Bernard on 2/4/2018.
  */
 public class IntakeToDrive extends CommandGroup {
+    private int ENCODER_CLEAR_BUMPERS;
+    private int ENCODER_DRIVE;
+    private Carriage _carriage;
+    private Arm _arm;
+
     public IntakeToDrive(Carriage carriage, Arm arm) {
-        int ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
-        if (carriage.getPos() > ENCODER_CLEAR_BUMPERS) {
-            addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_CLEAR_BUMPERS));
+        _carriage = carriage;
+        _arm = arm;
+        ENCODER_DRIVE = 582; //carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_DRIVE_COMP : Constants.Carriage.ENCODER_DRIVE_PROTO;
+        // If the carriage is low enough to restrict arm movement due to bumpers, wait until the carriage is up
+        /*
+        ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
+        if (_carriage.getPos() < ENCODER_CLEAR_BUMPERS) {
+            addSequential(new MoveCarriageToSetpointPID(_carriage, ENCODER_CLEAR_BUMPERS));
         }
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.Pot.BOTTOM));
+        */
 
-        int ENCODER_DRIVE = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_DRIVE_COMP : Constants.Carriage.ENCODER_DRIVE_PROTO;
-        addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_DRIVE));
-
+        addSequential(new ClearBumpersIfNeeded(_carriage));
+        addParallel(new MoveArmToSetpointPID(_arm, Constants.Arm.Pot.DRIVE));
+        addSequential(new MoveCarriageToSetpointPID(_carriage, ENCODER_DRIVE));
     }
 }
 

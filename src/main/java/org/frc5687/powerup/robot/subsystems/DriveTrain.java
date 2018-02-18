@@ -78,6 +78,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
         return imu.getYaw();
     }
 
+    public float getCheesyYaw() {
+        return -getYaw();
+    }
+
     /**
      *
      * @return The left distance in Inches.
