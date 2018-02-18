@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.subsystems;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
@@ -9,6 +10,7 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveArm;
 import org.frc5687.powerup.robot.utils.AnglePotentiometer;
+import org.frc5687.powerup.robot.subsystems.Lights;
 
 public class Arm extends PIDSubsystem {
     private Encoder encoder;
@@ -17,6 +19,7 @@ public class Arm extends PIDSubsystem {
     private DigitalInput hallEffect;
     private DigitalOutput led;
     private AnglePotentiometer _pot;
+    private Lights _lights;
 
     public static final double kP = 0.03;
     public static final double kI = 0.002;
@@ -99,6 +102,11 @@ public class Arm extends PIDSubsystem {
         drive(output);
     }
 
+    private void updateLights(){
+    _lights.atSwitchHeight = (Constants.Arm.ENCODER_FENCE < encoder.get());
+    _lights.atScaleHeight = (Constants.Arm.ENCODER_TOP -20 < encoder.get());
+    }
+
     public void updateDashboard() {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putNumber("Arm/setpoint", getSetpoint());
@@ -113,5 +121,6 @@ public class Arm extends PIDSubsystem {
     @Override
     public void periodic() {
         led.set(inStartingPosition());
+
     }
 }
