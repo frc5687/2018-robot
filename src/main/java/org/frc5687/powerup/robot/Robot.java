@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        lights = new Lights(intake);
+        lights = new Lights();
         //setPeriod(0.01);
 
         try {

@@ -25,7 +25,7 @@ public class Lights extends Subsystem {
     private int _turn = 0;
     private double[][] lightStatus;
 
-    public Lights(Intake _intake) {
+    public Lights() {
         _left = new Talon(RobotMap.Lights.LEFT);
         _right = new Talon(RobotMap.Lights.RIGHT);
     }
@@ -36,7 +36,7 @@ public class Lights extends Subsystem {
     }
 
     public void runLights() {
-        _right.set(lightStatus[_status][ _alert]);
+        _right.set(lightStatus[_alert][_status]);
         SmartDashboard.putNumber("Ligts/value", lightStatus[_status][_alert]);
     }
 

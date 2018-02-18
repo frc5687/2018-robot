@@ -8,6 +8,7 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
+import org.frc5687.powerup.robot.subsystems.Lights;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -19,6 +20,7 @@ public class Intake extends Subsystem {
     private AnalogInput irSide;
     private Servo servo;
     private double _lastServoPos;
+    private Lights lights;
 
     private OI oi;
 
@@ -44,6 +46,9 @@ public class Intake extends Subsystem {
     public void drive(double leftSpeed, double rightSpeed) {
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
+        if (leftSpeed + rightSpeed >0){
+                lights.setStatus(1);
+        }
     }
 
     public void driveServo(double val) {
