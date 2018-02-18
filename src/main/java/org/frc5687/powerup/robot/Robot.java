@@ -1,7 +1,7 @@
 package org.frc5687.powerup.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-//import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     private Climber _climber;
     private Arm _arm;
     public static AHRS imu;
-    //private UsbCamera camera;
+    private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
     public static JeVoisProxy jeVoisProxy;
@@ -68,13 +68,11 @@ public class Robot extends TimedRobot {
         lastPeriod = System.currentTimeMillis();
         //setPeriod(0.01);
 
-        /*
         try {
-            //camera = CameraServer.getInstance().startAutomaticCapture(0);
+            camera = CameraServer.getInstance().startAutomaticCapture(0);
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
-        */
 
 
         oi.initializeButtons(this);
