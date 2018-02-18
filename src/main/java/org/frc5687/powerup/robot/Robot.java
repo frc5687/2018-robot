@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        lights = new Lights();
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
 
