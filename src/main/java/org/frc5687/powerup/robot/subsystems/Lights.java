@@ -72,7 +72,10 @@ public class Lights extends Subsystem {
                 return 2;
             }
 
+            if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Blue){
             return 0;
+            }
+            return 1;
     }
 
 }
