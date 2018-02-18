@@ -15,6 +15,7 @@ import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
+import org.frc5687.powerup.robot.utils.Logger;
 import org.frc5687.powerup.robot.utils.PDP;
 import sun.util.resources.ca.CalendarData_ca;
 
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
     private Intake intake;
     private Carriage carriage;
     private Climber _climber;
+    private Logger _logger;
     private Arm _arm;
     public static AHRS imu;
     //private UsbCamera camera;
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        _logger.addLine("Robot turned on");
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
@@ -63,8 +66,10 @@ public class Robot extends TimedRobot {
         carriage = new Carriage(oi, _isCompetitionBot);
         intake = new Intake(oi);
         _climber = new Climber(oi);
+        setupLogging();
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
+        _logger.addLine("This is " + (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
         //setPeriod(0.01);
 
@@ -129,6 +134,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
         DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
+        _logger.addLine("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide);
         autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
         autoCommand.start();
     }
@@ -196,5 +202,25 @@ public class Robot extends TimedRobot {
 
     public boolean isCompetitionBot(){
         return _isCompetitionBot;
+    }
+
+    protected void setupLogging() {
+        DriverStation ds = DriverStation.getInstance();
+        String fn = "/home/lvuser/robot";
+        switch (ds.getMatchType()){
+            case Practice:
+                fn = String.format("/home/lvuser/practice-%d-%d", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+            case Qualification:
+                fn = String.format("/home/lvuser/qual-%d-%d", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+            case Elimination:
+                fn = String.format("/home/lvuser/elim-%d-%d", ds.getMatchNumber(), ds.getReplayNumber());
+                break;
+            default:
+                fn = String.format("/home/lvuser/other-%d", System.currentTimeMillis());
+                break;
+        }
+        _logger = new Logger(fn);
     }
 }
