@@ -16,7 +16,6 @@ import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.PDP;
-import sun.util.resources.ca.CalendarData_ca;
 
 public class Robot extends TimedRobot {
 
