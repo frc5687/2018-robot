@@ -46,8 +46,11 @@ public class Intake extends Subsystem {
     public void drive(double leftSpeed, double rightSpeed) {
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
-        if (leftSpeed + rightSpeed >0){
-                lights.setStatus(1);
+        if (leftSpeed + rightSpeed != 0){
+                lights.intakeRunning = true;
+        }
+        else {
+            lights.intakeRunning = false;
         }
     }
 
@@ -75,9 +78,15 @@ public class Intake extends Subsystem {
     public boolean cubeIsDetected() {
         // If we have no IRs enabled, always return false
         if (!Constants.Intake.BACK_IR.ENABLED && !Constants.Intake.SIDE_IR.ENABLED) { return false; }
+
         
-        return  (!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD)
-             && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD);
+        if ((!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD) && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD)) {
+            lights.cubeIsPresent = true;
+            return true;
+
+        }
+        lights.cubeIsPresent = false;
+        return false;
     }
 
 

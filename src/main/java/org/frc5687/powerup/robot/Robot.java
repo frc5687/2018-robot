@@ -1,7 +1,7 @@
 package org.frc5687.powerup.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.cscore.UsbCamera;
+//import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,6 +17,7 @@ import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.PDP;
 import sun.util.resources.ca.CalendarData_ca;
+import org.frc5687.powerup.robot.subsystems.Lights;
 
 public class Robot extends TimedRobot {
 
@@ -24,15 +25,15 @@ public class Robot extends TimedRobot {
 
     private Command autoCommand;
 
+    private Lights lights;
     private OI oi;
     private DriveTrain driveTrain;
     private Intake intake;
     private Carriage carriage;
     private Climber _climber;
-    private Lights lights;
     private Arm _arm;
     public static AHRS imu;
-    private UsbCamera camera;
+    //private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
     public static JeVoisProxy jeVoisProxy;
@@ -55,6 +56,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
+
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI(this);
@@ -67,14 +69,15 @@ public class Robot extends TimedRobot {
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        lights = new Lights();
         //setPeriod(0.01);
 
+        /*
         try {
-            camera = CameraServer.getInstance().startAutomaticCapture(0);
+            //camera = CameraServer.getInstance().startAutomaticCapture(0);
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
+        */
 
 
         oi.initializeButtons(this);
@@ -100,22 +103,35 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        if (gameData==null) { gameData = ""; }
+        int retries = 100;
+        while (gameData.length() < 2 && retries > 0) {
+            DriverStation.reportError("Gamedata is " + gameData + " retrying " + retries, false);
+            try {
+                Thread.sleep(5);
+                gameData = DriverStation.getInstance().getGameSpecificMessage();
+                if (gameData==null) { gameData = ""; }
+            } catch (Exception e) {
+            }
+            retries--;
+        }
+        SmartDashboard.putString("Auto/gameData", gameData);
+        DriverStation.reportError("gameData before parse: " + gameData, false);
         int switchSide = 0;
         int scaleSide = 0;
         if (gameData.length()>0) {
-           switchSide = gameData.charAt(0)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
+            switchSide = gameData.charAt(0)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
         }
         if (gameData.length()>1) {
             scaleSide = gameData.charAt(1)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
         }
-
-        int autoPosition = _autoChooser.positionSwitchValue() + 1;
-        int autoMode = _autoChooser.modeSwitchValue() + 1;
+        int autoPosition = _autoChooser.positionSwitchValue();
+        int autoMode = _autoChooser.modeSwitchValue();
         SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
         SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
-
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
         autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
         autoCommand.start();
     }

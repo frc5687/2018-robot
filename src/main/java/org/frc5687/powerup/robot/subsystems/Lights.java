@@ -17,13 +17,16 @@ public class Lights extends Subsystem {
     private Talon _left;
     private Talon _right;
     private Intake _intake;
+    public boolean cubeIsPresent;
+    public int alliance;
+    public boolean intakeRunning;
 
     private AutoChooser autoChooser;
 
-    private int _status = 0;
     private int _alert = 0;
     private int _turn = 0;
-    private double[][] lightStatus;
+    private double[][] lightStatus = {{0.87, 0.61, -0.81, 0.69, 0.91, 0.65}};
+
 
     public Lights() {
         _left = new Talon(RobotMap.Lights.LEFT);
@@ -36,8 +39,8 @@ public class Lights extends Subsystem {
     }
 
     public void runLights() {
-        _right.set(lightStatus[_alert][_status]);
-        SmartDashboard.putNumber("Ligts/value", lightStatus[_status][_alert]);
+        _right.set(lightStatus[_alert][getStatus()]);
+        SmartDashboard.putNumber("Ligts/value", lightStatus[_alert][getStatus()]);
     }
 
     public void execute() {
@@ -47,10 +50,14 @@ public class Lights extends Subsystem {
     public void setAlert(int alert) {
         _alert = alert;
     }
-
-    public void setStatus(int status) {
-        _status = status;
+    private int getStatus() {
+        if (cubeIsPresent) {
+            return 3;
+        }
+        if (intakeRunning) {
+                return 2;
+            }
+            return alliance;
     }
-
 
 }
