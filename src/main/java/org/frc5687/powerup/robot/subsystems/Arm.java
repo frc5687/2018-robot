@@ -1,6 +1,5 @@
 package org.frc5687.powerup.robot.subsystems;
 
-import com.sun.corba.se.impl.orbutil.closure.Constant;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
