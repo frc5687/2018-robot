@@ -2,6 +2,9 @@ package org.frc5687.powerup.robot;
 
 public class Constants {
 
+    public class Light {
+        public final double[][] lightArray = {{-0.19, 0.71, 0.69, 0.61}};
+    }
     public class DriveTrain {
         public static final double DEADBAND = 0.15;
         public static final boolean LEFT_MOTORS_INVERTED = false;
@@ -251,6 +254,9 @@ public class Constants {
             public static final int SCALE_THEN_SWITCH = 5;
             public static final int SWITCH_OR_SCALE = 6;
         }
+
+
+        }
     }
 
-}
+
