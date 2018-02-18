@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -18,7 +19,7 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
 
-        if (robot.getCarriage().isHealthy()) {
+        if (true) {//robot.getCarriage().isHealthy()) {
             addSequential(new AutoZeroCarriage(robot.getCarriage()));
         }
         //addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO));
@@ -98,6 +99,7 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
+                        DriverStation.reportError("Switch Only. Position 3. Left Side", false);
                         if (robot.getCarriage().isHealthy()) {
                             // If the Carriage is working
                             armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
@@ -109,8 +111,9 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new FinishArmPid(armPid));
                             addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
                         } else {
+                            DriverStation.reportError("Switch Only. Position 3. Left Side. Unhealthy Carriage", false);
                             // If the Carriage is not working...
-                            armPid = new MoveArmToSetpointPID(robot.getArm(), 96, true);
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
                             addParallel(armPid);
                             addSequential(new CenterToLeftSwitchTarget(robot));
                             addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6));
@@ -120,6 +123,7 @@ public class AutoGroup extends CommandGroup {
                         }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
+                        DriverStation.reportError("Switch Only. Position 3. Right Side", false);
                         if (robot.getCarriage().isHealthy()) {
                             // If the Carriage is working
                             armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
@@ -133,7 +137,7 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
                         } else {
                             // If the Carriage is not working...
-                            armPid = new MoveArmToSetpointPID(robot.getArm(), 96, true);
+                            armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
                             addParallel(armPid);
                             addSequential(new RightSwitchCenterFast(robot));
                             //addSequential(new CenterToRightSwitchTarget(robot));

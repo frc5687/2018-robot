@@ -26,7 +26,7 @@ public class AutoChooser {
 
 
     public int positionSwitchValue(){
-        return positionSwitch.get();
+        return positionSwitch.get() + 1;
     }
 
     public int modeSwitchValue(){
@@ -42,8 +42,8 @@ public class AutoChooser {
         SmartDashboard.putNumber("AutoChooser/Raw/Position", positionSwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Raw/Mode", modeSwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Raw/Delay", delaySwitch.getRaw());
-        SmartDashboard.putNumber("AutoChooser/Numeric/Position", positionSwitch.get());
-        SmartDashboard.putNumber("AutoChooser/Numeric/Mode", modeSwitch.get());
+        SmartDashboard.putNumber("AutoChooser/Numeric/Position", positionSwitchValue());
+        SmartDashboard.putNumber("AutoChooser/Numeric/Mode", modeSwitchValue());
         SmartDashboard.putNumber("AutoChooser/Numeric/Delay", delaySwitch.get());
 //        SmartDashboard.putString("AutoChooser/Selection", AutoGroup.getDescription(springSwitch.get(), gearSwitch.get(), hopperSwitch.get()));
   }

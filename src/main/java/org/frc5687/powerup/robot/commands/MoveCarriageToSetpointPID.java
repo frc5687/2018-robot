@@ -20,7 +20,6 @@ public class MoveCarriageToSetpointPID extends Command {
     @Override
     protected boolean isFinished() {
         if (_carriage.onTarget()) {
-            _carriage.disable();
             return true;
         }
         return false;
@@ -38,6 +37,7 @@ public class MoveCarriageToSetpointPID extends Command {
 
     @Override
     protected void end() {
+        _carriage.disable();
         DriverStation.reportError("Ending MoveCarriageToSetpointPID", false);
     }
 
