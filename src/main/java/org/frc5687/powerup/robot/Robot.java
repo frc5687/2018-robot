@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        _logger.addLine("Robot turned on");
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
@@ -67,6 +66,7 @@ public class Robot extends TimedRobot {
         intake = new Intake(oi);
         _climber = new Climber(oi);
         setupLogging();
+        _logger.addLine("Robot turned on");
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         _logger.addLine("This is " + (_isCompetitionBot ? "Diana" : "Jitterbug"));
