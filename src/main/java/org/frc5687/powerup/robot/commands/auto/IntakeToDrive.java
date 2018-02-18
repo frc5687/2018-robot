@@ -19,7 +19,7 @@ public class IntakeToDrive extends CommandGroup {
     public IntakeToDrive(Carriage carriage, Arm arm) {
         _carriage = carriage;
         _arm = arm;
-        ENCODER_DRIVE = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_DRIVE_COMP : Constants.Carriage.ENCODER_DRIVE_PROTO;
+        ENCODER_DRIVE = 582; //carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_DRIVE_COMP : Constants.Carriage.ENCODER_DRIVE_PROTO;
         // If the carriage is low enough to restrict arm movement due to bumpers, wait until the carriage is up
         /*
         ENCODER_CLEAR_BUMPERS = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_CLEAR_BUMPERS_COMP : Constants.Carriage.ENCODER_CLEAR_BUMPERS_PROTO;
@@ -29,7 +29,7 @@ public class IntakeToDrive extends CommandGroup {
         */
 
         addSequential(new ClearBumpersIfNeeded(_carriage));
-        addParallel(new MoveArmToSetpointPID(_arm, Constants.Arm.Pot.BOTTOM));
+        addParallel(new MoveArmToSetpointPID(_arm, Constants.Arm.Pot.DRIVE));
         addSequential(new MoveCarriageToSetpointPID(_carriage, ENCODER_DRIVE));
     }
 }

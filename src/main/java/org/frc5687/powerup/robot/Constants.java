@@ -194,7 +194,7 @@ public class Constants {
         public static final int ENCODER_TOP_COMP = 0;
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
-        public static final int ENCODER_DRIVE_COMP = -582;
+        public static final int ENCODER_DRIVE_COMP = -582; // -394
         public static final int ENCODER_BOTTOM_COMP = -795;
 
         // public static
@@ -222,6 +222,8 @@ public class Constants {
             public static final double BOTTOM = 31.8;
             public static final double TOLERANCE = 4.2;
             public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
+            public static final double INTAKE = 47.0;
+            public static final double DRIVE = 33.0;
         }
     }
 

@@ -28,7 +28,7 @@ public class IntakeToFloor extends CommandGroup {
         }
         */
         addSequential(new ClearBumpersIfNeeded(_carriage));
-        addParallel(new MoveArmToSetpointPID(_arm, Constants.Arm.Pot.BOTTOM));
+        addParallel(new MoveArmToSetpointPID(_arm, Constants.Arm.Pot.INTAKE));
         addSequential(new MoveCarriageToSetpointPID(_carriage, ENCODER_BOTTOM));
     }
 }
