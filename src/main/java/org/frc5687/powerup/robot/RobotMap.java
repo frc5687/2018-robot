@@ -7,6 +7,11 @@ public class RobotMap {
 
     public static final int IDENTITY_FLAG = 9;
 
+    public class Lights {
+        public static final int LEFT = PWM.navX18;
+        public static final int RIGHT = PWM.navX19;
+    }
+
     public class DriveTrain {
         public static final int LEFT_FRONT_MOTOR = PWM.RIO3;
         public static final int LEFT_REAR_MOTOR = PWM.RIO4;

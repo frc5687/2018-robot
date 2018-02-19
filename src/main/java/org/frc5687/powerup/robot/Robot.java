@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
     private Carriage carriage;
     private Climber _climber;
     private Arm _arm;
+    private Lights _lights;
     public static AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
@@ -62,6 +63,7 @@ public class Robot extends TimedRobot {
         carriage = new Carriage(oi, _isCompetitionBot);
         intake = new Intake(oi);
         _climber = new Climber(oi);
+        _lights = new Lights(this);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
@@ -84,6 +86,9 @@ public class Robot extends TimedRobot {
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public Lights getLights() {
+        return _lights;
+    }
 
 
     @Override
