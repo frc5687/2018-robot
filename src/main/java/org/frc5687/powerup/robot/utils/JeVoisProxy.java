@@ -1,13 +1,15 @@
 package org.frc5687.powerup.robot.utils;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JeVoisProxy {
 
-    private int lastReadX;
-    private int lastReadY;
+    private double lastReadX;
+    private double lastReadY;
+    private boolean lastCubeDetected;
 
     private boolean initializedProperly;
 
@@ -31,19 +33,26 @@ public class JeVoisProxy {
     }
 
 
-    synchronized public int GetX() {
+    synchronized public double GetX() {
         return lastReadX;
     }
 
-    synchronized public int GetY() {
+    synchronized public double GetY() {
         return lastReadY;
     }
 
-    synchronized protected void Set(int x, int y) {
+    synchronized public boolean GetCubeDetected() {
+        return lastCubeDetected;
+    }
+
+    synchronized protected void Set(double x, double y, boolean cubeDetected) {
         lastReadX = x;
         lastReadY = y;
+        lastCubeDetected = cubeDetected;
+
         SmartDashboard.putNumber("JeVois/x", lastReadX);
         SmartDashboard.putNumber("JeVois/y", lastReadY);
+        SmartDashboard.putBoolean("JeVois/cubeDetected", lastCubeDetected);
     }
 
     class BufferBuffer {
@@ -113,9 +122,10 @@ public class JeVoisProxy {
                     SmartDashboard.putString("JeVois/payload", payload);
 
                     String[] a = payload.split(";");
-                    int x = Integer.parseInt(a[0]);
-                    int y = Integer.parseInt(a[1]);
-                    proxy.Set(x, y);
+                    double x = Double.parseDouble(a[0]);
+                    double y = Double.parseDouble(a[1]);
+                    boolean cubeDetected = Integer.parseInt(a[2]) == 1;
+                    proxy.Set(x, y, cubeDetected);
                     Thread.sleep(1000 / 70);
                 } catch (Exception e) {
                     DriverStation.reportError(e.toString(), true);
