@@ -6,6 +6,12 @@ public class Constants {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
         public static final double SOLID_BLUE = 0.87;
         public static final double SOLID_RED = 0.61;
+        public static final double SOLID_YELLOW = 0.69;
+        public static final double SOLID_GREEN = 0.77;
+        public static final double SOLID_PURPLE = 0.91;
+        public static final double SOLID_BLACK  = 0.99;
+        public static final double SOLID_ORANGE = 0.65;
+
     }
 
     public class DriveTrain {

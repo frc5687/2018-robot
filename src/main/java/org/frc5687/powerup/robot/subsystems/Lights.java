@@ -13,6 +13,10 @@ public class Lights extends Subsystem {
     private Spark _left;
     private Spark _right;
     private DriverStation.Alliance _alliance;
+    public boolean cubeisPresent = false;
+    public boolean intakeIsRunning = false;
+    public boolean atSwitchHeight = false;
+    public boolean atScaleHeight = false;
 
     public Lights(Robot robot) {
         _robot = robot;
@@ -37,6 +41,30 @@ public class Lights extends Subsystem {
     public void setBoth(double leftVal, double rightVal) {
         setLeft(leftVal);
         setRight(rightVal);
+    }
+
+    public void setToColor(){
+        if (atScaleHeight){
+            setBoth(Constants.Lights.SOLID_PURPLE, Constants.Lights.SOLID_PURPLE);
+            return;
+        }
+
+        if (atSwitchHeight){
+            setBoth(Constants.Lights.SOLID_ORANGE, Constants.Lights.SOLID_ORANGE);
+            return;
+        }
+
+        if (cubeisPresent){
+            setBoth(Constants.Lights.SOLID_YELLOW, Constants.Lights.SOLID_YELLOW);
+            return;
+        }
+
+        if (intakeIsRunning){
+            setBoth(Constants.Lights.SOLID_GREEN, Constants.Lights.SOLID_GREEN);
+            return;
+        }
+
+        setToAllianceColor();
     }
 
     public void updateAlliance() {
