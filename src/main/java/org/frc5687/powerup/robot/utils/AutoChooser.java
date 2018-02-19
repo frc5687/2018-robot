@@ -55,7 +55,6 @@ public class AutoChooser {
         SmartDashboard.putNumber("AutoChooser/Numeric/Position", positionSwitchValue());
         SmartDashboard.putNumber("AutoChooser/Numeric/Mode", modeSwitchValue());
         SmartDashboard.putNumber("AutoChooser/Numeric/Delay", delaySwitch.get());
-        DriverStation.getInstance().waitForData();
 //        SmartDashboard.putString("AutoChooser/Selection", AutoGroup.getDescription(springSwitch.get(), gearSwitch.get(), hopperSwitch.get()));
   }
 }
