@@ -23,9 +23,6 @@ public class DriveArm extends Command {
     @Override
     protected void execute() {
         double speed = oi.getArmSpeed();
-        if (oi.zeroArmEncoderRequested()) {
-            arm.zeroEncoder();
-        }
         SmartDashboard.putNumber("Arm/Speed", speed);
         arm.drive(speed);
     }

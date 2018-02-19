@@ -5,14 +5,19 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
+import org.frc5687.powerup.robot.commands.MoveArmToSetpointTrajectory;
+import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.PDP;
 
-public class Robot extends IterativeRobot  {
+public class Robot extends TimedRobot {
 
     // I really don't like the idea of public static refrences to subsystems...
 
@@ -29,6 +34,11 @@ public class Robot extends IterativeRobot  {
     private PDP pdp;
     private AutoChooser _autoChooser;
     public JeVoisProxy jeVoisProxy;
+    private DigitalInput _identityFlag;
+    private boolean _isCompetitionBot;
+    private long lastPeriod;
+    private int ticksPerUpdate = 5;
+    private int updateTick = 0;
 
 
     public Robot() {
@@ -41,17 +51,21 @@ public class Robot extends IterativeRobot  {
 
     @Override
     public void robotInit() {
-
+        _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
+        _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
-        oi = new OI();
+        oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
-        _arm = new Arm(oi);
+        _arm = new Arm(oi, _isCompetitionBot);
         driveTrain = new DriveTrain(imu, oi);
-        carriage = new Carriage(oi);
+        carriage = new Carriage(oi, _isCompetitionBot);
         intake = new Intake(oi);
         _climber = new Climber(oi);
-        _autoChooser = new AutoChooser();
+        _autoChooser = new AutoChooser(_isCompetitionBot);
+        SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
+        lastPeriod = System.currentTimeMillis();
+        //setPeriod(0.01);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -61,14 +75,8 @@ public class Robot extends IterativeRobot  {
 
 
         oi.initializeButtons(this);
+        LiveWindow.disableAllTelemetry();
 
-        //autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5);
-        //autoCommand = new AutoDrive(driveTrain, 120.0, 0.5, "Cross auto line");
-        // autoCommand = new AutoAlign(driveTrain, imu, 45.0, 0.5s);
-        // autoCommand = new AutoDriveSimple(driveTrain, 120.0, 0.5);
-        //autoCommand = new AutoDrive(driveTrain, 168.0, .5, true, true, 500000, "cross auto");
-        //autoCommand = new TestDriveTrainSpeed(driveTrain);
-        //autoCommand = new TestDriveTrainSpeed(driveTrain, 288.0, 1.0, true, true, 8000, "null zone");
     }
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
@@ -90,6 +98,20 @@ public class Robot extends IterativeRobot  {
         driveTrain.resetDriveEncoders();
         carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
+        if (gameData==null) { gameData = ""; }
+        int retries = 100;
+        while (gameData.length() < 2 && retries > 0) {
+            DriverStation.reportError("Gamedata is " + gameData + " retrying " + retries, false);
+            try {
+                Thread.sleep(5);
+                gameData = DriverStation.getInstance().getGameSpecificMessage();
+                if (gameData==null) { gameData = ""; }
+            } catch (Exception e) {
+            }
+            retries--;
+        }
+        SmartDashboard.putString("Auto/gameData", gameData);
+        DriverStation.reportError("gameData before parse: " + gameData, false);
         int switchSide = 0;
         int scaleSide = 0;
         if (gameData.length()>0) {
@@ -98,16 +120,14 @@ public class Robot extends IterativeRobot  {
         if (gameData.length()>1) {
             scaleSide = gameData.charAt(1)=='L' ? Constants.AutoChooser.LEFT : Constants.AutoChooser.RIGHT;
         }
-
-        int autoPosition = _autoChooser.positionSwitchValue() + 1;
-        int autoMode = _autoChooser.modeSwitchValue() + 1;
+        int autoPosition = _autoChooser.positionSwitchValue();
+        int autoMode = _autoChooser.modeSwitchValue();
         SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
         SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
-
-        //autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
-        autoCommand = new AutoAlignToCube(this, 0, 0.2);
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
         autoCommand.start();
     }
 
@@ -123,10 +143,14 @@ public class Robot extends IterativeRobot  {
     @Override
     public void robotPeriodic() {
         updateDashboard();
+        long now = System.currentTimeMillis();
+        SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
+        lastPeriod = now;
     }
 
     @Override
     public void disabledPeriodic() {
+        Scheduler.getInstance().run();
     }
 
     @Override
@@ -144,12 +168,31 @@ public class Robot extends IterativeRobot  {
     }
 
     public void updateDashboard() {
-        pdp.updateDashboard();
-        intake.updateDashboard();
-        driveTrain.updateDashboard();
-        carriage.updateDashboard();
-        _arm.updateDashboard();
-        _autoChooser.updateDashboard();
+        updateTick++;
+        if (updateTick == ticksPerUpdate) {
+            pdp.updateDashboard();
+            _autoChooser.updateDashboard();
+            _arm.updateDashboard();
+            carriage.updateDashboard();
+            driveTrain.updateDashboard();
+            intake.updateDashboard();
+            updateTick = 0;
+        }
+    }
+    public boolean pickConstant(boolean competitionValue, boolean practiceValue){
+        return _isCompetitionBot ? competitionValue : practiceValue;
     }
 
+    public int pickConstant(int competitionValue, int practiceValue){
+        return _isCompetitionBot ? competitionValue : practiceValue;
+    }
+
+
+    public double pickConstant(double competitionValue, double practiceValue){
+        return _isCompetitionBot ? competitionValue : practiceValue;
+    }
+
+    public boolean isCompetitionBot(){
+        return _isCompetitionBot;
+    }
 }

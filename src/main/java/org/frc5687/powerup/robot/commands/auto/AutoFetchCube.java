@@ -8,7 +8,7 @@ import org.frc5687.powerup.robot.Robot;
  */
 public class AutoFetchCube extends CommandGroup {
     public AutoFetchCube(Robot robot) {
-        addParallel(new AutoIntake(robot));
+        addParallel(new AutoIntake(robot.getIntake()));
         addParallel(new AutoApproachCube(robot,0.7, 120, 5000));
     }
 }

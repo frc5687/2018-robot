@@ -1,5 +1,8 @@
 package com.team254.lib.trajectory;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * PID + Feedforward controller for following a Trajectory.
  *
@@ -16,9 +19,10 @@ public class TrajectoryFollower {
   private double current_heading = 0;
   private int current_segment;
   private Trajectory profile_;
+  private String _name;
 
-  public TrajectoryFollower() {
-
+  public TrajectoryFollower(String name) {
+    _name = name;
   }
 
   public void configure(double kp, double ki, double kd, double kv, double ka) {
@@ -38,17 +42,33 @@ public class TrajectoryFollower {
     profile_ = profile;
   }
 
-  public double calculate(double distance_so_far) {
+  public double calculate(double distance_so_far, double velocityIPS) {
     if (current_segment < profile_.getNumSegments()) {
       Trajectory.Segment segment = profile_.getSegment(current_segment);
-      double error = segment.pos - distance_so_far;
+      double posError = segment.pos - distance_so_far;
+      double velError = segment.vel - velocityIPS;
+      double kp = kp_ * posError;
+      double kd = kd_ * ((posError - last_error_) / segment.dt - segment.vel);
+      double kv = kv_ * segment.vel;
+      double ka = ka_ * segment.acc;
+      double output = kp + kd + kv + ka + (kv_ * velError);
+      /*
       double output = kp_ * error + kd_ * ((error - last_error_)
               / segment.dt - segment.vel) + (kv_ * segment.vel
               + ka_ * segment.acc);
+      */
 
-      last_error_ = error;
+      last_error_ = posError;
       current_heading = segment.heading;
       current_segment++;
+      SmartDashboard.putNumber("TF/" + _name + "/kp", kp);
+      SmartDashboard.putNumber("TF/" + _name + "/kd", kd);
+      SmartDashboard.putNumber("TF/" + _name + "/kv", kv);
+      SmartDashboard.putNumber("TF/" + _name + "/velError", velError);
+      SmartDashboard.putNumber("TF/" + _name + "/velErrorOutput", (kv_ * velError));
+      SmartDashboard.putNumber("TF/" + _name + "/output", output);
+      SmartDashboard.putNumber("TF/" + _name + "/current_segment", current_segment);
+      DriverStation.reportError(_name + " kp: " + kp + "kv: " + kv + " output: " + output, false);
       //System.out.println("so far: " + distance_so_far + "; output: " + output);
       return output;
     } else {

@@ -9,13 +9,25 @@ public class JeVoisProxy {
     private int lastReadX;
     private int lastReadY;
 
+    private boolean initializedProperly;
+
     private JeVoisListener listener;
     private Thread listenerThread;
 
     public JeVoisProxy(SerialPort.Port port) {
-        listener = new JeVoisListener(this, port);
-        listenerThread = new Thread(listener);
-        listenerThread.start();
+        setup(port);
+    }
+
+    public void setup(SerialPort.Port port) {
+        try {
+            listener = new JeVoisListener(this, port);
+            listenerThread = new Thread(listener);
+            listenerThread.start();
+            initializedProperly = true;
+        } catch (Exception e) {
+            initializedProperly = false;
+        }
+        SmartDashboard.putBoolean("JeVois/initializedProperly", initializedProperly);
     }
 
 
