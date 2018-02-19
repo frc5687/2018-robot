@@ -16,8 +16,8 @@ import org.frc5687.powerup.robot.subsystems.Intake;
  * Created by Ben Bernard on 2/14/2018.
  */
 public class Lights extends Subsystem {
-    private Talon _left;
-    private Talon _right;
+    private Spark _left;
+    private Spark _right;
     private Intake _intake;
     private int alliance;
 
@@ -26,6 +26,8 @@ public class Lights extends Subsystem {
     public boolean intakeRunning = false;
     public boolean atSwitchHeight = false;
     public boolean atScaleHeight = false;
+    public boolean leftBlining = false;
+    public boolean rightBlinking = false;
     private int _alert = 0;
     private int _turn = 0;
     private double[][] lightStatus = {{0.87, 0.61, -0.81, 0.69, 0.91, 0.65}};
@@ -33,8 +35,8 @@ public class Lights extends Subsystem {
 
 
     public Lights() {
-        _left = new Talon(RobotMap.Lights.LEFT);
-        _right = new Talon(RobotMap.Lights.RIGHT);
+        _left = new Spark(RobotMap.Lights.LEFT);
+        _right = new Spark(RobotMap.Lights.RIGHT);
 
     }
 
@@ -44,7 +46,33 @@ public class Lights extends Subsystem {
     }
 
     public void runLights() {
-        _right.set(lightStatus[_alert][getStatus()]);
+        if (rightBlinking) {
+            _left.setSpeed(lightStatus[_alert][getStatus()]);
+            if (System.currentTimeMillis() % 1000 > 500) {
+                _right.setSpeed((lightStatus[_alert][getStatus()]));
+            }
+
+            else {
+                _right.setSpeed(0.99);
+            }
+
+            if (leftBlining) {
+
+                _right.setSpeed(lightStatus[_alert][getStatus()]);
+
+                if (System.currentTimeMillis() % 1000 > 500) {
+
+                    _left.setSpeed((lightStatus[_alert][getStatus()]));
+
+                } else {
+                    
+                    _left.setSpeed(0.99);
+                }
+            }
+
+        }
+        _right.setSpeed(lightStatus[_alert][getStatus()]);
+        _left.setSpeed(lightStatus[_alert][getStatus()]);
         SmartDashboard.putNumber("Ligts/value", lightStatus[_alert][getStatus()]);
     }
 
@@ -56,21 +84,21 @@ public class Lights extends Subsystem {
         _alert = alert;
     }
     private int getStatus() {
-        if (atScaleHeight) {
-            return 5;
-        }
+        //if (atScaleHeight) {
+        //    return 5;
+        //}
 
-        if (atSwitchHeight) {
-            return 4;
-        }
+       // if (atSwitchHeight) {
+        //    return 4;
+        //}
 
-        if (cubeIsPresent) {
-            return 3;
-        }
+        //if (cubeIsPresent) {
+         //   return 3;
+        //}
 
-        if (intakeRunning) {
-                return 2;
-            }
+        //if (intakeRunning) {
+         //       return 2;
+          //  }
 
             if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Blue){
             return 0;

@@ -56,8 +56,8 @@ public class RobotMap {
     }
 
     public class  Lights {
-        public static final int LEFT = PWM.navX15;
-        public static final int RIGHT = PWM.navX16;
+        public static final int LEFT = PWM.navX17;
+        public static final int RIGHT = PWM.navX18;
     }
 
 
