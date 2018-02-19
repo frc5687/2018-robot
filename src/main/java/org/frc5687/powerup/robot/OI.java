@@ -82,11 +82,13 @@ public class OI {
 
     public double getLeftSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS);
+        speed = applySensativityFactor(speed, Constants.DriveTrain.SENSATIVITY);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getRightSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_AXIS);
+        speed = applySensativityFactor(speed, Constants.DriveTrain.SENSATIVITY);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
@@ -99,6 +101,7 @@ public class OI {
         SmartDashboard.putNumber("Intake/left/driver", driver);
         SmartDashboard.putNumber("Intake/left/operator", operator);
         double trigger = Helpers.absMax(driver, operator);
+        trigger = applySensativityFactor(trigger, Constants.Intake.SENSATIVITY);
 
         if (intakeLeftOut.get()) {
             return Constants.Intake.OUTTAKE_SPEED;
@@ -117,6 +120,7 @@ public class OI {
         SmartDashboard.putNumber("Intake/right/driver", driver);
         SmartDashboard.putNumber("Intake/right/operator", operator);
         double trigger = Helpers.absMax(driver, operator);
+        trigger = applySensativityFactor(trigger, Constants.Intake.SENSATIVITY);
 
         if (intakeRightOut.get()) {
             return Constants.Intake.OUTTAKE_SPEED;
@@ -130,6 +134,7 @@ public class OI {
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
         double driver = driverCarriageUp.get() ? -1 : (driverCarriageDown.get() ? 0.3 : 0);
         double speed = Helpers.absMax(operator, driver);
+        speed = applySensativityFactor(speed, Constants.Carriage.SENSATIVITY);
         SmartDashboard.putNumber("OI/LEFT AXIS", speed);
         return applyDeadband(-speed, Constants.Carriage.DEADBAND, .1);
     }
@@ -138,6 +143,7 @@ public class OI {
         double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.3 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
+        speed = applySensativityFactor(speed,Constants.Arm.SENSATIVITY);
         double holdSpeed = _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO);
         double holdSpeedWithCube = _robot.pickConstant(Constants.Arm.HOLD_SPEED_WITH_CUBE_COMP, Constants.Arm.HOLD_SPEED_WITH_CUBE_PROTO);
         double final_speed = _robot.getIntake().cubeIsDetected() ? holdSpeedWithCube : holdSpeed;
@@ -152,6 +158,10 @@ public class OI {
             speed = Constants.Climber.UNWIND_SPEED;
         }
         return speed;
+    }
+
+    public double applySensativityFactor(double value, double factor){
+        return (value*value*value*factor) + (value*(1-factor));
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
