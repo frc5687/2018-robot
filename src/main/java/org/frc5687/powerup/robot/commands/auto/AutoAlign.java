@@ -28,6 +28,7 @@ public class AutoAlign extends Command implements PIDOutput {
 
     private long onTargetMillis;
     private long startTimeMillis;
+    private long endTimeMillis;
 
     private DriveTrain driveTrain;
     private AHRS imu;
@@ -56,6 +57,7 @@ public class AutoAlign extends Command implements PIDOutput {
         DriverStation.reportError("AutoAlign initialized to " + angle + " at " + speed, false);
         DriverStation.reportError("kP="+kP+" , kI="+kI+", kD="+kD + ",T="+ Align.TOLERANCE, false);
         startTimeMillis = System.currentTimeMillis();
+        endTimeMillis = startTimeMillis + 15000;
     }
 
     @Override
@@ -72,12 +74,20 @@ public class AutoAlign extends Command implements PIDOutput {
     protected boolean isFinished() {
         if (!controller.onTarget()) {
             onTargetMillis = 0;
+            DriverStation.reportError("reached auto align target", false);
             return false;
         }
+
+        if(endTimeMillis < System.currentTimeMillis()){
+            DriverStation.reportError("auto align timed out", false);
+            return true;
+        }
+
         if (onTargetMillis == 0) {
             onTargetMillis = System.currentTimeMillis();
         }
-        return System.currentTimeMillis() > onTargetMillis + Constants.Auto.Drive.ALIGN_STEADY_TIME;
+
+        return (System.currentTimeMillis() > onTargetMillis + Constants.Auto.Drive.ALIGN_STEADY_TIME);
     }
 
     @Override

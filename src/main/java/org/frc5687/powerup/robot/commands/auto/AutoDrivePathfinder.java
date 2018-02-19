@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
@@ -18,6 +19,7 @@ public class AutoDrivePathfinder extends Command {
     private Trajectory _trajectory;
     private EncoderFollower _leftEncoderFollower;
     private EncoderFollower _rightEncoderFollower;
+    private long endTime;
 
     public AutoDrivePathfinder(DriveTrain driveTrain, Waypoint[] points) {
         requires(driveTrain);
@@ -38,6 +40,10 @@ public class AutoDrivePathfinder extends Command {
 
         _leftEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA.METERS);
         _rightEncoderFollower.configurePIDVA(Constants.Auto.Drive.EncoderPID.kP, Constants.Auto.Drive.EncoderPID.kI, Constants.Auto.Drive.EncoderPID.kD, Constants.Auto.Drive.EncoderPID.kV.MPS, Constants.Auto.Drive.EncoderPID.kA.METERS);
+    }
+    @Override
+    protected void initialize(){
+        endTime = System.currentTimeMillis() + 15000;
     }
 
     @Override
@@ -69,6 +75,9 @@ public class AutoDrivePathfinder extends Command {
 
     @Override
     protected boolean isFinished() {
+        if(System.currentTimeMillis()<endTime){
+            DriverStation.reportError("AutoDrivePathfinder timed out",false);
+        }
         boolean finished = _leftEncoderFollower.isFinished() && _rightEncoderFollower.isFinished();
         SmartDashboard.putBoolean("AutoDrivePF/finished", finished);
         return finished;

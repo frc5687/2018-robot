@@ -24,6 +24,7 @@ public class DynamicPathCommand extends Command {
     private AHRS _imu;
     public double lastHeading;
     public long lastExecute;
+    private long endMillis;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -48,6 +49,7 @@ public class DynamicPathCommand extends Command {
         DriverStation.reportError("Starting DynamicPathCommand", false);
         _driveTrain.resetDriveEncoders();
         _imu.reset();
+        endMillis = System.currentTimeMillis() + 15000;
 
         starting_heading = _driveTrain.getCheesyYaw();
 
@@ -207,6 +209,11 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected boolean isFinished() {
+        if(System.currentTimeMillis()>endMillis){
+            DriverStation.reportError("DynamicPathCommand timed out", false);
+            return false;
+        }
+
         return followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
     }
 

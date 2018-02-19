@@ -11,6 +11,7 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
 public class AutoZeroCarriage extends Command {
 
     private Carriage _carriage;
+    private long endMillis;
 
     public AutoZeroCarriage(Carriage carriage) {
         requires(carriage);
@@ -21,6 +22,7 @@ public class AutoZeroCarriage extends Command {
     protected void initialize() {
         super.initialize();
         DriverStation.reportError("Starting AutoZeroCarriage", false);
+        endMillis = System.currentTimeMillis() + 15000;
     }
 
     @Override
@@ -38,6 +40,10 @@ public class AutoZeroCarriage extends Command {
 
     @Override
     protected boolean isFinished() {
+        if(System.currentTimeMillis()<endMillis){
+            DriverStation.reportError("AutoZeroCarriage timed out", false);
+            return false;
+        }
         return _carriage.isAtTop();
     }
 }
