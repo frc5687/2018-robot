@@ -1,6 +1,5 @@
 package org.frc5687.powerup.robot.utils;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
