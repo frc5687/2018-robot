@@ -47,6 +47,14 @@ public class Lights extends Subsystem {
     }
 
     public void setToColor(){
+        if(rightBlinking && System.currentTimeMillis()%(Constants.Lights.TIME_ON+Constants.Lights.TIME_OFF) < Constants.Lights.TIME_ON){
+            setBoth(getAllianceColor(),Constants.Lights.SOLID_BLACK);
+        }
+
+        if(leftBlinking && System.currentTimeMillis()%(Constants.Lights.TIME_ON+Constants.Lights.TIME_OFF) < Constants.Lights.TIME_ON){
+            setBoth(Constants.Lights.SOLID_BLACK, getAllianceColor());
+        }
+
         if (atScaleHeight){
             setBoth(Constants.Lights.SOLID_PURPLE, Constants.Lights.SOLID_PURPLE);
             return;
@@ -67,7 +75,7 @@ public class Lights extends Subsystem {
             return;
         }
 
-        setToAllianceColor();
+        setBoth(getAllianceColor(),getAllianceColor());
     }
 
     public void updateAlliance() {
@@ -78,14 +86,13 @@ public class Lights extends Subsystem {
         return _alliance;
     }
 
-    public void setToAllianceColor() {
+    public double getAllianceColor() {
         if (_alliance == null) {
             updateAlliance();
         }
         if (getAlliance() == DriverStation.Alliance.Blue) {
-            setBoth(Constants.Lights.SOLID_BLUE, Constants.Lights.SOLID_BLUE);
-        } else if (getAlliance() == DriverStation.Alliance.Red) {
-            setBoth(Constants.Lights.SOLID_RED, Constants.Lights.SOLID_RED);
+            return Constants.Lights.SOLID_BLUE;
         }
+        return Constants.Lights.SOLID_RED;
     }
 }

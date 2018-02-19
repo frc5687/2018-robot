@@ -137,6 +137,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        _lights.leftBlinking = false;
+        _lights.rightBlinking = false;
         if (autoCommand != null) autoCommand.cancel();
     }
 

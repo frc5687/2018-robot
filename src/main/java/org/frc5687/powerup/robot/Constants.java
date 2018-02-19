@@ -11,6 +11,9 @@ public class Constants {
         public static final double SOLID_PURPLE = 0.91;
         public static final double SOLID_BLACK  = 0.99;
         public static final double SOLID_ORANGE = 0.65;
+        public static final double TIME_ON = 500;
+        public static final double TIME_OFF = 500;
+
 
     }
 

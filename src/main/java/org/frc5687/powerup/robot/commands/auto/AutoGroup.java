@@ -9,11 +9,12 @@ import org.frc5687.powerup.robot.commands.FinishArmPid;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
-
+import org.frc5687.powerup.robot.subsystems.Lights;
 /**
  * Created by Ben Bernard on 2/2/2018.
  */
 public class AutoGroup extends CommandGroup {
+    private Lights _lights;
     public AutoGroup(int mode, int position, int switchSide, int scaleSide, Robot robot) {
         super();
         int switchFactor = switchSide * (position );
@@ -99,7 +100,9 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
+
                         DriverStation.reportError("Switch Only. Position 3. Left Side", false);
+                        _lights.leftBlinking = true;
                         if (robot.getCarriage().isHealthy()) {
                             // If the Carriage is working
                             armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
@@ -123,6 +126,7 @@ public class AutoGroup extends CommandGroup {
                         }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
+                        _lights.rightBlinking = true;
                         DriverStation.reportError("Switch Only. Position 3. Right Side", false);
                         if (robot.getCarriage().isHealthy()) {
                             // If the Carriage is working
