@@ -16,4 +16,14 @@ public class DriveLights extends Command {
     protected boolean isFinished() {
         return false;
     }
+
+    @Override
+    protected void initialize() {
+        _lights.setToAllianceColor();
+    }
+
+    @Override
+    protected void execute() {
+        _lights.setToAllianceColor();
+    }
 }
