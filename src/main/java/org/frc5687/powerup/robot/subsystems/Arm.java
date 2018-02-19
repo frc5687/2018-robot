@@ -9,6 +9,7 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveArm;
 import org.frc5687.powerup.robot.utils.AnglePotentiometer;
+import org.frc5687.powerup.robot.subsystems.Lights;
 
 public class Arm extends PIDSubsystem {
     private Encoder encoder;
@@ -17,6 +18,7 @@ public class Arm extends PIDSubsystem {
     private DigitalInput hallEffect;
     private DigitalOutput led;
     private AnglePotentiometer _pot;
+    private Lights _lights;
 
     public static final double kP = 0.03;
     public static final double kI = 0.002;
@@ -99,11 +101,20 @@ public class Arm extends PIDSubsystem {
         drive(output);
     }
 
+    public boolean isAtSwitchHeight(){
+        _lights.atSwitchHeight = getPosition()>Constants.Arm.ENCODER_FENCE;
+        return getPosition()>Constants.Arm.ENCODER_FENCE;
+    }
+    // Right now there is no encoder constant for scale height
+
+
+
     public void updateDashboard() {
         SmartDashboard.putNumber("Arm/encoder.get()", encoder.get());
         SmartDashboard.putNumber("Arm/setpoint", getSetpoint());
         SmartDashboard.putNumber("Arm/position", getPosition());
         SmartDashboard.putBoolean("Arm/inStartingPosition", inStartingPosition());
+        SmartDashboard.putBoolean("Arm/SwitchHeight", isAtSwitchHeight());
         SmartDashboard.putBoolean("Arm/atTop()", atTop());
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
         SmartDashboard.putNumber("Arm/potAngle", getPot());

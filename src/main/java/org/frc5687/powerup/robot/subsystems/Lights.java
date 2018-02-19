@@ -17,6 +17,9 @@ public class Lights extends Subsystem {
     public boolean intakeIsRunning = false;
     public boolean atSwitchHeight = false;
     public boolean atScaleHeight = false;
+    //There is no constant for scale height so this is never changed
+    public boolean rightBlinking = false;
+    public boolean leftBlinking = false;
 
     public Lights(Robot robot) {
         _robot = robot;
