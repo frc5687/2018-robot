@@ -41,6 +41,21 @@ public class Constants {
 
         }
 
+        public class Approach {
+
+            public static final double TWIST = 0.2;
+
+            public static final double kP = 0.05;
+            public static final double kI = 0.0;
+            public static final double kD = 0.1;
+            public static final double TOLERANCE = 5.5; // 0.5
+            public static final double MAX_OUTPUT = 0;
+            /*
+             *time the angle must be on target for to be considered steady
+             */
+        }
+
+
         public class Drive {
 
             public static final double SPEED = 1.0;

@@ -63,7 +63,7 @@ public class AutoAlignToCube extends Command implements PIDOutput {
         // if(!controller.onTarget()) endTime = System.currentTimeMillis() + Align.STEADY_TIME;
 //        DriverStation.reportError("Align: " + pidOut + "," + -pidOut, false);
         double targetAngle = imu.getYaw() + jevois.GetX();
-        if (Math.abs(targetAngle) > 3) {
+        if (Math.abs(targetAngle - controller.getSetpoint()) > 3) {
             controller.setSetpoint(targetAngle);
         }
         driveTrain.tankDrive(pidOut, -pidOut); // positive output is clockwise
