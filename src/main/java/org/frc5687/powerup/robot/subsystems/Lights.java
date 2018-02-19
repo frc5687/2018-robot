@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.Robot;
@@ -10,12 +11,13 @@ public class Lights extends Subsystem {
     private Robot _robot;
     private Servo _left;
     private Servo _right;
-    private boolean isRedAlliance;
+    private DriverStation.Alliance _alliance;
 
     public Lights(Robot robot) {
         _robot = robot;
         _left = new Servo(RobotMap.Lights.LEFT);
         _right = new Servo(RobotMap.Lights.RIGHT);
+        _alliance = DriverStation.getInstance().getAlliance();
     }
 
     @Override
