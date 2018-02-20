@@ -51,6 +51,15 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
+
+        // Limit change in leftSpeed to +/- ACCELERATION_CAP
+        leftSpeed = Math.min(leftSpeed, leftFrontMotor.get() + Constants.Limits.ACCELERATION_CAP);
+        leftSpeed = Math.max(leftSpeed, leftFrontMotor.get() - Constants.Limits.ACCELERATION_CAP);
+
+        // Limit change in rightSpeed to +/- ACCELERATION_CAP
+        rightSpeed = Math.min(rightSpeed, rightFrontMotor.get() + Constants.Limits.ACCELERATION_CAP);
+        rightSpeed = Math.max(rightSpeed, rightFrontMotor.get() - Constants.Limits.ACCELERATION_CAP);
+
         leftFrontMotor.set(leftSpeed);
         leftRearMotor.set(leftSpeed);
         rightFrontMotor.set(rightSpeed);
@@ -58,7 +67,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
     }
-
 
     private Encoder initializeEncoder(int channelA, int channelB, boolean reversed, double distancePerPulse) {
         Encoder encoder = new Encoder(channelA, channelB, reversed, Encoder.EncodingType.k4X);

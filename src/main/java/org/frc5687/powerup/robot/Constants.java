@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot;
 
 public class Constants {
+    public static final int CYCLES_PER_SECOND = 50;
 
     public class DriveTrain {
         public static final double DEADBAND = 0.15;
@@ -259,6 +260,17 @@ public class Constants {
             public static final int SCALE_THEN_SWITCH = 5;
             public static final int SWITCH_OR_SCALE = 6;
         }
+    }
+    public class Limits {
+        /***
+         * Minimum time (in milliseconds) it should take to go from 0 to 1 (stop to full)
+         */
+        public static final double TIME_OF_ACCEL = 1000;
+
+        /***
+         * Maximum accelerations per cycle
+         */
+        public static final double ACCELERATION_CAP = TIME_OF_ACCEL / CYCLES_PER_SECOND * 100;
     }
 
 }
