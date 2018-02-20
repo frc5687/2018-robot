@@ -49,10 +49,12 @@ public class Lights extends Subsystem {
     public void setToColor(){
         if(rightBlinking && System.currentTimeMillis()%(Constants.Lights.TIME_ON+Constants.Lights.TIME_OFF) < Constants.Lights.TIME_ON){
             setBoth(getAllianceColor(),Constants.Lights.SOLID_BLACK);
+            return;
         }
 
         if(leftBlinking && System.currentTimeMillis()%(Constants.Lights.TIME_ON+Constants.Lights.TIME_OFF) < Constants.Lights.TIME_ON){
             setBoth(Constants.Lights.SOLID_BLACK, getAllianceColor());
+            return;
         }
 
         if (atScaleHeight){
