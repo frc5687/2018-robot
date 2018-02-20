@@ -28,11 +28,14 @@ public class AutoChooser {
         positionLabels.put(6, "Far Right");
 
         modeLabels = new HashMap<Integer, String>();
-        modeLabels.put(0, "Stay Put");
-        modeLabels.put(1, "Cross The Line");
-        modeLabels.put(2, "Switch Face");
-        modeLabels.put(3, "Scale");
-        modeLabels.put(11, "Chase Cube");
+        modeLabels.put(Constants.AutoChooser.Mode.STAY_PUT, "Stay put");
+        modeLabels.put(Constants.AutoChooser.Mode.CROSS_AUTOLINE, "Cross the line");
+        modeLabels.put(Constants.AutoChooser.Mode.SWITCH_ONLY, "Switch face");
+        modeLabels.put(Constants.AutoChooser.Mode.SCALE_ONLY, "Scale");
+        modeLabels.put(Constants.AutoChooser.Mode.SWITCH_THEN_SCALE, "Switch then scale");
+        modeLabels.put(Constants.AutoChooser.Mode.SCALE_THEN_SWITCH, "Scale then switch");
+        modeLabels.put(Constants.AutoChooser.Mode.SWITCH_OR_SCALE, "Switch or scale");
+        modeLabels.put(Constants.AutoChooser.Mode.CHASE_CUBE, "Chase cube");
 
         delayQuantities = new HashMap<Integer, Integer>();
         delayQuantities.put(0, 0);
