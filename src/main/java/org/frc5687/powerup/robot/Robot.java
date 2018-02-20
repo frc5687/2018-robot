@@ -58,12 +58,12 @@ public class Robot extends TimedRobot {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+        _lights = new Lights(this);
         _arm = new Arm(oi, _isCompetitionBot);
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi, _isCompetitionBot);
         intake = new Intake(oi);
         _climber = new Climber(oi);
-        _lights = new Lights(this);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
