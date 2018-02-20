@@ -21,8 +21,7 @@ public class DriveLights extends Command {
     }
 
     @Override
-    protected void initialize() {
-        _lights.setToAllianceColor();
+    protected void initialize() { 
     }
 
     @Override
