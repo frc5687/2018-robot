@@ -270,7 +270,7 @@ public class Constants {
         /***
          * Maximum accelerations per cycle
          */
-        public static final double ACCELERATION_CAP = TIME_OF_ACCEL / CYCLES_PER_SECOND;
+        public static final double ACCELERATION_CAP = TIME_OF_ACCEL / (CYCLES_PER_SECOND * 10);
     }
 
 }
