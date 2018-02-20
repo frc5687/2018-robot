@@ -35,7 +35,7 @@ public class Arm extends PIDSubsystem {
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
         _pot = isCompetitionBot ?
-                new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 30.0, 0.982, 171.0,  0.592)
+                new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
                 : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 30.0,  0.592, 171.0, 0.982);
     }
 
