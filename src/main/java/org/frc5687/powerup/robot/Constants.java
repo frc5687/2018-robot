@@ -218,8 +218,24 @@ public class Constants {
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
 
         public class Pot {
+            public static final double TOP_COMP = 166.0;
+            public static final double TOP_PROTO = 166.0; // TODO: Tune
+
+            public static final double BOTTOM_COMP = 33.0;
+            public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
+
+            public static final double INTAKE_COMP = 47.0;
+            public static final double INTAKE_PROTO = 47.0; // TODO: Tune
+
+            public static final double DRIVE_COMP = 33.0;
+            public static final double DRIVE_PROTO = 33.0; // TODO: Tune
+
+            public static final double SWITCH_HEIGHT_COMP = 50.0;
+            public static final double SWITCH_HEIGHT_PROTO = 50.0; // TODO: Tune
+
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
+
             public static final double TOLERANCE = 4.2;
             public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
             public static final double INTAKE = 47.0;
