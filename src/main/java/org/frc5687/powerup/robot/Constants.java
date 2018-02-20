@@ -273,6 +273,7 @@ public class Constants {
             public static final int SWITCH_THEN_SCALE = 4;
             public static final int SCALE_THEN_SWITCH = 5;
             public static final int SWITCH_OR_SCALE = 6;
+            public static final int CHASE_CUBE = 11;
         }
     }
 
