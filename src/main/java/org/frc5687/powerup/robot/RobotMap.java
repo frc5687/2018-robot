@@ -1,8 +1,5 @@
 package org.frc5687.powerup.robot;
 
-
-import org.frc5687.powerup.robot.Constants;
-
 public class RobotMap {
 
     public static final int IDENTITY_FLAG = 9;
