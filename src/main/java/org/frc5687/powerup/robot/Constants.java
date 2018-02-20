@@ -265,12 +265,12 @@ public class Constants {
         /***
          * Minimum time (in milliseconds) it should take to go from 0 to 1 (stop to full)
          */
-        public static final double TIME_OF_ACCEL = 1000;
+        public static final double TIME_OF_ACCEL = 10; //in seconds
 
         /***
          * Maximum accelerations per cycle
          */
-        public static final double ACCELERATION_CAP = TIME_OF_ACCEL / CYCLES_PER_SECOND * 100;
+        public static final double ACCELERATION_CAP = TIME_OF_ACCEL / CYCLES_PER_SECOND;
     }
 
 }
