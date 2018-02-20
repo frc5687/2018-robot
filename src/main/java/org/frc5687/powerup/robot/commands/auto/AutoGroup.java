@@ -159,6 +159,10 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                 }
+                break;
+            case Constants.AutoChooser.Mode.CHASE_CUBE:
+                SmartDashboard.putString("Auto/Mode", "Scale Only");
+                break;
         }
     }
 
