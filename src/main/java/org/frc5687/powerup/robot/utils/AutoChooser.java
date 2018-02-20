@@ -32,6 +32,7 @@ public class AutoChooser {
         modeLabels.put(1, "Cross The Line");
         modeLabels.put(2, "Switch Face");
         modeLabels.put(3, "Scale");
+        modeLabels.put(11, "Chase Cube");
 
         delayQuantities = new HashMap<Integer, Integer>();
         delayQuantities.put(0, 0);
