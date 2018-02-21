@@ -161,7 +161,7 @@ public class AutoGroup extends CommandGroup {
                 }
                 break;
             case Constants.AutoChooser.Mode.CHASE_CUBE:
-                SmartDashboard.putString("Auto/Mode", "Scale Only");
+                SmartDashboard.putString("Auto/Mode", "Chase Cube");
                 break;
         }
     }
