@@ -160,6 +160,7 @@ public class AutoGroup extends CommandGroup {
                 break;
             case Constants.AutoChooser.Mode.CHASE_CUBE:
                 SmartDashboard.putString("Auto/Mode", "Chase Cube");
+                addSequential(new AutoIntake(robot.getIntake()));
                 break;
         }
     }
