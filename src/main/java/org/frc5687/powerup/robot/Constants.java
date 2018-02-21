@@ -16,9 +16,9 @@ public class Constants {
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.4;
         public static final double SERVO_UP = 1.0;
-        public static final long EJECT_TIME = 250;
+        public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.2;
+        public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
         public static final long SETTLE_TIME = 500;
 
@@ -100,7 +100,7 @@ public class Constants {
                 public static final double kP = 0.009;//1.06;//0.001;//1.70;//0.80;
                 public static final double kI = 0.0;
                 public static final double kD = 0.0;//.3;
-                public static final double kT = 0.003; // Used for turning correction
+                public static final double kT = 0.004; // Used for turning correction
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0 / MaxVel.IPS;
@@ -183,7 +183,7 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double HOLD_SPEED = 0.05;
-        public static final double ZERO_SPEED = 0.9;
+        public static final double ZERO_SPEED = 0.99;
 
         public static final double ZONE_SPEED_LIMIT = 0.75;
 
@@ -214,9 +214,9 @@ public class Constants {
         public static final double ENCODER_MIDDLE = 133;
         public static final double ENCODER_FENCE = 90;
         public static final double ENCODER_TOP = 340;
-        public static final double HOLD_SPEED_COMP = 0.0;
+        public static final double HOLD_SPEED_COMP = 0.1;
         public static final double HOLD_SPEED_PROTO = 0.1;
-        public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.1;
+        public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
 
         public class Pot {
