@@ -55,6 +55,10 @@ public class RobotMap {
         public static final int DELAY_SWITCH = ANALOG.navX5;
     }
 
+    public class PDP {
+        public static final int ARM = 0; // Todo: Find out true value
+    }
+
     public static class PWM {
         public static final int RIO0 = 0;
         public static final int RIO1 = 1;

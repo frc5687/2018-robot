@@ -210,6 +210,8 @@ public class Constants {
     }
 
     public class Arm {
+        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
+
         public static final double ENCODER_START = 0;
         public static final double ENCODER_MIDDLE = 133;
         public static final double ENCODER_FENCE = 90;
