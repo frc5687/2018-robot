@@ -14,6 +14,7 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
+import org.frc5687.powerup.robot.utils.Helpers;
 
 /**
  * Created by Baxter on 3/22/2017.
@@ -87,6 +88,15 @@ public class DriveTrain extends Subsystem implements PIDSource {
         rightFrontMotor.set(ControlMode.PercentOutput, rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
+    }
+
+    public void setVelocity(double left, double right) {
+        leftFrontMotor.set(ControlMode.Velocity, left);
+        rightFrontMotor.set(ControlMode.Velocity, right);
+    }
+
+    public void setVelocityIPS(double left, double right) {
+        setVelocity(Helpers.ips2talon(left), Helpers.ips2talon(right));
     }
 
 
