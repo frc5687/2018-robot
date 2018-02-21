@@ -5,7 +5,7 @@ import org.frc5687.powerup.robot.Constants;
 
 public class RobotMap {
 
-    public static final int IDENTITY_FLAG = 9;
+    public static final int IDENTITY_FLAG = DIO.RIO9;
 
     public class DriveTrain {
         public static final int LEFT_FRONT_MOTOR = PWM.RIO3;
