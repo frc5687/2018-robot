@@ -28,7 +28,7 @@ public class PDP extends PowerDistributionPanel {
     }
 
     public boolean excessiveCurrent(int channel, double threshold) {
-        return getCurrent(channel) > threshold;
+        return getCurrent(channel) >= threshold;
     }
 
 }
