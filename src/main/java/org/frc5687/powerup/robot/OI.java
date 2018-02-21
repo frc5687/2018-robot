@@ -24,6 +24,7 @@ public class OI {
     private JoystickButton intakeRightOut;
 
     private JoystickButton climberWind;
+    private JoystickButton climberStop;
     private JoystickButton climberUnwind;
 
     private JoystickButton driverArmToScaleButton;
@@ -65,6 +66,7 @@ public class OI {
         operatorArmToIntakeButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.A.getNumber());
 
         climberUnwind = new JoystickButton(driverGamepad, Gamepad.Buttons.BACK.getNumber());
+        climberStop = new JoystickButton(operatorGamepad,Gamepad.Buttons.START.getNumber());
         climberWind = new JoystickButton(driverGamepad, Gamepad.Buttons.START.getNumber());
 
         intakeLeftOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
@@ -150,6 +152,9 @@ public class OI {
             speed = Constants.Climber.WIND_SPEED;
         } else if (climberUnwind.get()) {
             speed = Constants.Climber.UNWIND_SPEED;
+        }
+        else if (climberStop.get()){
+            speed = 0;
         }
         return speed;
     }
