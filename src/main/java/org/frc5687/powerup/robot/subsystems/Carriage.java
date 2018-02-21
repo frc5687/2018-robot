@@ -9,6 +9,7 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveCarriage;
+import org.frc5687.powerup.robot.utils.PDP;
 
 public class Carriage extends PIDSubsystem {
     private Encoder encoder;
@@ -17,6 +18,7 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
+    private PDP _pdp;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -41,7 +43,10 @@ public class Carriage extends PIDSubsystem {
 
     public void drive(double speed) {
         double _speed = speed;
-        if (_speed > 0 && isAtTop()) {
+        if (atExcessiveCurrent()){
+            _speed = 0;
+        }
+        else if (_speed > 0 && isAtTop()) {
             _speed = Constants.Carriage.HOLD_SPEED;
         } else if (_speed < 0 && isAtBottom()) {
             _speed = -Constants.Carriage.HOLD_SPEED;
@@ -105,6 +110,10 @@ public class Carriage extends PIDSubsystem {
 
     public boolean isInTopZone() {
         return getPos() > (_isCompetitionBot ? Constants.Carriage.START_TOP_ZONE_COMP : Constants.Carriage.START_TOP_ZONE_PROTO);
+    }
+
+    public boolean atExcessiveCurrent(){
+        return _pdp.getCurrent(15) > Constants.Carriage.MAX_POWER;
     }
 
     public boolean isInBottomZone() {

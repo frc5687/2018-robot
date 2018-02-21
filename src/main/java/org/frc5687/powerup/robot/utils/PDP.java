@@ -26,5 +26,8 @@ public class PDP extends PowerDistributionPanel {
         SmartDashboard.putNumber("PDP/Current/14", getCurrent(14));
         SmartDashboard.putNumber("PDP/Current/15", getCurrent(15));
     }
+    public double carriageAmps(){
+        return getCurrent(14);
+    }
 
 }

@@ -198,6 +198,7 @@ public class Constants {
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
         public static final int ENCODER_DRIVE_COMP = -582; // -394
         public static final int ENCODER_BOTTOM_COMP = -795;
+        public static final double MAX_POWER = 50;
 
         // public static
         public static final double RUNWAY = 25.5; // in
