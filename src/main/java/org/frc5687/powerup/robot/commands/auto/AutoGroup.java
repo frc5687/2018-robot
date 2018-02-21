@@ -111,7 +111,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6));
                         addSequential(new AutoEject(robot.getIntake()));
                         addSequential(new FinishArmPid(armPid));
-                        addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60.0, 0.8, true, true, 2000,"retreat"));
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
                         DriverStation.reportError("Switch Only. Position 3. Right Side", false);
@@ -125,7 +125,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         addSequential(new FinishArmPid(armPid));
-                        addSequential(new AutoDrive(robot.getDriveTrain(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60.0, 0.8, true, true, 2000,"retreat"));
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;
@@ -168,7 +168,7 @@ public class AutoGroup extends CommandGroup {
 
     private void straightSwitch(Robot robot) {
         double distance = 95.0;
-        addSequential(new AutoDrive(robot.getDriveTrain(), distance, 0.4, true, true, 5000, "auto"));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), distance, 0.4, true, true, 5000, "auto"));
         addSequential(new AutoEject(robot.getIntake()));
     }
 

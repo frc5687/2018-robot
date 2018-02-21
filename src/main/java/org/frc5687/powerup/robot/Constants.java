@@ -30,6 +30,8 @@ public class Constants {
         public class BACK_IR {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
+            public static final int DETECTED_THRESHOLD = 1140;
+            public static final int SECURED_THRESHOLD = 1600;
         }
 
     }
