@@ -154,7 +154,7 @@ public class OI {
             speed = Constants.Climber.UNWIND_SPEED;
         }
         else if (climberStop.get()){
-            speed = 0;
+            speed = Constants.Climber.HOLD_SPEED;
         }
         return speed;
     }

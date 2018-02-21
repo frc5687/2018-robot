@@ -233,6 +233,7 @@ public class Constants {
         public static final boolean MOTOR_INVERT = true;
         public static final double WIND_SPEED = 1.0;
         public static final double UNWIND_SPEED = -1.0;
+        public static final double HOLD_SPEED = 0.1;
     }
 
     public class RotarySwitch {
