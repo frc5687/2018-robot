@@ -116,4 +116,16 @@ public class RobotMap {
         public static final int navX7 = 7;
     }
 
+    public static class CAN {
+        public static class TalonSRX {
+            public static final int LEFT_FRONT_MOTOR = 0;
+            public static final int RIGHT_FRONT_MOTOR = 1;
+        }
+
+        public static class VictorSPX {
+            public static final int LEFT_BACK_MOTOR = 0;
+            public static final int RIGHT_BACK_MOTOR = 1;
+        }
+    }
+
 }

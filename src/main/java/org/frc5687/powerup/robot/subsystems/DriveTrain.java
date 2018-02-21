@@ -1,10 +1,13 @@
 package org.frc5687.powerup.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -17,29 +20,58 @@ import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
  */
 public class DriveTrain extends Subsystem implements PIDSource {
 
-    private VictorSP leftFrontMotor;
-    private VictorSP leftRearMotor;
-    private VictorSP rightFrontMotor;
-    private VictorSP rightRearMotor;
-    private Encoder rightEncoder;
-    private Encoder leftEncoder;
+    private TalonSRX leftFrontMotor;
+    private VictorSPX leftRearMotor;
+    private TalonSRX rightFrontMotor;
+    private VictorSPX rightRearMotor;
 
     private AHRS imu;
     private OI oi;
 
+    public double HIGH_POW = 1.0;
+    public double LOW_POW = -HIGH_POW;
+
     public DriveTrain(AHRS imu, OI oi) {
-        leftFrontMotor = new VictorSP(RobotMap.DriveTrain.LEFT_FRONT_MOTOR);
-        leftRearMotor = new VictorSP(RobotMap.DriveTrain.LEFT_REAR_MOTOR);
-        rightFrontMotor = new VictorSP(RobotMap.DriveTrain.RIGHT_FRONT_MOTOR);
-        rightRearMotor = new VictorSP(RobotMap.DriveTrain.RIGHT_REAR_MOTOR);
+        // Motor Initialization
+        leftFrontMotor = new TalonSRX(RobotMap.CAN.TalonSRX.LEFT_FRONT_MOTOR);
+        leftRearMotor = new VictorSPX(RobotMap.CAN.VictorSPX.LEFT_BACK_MOTOR);
+        rightFrontMotor = new TalonSRX(RobotMap.CAN.TalonSRX.RIGHT_FRONT_MOTOR);
+        rightRearMotor = new VictorSPX(RobotMap.CAN.VictorSPX.RIGHT_BACK_MOTOR);
+
+        // Setup slaves to follow their master
+        leftRearMotor.follow(leftFrontMotor);
+        rightRearMotor.follow(rightFrontMotor);
+
+        // Setup motors
+        leftFrontMotor.configPeakOutputForward(HIGH_POW, 0);
+        leftRearMotor.configPeakOutputForward(HIGH_POW, 0);
+        rightFrontMotor.configPeakOutputForward(HIGH_POW, 0);
+        rightRearMotor.configPeakOutputForward(HIGH_POW, 0);
+
+        leftFrontMotor.configPeakOutputReverse(LOW_POW, 0);
+        leftRearMotor.configPeakOutputReverse(LOW_POW, 0);
+        rightFrontMotor.configPeakOutputReverse(LOW_POW, 0);
+        rightRearMotor.configPeakOutputReverse(LOW_POW, 0);
+
+        leftFrontMotor.configNominalOutputForward(0.0, 0);
+        leftRearMotor.configNominalOutputForward(0.0, 0);
+        rightFrontMotor.configNominalOutputForward(0.0, 0);
+        rightRearMotor.configNominalOutputForward(0.0, 0);
+
+        leftFrontMotor.configNominalOutputReverse(0.0, 0);
+        leftRearMotor.configNominalOutputReverse(0.0, 0);
+        rightFrontMotor.configNominalOutputReverse(0.0, 0);
+        rightRearMotor.configNominalOutputReverse(0.0, 0);
 
         leftFrontMotor.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
         leftRearMotor.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
         rightFrontMotor.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         rightRearMotor.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
 
-        rightEncoder = initializeEncoder(RobotMap.DriveTrain.RIGHT_ENCODER_CHANNEL_A, RobotMap.DriveTrain.RIGHT_ENCODER_CHANNEL_B, Constants.Encoders.RightDrive.REVERSED, Constants.Encoders.RightDrive.INCHES_PER_PULSE);
-        leftEncoder = initializeEncoder(RobotMap.DriveTrain.LEFT_ENCODER_CHANNEL_A, RobotMap.DriveTrain.LEFT_ENCODER_CHANNEL_B, Constants.Encoders.LeftDrive.REVERSED, Constants.Encoders.LeftDrive.INCHES_PER_PULSE);
+        // Encoders
+
+        leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
         this.imu = imu;
         this.oi = oi;
@@ -51,10 +83,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        leftFrontMotor.set(leftSpeed);
-        leftRearMotor.set(leftSpeed);
-        rightFrontMotor.set(rightSpeed);
-        rightRearMotor.set(rightSpeed);
+        leftFrontMotor.set(ControlMode.PercentOutput, leftSpeed);
+        rightFrontMotor.set(ControlMode.PercentOutput, rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
     }
@@ -70,8 +100,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void resetDriveEncoders() {
-        rightEncoder.reset();
-        leftEncoder.reset();
+        leftFrontMotor.setSelectedSensorPosition(0,0,0);
+        rightFrontMotor.setSelectedSensorPosition(0, 0, 0);
     }
 
     public float getYaw() {
@@ -83,51 +113,83 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     /**
-     *
-     * @return The left distance in Inches.
+     * Get the number of ticks since the last reset
+     * @return
+     */
+    public long getLeftTicks() {
+        return leftFrontMotor.getSelectedSensorPosition(0);
+    }
+
+    /**
+     * The left distance in Inches since the last reset.
+     * @return
      */
     public double getLeftDistance() {
-        return leftEncoder.getDistance();
+        return leftFrontMotor.getSelectedSensorPosition(0) * Constants.Encoders.LeftDrive.INCHES_PER_PULSE;
     }
 
-    public long getLeftTicks() {
-        return leftEncoder.get();
-    }
-
+    /**
+     * Get the number of ticks in the past 100ms
+     * @return
+     */
     public double getLeftRate() {
-        return leftEncoder.getRate();
+        return leftFrontMotor.getSelectedSensorVelocity(0);
     }
 
+    /**
+     * Get the number of inches in the past 100ms
+     * @return
+     */
     public double getLeftSpeed() {
-        return leftFrontMotor.getSpeed();
+        return getLeftRate() * Constants.Encoders.LeftDrive.INCHES_PER_PULSE;
+    }
+
+    public double getLeftVelocityIPS() {
+        return getLeftSpeed() * 10;
+    }
+
+    public double getLeftRPS() {
+        return getLeftRate() * 10 / Constants.Encoders.Defaults.PULSES_PER_ROTATION;
+    }
+
+    /**
+     * Get the number of pulses since the last reset
+     * @return
+     */
+    public long getRightTicks() {
+        return rightFrontMotor.getSelectedSensorPosition(0);
     }
 
     /**
      *
-     * @return The right distance in Inches.
+     * @return The distance traveled in inches.
      */
     public double getRightDistance() {
-        return rightEncoder.getDistance();
+        return getRightTicks() * Constants.Encoders.RightDrive.INCHES_PER_PULSE;
     }
 
-    public long getRightTicks() {
-        return rightEncoder.get();
-    }
-
+    /**
+     * Get the number of pulses in the last 100ms.
+     * @return
+     */
     public double getRightRate() {
-        return rightEncoder.getRate();
+        return rightFrontMotor.getSelectedSensorVelocity(0);
     }
 
+    /**
+     * Get the number of inches traveled in the last 100ms
+     * @return
+     */
     public double getRightSpeed() {
-        return rightFrontMotor.getSpeed();
+        return getRightRate() * Constants.Encoders.RightDrive.INCHES_PER_PULSE;
     }
 
-    public double getLeftRPS() {
-        return getLeftRate() / (Constants.Encoders.Defaults.PULSES_PER_ROTATION * Constants.Encoders.Defaults.DistancePerPulse.INCHES);
+    public double getRightVelocityIPS() {
+        return getRightSpeed() * 10;
     }
 
     public double getRightRPS() {
-        return getRightRate() / (Constants.Encoders.Defaults.PULSES_PER_ROTATION * Constants.Encoders.Defaults.DistancePerPulse.INCHES);
+        return getRightRate() * 10 / Constants.Encoders.Defaults.PULSES_PER_ROTATION;
     }
 
 
