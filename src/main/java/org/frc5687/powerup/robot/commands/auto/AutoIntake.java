@@ -32,7 +32,7 @@ public class AutoIntake extends Command {
         switch (_state) {
             case INTAKE:
                 _intake.drive(Constants.Intake.INTAKE_SPEED, Constants.Intake.INTAKE_SPEED);
-                if (_intake.cubeIsDetected()) {
+                if (_intake.cubeIsSecured()) {
                     _state = State.SETTLE;
                     _endMillis = System.currentTimeMillis() + Constants.Intake.SETTLE_TIME;
                 }
