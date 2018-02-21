@@ -21,10 +21,10 @@ import org.frc5687.powerup.robot.utils.Helpers;
  */
 public class DriveTrain extends Subsystem implements PIDSource {
 
-    private TalonSRX leftFrontMotor;
-    private VictorSPX leftRearMotor;
-    private TalonSRX rightFrontMotor;
-    private VictorSPX rightRearMotor;
+    private TalonSRX leftMaster; // left front motor
+    private VictorSPX leftFollower; // left rear motor
+    private TalonSRX rightMaster; // right front motor
+    private VictorSPX rightFollower; // right rear motor
 
     private AHRS imu;
     private OI oi;
@@ -34,45 +34,45 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     public DriveTrain(AHRS imu, OI oi) {
         // Motor Initialization
-        leftFrontMotor = new TalonSRX(RobotMap.CAN.TalonSRX.LEFT_FRONT_MOTOR);
-        leftRearMotor = new VictorSPX(RobotMap.CAN.VictorSPX.LEFT_BACK_MOTOR);
-        rightFrontMotor = new TalonSRX(RobotMap.CAN.TalonSRX.RIGHT_FRONT_MOTOR);
-        rightRearMotor = new VictorSPX(RobotMap.CAN.VictorSPX.RIGHT_BACK_MOTOR);
+        leftMaster = new TalonSRX(RobotMap.CAN.TalonSRX.LEFT_FRONT_MOTOR);
+        leftFollower = new VictorSPX(RobotMap.CAN.VictorSPX.LEFT_BACK_MOTOR);
+        rightMaster = new TalonSRX(RobotMap.CAN.TalonSRX.RIGHT_FRONT_MOTOR);
+        rightFollower = new VictorSPX(RobotMap.CAN.VictorSPX.RIGHT_BACK_MOTOR);
 
         // Setup slaves to follow their master
-        leftRearMotor.follow(leftFrontMotor);
-        rightRearMotor.follow(rightFrontMotor);
+        leftFollower.follow(leftMaster);
+        rightFollower.follow(rightMaster);
 
         // Setup motors
-        leftFrontMotor.configPeakOutputForward(HIGH_POW, 0);
-        leftRearMotor.configPeakOutputForward(HIGH_POW, 0);
-        rightFrontMotor.configPeakOutputForward(HIGH_POW, 0);
-        rightRearMotor.configPeakOutputForward(HIGH_POW, 0);
+        leftMaster.configPeakOutputForward(HIGH_POW, 0);
+        leftFollower.configPeakOutputForward(HIGH_POW, 0);
+        rightMaster.configPeakOutputForward(HIGH_POW, 0);
+        rightFollower.configPeakOutputForward(HIGH_POW, 0);
 
-        leftFrontMotor.configPeakOutputReverse(LOW_POW, 0);
-        leftRearMotor.configPeakOutputReverse(LOW_POW, 0);
-        rightFrontMotor.configPeakOutputReverse(LOW_POW, 0);
-        rightRearMotor.configPeakOutputReverse(LOW_POW, 0);
+        leftMaster.configPeakOutputReverse(LOW_POW, 0);
+        leftFollower.configPeakOutputReverse(LOW_POW, 0);
+        rightMaster.configPeakOutputReverse(LOW_POW, 0);
+        rightFollower.configPeakOutputReverse(LOW_POW, 0);
 
-        leftFrontMotor.configNominalOutputForward(0.0, 0);
-        leftRearMotor.configNominalOutputForward(0.0, 0);
-        rightFrontMotor.configNominalOutputForward(0.0, 0);
-        rightRearMotor.configNominalOutputForward(0.0, 0);
+        leftMaster.configNominalOutputForward(0.0, 0);
+        leftFollower.configNominalOutputForward(0.0, 0);
+        rightMaster.configNominalOutputForward(0.0, 0);
+        rightFollower.configNominalOutputForward(0.0, 0);
 
-        leftFrontMotor.configNominalOutputReverse(0.0, 0);
-        leftRearMotor.configNominalOutputReverse(0.0, 0);
-        rightFrontMotor.configNominalOutputReverse(0.0, 0);
-        rightRearMotor.configNominalOutputReverse(0.0, 0);
+        leftMaster.configNominalOutputReverse(0.0, 0);
+        leftFollower.configNominalOutputReverse(0.0, 0);
+        rightMaster.configNominalOutputReverse(0.0, 0);
+        rightFollower.configNominalOutputReverse(0.0, 0);
 
-        leftFrontMotor.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
-        leftRearMotor.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
-        rightFrontMotor.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
-        rightRearMotor.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
+        leftMaster.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
+        leftFollower.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
+        rightMaster.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
+        rightFollower.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
 
         // Encoders
 
-        leftFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        rightFrontMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
         this.imu = imu;
         this.oi = oi;
@@ -84,15 +84,15 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void setPower(double leftSpeed, double rightSpeed) {
-        leftFrontMotor.set(ControlMode.PercentOutput, leftSpeed);
-        rightFrontMotor.set(ControlMode.PercentOutput, rightSpeed);
+        leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+        rightMaster.set(ControlMode.PercentOutput, rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
     }
 
     public void setVelocity(double left, double right) {
-        leftFrontMotor.set(ControlMode.Velocity, left);
-        rightFrontMotor.set(ControlMode.Velocity, right);
+        leftMaster.set(ControlMode.Velocity, left);
+        rightMaster.set(ControlMode.Velocity, right);
     }
 
     public void setVelocityIPS(double left, double right) {
@@ -110,8 +110,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void resetDriveEncoders() {
-        leftFrontMotor.setSelectedSensorPosition(0,0,0);
-        rightFrontMotor.setSelectedSensorPosition(0, 0, 0);
+        leftMaster.setSelectedSensorPosition(0,0,0);
+        rightMaster.setSelectedSensorPosition(0, 0, 0);
     }
 
     public float getYaw() {
@@ -127,7 +127,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public long getLeftTicks() {
-        return leftFrontMotor.getSelectedSensorPosition(0);
+        return leftMaster.getSelectedSensorPosition(0);
     }
 
     /**
@@ -135,7 +135,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getLeftDistance() {
-        return leftFrontMotor.getSelectedSensorPosition(0) * Constants.Encoders.LeftDrive.INCHES_PER_PULSE;
+        return leftMaster.getSelectedSensorPosition(0) * Constants.Encoders.LeftDrive.INCHES_PER_PULSE;
     }
 
     /**
@@ -143,7 +143,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getLeftRate() {
-        return leftFrontMotor.getSelectedSensorVelocity(0);
+        return leftMaster.getSelectedSensorVelocity(0);
     }
 
     /**
@@ -167,7 +167,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public long getRightTicks() {
-        return rightFrontMotor.getSelectedSensorPosition(0);
+        return rightMaster.getSelectedSensorPosition(0);
     }
 
     /**
@@ -183,7 +183,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getRightRate() {
-        return rightFrontMotor.getSelectedSensorVelocity(0);
+        return rightMaster.getSelectedSensorVelocity(0);
     }
 
     /**
