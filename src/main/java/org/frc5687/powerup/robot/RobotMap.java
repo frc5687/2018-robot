@@ -56,7 +56,7 @@ public class RobotMap {
     }
 
     public class PDP {
-        public static final int ARM = 0; // Todo: Find out true value
+        public static final int ARM = 15;
     }
 
     public static class PWM {
