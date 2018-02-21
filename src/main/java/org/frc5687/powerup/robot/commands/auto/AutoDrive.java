@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -7,7 +8,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Constants.Auto.Drive;
-import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 public class AutoDrive extends Command {
@@ -28,17 +28,18 @@ public class AutoDrive extends Command {
     private String debug;
 
     private DriveTrain driveTrain;
+    private AHRS imu;
 
-    public AutoDrive(DriveTrain driveTrain, double distance, double speed, String debug) {
-        this(driveTrain, distance, speed, false, true, 0, debug);
+    public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, String debug) {
+        this(driveTrain, imu, distance, speed, false, true, 0, debug);
     }
 
-    public AutoDrive(DriveTrain driveTrain, double distance, double speed, long maxMillis, String debug) {
-        this(driveTrain, distance, speed, false, true, 1000, maxMillis, debug);
+    public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, long maxMillis, String debug) {
+        this(driveTrain, imu, distance, speed, false, true, 1000, maxMillis, debug);
     }
 
-    public AutoDrive(DriveTrain driveTrain, double distance, double speed, boolean usePID, boolean stopOnFinish, long maxMillis, String debug) {
-        this(driveTrain, distance, speed, usePID, stopOnFinish, 1000, maxMillis, debug);
+    public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, boolean usePID, boolean stopOnFinish, long maxMillis, String debug) {
+        this(driveTrain, imu, distance, speed, usePID, stopOnFinish, 1000, maxMillis, debug);
     }
 
     /***
@@ -48,7 +49,7 @@ public class AutoDrive extends Command {
      * @param usePID Whether to use pid or not
      * @param stopOnFinish Whether to stop the motors when we are done
      */
-    public AutoDrive(DriveTrain driveTrain, double distance, double speed, boolean usePID, boolean stopOnFinish, double angle, long maxMillis, String debug) {
+    public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, boolean usePID, boolean stopOnFinish, double angle, long maxMillis, String debug) {
         requires(driveTrain);
         this.speed = speed;
         this.distance = distance;
@@ -58,6 +59,7 @@ public class AutoDrive extends Command {
         this.maxMillis = maxMillis;
         this.debug = debug;
         this.driveTrain = driveTrain;
+        this.imu = imu;
     }
 
     @Override
@@ -80,7 +82,7 @@ public class AutoDrive extends Command {
         }
 
         anglePID = new PIDListener();
-        angleController = new PIDController(Drive.AnglePID.kP, Drive.AnglePID.kI, Drive.AnglePID.kD, Robot.imu, anglePID);
+        angleController = new PIDController(Drive.AnglePID.kP, Drive.AnglePID.kI, Drive.AnglePID.kD, imu, anglePID);
 //        angleController.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), SmartDashboard.getNumber("DB/Slider 1", 0), SmartDashboard.getNumber("DB/Slider 2", 0));
         angleController.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         double maxSpeed = speed * Drive.AnglePID.MAX_DIFFERENCE;
