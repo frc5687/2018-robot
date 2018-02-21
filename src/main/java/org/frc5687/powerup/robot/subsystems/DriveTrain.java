@@ -82,7 +82,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
         setDefaultCommand(new DriveWith2Joysticks(this, oi));
     }
 
-    public void tankDrive(double leftSpeed, double rightSpeed) {
+    public void setPower(double leftSpeed, double rightSpeed) {
         leftFrontMotor.set(ControlMode.PercentOutput, leftSpeed);
         rightFrontMotor.set(ControlMode.PercentOutput, rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);

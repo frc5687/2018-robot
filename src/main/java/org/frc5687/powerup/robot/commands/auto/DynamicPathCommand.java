@@ -6,14 +6,11 @@ import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
-import org.frc5687.powerup.robot.utils.Helpers;
 
 public class DynamicPathCommand extends Command {
     private TrajectoryFollower followerLeft = new TrajectoryFollower("left");
@@ -158,7 +155,7 @@ public class DynamicPathCommand extends Command {
         */
 
         // Entirely feed forward
-        //_driveTrain.tankDrive(goalVelocityLeftMotor, goalVelocityRightMotor);
+        //_driveTrain.setPower(goalVelocityLeftMotor, goalVelocityRightMotor);
 
         /*
          * Log Calculated Speed
@@ -171,7 +168,7 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotor", speedRightMotor);
 
         // Feed Forward + PID for Sides
-        //_driveTrain.tankDrive(speedLeftMotor, speedRightMotor);
+        //_driveTrain.setPower(speedLeftMotor, speedRightMotor);
 
         /*
          * Log Turn
@@ -180,7 +177,7 @@ public class DynamicPathCommand extends Command {
         double speedLeftMotorWithTurn = speedLeftMotor + turn;
         double speedRightMotorWithTurn = speedRightMotor - turn;
 
-        _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
+        _driveTrain.setPower(speedLeftMotorWithTurn, speedRightMotorWithTurn);
 
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
         SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotorWithTurn", speedLeftMotorWithTurn);
@@ -190,14 +187,14 @@ public class DynamicPathCommand extends Command {
          * Drive
          */
 
-        //_driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
+        //_driveTrain.setPower(speedLeftMotorWithTurn, speedRightMotorWithTurn);
     }
 
     @Override
     protected void end() {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
         DriverStation.reportError("DynamicPathCommand ended", false);
-        _driveTrain.tankDrive(0, 0);
+        _driveTrain.setPower(0, 0);
     }
 
     @Override

@@ -115,7 +115,7 @@ public class AutoDrive extends Command {
         SmartDashboard.putNumber("AutoDrive/distanceFactor", distanceFactor);
         SmartDashboard.putNumber("AutoDrive/angleFactor", angleFactor);
 
-        driveTrain.tankDrive(distanceFactor + angleFactor, distanceFactor - angleFactor);
+        driveTrain.setPower(distanceFactor + angleFactor, distanceFactor - angleFactor);
 
         SmartDashboard.putBoolean("AutoDrive/onTarget", distanceController == null ? false : distanceController.onTarget());
         SmartDashboard.putNumber("AutoDrive/imu", driveTrain.getYaw());
@@ -145,7 +145,7 @@ public class AutoDrive extends Command {
         }
         if (stopOnFinish) {
             DriverStation.reportError("Stopping.", false);
-            //driveTrain.tankDrive(0, 0, true);
+            //driveTrain.setPower(0, 0, true);
         }
     }
 
