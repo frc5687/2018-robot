@@ -2,7 +2,6 @@ package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
@@ -50,7 +49,7 @@ public class Arm extends PIDSubsystem {
             SmartDashboard.putString("Arm/Capped)", "Bottom");
             speed = 0.0;
         }
-        if (_pdp.excessiveCurrent(RobotMap.PDP.ARM, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
+        if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
         _motor.setSpeed(speed);
