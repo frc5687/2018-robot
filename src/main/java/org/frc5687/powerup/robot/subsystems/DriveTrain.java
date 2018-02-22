@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -68,6 +69,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
         leftFollower.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
         rightMaster.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         rightFollower.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
+
+        leftMaster.setNeutralMode(NeutralMode.Brake);
+        leftFollower.setNeutralMode(NeutralMode.Brake);
+        rightMaster.setNeutralMode(NeutralMode.Brake);
+        rightFollower.setNeutralMode(NeutralMode.Brake);
 
         // Encoders
 
