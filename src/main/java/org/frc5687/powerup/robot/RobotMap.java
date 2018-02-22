@@ -53,7 +53,15 @@ public class RobotMap {
     }
 
     public class PDP {
-        public static final int ARM = 15;
+        public static final int INTAKE_LEFT_SP = 0;
+        public static final int RIGHT_REAR_SPX = 1;
+        public static final int RIGHT_FRONT_SRX = 2;
+        public static final int LEFT_REAR_SPX = 3;
+        public static final int CLIMBER_SP = 10;
+        public static final int LEFT_FRONT_SRX = 12;
+        public static final int INTAKE_RIGHT_SP = 13;
+        public static final int CARRIAGE_SP = 14;
+        public static final int ARM_SP = 15;
     }
 
     public static class PWM {
@@ -115,13 +123,13 @@ public class RobotMap {
 
     public static class CAN {
         public static class TalonSRX {
-            public static final int LEFT_FRONT_MOTOR = 0;
-            public static final int RIGHT_FRONT_MOTOR = 1;
+            public static final int LEFT_FRONT = 0;
+            public static final int RIGHT_FRONT = 1;
         }
 
         public static class VictorSPX {
-            public static final int LEFT_BACK_MOTOR = 0;
-            public static final int RIGHT_BACK_MOTOR = 1;
+            public static final int LEFT_BACK = 0;
+            public static final int RIGHT_BACK = 1;
         }
     }
 

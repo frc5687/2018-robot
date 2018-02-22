@@ -34,10 +34,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     public DriveTrain(AHRS imu, OI oi) {
         // Motor Initialization
-        leftMaster = new TalonSRX(RobotMap.CAN.TalonSRX.LEFT_FRONT_MOTOR);
-        leftFollower = new VictorSPX(RobotMap.CAN.VictorSPX.LEFT_BACK_MOTOR);
-        rightMaster = new TalonSRX(RobotMap.CAN.TalonSRX.RIGHT_FRONT_MOTOR);
-        rightFollower = new VictorSPX(RobotMap.CAN.VictorSPX.RIGHT_BACK_MOTOR);
+        leftMaster = new TalonSRX(RobotMap.CAN.TalonSRX.LEFT_FRONT);
+        leftFollower = new VictorSPX(RobotMap.CAN.VictorSPX.LEFT_BACK);
+        rightMaster = new TalonSRX(RobotMap.CAN.TalonSRX.RIGHT_FRONT);
+        rightFollower = new VictorSPX(RobotMap.CAN.VictorSPX.RIGHT_BACK);
 
         // Setup slaves to follow their master
         leftFollower.follow(leftMaster);
