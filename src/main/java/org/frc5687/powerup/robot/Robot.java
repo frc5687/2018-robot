@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi, _isCompetitionBot);
         intake = new Intake(oi);
-        _climber = new Climber(oi);
+        _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();

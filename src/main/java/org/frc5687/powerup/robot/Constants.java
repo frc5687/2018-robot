@@ -232,6 +232,7 @@ public class Constants {
     }
 
     public class Climber {
+        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
         public static final boolean MOTOR_INVERT = true;
         public static final double WIND_SPEED = 1.0;
         public static final double UNWIND_SPEED = -1.0;
