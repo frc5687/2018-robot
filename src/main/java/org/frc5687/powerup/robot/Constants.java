@@ -103,7 +103,7 @@ public class Constants {
                 public static final double kT = 0.004; // Used for turning correction
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
-                    public static final double IPS = 1.0 / MaxVel.IPS;
+                    public static final double IPS = 1.0;// / MaxVel.IPS;
                 }
                 public class kA {
                     public static final double METERS = 1.0 / MaxAcceleration.METERS;

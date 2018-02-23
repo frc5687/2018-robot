@@ -20,7 +20,6 @@ public class DynamicPathCommand extends Command {
     private DriveTrain _driveTrain;
     private AHRS _imu;
     public double lastHeading;
-    public long lastExecute;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -70,8 +69,6 @@ public class DynamicPathCommand extends Command {
 
         lastHeading = followerLeft.getLastSegment().heading;
 
-        lastExecute = System.currentTimeMillis();
-
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
@@ -101,93 +98,29 @@ public class DynamicPathCommand extends Command {
     @Override
     protected void execute() {
         /*
-         * Log time since last execute
+         * Calculate Speed
          */
-        long now = System.currentTimeMillis();
-        SmartDashboard.putNumber("AADynamicPathCommand/timeSinceLastExec", now - lastExecute);
-        lastExecute = now;
-
-        /*
-         * Log Left & Right Distance
-         */
-        Trajectory.Segment left = followerLeft.getSegment();
-        Trajectory.Segment right = followerRight.getSegment();
 
         double distanceL = _driveTrain.getLeftDistance();
         double distanceR = _driveTrain.getRightDistance();
 
-        double goalDistanceLeft = left.pos;
-        double goalDistanceRight = right.pos;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/distanceL", distanceL);
-        SmartDashboard.putNumber("AADynamicPathCommand/distanceR", distanceR);
-
-        SmartDashboard.putNumber("AADynamicPathCommand/goalDistanceLeft", goalDistanceLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalDistanceRight", goalDistanceRight);
+        double speedLeftMotor = followerLeft.calculate(distanceL, _driveTrain.getLeftVelocityIPS());
+        double speedRightMotor = followerRight.calculate(distanceR, _driveTrain.getRightVelocityIPS());
 
         /*
-         * Log Distance Error
-         */
-
-        double leftError = left.pos - distanceL;
-        double rightError = right.pos - distanceR;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", leftError);
-        SmartDashboard.putNumber("AADynamicPathCommand/errorRight", rightError);
-
-        /*
-         * Log Goal Velocity
-         */
-
-        /*
-        double goalVelocityLeftIPS = left.vel;
-        double goalVelocityLeftMotor = goalVelocityLeftIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
-
-        double goalVelocityRightIPS = right.vel;
-        double goalVelocityRightMotor  = goalVelocityRightIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftMotor", goalVelocityLeftMotor);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftIPS", goalVelocityLeftIPS);
-
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightMotor", goalVelocityRightMotor);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightIPS", goalVelocityRightIPS);
-
-        */
-
-        // Entirely feed forward
-        //_driveTrain.setPower(goalVelocityLeftMotor, goalVelocityRightMotor);
-
-        /*
-         * Log Calculated Speed
-         */
-
-        double speedLeftMotor = followerLeft.calculate(distanceL, _driveTrain.getLeftRate());
-        double speedRightMotor = followerRight.calculate(distanceR, _driveTrain.getRightRate());
-
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotor", speedLeftMotor);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotor", speedRightMotor);
-
-        // Feed Forward + PID for Sides
-        //_driveTrain.setPower(speedLeftMotor, speedRightMotor);
-
-        /*
-         * Log Turn
+         * Calculate Speed with Turn Correction
          */
         double turn = calculateTurn();
         double speedLeftMotorWithTurn = speedLeftMotor + turn;
         double speedRightMotorWithTurn = speedRightMotor - turn;
 
-        _driveTrain.setPower(speedLeftMotorWithTurn, speedRightMotorWithTurn);
-
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotorWithTurn", speedLeftMotorWithTurn);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotorWithTurn", speedRightMotorWithTurn);
 
         /*
          * Drive
          */
 
-        //_driveTrain.setPower(speedLeftMotorWithTurn, speedRightMotorWithTurn);
+        _driveTrain.setVelocityIPS(speedLeftMotorWithTurn, speedRightMotorWithTurn);
     }
 
     @Override
