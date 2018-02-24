@@ -115,7 +115,7 @@ public class AutoGroup extends CommandGroup {
                             // If the Carriage is not working...
                             //armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
                             //addParallel(armPid);
-                            addSequential(new CenterLeftToRightSwitch(robot));
+                            addSequential(new CenterLeftToLeftSwitch(robot));
                             addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6));
                             addSequential(new AutoEject(robot.getIntake()));
                             //addSequential(new FinishArmPid(armPid));
