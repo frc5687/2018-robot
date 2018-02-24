@@ -135,7 +135,7 @@ public class Constants {
 
             public static final boolean REVERSED = true; //TODO change to new robot specifications
             public static final int SAMPLES_TO_AVERAGE = 20;
-            public static final int PULSES_PER_ROTATION = 1024;
+            public static final int PULSES_PER_ROTATION = 4096; // 1024 in quad mode. talon is 4096.
 
             public class WheelDiameter {
                 public static final double INCHES = 6;
@@ -218,7 +218,7 @@ public class Constants {
         public static final double ENCODER_FENCE = 90;
         public static final double ENCODER_TOP = 340;
         public static final double HOLD_SPEED_COMP = 0.1;
-        public static final double HOLD_SPEED_PROTO = 0.1;
+        public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
 
