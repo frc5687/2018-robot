@@ -51,7 +51,8 @@ public class TrajectoryFollower {
       double kd = kd_ * ((posError - last_error_) / segment.dt - segment.vel);
       double kv = kv_ * segment.vel;
       double ka = ka_ * segment.acc;
-      double output = kp + kd + kv + ka;// + (kv_ * velError);// If you want to correct velocity in here
+      //double output = kp + kd + kv + ka + (kv_ * velError);// If you want to correct velocity in here
+      double output = kp + kd + kv;
 
       /*
       double output = kp_ * error + kd_ * ((error - last_error_)
@@ -67,6 +68,7 @@ public class TrajectoryFollower {
       SmartDashboard.putNumber("TF/" + _name + "/kv", kv);
       SmartDashboard.putNumber("TF/" + _name + "/velError", velError);
       SmartDashboard.putNumber("TF/" + _name + "/velErrorOutput", (kv_ * velError));
+      SmartDashboard.putNumber("TF/" + _name + "/velActual", velocityIPS);
       SmartDashboard.putNumber("TF/" + _name + "/posError", posError);
       SmartDashboard.putNumber("TF/" + _name + "/posActual", distance_so_far);
       SmartDashboard.putNumber("TF/" + _name + "/posGoal", segment.pos);

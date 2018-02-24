@@ -20,10 +20,12 @@ public class DynamicPathCommand extends Command {
     private DriveTrain _driveTrain;
     private AHRS _imu;
     public double lastHeading;
+    private Robot _robot;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
         _imu = robot.getIMU();
+        _robot = robot;
         requires(_driveTrain);
 
         loadPath();
@@ -48,18 +50,18 @@ public class DynamicPathCommand extends Command {
         starting_heading = _driveTrain.getCheesyYaw();
 
         followerLeft.configure(
-                Constants.Auto.Drive.EncoderPID.kP,
-                Constants.Auto.Drive.EncoderPID.kI,
-                Constants.Auto.Drive.EncoderPID.kD,
-                Constants.Auto.Drive.EncoderPID.kV.IPS,
-                Constants.Auto.Drive.EncoderPID.kA.INCHES
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kI,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kD,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kV.IPS,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
         followerRight.configure(
-                Constants.Auto.Drive.EncoderPID.kP,
-                Constants.Auto.Drive.EncoderPID.kI,
-                Constants.Auto.Drive.EncoderPID.kD,
-                Constants.Auto.Drive.EncoderPID.kV.IPS,
-                Constants.Auto.Drive.EncoderPID.kA.INCHES
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kI,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kD,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kV.IPS,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
 
         followerLeft.setTrajectory(path.getLeftWheelTrajectory());
@@ -80,7 +82,7 @@ public class DynamicPathCommand extends Command {
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
-        double turn = Constants.Auto.Drive.EncoderPID.kT * angleDiff * -1; // multiply by -1 if self correcting, multiply by 1 if following turns
+        double turn = Constants.Auto.Drive.EncoderPID.kT * angleDiff * 1; // multiply by -1 if self correcting, multiply by 1 if following turns
 
         // Attempts to cap the turn
         /*
@@ -91,7 +93,7 @@ public class DynamicPathCommand extends Command {
         }
         */
 
-        return turn;
+        return turn;//turn;
     }
 
 
@@ -121,6 +123,7 @@ public class DynamicPathCommand extends Command {
          */
 
         _driveTrain.setVelocityIPS(speedLeftMotorWithTurn, speedRightMotorWithTurn);
+        //_driveTrain.setVelocityIPS(speedLeftMotor, speedRightMotor);
     }
 
     @Override

@@ -79,9 +79,9 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                     case 6:
-                        path = new CrossAutoLine(robot);
+                        path = new CrossAutoLineFast(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
+                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
                         break;
                 }
                 break;

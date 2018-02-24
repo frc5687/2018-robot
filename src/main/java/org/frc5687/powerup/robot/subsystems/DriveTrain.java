@@ -71,20 +71,17 @@ public class DriveTrain extends Subsystem implements PIDSource {
         rightMaster.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         rightFollower.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
 
-        leftMaster.setNeutralMode(NeutralMode.Coast);
-        leftFollower.setNeutralMode(NeutralMode.Coast);
-        rightMaster.setNeutralMode(NeutralMode.Coast);
-        rightFollower.setNeutralMode(NeutralMode.Coast);
+        enableBrakeMode();
 
-        leftMaster.config_kP(0, Constants.Auto.Drive.Talon.kP, 0);
-        leftMaster.config_kI(0, Constants.Auto.Drive.Talon.kI, 0);
-        leftMaster.config_kD(0, Constants.Auto.Drive.Talon.kD, 0);
-        leftMaster.config_kF(0, Constants.Auto.Drive.Talon.kF, 0);
+        leftMaster.config_kP(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kP, 0);
+        leftMaster.config_kI(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kI, 0);
+        leftMaster.config_kD(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kD, 0);
+        leftMaster.config_kF(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kF, 0);
 
-        rightMaster.config_kP(0, Constants.Auto.Drive.Talon.kP, 0);
-        rightMaster.config_kI(0, Constants.Auto.Drive.Talon.kI, 0);
-        rightMaster.config_kD(0, Constants.Auto.Drive.Talon.kD, 0);
-        rightMaster.config_kF(0, Constants.Auto.Drive.Talon.kF, 0);
+        rightMaster.config_kP(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kP, 0);
+        rightMaster.config_kI(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kI, 0);
+        rightMaster.config_kD(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kD, 0);
+        rightMaster.config_kF(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kF, 0);
 
         // Encoders
 
@@ -106,6 +103,20 @@ public class DriveTrain extends Subsystem implements PIDSource {
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new DriveWith2Joysticks(this, oi));
+    }
+
+    public void enableBrakeMode() {
+        leftMaster.setNeutralMode(NeutralMode.Brake);
+        leftFollower.setNeutralMode(NeutralMode.Brake);
+        rightMaster.setNeutralMode(NeutralMode.Brake);
+        rightFollower.setNeutralMode(NeutralMode.Brake);
+    }
+
+    public void enableCoastMode() {
+        leftMaster.setNeutralMode(NeutralMode.Coast);
+        leftFollower.setNeutralMode(NeutralMode.Coast);
+        rightMaster.setNeutralMode(NeutralMode.Coast);
+        rightFollower.setNeutralMode(NeutralMode.Coast);
     }
 
     public void setPower(double leftSpeed, double rightSpeed) {

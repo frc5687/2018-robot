@@ -80,6 +80,30 @@ public class Constants {
             public static final long STEADY_TIME = 100;
             public static final long ALIGN_STEADY_TIME = 100;
 
+            public class TrajectoryFollowing {
+                public class Talon {
+                    public static final double kP = 0.0; // Talon doesn't use kP
+                    public static final double kI = 0.0;
+                    public static final double kD = 0.0;
+                    public static final double kF = 1;
+                }
+
+                public class Cheese {
+                    public static final double kP = 4;//1.06;//0.001;//1.70;//0.80;
+                    public static final double kI = 0.0;
+                    public static final double kD = 0.0;//.3;
+                    public static final double kT = 4; // Used for turning correction
+                    public class kV {
+                        public static final double MPS = 1.0 / MaxVel.MPS;
+                        public static final double IPS = 1.0;// / MaxVel.IPS;
+                    }
+                    public class kA {
+                        public static final double METERS = 1.0 / MaxAcceleration.METERS;
+                        public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
+                    }
+                }
+            }
+
             public class IRPID {
                 public static final double kP = 0.05;
                 public static final double kI = 0.00;
@@ -97,10 +121,10 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 0.009;//1.06;//0.001;//1.70;//0.80;
+                public static final double kP = 6;//1.06;//0.001;//1.70;//0.80;
                 public static final double kI = 0.0;
                 public static final double kD = 0.0;//.3;
-                public static final double kT = 0.004; // Used for turning correction
+                public static final double kT = 4; // Used for turning correction
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
                     public static final double IPS = 1.0;// / MaxVel.IPS;
