@@ -5,16 +5,8 @@ public class RobotMap {
     public static final int IDENTITY_FLAG = DIO.RIO9;
 
     public class DriveTrain {
-        public static final int LEFT_FRONT_MOTOR = PWM.RIO3;
-        public static final int LEFT_REAR_MOTOR = PWM.RIO4;
-        public static final int RIGHT_FRONT_MOTOR = PWM.RIO1;
-        public static final int RIGHT_REAR_MOTOR = PWM.RIO2;
 
-        public static final int LEFT_ENCODER_CHANNEL_A = DIO.RIO7;
-        public static final int LEFT_ENCODER_CHANNEL_B = DIO.RIO8;
-        public static final int RIGHT_ENCODER_CHANNEL_A = DIO.RIO5;
-        public static final int RIGHT_ENCODER_CHANNEL_B = DIO.RIO6;
-	}
+    }
 
     public class Intake {
         public static final int LEFT_MOTOR = PWM.RIO5 ;
