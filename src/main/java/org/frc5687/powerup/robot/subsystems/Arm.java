@@ -119,4 +119,8 @@ public class Arm extends PIDSubsystem {
     public void periodic() {
         led.set(inStartingPosition());
     }
+
+    public boolean isHealthy() {
+        return false;
+    }
 }
