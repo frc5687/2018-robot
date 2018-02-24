@@ -21,6 +21,7 @@ public class DynamicPathCommand extends Command {
     private AHRS _imu;
     public double lastHeading;
     private Robot _robot;
+    public boolean turnInverted;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -82,8 +83,7 @@ public class DynamicPathCommand extends Command {
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
-        double turn = Constants.Auto.Drive.EncoderPID.kT * angleDiff * 1; // multiply by -1 if self correcting, multiply by 1 if following turns
-
+        double turn = Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT * angleDiff * (turnInverted ? 1 : -1); // multiply by -1 if self correcting, multiply by 1 if following turns
         // Attempts to cap the turn
         /*
         if (turn > 0) {

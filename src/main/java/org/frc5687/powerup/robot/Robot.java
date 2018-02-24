@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        //setPeriod(0.01);
+        setPeriod(0.02);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -93,6 +93,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         imu.reset();
         driveTrain.resetDriveEncoders();
+        driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
@@ -131,6 +132,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
+        driveTrain.enableCoastMode();
     }
 
     @Override
@@ -148,6 +150,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+        driveTrain.enableCoastMode();
     }
 
     @Override
