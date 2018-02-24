@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -70,15 +71,32 @@ public class DriveTrain extends Subsystem implements PIDSource {
         rightMaster.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         rightFollower.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
 
-        leftMaster.setNeutralMode(NeutralMode.Brake);
-        leftFollower.setNeutralMode(NeutralMode.Brake);
-        rightMaster.setNeutralMode(NeutralMode.Brake);
-        rightFollower.setNeutralMode(NeutralMode.Brake);
+        leftMaster.setNeutralMode(NeutralMode.Coast);
+        leftFollower.setNeutralMode(NeutralMode.Coast);
+        rightMaster.setNeutralMode(NeutralMode.Coast);
+        rightFollower.setNeutralMode(NeutralMode.Coast);
+
+        leftMaster.config_kP(0, Constants.Auto.Drive.Talon.kP, 0);
+        leftMaster.config_kI(0, Constants.Auto.Drive.Talon.kI, 0);
+        leftMaster.config_kD(0, Constants.Auto.Drive.Talon.kD, 0);
+        leftMaster.config_kF(0, Constants.Auto.Drive.Talon.kF, 0);
+
+        rightMaster.config_kP(0, Constants.Auto.Drive.Talon.kP, 0);
+        rightMaster.config_kI(0, Constants.Auto.Drive.Talon.kI, 0);
+        rightMaster.config_kD(0, Constants.Auto.Drive.Talon.kD, 0);
+        rightMaster.config_kF(0, Constants.Auto.Drive.Talon.kF, 0);
 
         // Encoders
 
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+
+        leftMaster.setSensorPhase(true);
+        rightMaster.setSensorPhase(true);
+
+        //leftMaster.configMotionProfileTrajectoryPeriod(10, 0);
+        //leftMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10, 0);
+
         resetDriveEncoders();
 
         this.imu = imu;
@@ -124,7 +142,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public long getLeftTicks() {
-        return -leftMaster.getSelectedSensorPosition(0);
+        return leftMaster.getSelectedSensorPosition(0);
     }
 
     /**
@@ -140,7 +158,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getLeftRate() {
-        return -leftMaster.getSelectedSensorVelocity(0);
+        return leftMaster.getSelectedSensorVelocity(0);
     }
 
     /**
@@ -164,7 +182,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public long getRightTicks() {
-        return -rightMaster.getSelectedSensorPosition(0);
+        return rightMaster.getSelectedSensorPosition(0);
     }
 
     /**
@@ -180,7 +198,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getRightRate() {
-        return -rightMaster.getSelectedSensorVelocity(0);
+        return rightMaster.getSelectedSensorVelocity(0);
     }
 
     /**
