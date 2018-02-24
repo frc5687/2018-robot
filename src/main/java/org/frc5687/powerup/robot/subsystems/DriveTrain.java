@@ -124,7 +124,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public long getLeftTicks() {
-        return leftMaster.getSelectedSensorPosition(0);
+        return -leftMaster.getSelectedSensorPosition(0);
     }
 
     /**
@@ -132,7 +132,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getLeftDistance() {
-        return leftMaster.getSelectedSensorPosition(0) * Constants.Encoders.LeftDrive.INCHES_PER_PULSE;
+        return getLeftTicks() * Constants.Encoders.LeftDrive.INCHES_PER_PULSE;
     }
 
     /**
@@ -140,7 +140,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getLeftRate() {
-        return leftMaster.getSelectedSensorVelocity(0);
+        return -leftMaster.getSelectedSensorVelocity(0);
     }
 
     /**
@@ -164,7 +164,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public long getRightTicks() {
-        return rightMaster.getSelectedSensorPosition(0);
+        return -rightMaster.getSelectedSensorPosition(0);
     }
 
     /**
@@ -180,7 +180,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
      * @return
      */
     public double getRightRate() {
-        return rightMaster.getSelectedSensorVelocity(0);
+        return -rightMaster.getSelectedSensorVelocity(0);
     }
 
     /**
