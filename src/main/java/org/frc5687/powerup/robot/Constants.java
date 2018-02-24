@@ -28,7 +28,7 @@ public class Constants {
         }
 
         public class BACK_IR {
-            public static final boolean ENABLED = true;
+            public static final boolean ENABLED = false;
             public static final int DETECTION_THRESHOLD = 1200;
             public static final int DETECTED_THRESHOLD = 1140;
             public static final int SECURED_THRESHOLD = 1600;
@@ -85,14 +85,14 @@ public class Constants {
                     public static final double kP = 0.0; // Talon doesn't use kP
                     public static final double kI = 0.0;
                     public static final double kD = 0.0;
-                    public static final double kF = 1.1;
+                    public static final double kF = 0.25;
                 }
 
                 public class Cheese {
-                    public static final double kP = 4;//1.06;//0.001;//1.70;//0.80;
+                    public static final double kP = 8;//1.06;//0.001;//1.70;//0.80;
                     public static final double kI = 0.0;
-                    public static final double kD = 0.0;//.3;
-                    public static final double kT = -0.28; // Used for turning correction
+                    public static final double kD = 0.1;//.3;
+                    public static final double kT = -0.60; // Used for turning correction
                     public class kV {
                         public static final double MPS = 1.0 / MaxVel.MPS;
                         public static final double IPS = 1.0;// / MaxVel.IPS;
