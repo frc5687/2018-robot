@@ -79,6 +79,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
         leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
         rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        resetDriveEncoders();
 
         this.imu = imu;
         this.oi = oi;
@@ -103,16 +104,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     public void setVelocityIPS(double left, double right) {
         setVelocity(Helpers.ips2talon(left), Helpers.ips2talon(right));
-    }
-
-
-    private Encoder initializeEncoder(int channelA, int channelB, boolean reversed, double distancePerPulse) {
-        Encoder encoder = new Encoder(channelA, channelB, reversed, Encoder.EncodingType.k4X);
-        encoder.setDistancePerPulse(distancePerPulse);
-        encoder.setMaxPeriod(Constants.Encoders.Defaults.MAX_PERIOD);
-        encoder.setSamplesToAverage(Constants.Encoders.Defaults.SAMPLES_TO_AVERAGE);
-        encoder.reset();
-        return encoder;
     }
 
     public void resetDriveEncoders() {
