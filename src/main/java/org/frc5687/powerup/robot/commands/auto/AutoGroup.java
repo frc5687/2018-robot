@@ -199,6 +199,11 @@ public class AutoGroup extends CommandGroup {
                         }
                         addSequential(new FarRightToRightScale(robot));
                         addSequential(new AutoEject(robot.getIntake()));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -157.75, 0.5));
+                        if (robot.getArm().isHealthy()) {
+                            addSequential(new MoveArmToSetpointPID(robot.getArm(), 42));
+                        }
+                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 36, 0.5, true, true, 2000, ""));
                         break;
                 }
                 break;
