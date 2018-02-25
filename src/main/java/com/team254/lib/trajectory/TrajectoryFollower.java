@@ -33,6 +33,26 @@ public class TrajectoryFollower {
     ka_ = ka;
   }
 
+  public void configurekP(double kp) {
+    kp_ = kp;
+  }
+
+  public void configurekI(double ki) {
+    ki_ = ki;
+  }
+
+  public void configurekD(double kd) {
+    kd_ = kd;
+  }
+
+  public void configurekV(double kv) {
+    kv_ = kv;
+  }
+
+  public void configurekA(double ka) {
+    ka_ = ka;
+  }
+
   public void reset() {
     last_error_ = 0.0;
     current_segment = 0;

@@ -22,6 +22,8 @@ public class DynamicPathCommand extends Command {
     public double lastHeading;
     private Robot _robot;
     public boolean turnInverted;
+
+    private double _kT;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -65,6 +67,8 @@ public class DynamicPathCommand extends Command {
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
 
+        configurekT(Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT);
+
         followerLeft.setTrajectory(path.getLeftWheelTrajectory());
         followerLeft.reset();
         followerRight.setTrajectory(path.getRightWheelTrajectory());
@@ -75,6 +79,10 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
+    public void configurekT(double kt) {
+        _kT = kt;
+    }
+
     private double calculateTurn() {
         double goalHeading = Math.toDegrees(followerLeft.getHeading());
         double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
@@ -83,7 +91,7 @@ public class DynamicPathCommand extends Command {
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
 
-        double turn = Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
+        double turn = _kT * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
         // Attempts to cap the turn
         /*
         if (turn > 0) {
