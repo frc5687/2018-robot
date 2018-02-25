@@ -38,7 +38,7 @@ public class Arm extends PIDSubsystem {
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
         _pot = isCompetitionBot ?
                 new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
-                : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 30.0,  0.592, 171.0, 0.982);
+                : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
     }
 
     public void drive(double speed) {
@@ -121,6 +121,6 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return false;
+        return true;
     }
 }
