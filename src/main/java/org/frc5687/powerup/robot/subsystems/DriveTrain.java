@@ -110,6 +110,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
         leftFollower.setNeutralMode(NeutralMode.Brake);
         rightMaster.setNeutralMode(NeutralMode.Brake);
         rightFollower.setNeutralMode(NeutralMode.Brake);
+        SmartDashboard.putString("DriveTrain/neutralMode", "Brake");
     }
 
     public void enableCoastMode() {
@@ -117,6 +118,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
         leftFollower.setNeutralMode(NeutralMode.Coast);
         rightMaster.setNeutralMode(NeutralMode.Coast);
         rightFollower.setNeutralMode(NeutralMode.Coast);
+        SmartDashboard.putString("DriveTrain/neutralMode", "Coast");
     }
 
     public void setPower(double leftSpeed, double rightSpeed) {
