@@ -173,7 +173,6 @@ public class AutoGroup extends CommandGroup {
                 SmartDashboard.putString("Auto/Mode", "Scale Only");
                 switch (scaleFactor) {
                     case Constants.AutoChooser.Position.CENTER:
-                        addSequential(new LeftArc(robot));
                         /*
                         addSequential(new DriveForwardOneFeet(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 0.5));
@@ -195,11 +194,10 @@ public class AutoGroup extends CommandGroup {
                         */
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
-                        if (robot.getCarriage().isHealthy() && robot.getArm().isHealthy()) {
-                            addParallel(new PrepIntakeForScale(robot, 200.0, 10000));
+                        if (robot.getArm().isHealthy()) {
+                            addParallel(new PrepIntakeForScale(robot, 180.0, 10000));
                         }
-                        addSequential(new SixToScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, 0.5));
+                        addSequential(new FarRightToRightScale(robot));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                 }
