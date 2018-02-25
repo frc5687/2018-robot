@@ -79,6 +79,11 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
+    public void configureFollowerkP(double kp) {
+        followerLeft.configurekP(kp);
+        followerRight.configurekP(kp);
+    }
+
     public void configurekT(double kt) {
         _kT = kt;
     }
