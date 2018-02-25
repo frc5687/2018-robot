@@ -85,14 +85,14 @@ public class Constants {
                     public static final double kP = 0.0; // Talon doesn't use kP
                     public static final double kI = 0.0;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.25;
+                    public static final double kF = 0.28;
                 }
 
                 public class Cheese {
                     public static final double kP = 8;//1.06;//0.001;//1.70;//0.80;
                     public static final double kI = 0.0;
                     public static final double kD = 0.1;//.3;
-                    public static final double kT = -0.60; // Used for turning correction
+                    public static final double kT = -0.6; // Used for turning correction. -0.68 works well
                     public class kV {
                         public static final double MPS = 1.0 / MaxVel.MPS;
                         public static final double IPS = 1.0;// / MaxVel.IPS;
