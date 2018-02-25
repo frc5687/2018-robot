@@ -28,7 +28,7 @@ public class Constants {
         }
 
         public class BACK_IR {
-            public static final boolean ENABLED = false;
+            public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
             public static final int DETECTED_THRESHOLD = 1140;
             public static final int SECURED_THRESHOLD = 1600;
@@ -244,7 +244,7 @@ public class Constants {
         public static final double HOLD_SPEED_COMP = 0.1;
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
-        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
+        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
 
         public class Pot {
             public static final double TOP = 170.5;
