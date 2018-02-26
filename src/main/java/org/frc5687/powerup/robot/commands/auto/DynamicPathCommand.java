@@ -6,6 +6,7 @@ import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -22,8 +23,21 @@ public class DynamicPathCommand extends Command {
     public double lastHeading;
     private Robot _robot;
     public boolean turnInverted;
+    private Notifier _notifier;
 
     private double _kT;
+
+    class PeriodicRunnable implements java.lang.Runnable {
+        private DynamicPathCommand _d;
+
+        public PeriodicRunnable(DynamicPathCommand d) {
+            _d = d;
+        }
+
+        public void run() {
+            _d.processSegment();
+        }
+    }
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -36,6 +50,8 @@ public class DynamicPathCommand extends Command {
         if (isReversed()) {
             path.reverse();
         }
+
+        _notifier = new Notifier(new PeriodicRunnable(this));
     }
 
     public Path getPath() {
@@ -80,6 +96,8 @@ public class DynamicPathCommand extends Command {
 
         lastHeading = followerLeft.getLastSegment().heading;
 
+        _notifier.startPeriodic(0.02);
+
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
@@ -113,9 +131,10 @@ public class DynamicPathCommand extends Command {
         return turn;//turn;
     }
 
-
-    @Override
-    protected void execute() {
+    /**
+     * Called by the notifier every 0.02s
+     */
+    protected void processSegment() {
         /*
          * Calculate Speed
          */
@@ -148,6 +167,7 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.setPower(0, 0);
+        _notifier.stop();
     }
 
     @Override
