@@ -32,6 +32,10 @@ public class DynamicPathCommand extends Command {
         requires(_driveTrain);
 
         loadPath();
+
+        if (isReversed()) {
+            path.reverse();
+        }
     }
 
     public Path getPath() {
@@ -48,7 +52,7 @@ public class DynamicPathCommand extends Command {
     protected void initialize() {
         DriverStation.reportError("Starting DynamicPathCommand", false);
         _driveTrain.resetDriveEncoders();
-        _imu.reset();
+        //_imu.reset();
 
         starting_heading = _driveTrain.getCheesyYaw();
 
