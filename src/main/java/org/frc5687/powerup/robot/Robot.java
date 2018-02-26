@@ -195,4 +195,14 @@ public class Robot extends TimedRobot {
     public boolean isCompetitionBot(){
         return _isCompetitionBot;
     }
+
+    @Override
+    protected void loopFunc() {
+        try {
+            super.loopFunc();
+        } catch (Throwable throwable) {
+            DriverStation.reportError("Unhandled exception: " + throwable.toString(), throwable.getStackTrace());
+            System.exit(1);
+        }
+    }
 }
