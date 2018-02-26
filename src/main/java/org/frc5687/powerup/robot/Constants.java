@@ -12,7 +12,7 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
-        public static final double DROP_SPEED = -1;
+        public static final double DROP_SPEED = -0.50;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.4;
         public static final double SERVO_UP = 1.0;
@@ -20,7 +20,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
-        public static final long SETTLE_TIME = 500;
+        public static final long SETTLE_TIME = 750;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;
