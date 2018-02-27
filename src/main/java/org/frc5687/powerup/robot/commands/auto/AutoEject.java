@@ -40,7 +40,7 @@ public class AutoEject extends Command {
 
     @Override
     protected boolean isFinished() {
-        return System.currentTimeMillis() > _endMillis;
+        return System.currentTimeMillis() >= _endMillis;
 
     }
 

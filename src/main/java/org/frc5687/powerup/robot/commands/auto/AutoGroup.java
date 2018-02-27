@@ -131,13 +131,14 @@ public class AutoGroup extends CommandGroup {
                             addParallel(armPid);
                         }
                         addSequential(new CenterLeftToRightSwitch(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                        addSequential(new AutoEject(robot.getIntake()));
+                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        addSequential(new AutoEject(robot.getIntake(), -0.7));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        addSequential(new FinishArmPid(armPid)); // TODO: Fix NPE!!
-                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60.0, 0.8, true, true, 2000,"retreat"));
+                        addParallel(new FinishArmPid(armPid)); // TODO: Fix NPE!!
+                        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -2.0, 0.8, true, true, 2000,"retreat"));
+                        //addSequential(new CenterLeftToRightSwitchPartTwo(robot));
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;
