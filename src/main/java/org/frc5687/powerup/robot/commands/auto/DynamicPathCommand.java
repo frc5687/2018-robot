@@ -23,7 +23,9 @@ public class DynamicPathCommand extends Command {
     public double lastHeading;
     private Robot _robot;
     public boolean turnInverted;
-    private Notifier _notifier;
+    //private Notifier _notifier;
+    private Thread _thread;
+    private long lastRun = 0;
 
     private double _kT;
 
@@ -35,7 +37,21 @@ public class DynamicPathCommand extends Command {
         }
 
         public void run() {
-            _d.processSegment();
+            while (true) {
+                try {
+                    DriverStation.reportError("Running PeriodicRunnable.run()", false);
+                    long now = System.currentTimeMillis();
+                    if (now >= _d.lastRun + 10) {
+                        _d.lastRun = now;
+                        _d.processSegment();
+                        Thread.sleep(5);
+                    } else {
+                        Thread.sleep(1);
+                    }
+                } catch (Exception e) {
+                    DriverStation.reportError(e.toString(), true);
+                }
+            }
         }
     }
         
@@ -50,8 +66,9 @@ public class DynamicPathCommand extends Command {
         if (isReversed()) {
             path.reverse();
         }
-
-        _notifier = new Notifier(new PeriodicRunnable(this));
+        _thread = new Thread(new PeriodicRunnable(this));
+        _thread.start();
+        //_notifier = new Notifier(new PeriodicRunnable(this));
     }
 
     public Path getPath() {
@@ -96,7 +113,7 @@ public class DynamicPathCommand extends Command {
 
         lastHeading = followerLeft.getLastSegment().heading;
 
-        _notifier.startPeriodic(0.02);
+        //_notifier.startPeriodic(0.01);
 
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
@@ -135,6 +152,7 @@ public class DynamicPathCommand extends Command {
      * Called by the notifier every 0.02s
      */
     protected void processSegment() {
+        DriverStation.reportError("Running processSegment()", false);
         /*
          * Calculate Speed
          */
@@ -167,7 +185,9 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.setPower(0, 0);
-        _notifier.stop();
+        //_notifier.stop();
+        _thread.interrupt();
+        DriverStation.reportError("ran stop() method on notifier", false);
     }
 
     @Override
