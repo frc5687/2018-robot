@@ -31,17 +31,12 @@ public class AutoEject extends Command {
         super.initialize();
         _endMillis = System.currentTimeMillis() + Constants.Intake.EJECT_TIME;
         DriverStation.reportError("AutoEject initializing", false);
-    }
-
-    @Override
-    protected void execute() {
         _intake.drive(DROP_SPEED, DROP_SPEED);
     }
 
     @Override
     protected boolean isFinished() {
         return System.currentTimeMillis() >= _endMillis;
-
     }
 
     @Override

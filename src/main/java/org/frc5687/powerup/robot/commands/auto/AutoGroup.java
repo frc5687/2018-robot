@@ -132,7 +132,7 @@ public class AutoGroup extends CommandGroup {
                         }
                         addSequential(new CenterLeftToRightSwitch(robot));
                         //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.7));
+                        addSequential(new AutoEject(robot.getIntake()));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
