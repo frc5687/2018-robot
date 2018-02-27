@@ -25,12 +25,12 @@ public class DynamicPathCommand extends Command {
     public boolean turnInverted;
     //private Notifier _notifier;
     private Thread _thread;
-    private long lastRun = 0;
 
     private double _kT;
 
     class PeriodicRunnable implements java.lang.Runnable {
         private DynamicPathCommand _d;
+        long lastRun = 0;
 
         public PeriodicRunnable(DynamicPathCommand d) {
             _d = d;
@@ -39,10 +39,10 @@ public class DynamicPathCommand extends Command {
         public void run() {
             while (true) {
                 try {
-                    DriverStation.reportError("Running PeriodicRunnable.run()", false);
                     long now = System.currentTimeMillis();
-                    if (now >= _d.lastRun + 10) {
-                        _d.lastRun = now;
+                    if (now >= lastRun + 10) {
+                        DriverStation.reportError("PeriodicRunnable.run() waited enough", false);
+                        lastRun = now;
                         _d.processSegment();
                         Thread.sleep(5);
                     } else {
@@ -50,6 +50,7 @@ public class DynamicPathCommand extends Command {
                     }
                 } catch (Exception e) {
                     DriverStation.reportError(e.toString(), true);
+                    DriverStation.reportError(e.getStackTrace().toString(), true);
                 }
             }
         }
@@ -67,7 +68,6 @@ public class DynamicPathCommand extends Command {
             path.reverse();
         }
         _thread = new Thread(new PeriodicRunnable(this));
-        _thread.start();
         //_notifier = new Notifier(new PeriodicRunnable(this));
     }
 
@@ -114,6 +114,7 @@ public class DynamicPathCommand extends Command {
         lastHeading = followerLeft.getLastSegment().heading;
 
         //_notifier.startPeriodic(0.01);
+        _thread.start();
 
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
@@ -186,7 +187,7 @@ public class DynamicPathCommand extends Command {
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.setPower(0, 0);
         //_notifier.stop();
-        _thread.interrupt();
+        _thread.stop();
         DriverStation.reportError("ran stop() method on notifier", false);
     }
 
