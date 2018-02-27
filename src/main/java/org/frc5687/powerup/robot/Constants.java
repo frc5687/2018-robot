@@ -12,7 +12,7 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
-        public static final double DROP_SPEED = -1;
+        public static final double DROP_SPEED = -0.50;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.4;
         public static final double SERVO_UP = 1.0;
@@ -20,7 +20,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
-        public static final long SETTLE_TIME = 500;
+        public static final long SETTLE_TIME = 750;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;
@@ -80,6 +80,30 @@ public class Constants {
             public static final long STEADY_TIME = 100;
             public static final long ALIGN_STEADY_TIME = 100;
 
+            public class TrajectoryFollowing {
+                public class Talon {
+                    public static final double kP = 0.0; // Talon doesn't use kP
+                    public static final double kI = 0.0;
+                    public static final double kD = 0.0;
+                    public static final double kF = 0.32; // 0.28 works well
+                }
+
+                public class Cheese {
+                    public static final double kP = 7;//1.06;//0.001;//1.70;//0.80;
+                    public static final double kI = 0.0;
+                    public static final double kD = 0.1;//.3;
+                    public static final double kT = -0.4; // Used for turning correction. -0.68 works well
+                    public class kV {
+                        public static final double MPS = 1.0 / MaxVel.MPS;
+                        public static final double IPS = 1.0;// / MaxVel.IPS;
+                    }
+                    public class kA {
+                        public static final double METERS = 1.0 / MaxAcceleration.METERS;
+                        public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
+                    }
+                }
+            }
+
             public class IRPID {
                 public static final double kP = 0.05;
                 public static final double kI = 0.00;
@@ -97,13 +121,13 @@ public class Constants {
             }
 
             public class EncoderPID {
-                public static final double kP = 0.009;//1.06;//0.001;//1.70;//0.80;
+                public static final double kP = 6;//1.06;//0.001;//1.70;//0.80;
                 public static final double kI = 0.0;
                 public static final double kD = 0.0;//.3;
-                public static final double kT = 0.004; // Used for turning correction
+                public static final double kT = 4; // Used for turning correction
                 public class kV {
                     public static final double MPS = 1.0 / MaxVel.MPS;
-                    public static final double IPS = 1.0 / MaxVel.IPS;
+                    public static final double IPS = 1.0;// / MaxVel.IPS;
                 }
                 public class kA {
                     public static final double METERS = 1.0 / MaxAcceleration.METERS;
@@ -135,7 +159,7 @@ public class Constants {
 
             public static final boolean REVERSED = true; //TODO change to new robot specifications
             public static final int SAMPLES_TO_AVERAGE = 20;
-            public static final int PULSES_PER_ROTATION = 1024;
+            public static final int PULSES_PER_ROTATION = 4096; // 1024 in quad mode. talon is 4096.
 
             public class WheelDiameter {
                 public static final double INCHES = 6;
@@ -211,16 +235,16 @@ public class Constants {
     }
 
     public class Arm {
-        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
+        public static final double PDP_EXCESSIVE_CURRENT = 40.0;
 
         public static final double ENCODER_START = 0;
         public static final double ENCODER_MIDDLE = 133;
         public static final double ENCODER_FENCE = 90;
         public static final double ENCODER_TOP = 340;
         public static final double HOLD_SPEED_COMP = 0.1;
-        public static final double HOLD_SPEED_PROTO = 0.1;
+        public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
-        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.2;
+        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
 
         public class Pot {
             public static final double TOP = 170.5;

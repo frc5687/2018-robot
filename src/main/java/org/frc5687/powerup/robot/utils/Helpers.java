@@ -1,5 +1,7 @@
 package org.frc5687.powerup.robot.utils;
 
+import org.frc5687.powerup.robot.Constants;
+
 public class Helpers {
 
     /**
@@ -30,6 +32,20 @@ public class Helpers {
         } else {
             return b;
         }
+    }
+
+    /**
+     * Credit: 862
+     * @param inches
+     * @return
+     */
+    public static double inches2ticks(double inches) {
+        return inches / Constants.Encoders.Defaults.DistancePerRotation.INCHES * Constants.Encoders.Defaults.PULSES_PER_ROTATION;
+    }
+
+    public static double ips2talon(double ips) {
+        double ip100ms = ips / 10;
+        return inches2ticks(ip100ms);
     }
 
 }

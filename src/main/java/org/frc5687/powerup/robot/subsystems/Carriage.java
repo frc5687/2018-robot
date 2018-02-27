@@ -106,7 +106,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return false;
+        return true;
     }
 
     public boolean isInTopZone() {

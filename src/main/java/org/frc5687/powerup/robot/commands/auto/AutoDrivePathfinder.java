@@ -9,7 +9,6 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 import org.frc5687.powerup.robot.Constants;
-import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 import java.io.File;
@@ -62,12 +61,12 @@ public class AutoDrivePathfinder extends Command {
         SmartDashboard.putNumber("AutoDrivePF/leftSpeed", leftSpeed);
         SmartDashboard.putNumber("AutoDrivePF/rightSpeed", rightSpeed);
 
-        _driveTrain.tankDrive(leftSpeed, rightSpeed);
+        _driveTrain.setPower(leftSpeed, rightSpeed);
     }
 
     @Override
     protected void end() {
-        _driveTrain.tankDrive(0, 0);
+        _driveTrain.setPower(0, 0);
     }
 
     @Override

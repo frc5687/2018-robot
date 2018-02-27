@@ -23,9 +23,9 @@ public class AutoAlignToSwitch extends Command {
     protected void execute() {
         double angleOffset = SmartDashboard.getNumber("tx", 0);
         if (angleOffset > 0) {
-            driveTrain.tankDrive(speed, -speed);
+            driveTrain.setPower(speed, -speed);
         } else if (angleOffset < 0) {
-            driveTrain.tankDrive(-speed, speed);
+            driveTrain.setPower(-speed, speed);
         }
     }
 
