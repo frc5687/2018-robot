@@ -61,21 +61,33 @@ public class Intake extends Subsystem {
     }
 
     /**
+     * Checks if cube is fully in the intake.
+     * @return
+     */
+    public boolean cubeIsSecured() {
+        if (!Constants.Intake.BACK_IR.ENABLED) {
+            return false;
+        }
+
+        return irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
+    }
+
+    /**
      * Checks if cube is detected
      * @return Whether or not the infrared sensor sees anything
      */
     public boolean cubeIsDetected() {
-        // If we have no IRs enabled, always return false
-        if (!Constants.Intake.BACK_IR.ENABLED && !Constants.Intake.SIDE_IR.ENABLED) { return false; }
-        
-        return  (!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD)
-             && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD);
+        if (!Constants.Intake.BACK_IR.ENABLED) {
+            return false;
+        }
+        return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
+        SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
     }
 
     @Override
