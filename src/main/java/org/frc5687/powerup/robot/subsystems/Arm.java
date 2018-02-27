@@ -52,9 +52,19 @@ public class Arm extends PIDSubsystem {
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
+        if (isInTopZone() || isInBottomZone()){
+            speed = speed*Constants.Arm.ZONE_SPEED;
+        }
         _motor.setSpeed(speed);
     }
 
+    public boolean isInBottomZone(){
+        return getPosition()<Constants.Arm.BOTTOM_ZONE;
+    }
+
+    public boolean isInTopZone(){
+        return getPosition()> Constants.Arm.TOP_ZONE;
+    }
 
     @Override
     protected void initDefaultCommand() {
