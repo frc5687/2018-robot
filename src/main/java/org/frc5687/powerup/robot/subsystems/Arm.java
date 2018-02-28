@@ -33,6 +33,7 @@ public class Arm extends PIDSubsystem {
         _oi=oi;
         _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
+        _motor.setInverted(isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO);
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);

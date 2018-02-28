@@ -244,6 +244,9 @@ public class Constants {
     public class Arm {
         public static final double PDP_EXCESSIVE_CURRENT = 40.0;
 
+        public static final boolean MOTOR_INVERTED_PROTO = false;
+        public static final boolean MOTOR_INVERTED_COMP = true;
+
         public static final double ENCODER_START = 0;
         public static final double ENCODER_MIDDLE = 133;
         public static final double ENCODER_FENCE = 90;
