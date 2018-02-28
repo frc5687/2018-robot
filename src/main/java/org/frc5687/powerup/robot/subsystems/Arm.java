@@ -8,8 +8,10 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveArm;
 import org.frc5687.powerup.robot.utils.AnglePotentiometer;
+import org.frc5687.powerup.robot.utils.PDP;
 
 public class Arm extends PIDSubsystem {
+    private PDP _pdp;
     private Encoder encoder;
     private VictorSP _motor;
     private OI _oi;
@@ -26,7 +28,7 @@ public class Arm extends PIDSubsystem {
     public static final double kF = 0;
 
 
-    public Arm (OI oi, boolean isCompetitionBot) {
+    public Arm (OI oi, PDP pdp, boolean isCompetitionBot) {
         super("Arm", kP, kI, kD, kF, 0.02);
         setAbsoluteTolerance(5);
         _isCompetitionBot = isCompetitionBot;
@@ -35,13 +37,14 @@ public class Arm extends PIDSubsystem {
         setInputRange(BOTTOM, TOP);
         setOutputRange(-.25, 0.75);
         _oi=oi;
+        _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
         _pot = isCompetitionBot ?
                 new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
-                : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 30.0,  0.592, 171.0, 0.982);
+                : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
     }
 
     public void drive(double speed) {
@@ -50,6 +53,9 @@ public class Arm extends PIDSubsystem {
             speed = 0.0;
         } else if (atBottom() && speed < 0) {
             SmartDashboard.putString("Arm/Capped)", "Bottom");
+            speed = 0.0;
+        }
+        if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
         _motor.setSpeed(speed);
@@ -122,5 +128,9 @@ public class Arm extends PIDSubsystem {
 
     public boolean isCompetitionBot() {
         return _isCompetitionBot;
+    }
+
+    public boolean isHealthy() {
+        return true;
     }
 }

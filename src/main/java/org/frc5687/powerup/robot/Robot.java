@@ -7,10 +7,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointTrajectory;
-import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
@@ -29,11 +25,11 @@ public class Robot extends TimedRobot {
     private Carriage carriage;
     private Climber _climber;
     private Arm _arm;
-    public static AHRS imu;
+    public AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
-    public static JeVoisProxy jeVoisProxy;
+    public JeVoisProxy jeVoisProxy;
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
     private long lastPeriod;
@@ -57,15 +53,15 @@ public class Robot extends TimedRobot {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
-        _arm = new Arm(oi, _isCompetitionBot);
+        _arm = new Arm(oi, pdp, _isCompetitionBot);
         driveTrain = new DriveTrain(imu, oi);
-        carriage = new Carriage(oi, _isCompetitionBot);
+        carriage = new Carriage(oi, pdp, _isCompetitionBot);
         intake = new Intake(oi);
-        _climber = new Climber(oi);
+        _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        //setPeriod(0.01);
+        setPeriod(0.02);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -78,12 +74,14 @@ public class Robot extends TimedRobot {
         LiveWindow.disableAllTelemetry();
 
     }
+
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
     public Carriage getCarriage() { return carriage; }
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public JeVoisProxy getJeVoisProxy() { return jeVoisProxy; }
 
 
     @Override
@@ -95,6 +93,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         imu.reset();
         driveTrain.resetDriveEncoders();
+        driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
@@ -133,6 +132,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
+        driveTrain.enableCoastMode();
     }
 
     @Override
@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+        driveTrain.enableCoastMode();
     }
 
     @Override
@@ -193,5 +194,15 @@ public class Robot extends TimedRobot {
 
     public boolean isCompetitionBot(){
         return _isCompetitionBot;
+    }
+
+    @Override
+    protected void loopFunc() {
+        try {
+            super.loopFunc();
+        } catch (Throwable throwable) {
+            DriverStation.reportError("Unhandled exception: " + throwable.toString(), throwable.getStackTrace());
+            System.exit(1);
+        }
     }
 }

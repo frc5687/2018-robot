@@ -16,6 +16,10 @@ public class Trajectory {
       this.right = right;
     }
 
+    public Pair reverse() {
+      return new Pair(left.reverse(), right.reverse());
+    }
+
     public Trajectory left;
     public Trajectory right;
   }
@@ -48,6 +52,13 @@ public class Trajectory {
       dt = to_copy.dt;
       x = to_copy.x;
       y = to_copy.y;
+    }
+
+    public void reverse() {
+      vel = -vel;
+      acc = -acc;
+      jerk = -jerk;
+      // heading = ChezyMath.boundAngleNegPiToPiRadians(heading);
     }
 
     public String toString() {
@@ -127,6 +138,24 @@ public class Trajectory {
             = new Trajectory(getNumSegments());
     cloned.segments_ = copySegments(this.segments_);
     return cloned;
+  }
+
+  public Trajectory reverse() {
+    Trajectory cloned = new Trajectory(1);
+    cloned.segments_ = reverseSegments(this.segments_);
+    return cloned;
+  }
+
+  private Segment[] reverseSegments(Segment[] tocopy) {
+    int count = tocopy.length;
+    double start_pos = tocopy[count - 1].pos;
+    Segment[] copied = new Segment[count];
+    for (int i = 0; i < tocopy.length; ++i) {
+      copied[i] = new Segment(tocopy[count - i - 1]);
+      copied[i].reverse();
+      copied[i].pos -= start_pos;
+    }
+    return copied;
   }
   
   private Segment[] copySegments(Segment[] tocopy) {

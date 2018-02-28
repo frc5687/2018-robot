@@ -1,23 +1,12 @@
 package org.frc5687.powerup.robot;
 
-
-import org.frc5687.powerup.robot.Constants;
-
 public class RobotMap {
 
-    public static final int IDENTITY_FLAG = 9;
+    public static final int IDENTITY_FLAG = DIO.RIO9;
 
     public class DriveTrain {
-        public static final int LEFT_FRONT_MOTOR = PWM.RIO3;
-        public static final int LEFT_REAR_MOTOR = PWM.RIO4;
-        public static final int RIGHT_FRONT_MOTOR = PWM.RIO1;
-        public static final int RIGHT_REAR_MOTOR = PWM.RIO2;
 
-        public static final int LEFT_ENCODER_CHANNEL_A = DIO.RIO7;
-        public static final int LEFT_ENCODER_CHANNEL_B = DIO.RIO8;
-        public static final int RIGHT_ENCODER_CHANNEL_A = DIO.RIO5;
-        public static final int RIGHT_ENCODER_CHANNEL_B = DIO.RIO6;
-	}
+    }
 
     public class Intake {
         public static final int LEFT_MOTOR = PWM.RIO5 ;
@@ -53,6 +42,18 @@ public class RobotMap {
         public static final int POSITION_SWITCH = ANALOG.RIO2;
         public static final int MODE_SWITCH = ANALOG.RIO3;
         public static final int DELAY_SWITCH = ANALOG.navX5;
+    }
+
+    public class PDP {
+        public static final int INTAKE_LEFT_SP = 0;
+        public static final int RIGHT_REAR_SPX = 1;
+        public static final int RIGHT_FRONT_SRX = 2;
+        public static final int LEFT_REAR_SPX = 3;
+        public static final int CLIMBER_SP = 10;
+        public static final int LEFT_FRONT_SRX = 12;
+        public static final int INTAKE_RIGHT_SP = 13;
+        public static final int CARRIAGE_SP = 14;
+        public static final int ARM_SP = 15;
     }
 
     public static class PWM {
@@ -110,6 +111,18 @@ public class RobotMap {
         public static final int navX5 = 5;
         public static final int navX6 = 6;
         public static final int navX7 = 7;
+    }
+
+    public static class CAN {
+        public static class TalonSRX {
+            public static final int LEFT_FRONT = 0;
+            public static final int RIGHT_FRONT = 1;
+        }
+
+        public static class VictorSPX {
+            public static final int LEFT_BACK = 0;
+            public static final int RIGHT_BACK = 1;
+        }
     }
 
 }
