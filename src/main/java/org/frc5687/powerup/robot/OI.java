@@ -82,13 +82,13 @@ public class OI {
 
     public double getLeftSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS);
-        speed = applySensativityFactor(speed, Constants.DriveTrain.SENSATIVITY);
+        speed = applySensativityFactor(speed, Constants.DriveTrain.SENSITIVITY);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
     public double getRightSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_AXIS);
-        speed = applySensativityFactor(speed, Constants.DriveTrain.SENSATIVITY);
+        speed = applySensativityFactor(speed, Constants.DriveTrain.SENSITIVITY);
         return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
     }
 
