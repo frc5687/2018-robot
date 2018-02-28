@@ -223,7 +223,7 @@ public class Constants {
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
         public static final int ENCODER_DRIVE_COMP = -582; // -394
-        public static final int ENCODER_BOTTOM_COMP = -795;
+        public static final int ENCODER_BOTTOM_COMP = -955;
         public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
 
         // public static
@@ -262,8 +262,8 @@ public class Constants {
             public static final double BOTTOM_COMP = 33.0;
             public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
 
-            public static final double INTAKE_COMP = 47.0;
-            public static final double INTAKE_PROTO = 47.0; // TODO: Tune
+            public static final double INTAKE_COMP = 50.0;
+            public static final double INTAKE_PROTO = 47.0;
 
             public static final double DRIVE_COMP = 33.0;
             public static final double DRIVE_PROTO = 45.0;
