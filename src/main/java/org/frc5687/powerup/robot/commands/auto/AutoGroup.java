@@ -89,6 +89,7 @@ public class AutoGroup extends CommandGroup {
 
             case Constants.AutoChooser.Mode.SWITCH_ONLY:
                 SmartDashboard.putString("Auto/Mode", "Switch Only");
+                double armTarget;
                 switch(switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT: // Position 1, left side
                         break;
@@ -101,31 +102,22 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
                         DriverStation.reportError("Switch Only. Position 3. Left Side", false);
-                        if (robot.getCarriage().isHealthy()) {
-                            // If the Carriage is working
-                            armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
-                            addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
+                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+                        armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
+                        if (robot.getArm().isHealthy()) {
                             addParallel(armPid);
-                            addSequential(new LeftSwitchCenter(robot));
-                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
-                            addSequential(new AutoEject(robot.getIntake()));
-                            addSequential(new FinishArmPid(armPid));
-                            addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60.0, 0.8, true, true, 2000,"retreat"));
-                        } else {
-                            DriverStation.reportError("Switch Only. Position 3. Left Side. Unhealthy Carriage", false);
-                            // If the Carriage is not working...
-                            //armPid = new MoveArmToSetpointPID(robot.getArm(), 72, true);
-                            //addParallel(armPid);
-                            addSequential(new CenterLeftToLeftSwitch(robot));
-                            addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.6));
-                            addSequential(new AutoEject(robot.getIntake()));
-                            //addSequential(new FinishArmPid(armPid));
-                            addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60.0, 0.8, true, true, 2000,"retreat"));
                         }
+                        addSequential(new CenterLeftToLeftSwitch(robot));
+                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
+                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        if (robot.getCarriage().isHealthy()) {
+                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
+                        }
+                        addParallel(new FinishArmPid(armPid)); // TODO: Fix NPE!!
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
                         DriverStation.reportError("Switch Only. Position 3. Right Side", false);
-                        double armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
                         armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
                         if (robot.getArm().isHealthy()) {
                             addParallel(armPid);
@@ -138,7 +130,6 @@ public class AutoGroup extends CommandGroup {
                         }
                         addParallel(new FinishArmPid(armPid)); // TODO: Fix NPE!!
                         //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -2.0, 0.8, true, true, 2000,"retreat"));
-                        //addSequential(new CenterLeftToRightSwitchPartTwo(robot));
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;
