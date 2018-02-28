@@ -35,7 +35,6 @@ public class Constants {
             public static final int DETECTED_THRESHOLD = 1140;
             public static final int SECURED_THRESHOLD = 1600;
         }
-
     }
 
     public class Auto {
@@ -217,7 +216,7 @@ public class Constants {
         public static final int ENCODER_TOP_PROTO = 0;
         public static final int ENCODER_MIDDLE_PROTO = -480;
         public static final int ENCODER_CLEAR_BUMPERS_PROTO = -717;
-        public static final int ENCODER_DRIVE_PROTO = -891;
+        public static final int ENCODER_DRIVE_PROTO = -500;
         public static final int ENCODER_BOTTOM_PROTO = -967;
         public static final int ENCODER_RANGE_PROTO = ENCODER_TOP_PROTO - ENCODER_BOTTOM_PROTO;
         public static final int ENCODER_TOP_COMP = 0;
@@ -257,8 +256,24 @@ public class Constants {
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
 
         public class Pot {
+            public static final double TOP_COMP = 166.0;
+            public static final double TOP_PROTO = 166.0; // TODO: Tune
+
+            public static final double BOTTOM_COMP = 33.0;
+            public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
+
+            public static final double INTAKE_COMP = 47.0;
+            public static final double INTAKE_PROTO = 47.0; // TODO: Tune
+
+            public static final double DRIVE_COMP = 33.0;
+            public static final double DRIVE_PROTO = 45.0;
+
+            public static final double SWITCH_HEIGHT_COMP = 50.0;
+            public static final double SWITCH_HEIGHT_PROTO = 50.0; // TODO: Tune
+
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
+
             public static final double TOLERANCE = 4.2;
             public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
             public static final double INTAKE = 47.0;
