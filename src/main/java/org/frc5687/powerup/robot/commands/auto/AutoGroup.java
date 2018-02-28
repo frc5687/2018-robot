@@ -150,6 +150,10 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.SCALE_ONLY:
                 SmartDashboard.putString("Auto/Mode", "Scale Only");
                 switch (scaleFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                        addParallel(new AutoZeroCarriageThenLower(robot));
+                        addSequential(new FarLeftToLeftScale(robot));
+                        break;
                     case Constants.AutoChooser.Position.CENTER:
                         // Sit here as we don't have anything
                         break;
