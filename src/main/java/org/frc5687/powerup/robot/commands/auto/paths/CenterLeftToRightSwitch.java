@@ -10,7 +10,7 @@ public class CenterLeftToRightSwitch extends DynamicPathCommand {
     public CenterLeftToRightSwitch(Robot robot) {
         super(robot);
         //configurekT(-4.5);
-        configurekT(-0.8);
+        configurekT(-0.9);
     }
 
     @Override

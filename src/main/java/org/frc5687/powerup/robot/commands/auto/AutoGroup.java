@@ -108,12 +108,13 @@ public class AutoGroup extends CommandGroup {
                             addParallel(armPid);
                         }
                         addSequential(new CenterLeftToLeftSwitch(robot));
-                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake(), -0.62));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        addParallel(new FinishArmPid(armPid)); // TODO: Fix NPE!!
+                        if (robot.getArm().isHealthy()) {
+                            addParallel(new FinishArmPid(armPid));
+                        }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
                         DriverStation.reportError("Switch Only. Position 3. Right Side", false);
@@ -123,13 +124,13 @@ public class AutoGroup extends CommandGroup {
                             addParallel(armPid);
                         }
                         addSequential(new CenterLeftToRightSwitch(robot));
-                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.5));
                         addSequential(new AutoEject(robot.getIntake(), -0.62));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        addParallel(new FinishArmPid(armPid)); // TODO: Fix NPE!!
-                        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -2.0, 0.8, true, true, 2000,"retreat"));
+                        if (robot.getArm().isHealthy()) {
+                            addParallel(new FinishArmPid(armPid));
+                        }
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
                         break;
