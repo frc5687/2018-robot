@@ -9,7 +9,11 @@ public class FarLeftToLeftScale extends DynamicPathCommand {
     
     public FarLeftToLeftScale(Robot robot) {
         super(robot);
-        configurekT(-0.7);
+    }
+
+    @Override
+    public double getkT() {
+        return 0.8;
     }
 
     @Override

@@ -6,10 +6,15 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
 public class FarRightToLeftScalePartOne extends DynamicPathCommand {
+
     
     public FarRightToLeftScalePartOne(Robot robot) {
         super(robot);
-        configurekT(-0.8);
+    }
+
+    @Override
+    public double getkT() {
+        return 0.8;
     }
 
     @Override
