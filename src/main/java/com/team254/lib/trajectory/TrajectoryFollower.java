@@ -95,7 +95,7 @@ public class TrajectoryFollower {
       SmartDashboard.putNumber("TF/" + _name + "/output", output);
       SmartDashboard.putNumber("TF/" + _name + "/goalVelIPS", segment.vel);
       SmartDashboard.putNumber("TF/" + _name + "/current_segment", current_segment);
-      DriverStation.reportError(_name + " kp: " + kp + "kv: " + kv + " output: " + output, false);
+      //DriverStation.reportError(_name + " kp: " + kp + "kv: " + kv + " output: " + output, false);
       //System.out.println("so far: " + distance_so_far + "; output: " + output);
       return output;
     } else {
