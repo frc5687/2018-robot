@@ -7,6 +7,7 @@ public class Constants {
         public static final double DEADBAND = 0.15;
         public static final boolean LEFT_MOTORS_INVERTED = false;
         public static final boolean RIGHT_MOTORS_INVERTED = true;
+        public static final double TALL_CAP_HEIGHT =  72.0;
     }
 
     public class Intake {
@@ -302,14 +303,14 @@ public class Constants {
         /***
          * Minimum time (in milliseconds) it should take to go from 0 to 1 (stop to full)
          */
-        public static final double TIME_OF_ACCEL = 2; //in seconds
-        public static final double TIME_OF_ACCEL_TALL = 5; //in seconds
+        public static final double TIME_OF_ACCEL = .25; //in seconds
+        public static final double TIME_OF_ACCEL_TALL = .5; //in seconds
 
         /***
-         * Maximum accelerations per cycle
+         * Maximum accelerations per cycle (ie, seconds to full speed
          */
-        public static final double ACCELERATION_CAP = TIME_OF_ACCEL / (CYCLES_PER_SECOND * 10);
-        public static final double ACCELERATION_CAP_TALL = TIME_OF_ACCEL_TALL / (CYCLES_PER_SECOND * 10);
+        public static final double ACCELERATION_CAP = TIME_OF_ACCEL == 0 ? 1 : (1  / (TIME_OF_ACCEL * CYCLES_PER_SECOND));
+        public static final double ACCELERATION_CAP_TALL =  TIME_OF_ACCEL_TALL == 0 ? 1 : (1 / (TIME_OF_ACCEL_TALL * CYCLES_PER_SECOND));
     }
 
 }

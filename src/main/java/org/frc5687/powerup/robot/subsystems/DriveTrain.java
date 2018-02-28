@@ -134,7 +134,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     public void setPower(double leftSpeed, double rightSpeed, boolean overrideCaps) {
         if (!overrideCaps) {
-            double cap = (_robot.estimateIntakeHeight() > 72.0) ?  Constants.Limits.ACCELERATION_CAP_TALL : Constants.Limits.ACCELERATION_CAP;
+            SmartDashboard.putNumber("DriveTrain/Speed/RightRaw", rightSpeed);
+            SmartDashboard.putNumber("DriveTrain/Speed/LeftRaw", leftSpeed);
+            double cap = (_robot.estimateIntakeHeight() > Constants.DriveTrain.TALL_CAP_HEIGHT) ?  Constants.Limits.ACCELERATION_CAP_TALL : Constants.Limits.ACCELERATION_CAP;
+            SmartDashboard.putNumber("DriveTrain/Cap", cap);
+
             leftSpeed = Math.min(leftSpeed, _priorLeft + cap);
             leftSpeed = Math.max(leftSpeed, _priorLeft - cap);
 
