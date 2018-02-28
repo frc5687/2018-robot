@@ -131,7 +131,7 @@ public class OI {
     }
 
     public double getArmSpeed() {
-        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.3 : 0);
+        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.5 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
         double holdSpeed = _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO);

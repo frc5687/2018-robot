@@ -25,12 +25,14 @@ public class DynamicPathCommand extends Command {
     public boolean turnInverted;
     //private Notifier _notifier;
     private Thread _thread;
-    private long lastRun = 0;
 
-    private double _kT;
+    public double getkT() {
+        return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT;
+    }
 
     class PeriodicRunnable implements java.lang.Runnable {
         private DynamicPathCommand _d;
+        long lastRun = 0;
 
         public PeriodicRunnable(DynamicPathCommand d) {
             _d = d;
@@ -39,10 +41,10 @@ public class DynamicPathCommand extends Command {
         public void run() {
             while (true) {
                 try {
-                    DriverStation.reportError("Running PeriodicRunnable.run()", false);
                     long now = System.currentTimeMillis();
-                    if (now >= _d.lastRun + 10) {
-                        _d.lastRun = now;
+                    if (now >= lastRun + 10) {
+                        DriverStation.reportError("PeriodicRunnable.run() waited enough", false);
+                        lastRun = now;
                         _d.processSegment();
                         Thread.sleep(5);
                     } else {
@@ -50,6 +52,7 @@ public class DynamicPathCommand extends Command {
                     }
                 } catch (Exception e) {
                     DriverStation.reportError(e.toString(), true);
+                    DriverStation.reportError(e.getStackTrace().toString(), true);
                 }
             }
         }
@@ -67,7 +70,6 @@ public class DynamicPathCommand extends Command {
             path.reverse();
         }
         _thread = new Thread(new PeriodicRunnable(this));
-        _thread.start();
         //_notifier = new Notifier(new PeriodicRunnable(this));
     }
 
@@ -104,8 +106,6 @@ public class DynamicPathCommand extends Command {
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
 
-        configurekT(Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT);
-
         followerLeft.setTrajectory(path.getLeftWheelTrajectory());
         followerLeft.reset();
         followerRight.setTrajectory(path.getRightWheelTrajectory());
@@ -114,6 +114,7 @@ public class DynamicPathCommand extends Command {
         lastHeading = followerLeft.getLastSegment().heading;
 
         //_notifier.startPeriodic(0.01);
+        _thread.start();
 
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
@@ -124,18 +125,20 @@ public class DynamicPathCommand extends Command {
     }
 
     public void configurekT(double kt) {
-        _kT = kt;
+
     }
 
     private double calculateTurn() {
-        double goalHeading = Math.toDegrees(followerLeft.getHeading());
-        double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
+        double goalHeading = -ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
+        //double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
+        double observedHeading = _driveTrain.getCheesyYaw();
         SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
+        SmartDashboard.putNumber("AADynamicPathCommand/_kT", getkT());
 
-        double turn = _kT * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
+        double turn = getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
         // Attempts to cap the turn
         /*
         if (turn > 0) {
@@ -171,6 +174,8 @@ public class DynamicPathCommand extends Command {
         double speedRightMotorWithTurn = speedRightMotor - turn;
 
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
+        SmartDashboard.putNumber("AADynamicPathCommand/left/totalIPS", speedLeftMotorWithTurn);
+        SmartDashboard.putNumber("AADynamicPathCommand/right/totalIPS", speedRightMotorWithTurn);
 
         /*
          * Drive
@@ -186,7 +191,7 @@ public class DynamicPathCommand extends Command {
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.setPower(0, 0);
         //_notifier.stop();
-        _thread.interrupt();
+        _thread.stop();
         DriverStation.reportError("ran stop() method on notifier", false);
     }
 

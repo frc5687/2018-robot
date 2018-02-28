@@ -22,4 +22,15 @@ public class PrepIntakeForScale extends CommandGroup {
             addSequential(new MoveArmToSetpointPID(robot.getArm(), 164));
         }
     }
+
+    public PrepIntakeForScale(Robot robot, double inches, long millis, boolean distinctiveAutoZero) {
+        addParallel(new AutoZeroCarriageThenLower(robot));
+        addSequential(new AutoWaitForDistance(robot.getArm(), robot.getDriveTrain(), inches, millis));
+        if (robot.getArm().isHealthy()) {
+            addSequential(new MoveArmToSetpointPID(robot.getArm(), 130));
+        }
+        if (robot.getCarriage().isHealthy()) {
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5, 30000, false));
+        }
+    }
 }

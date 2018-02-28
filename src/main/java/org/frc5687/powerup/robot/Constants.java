@@ -14,7 +14,7 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
-        public static final double DROP_SPEED = -0.50;
+        public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.4;
         public static final double SERVO_UP = 1.0;
@@ -86,7 +86,7 @@ public class Constants {
                     public static final double kP = 0.0; // Talon doesn't use kP
                     public static final double kI = 0.0;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.32; // 0.28 works well
+                    public static final double kF = 0.38; // 0.28 works well
                 }
 
                 public class Cheese {
