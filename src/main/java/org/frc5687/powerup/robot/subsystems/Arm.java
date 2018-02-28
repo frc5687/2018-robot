@@ -60,6 +60,7 @@ public class Arm extends PIDSubsystem {
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
+        speed = Math.max(speed, -.5);
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
     }
