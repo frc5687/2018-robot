@@ -54,14 +54,14 @@ public class Robot extends TimedRobot {
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         _arm = new Arm(oi, pdp, _isCompetitionBot);
-        driveTrain = new DriveTrain(imu, oi);
+        driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
         intake = new Intake(oi);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        setPeriod(0.02);
+        setPeriod(1 / Constants.CYCLES_PER_SECOND);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -176,6 +176,7 @@ public class Robot extends TimedRobot {
             carriage.updateDashboard();
             driveTrain.updateDashboard();
             intake.updateDashboard();
+            estimateIntakeHeight();
             updateTick = 0;
         }
     }
@@ -204,5 +205,15 @@ public class Robot extends TimedRobot {
             DriverStation.reportError("Unhandled exception: " + throwable.toString(), throwable.getStackTrace());
             System.exit(1);
         }
+    }
+
+    public double estimateIntakeHeight() {
+        double carriageHeight = carriage.estimateHeight();
+        double armHeight = _arm.estimateHeight();
+        double intakeHeight = carriageHeight + armHeight;
+        SmartDashboard.putNumber("Intake/CarriageHeight", carriageHeight);
+        SmartDashboard.putNumber("Intake/ArmHeight", armHeight);
+        SmartDashboard.putNumber("Intake/IntakeHeight", intakeHeight);
+        return intakeHeight;
     }
 }

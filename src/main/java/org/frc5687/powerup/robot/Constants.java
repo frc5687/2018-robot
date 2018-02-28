@@ -1,12 +1,14 @@
 package org.frc5687.powerup.robot;
 
 public class Constants {
+    public static final int CYCLES_PER_SECOND = 50;
 
     public class DriveTrain {
-        public static final double DEADBAND = 0.15;
+        public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
         public static final boolean RIGHT_MOTORS_INVERTED = true;
         public static final double SENSITIVITY = 0.5;
+        public static final double TALL_CAP_HEIGHT =  72.0;
     }
 
     public class Intake {
@@ -21,7 +23,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
-        public static final double SENSATIVITY = 0.2;
+        public static final double SENSITIVITY = 0.2;
         public static final long SETTLE_TIME = 750;
 
         public class SIDE_IR {
@@ -211,7 +213,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.05;
         public static final double ZERO_SPEED = 0.99;
-        public static final double SENSATIVITY = 0.2;
+        public static final double SENSITIVITY = 0.2;
 
         public static final double ZONE_SPEED_LIMIT = 0.75;
 
@@ -220,12 +222,13 @@ public class Constants {
         public static final int ENCODER_CLEAR_BUMPERS_PROTO = -717;
         public static final int ENCODER_DRIVE_PROTO = -891;
         public static final int ENCODER_BOTTOM_PROTO = -967;
-
+        public static final int ENCODER_RANGE_PROTO = ENCODER_TOP_PROTO - ENCODER_BOTTOM_PROTO;
         public static final int ENCODER_TOP_COMP = 0;
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
         public static final int ENCODER_DRIVE_COMP = -582; // -394
         public static final int ENCODER_BOTTOM_COMP = -795;
+        public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
 
         // public static
         public static final double RUNWAY = 25.5; // in
@@ -235,6 +238,10 @@ public class Constants {
         public static final int START_TOP_ZONE_PROTO = -200;
         public static final int START_BOTTOM_ZONE_COMP = -600;
         public static final int START_BOTTOM_ZONE_PROTO = -600;
+
+        public static final double BOTTOM_INCHES = 23.0;
+        public static final double TOP_INCHES = 48.0;
+        public static final double RANGE_INCHES = TOP_INCHES - BOTTOM_INCHES;
     }
 
     public class Arm {
@@ -248,7 +255,7 @@ public class Constants {
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
-        public static final double SENSATIVITY = 0.4;
+        public static final double SENSITIVITY = 0.4;
 
         public class Pot {
             public static final double TOP = 170.5;
@@ -259,6 +266,8 @@ public class Constants {
             public static final double DRIVE = 33.0;
 
         }
+
+        public static final double LENGTH = 34.0;
     }
 
     public class Climber {
@@ -294,6 +303,19 @@ public class Constants {
             public static final int SCALE_THEN_SWITCH = 5;
             public static final int SWITCH_OR_SCALE = 6;
         }
+    }
+    public class Limits {
+        /***
+         * Minimum time (in milliseconds) it should take to go from 0 to 1 (stop to full)
+         */
+        public static final double TIME_OF_ACCEL = .25; //in seconds
+        public static final double TIME_OF_ACCEL_TALL = .5; //in seconds
+
+        /***
+         * Maximum accelerations per cycle (ie, seconds to full speed
+         */
+        public static final double ACCELERATION_CAP = TIME_OF_ACCEL == 0 ? 1 : (1  / (TIME_OF_ACCEL * CYCLES_PER_SECOND));
+        public static final double ACCELERATION_CAP_TALL =  TIME_OF_ACCEL_TALL == 0 ? 1 : (1 / (TIME_OF_ACCEL_TALL * CYCLES_PER_SECOND));
     }
 
 }
