@@ -19,6 +19,8 @@ public class Arm extends PIDSubsystem {
     private DigitalOutput led;
     private AnglePotentiometer _pot;
 
+    private int motorInversionMultiplier;
+
     public static final double kP = 0.03;
     public static final double kI = 0.002;
     public static final double kD = 0.0002;
@@ -33,7 +35,7 @@ public class Arm extends PIDSubsystem {
         _oi=oi;
         _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
-        _motor.setInverted(isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO);
+        motorInversionMultiplier = (isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO) ? -1 : 1;
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
@@ -53,6 +55,7 @@ public class Arm extends PIDSubsystem {
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
+        speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
     }
 
