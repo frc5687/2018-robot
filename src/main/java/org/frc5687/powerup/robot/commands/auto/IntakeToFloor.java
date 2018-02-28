@@ -15,7 +15,7 @@ public class IntakeToFloor extends CommandGroup {
     public IntakeToFloor(Carriage carriage, Arm arm) {
         int ENCODER_BOTTOM = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
         double INTAKE = arm.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
-        addSequential(new ClearBumpersIfNeeded(carriage));
+        //addSequential(new ClearBumpersIfNeeded(carriage));
         addParallel(new MoveArmToSetpointPID(arm, INTAKE));
         addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_BOTTOM));
     }
