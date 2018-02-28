@@ -123,4 +123,9 @@ public class Arm extends PIDSubsystem {
     public boolean isHealthy() {
         return true;
     }
+
+    public double estimateHeight() {
+        double armAngleRadians = Math.toRadians(getAngle() - 90);
+        return Math.sin(armAngleRadians) * Constants.Arm.LENGTH;
+    }
 }

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
 import org.frc5687.powerup.robot.utils.Helpers;
@@ -28,13 +29,20 @@ public class DriveTrain extends Subsystem implements PIDSource {
     private TalonSRX rightMaster; // right front motor
     private VictorSPX rightFollower; // right rear motor
 
+    private Robot _robot;
+
     private AHRS imu;
     private OI oi;
 
     public double HIGH_POW = 1.0;
     public double LOW_POW = -HIGH_POW;
 
-    public DriveTrain(AHRS imu, OI oi) {
+    private double _priorLeft = 0;
+    private double _priorRight = 0;
+
+    public DriveTrain(Robot robot,  AHRS imu, OI oi) {
+        _robot = robot;
+
         // Motor Initialization
         leftMaster = new TalonSRX(RobotMap.CAN.TalonSRX.LEFT_FRONT);
         leftFollower = new VictorSPX(RobotMap.CAN.VictorSPX.LEFT_BACK);
@@ -120,12 +128,31 @@ public class DriveTrain extends Subsystem implements PIDSource {
         rightFollower.setNeutralMode(NeutralMode.Coast);
         SmartDashboard.putString("DriveTrain/neutralMode", "Coast");
     }
-
     public void setPower(double leftSpeed, double rightSpeed) {
+        setPower(leftSpeed, rightSpeed, false);
+    }
+
+    public void setPower(double leftSpeed, double rightSpeed, boolean overrideCaps) {
+        if (!overrideCaps) {
+            SmartDashboard.putNumber("DriveTrain/Speed/RightRaw", rightSpeed);
+            SmartDashboard.putNumber("DriveTrain/Speed/LeftRaw", leftSpeed);
+            double cap = (_robot.estimateIntakeHeight() > Constants.DriveTrain.TALL_CAP_HEIGHT) ?  Constants.Limits.ACCELERATION_CAP_TALL : Constants.Limits.ACCELERATION_CAP;
+            SmartDashboard.putNumber("DriveTrain/Cap", cap);
+
+            leftSpeed = Math.min(leftSpeed, _priorLeft + cap);
+            leftSpeed = Math.max(leftSpeed, _priorLeft - cap);
+
+            // Limit change in rightSpeed to +/- ACCELERATION_CAP
+            rightSpeed = Math.min(rightSpeed, _priorRight + cap);
+            rightSpeed = Math.max(rightSpeed, _priorRight - cap);
+        }
         leftMaster.set(ControlMode.PercentOutput, leftSpeed);
         rightMaster.set(ControlMode.PercentOutput, rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
+
+        _priorLeft = leftSpeed;
+        _priorRight = rightSpeed;
     }
 
     public void setVelocity(double left, double right) {

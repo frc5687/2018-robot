@@ -117,4 +117,13 @@ public class Carriage extends PIDSubsystem {
         return getPos() < (_isCompetitionBot ? Constants.Carriage.START_BOTTOM_ZONE_COMP : Constants.Carriage.START_BOTTOM_ZONE_PROTO);
     }
 
+    public double estimateHeight() {
+        if (_isCompetitionBot) {
+            return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_COMP) * Constants.Carriage.RANGE_INCHES);
+        } else {
+            return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_PROTO) * Constants.Carriage.RANGE_INCHES);
+        }
+
+
+    }
 }
