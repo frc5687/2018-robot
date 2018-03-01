@@ -151,7 +151,7 @@ public class DynamicPathCommand extends Command {
     }
 
     /**
-     * Called by the notifier every 0.02s
+     * Called by the thread every 10ms
      */
     protected void processSegment() {
         DriverStation.reportError("Running processSegment()", false);
