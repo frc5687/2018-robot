@@ -15,7 +15,7 @@ public class Constants {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
         public static final boolean RIGHT_MOTORS_INVERTED = false;
-        public static final double DROP_SPEED = -0.50;
+        public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.4;
         public static final double SERVO_UP = 1.0;
@@ -37,7 +37,6 @@ public class Constants {
             public static final int DETECTED_THRESHOLD = 1140;
             public static final int SECURED_THRESHOLD = 1600;
         }
-
     }
 
     public class Auto {
@@ -89,7 +88,7 @@ public class Constants {
                     public static final double kP = 0.0; // Talon doesn't use kP
                     public static final double kI = 0.0;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.32; // 0.28 works well
+                    public static final double kF = 0.38; // 0.28 works well
                 }
 
                 public class Cheese {
@@ -220,7 +219,7 @@ public class Constants {
         public static final int ENCODER_TOP_PROTO = 0;
         public static final int ENCODER_MIDDLE_PROTO = -480;
         public static final int ENCODER_CLEAR_BUMPERS_PROTO = -717;
-        public static final int ENCODER_DRIVE_PROTO = -891;
+        public static final int ENCODER_DRIVE_PROTO = -500;
         public static final int ENCODER_BOTTOM_PROTO = -967;
         public static final int ENCODER_RANGE_PROTO = ENCODER_TOP_PROTO - ENCODER_BOTTOM_PROTO;
         public static final int ENCODER_TOP_COMP = 0;
@@ -247,6 +246,9 @@ public class Constants {
     public class Arm {
         public static final double PDP_EXCESSIVE_CURRENT = 40.0;
 
+        public static final boolean MOTOR_INVERTED_PROTO = false;
+        public static final boolean MOTOR_INVERTED_COMP = true;
+
         public static final double ENCODER_START = 0;
         public static final double ENCODER_MIDDLE = 133;
         public static final double ENCODER_FENCE = 90;
@@ -258,8 +260,24 @@ public class Constants {
         public static final double SENSITIVITY = 0.4;
 
         public class Pot {
+            public static final double TOP_COMP = 166.0;
+            public static final double TOP_PROTO = 166.0; // TODO: Tune
+
+            public static final double BOTTOM_COMP = 33.0;
+            public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
+
+            public static final double INTAKE_COMP = 47.0;
+            public static final double INTAKE_PROTO = 47.0; // TODO: Tune
+
+            public static final double DRIVE_COMP = 33.0;
+            public static final double DRIVE_PROTO = 45.0;
+
+            public static final double SWITCH_HEIGHT_COMP = 50.0;
+            public static final double SWITCH_HEIGHT_PROTO = 50.0; // TODO: Tune
+
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
+
             public static final double TOLERANCE = 4.2;
             public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
             public static final double INTAKE = 47.0;

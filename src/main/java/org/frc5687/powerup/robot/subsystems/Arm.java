@@ -18,6 +18,10 @@ public class Arm extends PIDSubsystem {
     private DigitalInput hallEffect;
     private DigitalOutput led;
     private AnglePotentiometer _pot;
+    private double TOP;
+    private double BOTTOM;
+    private boolean _isCompetitionBot;
+    private int motorInversionMultiplier;
 
     public static final double kP = 0.03;
     public static final double kI = 0.002;
@@ -28,11 +32,15 @@ public class Arm extends PIDSubsystem {
     public Arm (OI oi, PDP pdp, boolean isCompetitionBot) {
         super("Arm", kP, kI, kD, kF, 0.02);
         setAbsoluteTolerance(5);
-        setInputRange(Constants.Arm.Pot.BOTTOM, Constants.Arm.Pot.TOP);
+        _isCompetitionBot = isCompetitionBot;
+        TOP = isCompetitionBot ? Constants.Arm.Pot.TOP_COMP : Constants.Arm.Pot.TOP_PROTO;
+        BOTTOM = isCompetitionBot ? Constants.Arm.Pot.BOTTOM_COMP : Constants.Arm.Pot.BOTTOM_PROTO;
+        setInputRange(BOTTOM, TOP);
         setOutputRange(-.25, 0.75);
         _oi=oi;
         _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
+        motorInversionMultiplier = (isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO) ? -1 : 1;
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
@@ -52,6 +60,7 @@ public class Arm extends PIDSubsystem {
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
+        speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
     }
 
@@ -66,12 +75,12 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean atTop() {
-        double diff = getPot() - Constants.Arm.Pot.TOP;
+        double diff = getPot() - TOP;
         return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public boolean atBottom() {
-        double diff = getPot() - Constants.Arm.Pot.BOTTOM;
+        double diff = getPot() - BOTTOM;
         return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
@@ -118,6 +127,10 @@ public class Arm extends PIDSubsystem {
     @Override
     public void periodic() {
         led.set(inStartingPosition());
+    }
+
+    public boolean isCompetitionBot() {
+        return _isCompetitionBot;
     }
 
     public boolean isHealthy() {

@@ -36,8 +36,6 @@ public class OI {
     private JoystickButton operatorArmToSwitchButton;
     private JoystickButton operatorArmToDriveButton;
 
-    private JoystickButton carriagePID;
-
     private JoystickButton carriageZeroEncoder;
 
     private JoystickButton servoToggle;
@@ -70,7 +68,6 @@ public class OI {
         intakeLeftOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
-        carriagePID = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
         servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
 
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
@@ -140,7 +137,7 @@ public class OI {
     }
 
     public double getArmSpeed() {
-        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.3 : 0);
+        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.5 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed,Constants.Arm.SENSITIVITY);
@@ -166,7 +163,6 @@ public class OI {
 
     public void initializeButtons(Robot robot) {
         carriageZeroEncoder.whenPressed(new AutoZeroCarriage(robot.getCarriage()));
-        carriagePID.whenPressed(new MoveCarriageToSetpointPID(robot.getCarriage(), 500));
 
         driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         driverArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
