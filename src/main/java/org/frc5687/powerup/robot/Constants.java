@@ -29,6 +29,11 @@ public class Constants {
             public static final int DETECTION_THRESHOLD = 1200;
         }
 
+        public class DOWN_IR {
+            public static final boolean ENABLED = true;
+            public static final int DETECTION_THRESHOLD = 800;
+        }
+
         public class BACK_IR {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;

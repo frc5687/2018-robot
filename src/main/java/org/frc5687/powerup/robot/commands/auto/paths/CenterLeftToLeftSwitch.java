@@ -12,6 +12,11 @@ public class CenterLeftToLeftSwitch extends DynamicPathCommand {
     }
 
     @Override
+    public double getkT() {
+        return 0.4;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 280;
         Trajectory left = new Trajectory(num_elements);

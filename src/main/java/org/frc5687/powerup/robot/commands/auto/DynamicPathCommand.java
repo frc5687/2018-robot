@@ -129,7 +129,7 @@ public class DynamicPathCommand extends Command {
     }
 
     private double calculateTurn() {
-        double goalHeading = -ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
+        double goalHeading = ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
         //double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
         double observedHeading = _driveTrain.getCheesyYaw();
         SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
