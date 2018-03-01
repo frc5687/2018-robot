@@ -32,7 +32,7 @@ public class Carriage extends PIDSubsystem {
                 isCompetitionBot ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO,
                 isCompetitionBot ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO
         );
-        setOutputRange(-.50, 0.75);
+        setOutputRange(Constants.Carriage.MINIMUM_SPEED, Constants.Carriage.MAXIMUM_SPEED);
         _oi = oi;
         _pdp = pdp;
         _motor = new VictorSP(RobotMap.Carriage.MOTOR);
@@ -57,10 +57,12 @@ public class Carriage extends PIDSubsystem {
             speed = 0.0;
         }
 
-        speed *= (Constants.Carriage.MOTOR_INVERTED ? -1 : 1);
-        SmartDashboard.putNumber("Carriage/rawSpeed", speed);
-        SmartDashboard.putNumber("Carriage/speed", -speed);
-        _motor.setSpeed(speed);
+        speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
+
+
+        SmartDashboard.putNumber("Carriage/rawSpeed", desiredSpeed);
+        SmartDashboard.putNumber("Carriage/speed", speed);
+        _motor.setSpeed(speed * (Constants.Carriage.MOTOR_INVERTED ? -1 : 1));
     }
 
     @Override
@@ -99,6 +101,8 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putNumber("Carriage/position", getPos());
         SmartDashboard.putBoolean("Carriage/At top", isAtTop());
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
+        SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
+        SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
     }
 
     public boolean isCompetitionBot() {

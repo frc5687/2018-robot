@@ -128,12 +128,11 @@ public class OI {
     }
 
     public double getCarriageSpeed() {
-        double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
-        double driver = driverCarriageUp.get() ? -1 : (driverCarriageDown.get() ? 0.3 : 0);
+        double operator = -getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
+        double driver = driverCarriageUp.get() ? 1 : (driverCarriageDown.get() ? -0.3 : 0);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed, Constants.Carriage.SENSITIVITY);
-        SmartDashboard.putNumber("OI/LEFT AXIS", speed);
-        return Helpers.applyDeadband(-speed, Constants.Carriage.DEADBAND, .1);
+        return Helpers.applyDeadband(speed, Constants.Carriage.DEADBAND, .1);
     }
 
     public double getArmSpeed() {

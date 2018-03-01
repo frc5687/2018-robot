@@ -31,6 +31,11 @@ public class Constants {
             public static final int DETECTION_THRESHOLD = 1200;
         }
 
+        public class DOWN_IR {
+            public static final boolean ENABLED = true;
+            public static final int DETECTION_THRESHOLD = 800;
+        }
+
         public class BACK_IR {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
@@ -206,13 +211,13 @@ public class Constants {
     }
 
     public class Carriage {
-        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
+        public static final double PDP_EXCESSIVE_CURRENT = 100.0;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double HOLD_SPEED = 0.05;
-        public static final double ZERO_SPEED = 0.99;
         public static final double SENSITIVITY = 0.2;
+        public static final double ZERO_SPEED = 1.00;
 
         public static final double ZONE_SPEED_LIMIT = 0.75;
 
@@ -226,21 +231,24 @@ public class Constants {
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
         public static final int ENCODER_DRIVE_COMP = -582; // -394
-        public static final int ENCODER_BOTTOM_COMP = -795;
+        public static final int ENCODER_BOTTOM_COMP = -955;
         public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
 
         // public static
         public static final double RUNWAY = 25.5; // in
 
 
-        public static final int START_TOP_ZONE_COMP = -200;
-        public static final int START_TOP_ZONE_PROTO = -200;
+        public static final int START_TOP_ZONE_COMP = -100;
+        public static final int START_TOP_ZONE_PROTO = -100;
         public static final int START_BOTTOM_ZONE_COMP = -600;
         public static final int START_BOTTOM_ZONE_PROTO = -600;
 
         public static final double BOTTOM_INCHES = 23.0;
         public static final double TOP_INCHES = 48.0;
         public static final double RANGE_INCHES = TOP_INCHES - BOTTOM_INCHES;
+
+        public static final double MAXIMUM_SPEED  = 1.0;
+        public static final double MINIMUM_SPEED  = -.5;
     }
 
     public class Arm {
@@ -266,8 +274,8 @@ public class Constants {
             public static final double BOTTOM_COMP = 33.0;
             public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
 
-            public static final double INTAKE_COMP = 47.0;
-            public static final double INTAKE_PROTO = 47.0; // TODO: Tune
+            public static final double INTAKE_COMP = 50.0;
+            public static final double INTAKE_PROTO = 47.0;
 
             public static final double DRIVE_COMP = 33.0;
             public static final double DRIVE_PROTO = 45.0;

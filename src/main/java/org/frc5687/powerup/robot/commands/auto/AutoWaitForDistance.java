@@ -7,7 +7,7 @@ import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 public class AutoWaitForDistance extends Command {
-    private Arm _arm;
+    //private Arm _arm;
     private DriveTrain _driveTrain;
     private double _inches;
     private long _millis;
@@ -16,8 +16,8 @@ public class AutoWaitForDistance extends Command {
 
 
     public AutoWaitForDistance(Arm arm, DriveTrain driveTrain, double inches, long millis) {
-        requires(arm);
-        _arm = arm;
+        //requires(arm);
+        //_arm = arm;
         _driveTrain = driveTrain;
         _inches = inches;
         _millis = millis;
