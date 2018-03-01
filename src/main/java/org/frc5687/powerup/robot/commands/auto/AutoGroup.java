@@ -57,27 +57,27 @@ public class AutoGroup extends CommandGroup {
                     case 1:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5, 2000));
                         break;
                     case 2:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5, 2000));
                         break;
                     case 3:
                         path = new CrossAutoLineToLeftOfPowerCube(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5, 2000));
                         break;
                     case 4:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5, 2000));
                         break;
                     case 5:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -path.lastHeading, 0.5, 2000));
                         break;
                     case 6:
                         path = new CrossAutoLineFast(robot);
@@ -175,7 +175,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new FarRightToRightScale(robot));
                         addSequential(new AutoEject(robot.getIntake()));
                         addSequential(new FarRightToRightScalePartTwo(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -120, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -120, 0.5, 2000));
                         //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 0.5));
                         //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 4, 0.3, true, true, 2000, ""));
                         if (robot.getArm().isHealthy()) {
@@ -193,6 +193,11 @@ public class AutoGroup extends CommandGroup {
                         //addSequential(new FarRightToRightScalePartThree(robot));
                         break;
                 }
+                break;
+            case Constants.AutoChooser.Mode.SCALE_DRIVE:
+                // public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, boolean usePID, boolean stopOnFinish, double angle, long maxMillis, String debug) {
+                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 120.0, 0.75, true, true, 0.0, 10000, "" ));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45.0, 0.75, 2000));
                 break;
         }
     }
