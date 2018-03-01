@@ -107,7 +107,7 @@ public class AutoGroup extends CommandGroup {
                         if (robot.getArm().isHealthy()) {
                             addParallel(armPid);
                         }
-                        addParallel(new EjectWhenSwitchDetected(robot));
+                        //addParallel(new EjectWhenSwitchDetected(robot));
                         addSequential(new CenterLeftToLeftSwitch(robot));
                         addSequential(new AutoEject(robot.getIntake(), -0.62));
                         if (robot.getCarriage().isHealthy()) {
@@ -124,7 +124,7 @@ public class AutoGroup extends CommandGroup {
                         if (robot.getArm().isHealthy()) {
                             addParallel(armPid);
                         }
-                        addParallel(new EjectWhenSwitchDetected(robot));
+                        //addParallel(new EjectWhenSwitchDetected(robot));
                         addSequential(new CenterLeftToRightSwitch(robot));
                         addSequential(new AutoEject(robot.getIntake(), -0.62));
                         if (robot.getCarriage().isHealthy()) {
