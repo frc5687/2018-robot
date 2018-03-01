@@ -14,7 +14,7 @@ public class IntakeToSwitch extends CommandGroup {
 
     public IntakeToSwitch(Carriage carriage, Arm arm) {
         int ENCODER_MIDDLE = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_MIDDLE_COMP : Constants.Carriage.ENCODER_MIDDLE_PROTO;
-        //addSequential(new ClearBumpersIfNeeded(carriage));
+        addSequential(new ClearBumpersIfNeeded(carriage));
         addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_MIDDLE));
         addParallel(new MoveArmToSetpointPID(arm, 78));
     }
