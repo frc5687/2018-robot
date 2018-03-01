@@ -137,17 +137,7 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/_kT", getkT());
         // Example: angleDiff is 10deg. We multiply that by kT, which if we pretend is 0.8, yields 8. This means we will
         // end up increasing our left speed by 8ips, which will help us turn to the right.
-        double turn = getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
-        // Attempts to cap the turn
-        /*
-        if (turn > 0) {
-            turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        } else {
-            turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        }
-        */
-
-        return turn;//turn;
+        return getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
     }
 
     /**
