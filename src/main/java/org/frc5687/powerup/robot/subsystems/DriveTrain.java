@@ -173,10 +173,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
         return imu.getYaw();
     }
 
-    public float getCheesyYaw() {
-        return -getYaw();
-    }
-
     /**
      * Get the number of ticks since the last reset
      * @return

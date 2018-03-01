@@ -89,7 +89,7 @@ public class DynamicPathCommand extends Command {
         _driveTrain.resetDriveEncoders();
         //_imu.reset();
 
-        starting_heading = _driveTrain.getCheesyYaw();
+        starting_heading = _driveTrain.getYaw();
 
         followerLeft.configure(
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP,
@@ -129,9 +129,9 @@ public class DynamicPathCommand extends Command {
     }
 
     private double calculateTurn() {
-        double goalHeading = ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
+        double goalHeading = followerLeft.getNavxHeading();// ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
         //double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
-        double observedHeading = _driveTrain.getCheesyYaw();
+        double observedHeading = _driveTrain.getYaw();
         SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
