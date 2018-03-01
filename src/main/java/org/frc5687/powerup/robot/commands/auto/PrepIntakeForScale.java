@@ -27,7 +27,7 @@ public class PrepIntakeForScale extends CommandGroup {
         addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new AutoWaitForDistance(robot.getArm(), robot.getDriveTrain(), inches, millis));
         if (robot.getArm().isHealthy()) {
-            addSequential(new MoveArmToSetpointPID(robot.getArm(), 130));
+            addSequential(new MoveArmToSetpointPID(robot.getArm(), 150));
         }
         if (robot.getCarriage().isHealthy()) {
             addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5, 30000, false));
