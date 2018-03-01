@@ -204,7 +204,7 @@ public class Constants {
     }
 
     public class Carriage {
-        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
+        public static final double PDP_EXCESSIVE_CURRENT = 80.0;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
