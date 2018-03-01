@@ -66,7 +66,7 @@ public class AutoDrivePathfinder extends Command {
 
     @Override
     protected void end() {
-        _driveTrain.setPower(0, 0);
+        _driveTrain.setPower(0, 0, true);
     }
 
     @Override
