@@ -12,7 +12,7 @@ public class IntakeToDrive extends CommandGroup {
     public IntakeToDrive(Carriage carriage, Arm arm) {
         int ENCODER_DRIVE = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_DRIVE_COMP : Constants.Carriage.ENCODER_DRIVE_PROTO;
         double DRIVE = arm.isCompetitionBot() ? Constants.Arm.Pot.DRIVE_COMP : Constants.Arm.Pot.DRIVE_PROTO;
-        //addSequential(new ClearBumpersIfNeeded(carriage));
+        addSequential(new ClearBumpersIfNeeded(carriage));
         addParallel(new MoveArmToSetpointPID(arm, DRIVE));
         addSequential(new MoveCarriageToSetpointPID(carriage, ENCODER_DRIVE));
     }
