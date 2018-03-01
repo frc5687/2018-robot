@@ -7,7 +7,7 @@ public class Constants {
         public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
         public static final boolean RIGHT_MOTORS_INVERTED = true;
-        public static final double SENSITIVITY = 0.5;
+        public static final double SENSITIVITY = 0.75;
         public static final double TALL_CAP_HEIGHT =  72.0;
     }
 
@@ -257,7 +257,7 @@ public class Constants {
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
-        public static final double SENSITIVITY = 0.4;
+        public static final double SENSITIVITY = 0.75;
 
         public class Pot {
             public static final double TOP_COMP = 166.0;
