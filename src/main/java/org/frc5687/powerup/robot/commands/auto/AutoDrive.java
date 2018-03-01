@@ -145,7 +145,7 @@ public class AutoDrive extends Command {
         }
         if (stopOnFinish) {
             DriverStation.reportError("Stopping.", false);
-            //driveTrain.setPower(0, 0, true);
+            driveTrain.setPower(0, 0);
         }
     }
 

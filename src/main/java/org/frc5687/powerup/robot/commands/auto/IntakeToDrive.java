@@ -7,9 +7,6 @@ import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.Carriage;
 
-/**
- * Mentor Built by Ben Bernard on 2/4/2018.
- */
 public class IntakeToDrive extends CommandGroup {
 
     public IntakeToDrive(Carriage carriage, Arm arm) {
