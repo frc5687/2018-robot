@@ -204,12 +204,12 @@ public class Constants {
     }
 
     public class Carriage {
-        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
+        public static final double PDP_EXCESSIVE_CURRENT = 100.0;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double HOLD_SPEED = 0.05;
-        public static final double ZERO_SPEED = 0.99;
+        public static final double ZERO_SPEED = 1.00;
 
         public static final double ZONE_SPEED_LIMIT = 0.75;
 
@@ -230,14 +230,17 @@ public class Constants {
         public static final double RUNWAY = 25.5; // in
 
 
-        public static final int START_TOP_ZONE_COMP = -200;
-        public static final int START_TOP_ZONE_PROTO = -200;
+        public static final int START_TOP_ZONE_COMP = -100;
+        public static final int START_TOP_ZONE_PROTO = -100;
         public static final int START_BOTTOM_ZONE_COMP = -600;
         public static final int START_BOTTOM_ZONE_PROTO = -600;
 
         public static final double BOTTOM_INCHES = 23.0;
         public static final double TOP_INCHES = 48.0;
         public static final double RANGE_INCHES = TOP_INCHES - BOTTOM_INCHES;
+
+        public static final double MAXIMUM_SPEED  = 1.0;
+        public static final double MINIMUM_SPEED  = -.5;
     }
 
     public class Arm {
