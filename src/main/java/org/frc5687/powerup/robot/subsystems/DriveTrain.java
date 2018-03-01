@@ -345,6 +345,7 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
         SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);
+        SmartDashboard.clearPersistent("*");
     }
 
     @Override

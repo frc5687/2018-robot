@@ -4,9 +4,10 @@ public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
 
     public class DriveTrain {
-        public static final double DEADBAND = 0.15;
+        public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
         public static final boolean RIGHT_MOTORS_INVERTED = true;
+        public static final double SENSITIVITY = 0.75;
         public static final double TALL_CAP_HEIGHT =  72.0;
     }
 
@@ -22,6 +23,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
+        public static final double SENSITIVITY = 0.2;
         public static final long SETTLE_TIME = 750;
 
         public class SIDE_IR {
@@ -214,6 +216,7 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double HOLD_SPEED = 0.05;
+        public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 
         public static final double ZONE_SPEED_LIMIT = 0.75;
@@ -262,6 +265,7 @@ public class Constants {
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
+        public static final double SENSITIVITY = 0.75;
 
         public class Pot {
             public static final double TOP_COMP = 166.0;
@@ -286,6 +290,7 @@ public class Constants {
             public static final double SWITCH_HEIGHT = 50.0; // @Carriage Top
             public static final double INTAKE = 47.0;
             public static final double DRIVE = 33.0;
+
         }
 
         public static final double LENGTH = 34.0;

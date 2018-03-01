@@ -48,4 +48,34 @@ public class Helpers {
         return inches2ticks(ip100ms);
     }
 
+
+    /**
+     * Applies a transform to the input to provide better sensitivity at low speeds.
+     * @param input the raw input value from a joystick
+     * @param factor the raw sensitivity factor to apply
+     * @return the adjusted control value
+     */
+    public static double applySensitivityFactor(double input, double factor){
+        // See http://www.chiefdelphi.com/forums/showthread.php?p=921992
+
+        // The transform can only work on values between -1 and 1.
+        if (input>1) { return 1; }
+        if (input <-1) { return -1; }
+
+        // The sensitivity factor MUST be between 0 and 1!
+        double capped = Math.max(Math.min(factor, 1),0);
+
+        return factor*input*input*input + (1-factor)*input;
+    }
+
+    public static double applyDeadband(double value, double deadband) {
+        return Math.abs(value) >= deadband ? value : 0;
+    }
+
+    public static double applyDeadband(double value, double deadband, double _default) {
+        return Math.abs(value) >= deadband ? value : _default;
+    }
+
+
 }
+
