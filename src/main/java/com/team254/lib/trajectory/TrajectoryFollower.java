@@ -1,5 +1,6 @@
 package com.team254.lib.trajectory;
 
+import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -101,6 +102,10 @@ public class TrajectoryFollower {
     } else {
       return 0;
     }
+  }
+
+  public double getNavxHeading() {
+    return ChezyMath.boundAngleNeg180to180Degrees(-Math.toDegrees(current_heading));
   }
 
   public double getHeading() {

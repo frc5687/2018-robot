@@ -89,7 +89,7 @@ public class DynamicPathCommand extends Command {
         _driveTrain.resetDriveEncoders();
         //_imu.reset();
 
-        starting_heading = _driveTrain.getCheesyYaw();
+        starting_heading = _driveTrain.getYaw();
 
         followerLeft.configure(
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP,
@@ -129,15 +129,17 @@ public class DynamicPathCommand extends Command {
     }
 
     private double calculateTurn() {
-        double goalHeading = ChezyMath.boundAngleNeg180to180Degrees(Math.toDegrees(followerLeft.getHeading()));
+        double goalHeading = followerLeft.getNavxHeading(); // Example: this is 30deg
         //double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
-        double observedHeading = _driveTrain.getCheesyYaw();
+        double observedHeading = _driveTrain.getYaw(); // Example: this is 20deg.
         SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
+        // Example: We want to be heading 30deg. We are heading 20deg. Our angleDiff of 30deg - 20deg yields 10deg.
         double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
         SmartDashboard.putNumber("AADynamicPathCommand/_kT", getkT());
-
+        // Example: angleDiff is 10deg. We multiply that by kT, which if we pretend is 0.8, yields 8. This means we will
+        // end up increasing our left speed by 8ips, which will help us turn to the right.
         double turn = getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
         // Attempts to cap the turn
         /*
