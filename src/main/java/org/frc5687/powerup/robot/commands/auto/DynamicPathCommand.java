@@ -138,7 +138,7 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
         SmartDashboard.putNumber("AADynamicPathCommand/_kT", getkT());
 
-        double turn = getkT() * angleDiff * -1; // multiply by -1 if self correcting, multiply by 1 if following turns
+        double turn = getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
         // Attempts to cap the turn
         /*
         if (turn > 0) {
