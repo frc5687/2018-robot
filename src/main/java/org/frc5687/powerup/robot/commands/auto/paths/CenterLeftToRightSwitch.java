@@ -13,7 +13,7 @@ public class CenterLeftToRightSwitch extends DynamicPathCommand {
 
     @Override
     public double getkT() {
-        return -0.7;
+        return 0.7;
     }
 
     @Override

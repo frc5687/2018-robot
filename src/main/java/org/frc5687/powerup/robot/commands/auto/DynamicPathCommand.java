@@ -23,7 +23,6 @@ public class DynamicPathCommand extends Command {
     public double lastHeading;
     private Robot _robot;
     public boolean turnInverted;
-    //private Notifier _notifier;
     private Thread _thread;
 
     public double getkT() {
@@ -57,6 +56,7 @@ public class DynamicPathCommand extends Command {
             }
         }
     }
+    private long endMillis;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
@@ -70,7 +70,6 @@ public class DynamicPathCommand extends Command {
             path.reverse();
         }
         _thread = new Thread(new PeriodicRunnable(this));
-        //_notifier = new Notifier(new PeriodicRunnable(this));
     }
 
     public Path getPath() {
@@ -88,6 +87,7 @@ public class DynamicPathCommand extends Command {
         DriverStation.reportError("Starting DynamicPathCommand", false);
         _driveTrain.resetDriveEncoders();
         //_imu.reset();
+        endMillis = System.currentTimeMillis() + 15000;
 
         starting_heading = _driveTrain.getYaw();
 
@@ -113,7 +113,6 @@ public class DynamicPathCommand extends Command {
 
         lastHeading = followerLeft.getLastSegment().heading;
 
-        //_notifier.startPeriodic(0.01);
         _thread.start();
 
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
@@ -140,21 +139,11 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putNumber("AADynamicPathCommand/_kT", getkT());
         // Example: angleDiff is 10deg. We multiply that by kT, which if we pretend is 0.8, yields 8. This means we will
         // end up increasing our left speed by 8ips, which will help us turn to the right.
-        double turn = getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
-        // Attempts to cap the turn
-        /*
-        if (turn > 0) {
-            turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        } else {
-            turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        }
-        */
-
-        return turn;//turn;
+        return getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
     }
 
     /**
-     * Called by the notifier every 0.02s
+     * Called by the thread every 10ms
      */
     protected void processSegment() {
         DriverStation.reportError("Running processSegment()", false);
@@ -184,7 +173,6 @@ public class DynamicPathCommand extends Command {
          */
 
         _driveTrain.setVelocityIPS(speedLeftMotorWithTurn, speedRightMotorWithTurn);
-        //_driveTrain.setVelocityIPS(speedLeftMotor, speedRightMotor);
     }
 
     @Override
@@ -192,7 +180,6 @@ public class DynamicPathCommand extends Command {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.setPower(0, 0);
-        //_notifier.stop();
         _thread.stop();
         DriverStation.reportError("ran stop() method on notifier", false);
     }
@@ -204,6 +191,11 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected boolean isFinished() {
+        if(System.currentTimeMillis()>endMillis){
+            DriverStation.reportError("DynamicPathCommand timed out", false);
+            return false;
+        }
+
         return followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
     }
 

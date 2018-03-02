@@ -3,6 +3,12 @@ package org.frc5687.powerup.robot;
 public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
 
+    public class Lights {
+        // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+        public static final double SOLID_BLUE = 0.87;
+        public static final double SOLID_RED = 0.61;
+    }
+
     public class DriveTrain {
         public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
@@ -25,7 +31,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
-        public static final double SENSITIVITY = 0.2;
+        public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
 
         public class SIDE_IR {
@@ -102,7 +108,7 @@ public class Constants {
                     public static final double kP = 7;//1.06;//0.001;//1.70;//0.80;
                     public static final double kI = 0.0;
                     public static final double kD = 0.1;//.3;
-                    public static final double kT = -0.4; // Used for turning correction. -0.68 works well
+                    public static final double kT = 0.4; // Used for turning correction. -0.68 works well
                     public class kV {
                         public static final double MPS = 1.0 / MaxVel.MPS;
                         public static final double IPS = 1.0;// / MaxVel.IPS;
@@ -259,15 +265,22 @@ public class Constants {
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
 
-        public static final double ENCODER_START = 0;
-        public static final double ENCODER_MIDDLE = 133;
-        public static final double ENCODER_FENCE = 90;
-        public static final double ENCODER_TOP = 340;
+        public class Encoder {
+            public static final double ENCODER_START = 0;
+            public static final double ENCODER_MIDDLE = 133;
+            public static final double ENCODER_FENCE = 90;
+            public static final double ENCODER_TOP = 340;
+        }
+
         public static final double HOLD_SPEED_COMP = 0.1;
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
         public static final double SENSITIVITY = 0.75;
+
+        public static final double MAX_SPEED = 0.75;
+        public static final double MIN_SPEED = -.5;
+
 
         public class Pot {
             public static final double TOP_COMP = 166.0;
@@ -282,8 +295,8 @@ public class Constants {
             public static final double DRIVE_COMP = 33.0;
             public static final double DRIVE_PROTO = 45.0;
 
-            public static final double SWITCH_HEIGHT_COMP = 50.0;
-            public static final double SWITCH_HEIGHT_PROTO = 50.0; // TODO: Tune
+            public static final double SWITCH_HEIGHT_COMP = 85.0;  // TODO: Tune
+            public static final double SWITCH_HEIGHT_PROTO = 85.0;
 
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
