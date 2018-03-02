@@ -44,20 +44,20 @@ public class DriveTrainSelfTest extends Command{
 
     @Override
     protected void end() {
-        if (frontLeftAmps > Constants.DriveTrain.MAX_AMPS){
-            DriverStation.reportError("Over"+ Constants.DriveTrain.MAX_AMPS + "amps drawn on front left drive motor", false);
+        if (frontLeftAmps < Constants.DriveTrain.MIN_AMPS){
+            DriverStation.reportError( "Less than " + frontLeftAmps + "amps drawn on front left drive motor", false);
         }
 
-        if (frontRightAmps > Constants.DriveTrain.MAX_AMPS){
-            DriverStation.reportError("Over"+ Constants.DriveTrain.MAX_AMPS + "amps drawn on front right drive motor", false);
+        if (frontRightAmps < Constants.DriveTrain.MIN_AMPS){
+            DriverStation.reportError("less than" +frontRightAmps + "amps drawn on front right drive motor", false);
         }
 
-        if (rearLeftAmps > Constants.DriveTrain.MAX_AMPS){
-            DriverStation.reportError("Over"+ Constants.DriveTrain.MAX_AMPS + "amps drawn on rear left drive motor", false);
+        if (rearLeftAmps < Constants.DriveTrain.MIN_AMPS){
+            DriverStation.reportError("Less than " + rearLeftAmps + "amps drawn on rear left drive motor", false);
         }
 
-        if (rearRightAmps > Constants.DriveTrain.MAX_AMPS){
-            DriverStation.reportError("Over"+ Constants.DriveTrain.MAX_AMPS + "amps drawn on rear right drive motor", false);
+        if (rearRightAmps < Constants.DriveTrain.MIN_AMPS){
+            DriverStation.reportError("Less than "+ rearRightAmps + "amps drawn on rear right drive motor", false);
         }
         driveTrain.setPower(0,0);
     }
