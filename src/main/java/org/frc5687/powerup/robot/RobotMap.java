@@ -45,6 +45,7 @@ public class RobotMap {
     }
 
     public class PDP {
+        // Make sure to change PDP.java when changing these
         public static final int INTAKE_LEFT_SP = 0;
         public static final int RIGHT_REAR_SPX = 1;
         public static final int RIGHT_FRONT_SRX = 2;
