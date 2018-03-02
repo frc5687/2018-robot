@@ -20,8 +20,8 @@ public class OI {
     private Joystick driverGamepad;
     private Gamepad operatorGamepad;
 
-    private JoystickButton intakeLeftOut;
-    private JoystickButton intakeRightOut;
+    private JoystickButton intakeLeftIn;
+    private JoystickButton intakeRightIn;
 
     private JoystickButton climberWind;
     private JoystickButton climberUnwind;
@@ -35,8 +35,6 @@ public class OI {
     private JoystickButton operatorArmToIntakeButton;
     private JoystickButton operatorArmToSwitchButton;
     private JoystickButton operatorArmToDriveButton;
-
-    private JoystickButton carriagePID;
 
     private JoystickButton carriageZeroEncoder;
 
@@ -67,10 +65,9 @@ public class OI {
         climberUnwind = new JoystickButton(driverGamepad, Gamepad.Buttons.BACK.getNumber());
         climberWind = new JoystickButton(driverGamepad, Gamepad.Buttons.START.getNumber());
 
-        intakeLeftOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
-        intakeRightOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+        intakeLeftIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        intakeRightIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
-        carriagePID = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
         servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
 
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
@@ -82,12 +79,14 @@ public class OI {
 
     public double getLeftSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS);
-        return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
+        speed = Helpers.applyDeadband(speed, Constants.DriveTrain.DEADBAND);
+        return Helpers.applySensitivityFactor(speed, Constants.DriveTrain.SENSITIVITY);
     }
 
     public double getRightSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_AXIS);
-        return applyDeadband(speed, Constants.DriveTrain.DEADBAND);
+        speed = Helpers.applyDeadband(speed, Constants.DriveTrain.DEADBAND);
+        return Helpers.applySensitivityFactor(speed, Constants.DriveTrain.SENSITIVITY);
     }
 
     public double getLeftIntakeSpeed() {
@@ -95,16 +94,20 @@ public class OI {
                 getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS),
                 -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)
         );
-        double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
-        SmartDashboard.putNumber("Intake/left/driver", driver);
-        SmartDashboard.putNumber("Intake/left/operator", operator);
-        double trigger = Helpers.absMax(driver, operator);
-
-        if (intakeLeftOut.get()) {
-            return Constants.Intake.OUTTAKE_SPEED;
-        } else if (Math.abs(trigger) > Constants.Intake.DEADBAND) {
-            return trigger;
+        if (intakeLeftIn.get()){
+            return Constants.Intake.INTAKE_SPEED;
         }
+        SmartDashboard.putNumber("Intake/left/driver", driver);
+        double driverTrigger = driver;
+        driverTrigger = Helpers.applySensitivityFactor(driverTrigger, Constants.Intake.SENSITIVITY);
+
+        if (Math.abs(getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS)) > Constants.Intake.DEADBAND) {
+            return Helpers.applySensitivityFactor(-getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS), Constants.Intake.SENSITIVITY);
+        }
+        if (Math.abs(driverTrigger) > Constants.Intake.DEADBAND) {
+            return driverTrigger;
+        }
+
         return 0;
     }
 
@@ -113,13 +116,19 @@ public class OI {
                 getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS),
                 -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)
         );
-        double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
+        if(intakeRightIn.get()){
+            return Constants.Intake.INTAKE_SPEED;
+        }
         SmartDashboard.putNumber("Intake/right/driver", driver);
-        SmartDashboard.putNumber("Intake/right/operator", operator);
-        double trigger = Helpers.absMax(driver, operator);
+        double trigger = driver;
+        trigger = Helpers.applySensitivityFactor(trigger, Constants.Intake.SENSITIVITY);
 
-        if (intakeRightOut.get()) {
-            return Constants.Intake.OUTTAKE_SPEED;
+        if (Math.abs(getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)) > Constants.Intake.DEADBAND) {
+            return Helpers.applySensitivityFactor(-getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS), Constants.Intake.SENSITIVITY);
+        }
+
+        if (getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS) > Constants.Intake.DEADBAND) {
+            return getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
         } else if (Math.abs(trigger) > Constants.Intake.DEADBAND) {
             return trigger;
         }
@@ -127,21 +136,22 @@ public class OI {
     }
 
     public double getCarriageSpeed() {
-        double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
-        double driver = driverCarriageUp.get() ? -1 : (driverCarriageDown.get() ? 0.3 : 0);
+        double operator = -getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
+        double driver = driverCarriageUp.get() ? 1 : (driverCarriageDown.get() ? -0.3 : 0);
         double speed = Helpers.absMax(operator, driver);
-        SmartDashboard.putNumber("OI/LEFT AXIS", speed);
-        return applyDeadband(-speed, Constants.Carriage.DEADBAND, .1);
+        speed = Helpers.applySensitivityFactor(speed, Constants.Carriage.SENSITIVITY);
+        return Helpers.applyDeadband(speed, Constants.Carriage.DEADBAND, .1);
     }
 
     public double getArmSpeed() {
-        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.3 : 0);
+        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.5 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
+        speed = Helpers.applySensitivityFactor(speed,Constants.Arm.SENSITIVITY);
         double holdSpeed = _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO);
         double holdSpeedWithCube = _robot.pickConstant(Constants.Arm.HOLD_SPEED_WITH_CUBE_COMP, Constants.Arm.HOLD_SPEED_WITH_CUBE_PROTO);
         double final_speed = _robot.getIntake().cubeIsDetected() ? holdSpeedWithCube : holdSpeed;
-        return applyDeadband(-speed, 0.05, final_speed);
+        return Helpers.applyDeadband(-speed, 0.05, final_speed);
     }
 
     public double getClimberSpeed() {
@@ -158,17 +168,8 @@ public class OI {
         return gamepad.getRawAxis(axisNumber);
     }
 
-    private double applyDeadband(double value, double deadband) {
-        return Math.abs(value) >= deadband ? value : 0;
-    }
-
-    private double applyDeadband(double value, double deadband, double _default) {
-        return Math.abs(value) >= deadband ? value : _default;
-    }
-
     public void initializeButtons(Robot robot) {
         carriageZeroEncoder.whenPressed(new AutoZeroCarriage(robot.getCarriage()));
-        carriagePID.whenPressed(new MoveCarriageToSetpointPID(robot.getCarriage(), 500));
 
         driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         driverArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));

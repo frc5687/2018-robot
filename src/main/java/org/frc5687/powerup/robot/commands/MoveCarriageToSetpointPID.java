@@ -8,19 +8,66 @@ public class MoveCarriageToSetpointPID extends Command {
 
     private double _target;
     private Carriage _carriage;
-
-
+    private long _startMillis;
+    private double _timeoutMS = -1;
+    private double _holdForMS = -1;
 
     public MoveCarriageToSetpointPID(Carriage carriage, double target) {
         requires(carriage);
         _carriage = carriage;
         _target = target;
+        _startMillis = System.currentTimeMillis();
+    }
+
+    public MoveCarriageToSetpointPID(Carriage carriage, double target, double timeoutMS) {
+        requires(carriage);
+        _carriage = carriage;
+        _target = target;
+        _timeoutMS = timeoutMS;
+        _startMillis = System.currentTimeMillis();
+    }
+
+    public MoveCarriageToSetpointPID(Carriage carriage, double target, double timeoutMS, double holdForMS) {
+        requires(carriage);
+        _carriage = carriage;
+        _target = target;
+        _timeoutMS = timeoutMS;
+        _startMillis = _startMillis;
+        _holdForMS = holdForMS;
+    }
+
+    public MoveCarriageToSetpointPID(Carriage carriage, double target, double holdForMS, boolean placeHolder) {
+        requires(carriage);
+        _carriage = carriage;
+        _target = target;
+        _startMillis = _startMillis;
+        _holdForMS = holdForMS;
+    }
+
+    protected boolean _isTimedOut() {
+        if (_timeoutMS != -1) {
+            return System.currentTimeMillis() >= _timeoutMS + _startMillis;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean isDoneHolding() {
+        if (_holdForMS != -1) {
+            return System.currentTimeMillis() >= _holdForMS + _startMillis;
+        } else {
+            return true;
+        }
     }
 
     @Override
     protected boolean isFinished() {
-        if (_carriage.onTarget()) {
+        if (_isTimedOut()) {
             return true;
+        } else if (_carriage.onTarget()) {
+            if (isDoneHolding()) {
+                return true;
+            }
         }
         return false;
     }

@@ -12,10 +12,18 @@ public class AutoEject extends Command {
 
     private Intake _intake;
     private long _endMillis;
+    private double DROP_SPEED;
 
     public AutoEject(Intake intake) {
         requires(intake);
         _intake = intake;
+        DROP_SPEED = Constants.Intake.DROP_SPEED;
+    }
+
+    public AutoEject(Intake intake, double dropSpeed) {
+        requires(intake);
+        _intake = intake;
+        DROP_SPEED = dropSpeed;
     }
 
     @Override
@@ -23,17 +31,12 @@ public class AutoEject extends Command {
         super.initialize();
         _endMillis = System.currentTimeMillis() + Constants.Intake.EJECT_TIME;
         DriverStation.reportError("AutoEject initializing", false);
-    }
-
-    @Override
-    protected void execute() {
-        _intake.drive(Constants.Intake.DROP_SPEED, Constants.Intake.DROP_SPEED);
+        _intake.drive(DROP_SPEED, DROP_SPEED);
     }
 
     @Override
     protected boolean isFinished() {
-        return System.currentTimeMillis() > _endMillis;
-
+        return System.currentTimeMillis() >= _endMillis;
     }
 
     @Override

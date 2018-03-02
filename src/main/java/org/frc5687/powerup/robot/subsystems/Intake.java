@@ -16,7 +16,7 @@ public class Intake extends Subsystem {
     private VictorSP leftMotor;
     private VictorSP rightMotor;
     private AnalogInput irBack;
-    private AnalogInput irSide;
+    private AnalogInput irDown;
     private Servo servo;
     private double _lastServoPos;
 
@@ -32,7 +32,7 @@ public class Intake extends Subsystem {
 
         this.oi = oi;
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
-        irSide = new AnalogInput(RobotMap.Intake.IR_SIDE);
+        irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
 
     }
 
@@ -61,21 +61,40 @@ public class Intake extends Subsystem {
     }
 
     /**
+     * Checks if cube is fully in the intake.
+     * @return
+     */
+    public boolean cubeIsSecured() {
+        if (!Constants.Intake.BACK_IR.ENABLED) {
+            return false;
+        }
+
+        return irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
+    }
+
+    /**
      * Checks if cube is detected
      * @return Whether or not the infrared sensor sees anything
      */
     public boolean cubeIsDetected() {
-        // If we have no IRs enabled, always return false
-        if (!Constants.Intake.BACK_IR.ENABLED && !Constants.Intake.SIDE_IR.ENABLED) { return false; }
-        
-        return  (!Constants.Intake.BACK_IR.ENABLED || irBack.getValue() > Constants.Intake.BACK_IR.DETECTION_THRESHOLD)
-             && (!Constants.Intake.SIDE_IR.ENABLED || irSide.getValue() > Constants.Intake.SIDE_IR.DETECTION_THRESHOLD);
+        if (!Constants.Intake.BACK_IR.ENABLED) {
+            return false;
+        }
+        return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
+    }
+
+    public boolean switchDetected() {
+        if (!Constants.Intake.DOWN_IR.ENABLED) {
+            return false;
+        }
+        return irDown.getValue() > Constants.Intake.DOWN_IR.DETECTION_THRESHOLD;
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
-        SmartDashboard.putNumber("Intake/IR Side raw", irSide.getValue());
+        SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
+        SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
     }
 
     @Override

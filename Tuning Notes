@@ -1,0 +1,13 @@
+// WAYPOINT_DATA: [{"position":{"x":25,"y":45},"theta":0,"comment":""},{"position":{"x":83,"y":95},"theta":1.5707499999936907,"comment":""},{"position":{"x":83,"y":165},"theta":1.5707499999936907,"comment":""}]
+// IS_REVERSED: false
+// FILE_NAME: LeftArc
+// DT: 0.02
+// MAX_VEL: 40
+// MAX_ACC: 60
+// MAX_JERK: 200
+// WHEEL_BASE: 26
+// PACKAGE: org.frc5687.powerup.robot.commands.auto.paths
+// PARENT: DynamicPathCommand
+
+Talon: kF=0.28
+Cheese: kP=7, kD=0.1, kT=-0.4
