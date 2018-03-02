@@ -23,22 +23,28 @@ public class AutoAlign extends Command implements PIDOutput {
     private double endTime;
     private double angle;
     private double speed;
+    private long _timeout = 2000;
 
     private double pidOut;
 
-    private long onTargetMillis;
+    private long _onTargetSince;
     private long startTimeMillis;
-    private long endTimeMillis;
+    private long _endTimeMillis;
 
     private DriveTrain driveTrain;
     private AHRS imu;
 
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
+        this(driveTrain, imu, angle, speed, 2000);
+    }
+
+    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout) {
         requires(driveTrain);
         this.angle = angle;
         this.speed = speed;
         this.driveTrain = driveTrain;
         this.imu = imu;
+        _timeout = timeout;
     }
 
     @Override
@@ -57,13 +63,11 @@ public class AutoAlign extends Command implements PIDOutput {
         DriverStation.reportError("AutoAlign initialized to " + angle + " at " + speed, false);
         DriverStation.reportError("kP="+kP+" , kI="+kI+", kD="+kD + ",T="+ Align.TOLERANCE, false);
         startTimeMillis = System.currentTimeMillis();
-        endTimeMillis = startTimeMillis + 15000;
+        _endTimeMillis = startTimeMillis + _timeout;
     }
 
     @Override
     protected void execute() {
-        // if(!controller.onTarget()) endTime = System.currentTimeMillis() + Align.STEADY_TIME;
-//        DriverStation.reportError("Align: " + pidOut + "," + -pidOut, false);
         driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
@@ -73,21 +77,28 @@ public class AutoAlign extends Command implements PIDOutput {
     @Override
     protected boolean isFinished() {
         if (!controller.onTarget()) {
-            onTargetMillis = 0;
-            DriverStation.reportError("reached auto align target", false);
+            _onTargetSince = 0;
             return false;
         }
 
-        if(endTimeMillis < System.currentTimeMillis()){
-            DriverStation.reportError("auto align timed out", false);
+        if(System.currentTimeMillis() >= _endTimeMillis){
+            DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms", false);
             return true;
         }
 
-        if (onTargetMillis == 0) {
-            onTargetMillis = System.currentTimeMillis();
+        if (controller.onTarget()) {
+            if (_onTargetSince == 0) {
+                DriverStation.reportError("AutoAlign reached target " + imu.getYaw(), false);
+                _onTargetSince = System.currentTimeMillis();
+            }
+
+            if (System.currentTimeMillis() > _onTargetSince + Align.STEADY_TIME) {
+                DriverStation.reportError("AutoAlign complete after " + Align.STEADY_TIME + " at " + imu.getYaw(), false);
+                return  true;
+            }
         }
 
-        return (System.currentTimeMillis() > onTargetMillis + Constants.Auto.Drive.ALIGN_STEADY_TIME);
+        return false;
     }
 
     @Override
