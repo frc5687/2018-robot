@@ -103,7 +103,7 @@ public class Constants {
                 }
 
                 public class Cheese {
-                    public static final double kP = 7;//1.06;//0.001;//1.70;//0.80;
+                    public static final double kP = 8;//1.06;//0.001;//1.70;//0.80;
                     public static final double kI = 0.0;
                     public static final double kD = 0.1;//.3;
                     public static final double kT = 0.4; // Used for turning correction. -0.68 works well
@@ -270,7 +270,7 @@ public class Constants {
             public static final double ENCODER_TOP = 340;
         }
 
-        public static final double HOLD_SPEED_COMP = 0.15;
+        public static final double HOLD_SPEED_COMP = 0.135;
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
