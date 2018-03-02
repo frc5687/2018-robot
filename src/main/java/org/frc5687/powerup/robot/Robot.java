@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.commands.KillAll;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
@@ -153,6 +154,10 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
+        SmartDashboard.putNumber("OI/driver/pov", oi.getDriverPOV());
+        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
+            new KillAll(this).start();
+        }
     }
 
     @Override

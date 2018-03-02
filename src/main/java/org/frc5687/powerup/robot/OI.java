@@ -8,6 +8,7 @@ import org.frc5687.powerup.robot.commands.*;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.utils.Gamepad;
 import org.frc5687.powerup.robot.utils.Helpers;
+import org.frc5687.powerup.robot.utils.POV;
 
 public class OI {
     public class ButtonNumbers {
@@ -44,6 +45,8 @@ public class OI {
     private JoystickButton driverArmDown;
     private JoystickButton driverCarriageUp;
     private JoystickButton driverCarriageDown;
+
+    private POV driverPOV;
 
     private Robot _robot;
 
@@ -162,6 +165,14 @@ public class OI {
             speed = Constants.Climber.UNWIND_SPEED;
         }
         return speed;
+    }
+
+    public int getDriverPOV() {
+        return POV.fromWPILIbAngle(0, driverGamepad.getPOV()).getDirectionValue();
+    }
+
+    public int getOperatorPOV() {
+        return POV.fromWPILIbAngle(0, operatorGamepad.getPOV()).getDirectionValue();
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {
