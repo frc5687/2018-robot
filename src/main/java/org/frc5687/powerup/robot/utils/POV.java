@@ -93,7 +93,7 @@ public class POV {
             {
                 if(otherPOV.directionValue == directionValue)
                 {
-                    return true;3
+                    return true;
                 }
             }
         }

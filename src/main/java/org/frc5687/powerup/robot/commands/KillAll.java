@@ -14,6 +14,7 @@ public class KillAll extends Command {
         requires(robot.getClimber());
         requires(robot.getDriveTrain());
         requires(robot.getIntake());
+        requires(robot.getLights());
         _robot = robot;
     }
 

@@ -154,7 +154,6 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
-        SmartDashboard.putNumber("OI/driver/pov", oi.getDriverPOV());
         if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
             new KillAll(this).start();
         }
