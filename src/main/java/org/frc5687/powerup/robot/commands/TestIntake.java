@@ -11,9 +11,13 @@ import org.frc5687.powerup.robot.utils.PDP;
 
 public class TestIntake extends CommandGroup {
     public TestIntake(Intake intake, Carriage carriage, PDP pdp) {
+        DriverStation.reportError("Running right intake inwards for one second", false);
         addSequential(new RunIntakeFor(intake, 1000, 0, 1));
+        DriverStation.reportError("Running right intake outwards for one second", false);
         addSequential(new RunIntakeFor(intake, 1000, 0, -1));
+        DriverStation.reportError("Running left intake inwards for one second", false);
         addSequential(new RunIntakeFor(intake, 1000, 1, 0));
+        DriverStation.reportError("Running left intake outwards for one second", false);
         addSequential(new RunIntakeFor(intake, 1000, -1, 0));
         if (intake.cubeIsDetected()) {
             DriverStation.reportError("There is a cube detected. There should not be a cube detected", false);
