@@ -12,6 +12,7 @@ public class AutoZeroCarriage extends Command {
 
     private Carriage _carriage;
     private long endMillis;
+    private long _timeout = 15000;
 
     public AutoZeroCarriage(Carriage carriage) {
         requires(carriage);
@@ -22,28 +23,32 @@ public class AutoZeroCarriage extends Command {
     protected void initialize() {
         super.initialize();
         DriverStation.reportError("Starting AutoZeroCarriage", false);
-        endMillis = System.currentTimeMillis() + 15000;
+        endMillis = System.currentTimeMillis() + _timeout;
     }
 
     @Override
     protected void execute() {
-        _carriage.drive(Constants.Carriage.ZERO_SPEED);
+        _carriage.drive(Constants.Carriage.ZERO_SPEED, true);
         super.execute();
     }
 
     @Override
     protected void end() {
-        _carriage.zeroEncoder();
-        DriverStation.reportError("Ending AutoZeroCarriage", false);
+        _carriage.drive(0, true);
         super.end();
     }
 
     @Override
     protected boolean isFinished() {
-        if(System.currentTimeMillis()<endMillis){
-            DriverStation.reportError("AutoZeroCarriage timed out", false);
-            return false;
+        if(System.currentTimeMillis()>endMillis){
+            DriverStation.reportError("AutoZeroCarriage timed out after " + _timeout + "ms" , false);
+            return true;
         }
-        return _carriage.isAtTop();
+        if (_carriage.isAtTop()) {
+            DriverStation.reportError("AutoZeroCarriage completed ", false);
+            _carriage.zeroEncoder();
+            return true;
+        }
+        return false;
     }
 }
