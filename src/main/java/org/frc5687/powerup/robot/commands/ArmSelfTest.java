@@ -7,6 +7,8 @@ import org.frc5687.powerup.robot.subsystems.Arm;
 import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.utils.PDP;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
+import edu.wpi.first.wpilibj.DriverStation;
+
 
 public class ArmSelfTest extends Command {
     private Arm arm;
@@ -53,6 +55,7 @@ public class ArmSelfTest extends Command {
     @Override
     protected void end() {
         if(amps < Constants.Arm.MIN_AMPS){
+            DriverStation.reportError(amps +" amps drawn", false);
 
         }
     }
