@@ -101,8 +101,8 @@ public class OI {
         double driverTrigger = driver;
         driverTrigger = Helpers.applySensitivityFactor(driverTrigger, Constants.Intake.SENSITIVITY);
 
-        if (getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS) > Constants.Intake.DEADBAND) {
-            return getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
+        if (Math.abs(getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS)) > Constants.Intake.DEADBAND) {
+            return Helpers.applySensitivityFactor(-getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS), Constants.Intake.SENSITIVITY);
         }
         if (Math.abs(driverTrigger) > Constants.Intake.DEADBAND) {
             return driverTrigger;
@@ -122,6 +122,10 @@ public class OI {
         SmartDashboard.putNumber("Intake/right/driver", driver);
         double trigger = driver;
         trigger = Helpers.applySensitivityFactor(trigger, Constants.Intake.SENSITIVITY);
+
+        if (Math.abs(getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)) > Constants.Intake.DEADBAND) {
+            return Helpers.applySensitivityFactor(-getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS), Constants.Intake.SENSITIVITY);
+        }
 
         if (getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS) > Constants.Intake.DEADBAND) {
             return getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);

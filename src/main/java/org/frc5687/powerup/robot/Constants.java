@@ -23,7 +23,7 @@ public class Constants {
 
         public static final double HOLD_SPEED = 0.35;
         public static final double INTAKE_SPEED = 0.75;
-        public static final double SENSITIVITY = 0.2;
+        public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
 
         public class SIDE_IR {
