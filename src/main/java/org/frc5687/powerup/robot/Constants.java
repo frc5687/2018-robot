@@ -259,6 +259,7 @@ public class Constants {
 
     public class Arm {
         public static final double PDP_EXCESSIVE_CURRENT = 40.0;
+        public static final double MIN_AMPS = 3.5;
 
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
