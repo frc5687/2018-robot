@@ -4,6 +4,11 @@ public class RobotMap {
 
     public static final int IDENTITY_FLAG = DIO.RIO9;
 
+    public class Lights {
+        public static final int LEFT = PWM.navX18;
+        public static final int RIGHT = PWM.navX19;
+    }
+
     public class DriveTrain {
 
     }

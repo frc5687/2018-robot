@@ -3,6 +3,12 @@ package org.frc5687.powerup.robot;
 public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
 
+    public class Lights {
+        // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
+        public static final double SOLID_BLUE = 0.87;
+        public static final double SOLID_RED = 0.61;
+    }
+
     public class DriveTrain {
         public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
