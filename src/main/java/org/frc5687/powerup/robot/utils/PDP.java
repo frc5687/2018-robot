@@ -9,22 +9,22 @@ public class PDP extends PowerDistributionPanel {
     }
 
     public void updateDashboard() {
-        SmartDashboard.putNumber("PDP/Current/0", getCurrent(0));
-        SmartDashboard.putNumber("PDP/Current/1", getCurrent(1));
-        SmartDashboard.putNumber("PDP/Current/2", getCurrent(2));
-        SmartDashboard.putNumber("PDP/Current/3", getCurrent(3));
+        SmartDashboard.putNumber("PDP/Current/0(intakeLeftSP)", getCurrent(0));
+        SmartDashboard.putNumber("PDP/Current/1(rightBackSPX)", getCurrent(1));
+        SmartDashboard.putNumber("PDP/Current/2(rightFrontSRX)", getCurrent(2));
+        SmartDashboard.putNumber("PDP/Current/3(leftBackSpx)", getCurrent(3));
         SmartDashboard.putNumber("PDP/Current/4", getCurrent(4));
         SmartDashboard.putNumber("PDP/Current/5", getCurrent(5));
         SmartDashboard.putNumber("PDP/Current/6", getCurrent(6));
         SmartDashboard.putNumber("PDP/Current/7", getCurrent(7));
         SmartDashboard.putNumber("PDP/Current/8", getCurrent(8));
         SmartDashboard.putNumber("PDP/Current/9", getCurrent(9));
-        SmartDashboard.putNumber("PDP/Current/10", getCurrent(10));
+        SmartDashboard.putNumber("PDP/Current/10(climber)", getCurrent(10));
         SmartDashboard.putNumber("PDP/Current/11", getCurrent(11));
-        SmartDashboard.putNumber("PDP/Current/12", getCurrent(12));
-        SmartDashboard.putNumber("PDP/Current/13", getCurrent(13));
-        SmartDashboard.putNumber("PDP/Current/14", getCurrent(14));
-        SmartDashboard.putNumber("PDP/Current/15", getCurrent(15));
+        SmartDashboard.putNumber("PDP/Current/12(leftFrontSRX)", getCurrent(12));
+        SmartDashboard.putNumber("PDP/Current/13(intakeRightSP)", getCurrent(13));
+        SmartDashboard.putNumber("PDP/Current/14(carriageSP)", getCurrent(14));
+        SmartDashboard.putNumber("PDP/Current/15(armSP)", getCurrent(15));
     }
 
     public boolean excessiveCurrent(int channel, double threshold) {
