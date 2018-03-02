@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import jaci.pathfinder.Pathfinder;
@@ -9,21 +10,22 @@ import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.followers.EncoderFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 import org.frc5687.powerup.robot.Constants;
-import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 import java.io.File;
 
 public class AutoDrivePathfinder extends Command {
     private DriveTrain _driveTrain;
+    private AHRS _imu;
     private Trajectory _trajectory;
     private EncoderFollower _leftEncoderFollower;
     private EncoderFollower _rightEncoderFollower;
     private long endTime;
 
-    public AutoDrivePathfinder(DriveTrain driveTrain, Waypoint[] points) {
+    public AutoDrivePathfinder(DriveTrain driveTrain, AHRS imu, Waypoint[] points) {
         requires(driveTrain);
         _driveTrain = driveTrain;
+        _imu = imu;
 
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_FAST, 0.02, Constants.Auto.Drive.MaxVel.MPS, Constants.Auto.Drive.MaxAcceleration.METERS, Constants.Auto.Drive.MaxJerk.METERS);
         _trajectory = Pathfinder.generate(points, config);
@@ -51,7 +53,7 @@ public class AutoDrivePathfinder extends Command {
         double leftSpeed = _leftEncoderFollower.calculate((int) _driveTrain.getLeftTicks());
         double rightSpeed = _rightEncoderFollower.calculate((int) _driveTrain.getRightTicks());
 
-        double heading = -Robot.imu.getYaw();
+        double heading = -_imu.getYaw();
         double desired_heading = Pathfinder.r2d(_leftEncoderFollower.getHeading());
 
         double angleDifference = Pathfinder.boundHalfDegrees(desired_heading - heading);
@@ -65,12 +67,12 @@ public class AutoDrivePathfinder extends Command {
         SmartDashboard.putNumber("AutoDrivePF/leftSpeed", leftSpeed);
         SmartDashboard.putNumber("AutoDrivePF/rightSpeed", rightSpeed);
 
-        _driveTrain.tankDrive(leftSpeed, rightSpeed);
+        _driveTrain.setPower(leftSpeed, rightSpeed);
     }
 
     @Override
     protected void end() {
-        _driveTrain.tankDrive(0, 0);
+        _driveTrain.setPower(0, 0, true);
     }
 
     @Override

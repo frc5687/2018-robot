@@ -1,6 +1,5 @@
 package org.frc5687.powerup.robot.commands.auto;
 
-import com.sun.prism.shader.Solid_TextureSecondPassLCD_AlphaTest_Loader;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
@@ -22,7 +21,7 @@ public class AutoDriveSimple extends Command {
     @Override
     protected boolean isFinished() {
         if (_drivetrain.getDistance() >= _distance) {
-            _drivetrain.tankDrive(0,0);
+            _drivetrain.setPower(0,0, true);
             return true;
         }
         return false;
@@ -35,7 +34,7 @@ public class AutoDriveSimple extends Command {
 
     @Override
     protected void execute() {
-        _drivetrain.tankDrive(_speed, _speed);
+        _drivetrain.setPower(_speed, _speed);
     }
 
 }

@@ -53,4 +53,8 @@ public class Path {
     Trajectory.Segment lastSegment = getLeftWheelTrajectory().getSegment(numSegments - 1);
     return lastSegment.heading;
   }
+
+  public void reverse() {
+    go_left_pair_ = go_left_pair_.reverse();
+  }
 }
