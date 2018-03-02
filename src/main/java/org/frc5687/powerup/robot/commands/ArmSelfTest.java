@@ -9,6 +9,8 @@ import org.frc5687.powerup.robot.utils.PDP;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import edu.wpi.first.wpilibj.DriverStation;
 
+import static java.lang.Math.abs;
+
 
 public class ArmSelfTest extends Command {
     private Arm arm;
@@ -19,6 +21,9 @@ public class ArmSelfTest extends Command {
     private long stopMillis;
     private boolean finished;
     private double amps;
+    private double bottomAngle;
+    private double topAngle;
+    private double startAngle;
 
     public ArmSelfTest(Arm arm, Carriage carriage){
      requires(arm);
@@ -35,6 +40,8 @@ public class ArmSelfTest extends Command {
         stopMillis = System.currentTimeMillis() + 250;
         downMillis = System.currentTimeMillis() + 375;
         amps = 0;
+        topAngle = 0;
+        startAngle = arm.getAngle();
     }
 
     @Override
@@ -42,21 +49,30 @@ public class ArmSelfTest extends Command {
         if (System.currentTimeMillis()< upMillis){
             arm.drive(0.75);
             amps = Math.max(amps, pdp.getCurrent(RobotMap.PDP.ARM_SP));
+            topAngle = Math.max(topAngle, arm.getAngle());
+
         }
         else if (System.currentTimeMillis()< stopMillis){
             arm.drive(0);
+            bottomAngle = topAngle;
         }
         else {
             arm.drive(-0.75);
             amps = Math.max(amps, pdp.getCurrent(RobotMap.PDP.ARM_SP));
+            bottomAngle = Math.min(bottomAngle, arm.getAngle());
         }
     }
 
     @Override
     protected void end() {
-        if(amps < Constants.Arm.MIN_AMPS){
-            DriverStation.reportError(amps +" amps drawn", false);
-
+        if (amps < Constants.Arm.MIN_AMPS) {
+            DriverStation.reportError(amps + " amps drawn", false);
+        }
+        if (abs(startAngle - topAngle) < 20) {
+            DriverStation.reportError("angle change " + (startAngle - topAngle), false);
+        }
+        if (abs(topAngle - bottomAngle) > 20) {
+            DriverStation.reportError("angle change " + (bottomAngle - topAngle), false);
         }
     }
 
