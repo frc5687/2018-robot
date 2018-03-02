@@ -163,7 +163,7 @@ public class AutoGroup extends CommandGroup {
                         addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarRightToLeftScalePartOne(robot));
                         //addSequential(new FarRightToLeftScalePartTwo(robot));
-                        addParallel(new PrepIntakeForScale(robot, 20.0, 30000));
+                        addParallel(new PrepIntakeForScale(robot, 20.0, 5000, false));
                         addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 60, 0.3, true, true, -90, 10000, ""));
                         addSequential(new FarRightToLeftScalePartThree(robot));
                         addSequential(new AutoEject(robot.getIntake(), -1.0));

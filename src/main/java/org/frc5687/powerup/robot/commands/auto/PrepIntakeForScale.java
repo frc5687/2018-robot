@@ -13,24 +13,17 @@ import org.frc5687.powerup.robot.subsystems.DriveTrain;
  * Created by Ben Bernard on 2/12/2018.
  */
 public class PrepIntakeForScale extends CommandGroup {
-    public PrepIntakeForScale(Robot robot, double inches, long millis) {
-        addSequential(new AutoWaitForDistance(robot.getArm(), robot.getDriveTrain(), inches, millis));
-        if (robot.getCarriage().isHealthy()) {
-            addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -5, 10000, false));
-        }
-        if (robot.getArm().isHealthy()) {
-            addSequential(new MoveArmToSetpointPID(robot.getArm(), 164));
-        }
-    }
 
-    public PrepIntakeForScale(Robot robot, double inches, long millis, boolean distinctiveAutoZero) {
-        addParallel(new AutoZeroCarriageThenLower(robot));
+    public PrepIntakeForScale(Robot robot, double inches, long millis, boolean zeroCarriageFirst) {
+        if (zeroCarriageFirst) {
+            addParallel(new AutoZeroCarriageThenLower(robot));
+        }
         addSequential(new AutoWaitForDistance(robot.getArm(), robot.getDriveTrain(), inches, millis));
         if (robot.getArm().isHealthy()) {
             addSequential(new MoveArmToSetpointPID(robot.getArm(), 150));
         }
         if (robot.getCarriage().isHealthy()) {
-            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5, 30000, false));
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5.0, 5000));
         }
     }
 }

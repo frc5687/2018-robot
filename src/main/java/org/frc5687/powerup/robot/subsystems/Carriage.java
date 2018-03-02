@@ -43,22 +43,27 @@ public class Carriage extends PIDSubsystem {
     }
 
     public void drive(double desiredSpeed) {
+        drive(desiredSpeed, false);
+    }
+
+    public void drive(double desiredSpeed, boolean overrideCaps) {
         double speed = desiredSpeed;
-        if (speed > 0 && isAtTop()) {
-            speed = Constants.Carriage.HOLD_SPEED;
-        } else if (speed < 0 && isAtBottom()) {
-            speed = -Constants.Carriage.HOLD_SPEED;
-        } else if (speed > 0 && isInTopZone()) {
-            speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
-        } else if (speed < 0 && isInBottomZone()) {
-            speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
-        }
-        if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
-            speed = 0.0;
-        }
+        if (!overrideCaps) {
+            if (speed > 0 && isAtTop()) {
+                speed = Constants.Carriage.HOLD_SPEED;
+            } else if (speed < 0 && isAtBottom()) {
+                speed = -Constants.Carriage.HOLD_SPEED;
+            } else if (speed > 0 && isInTopZone()) {
+                speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
+            } else if (speed < 0 && isInBottomZone()) {
+                speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
+            }
+            if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
+                speed = 0.0;
+            }
 
-        speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
-
+            speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
+        }
 
         SmartDashboard.putNumber("Carriage/rawSpeed", desiredSpeed);
         SmartDashboard.putNumber("Carriage/speed", speed);
