@@ -104,7 +104,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
                         addSequential(new AutoEject(robot.getIntake(), -0.62));
                         if (robot.getCarriage().isHealthy()) {
-                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
+                            addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         if (robot.getArm().isHealthy()) {
                             addParallel(new FinishArmPid(armPid));
