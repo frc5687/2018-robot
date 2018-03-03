@@ -58,31 +58,37 @@ public class AutoGroup extends CommandGroup {
                         path = new CrossAutoLine(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         break;
                     case 2:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         break;
                     case 3:
                         path = new CrossAutoLineToLeftOfPowerCube(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        //addSequential(new AutoZeroCarriage(robot.getCarriage())); Unsure about where this will end up, so I'm not auto zeroing here
                         break;
                     case 4:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         break;
                     case 5:
                         path = new CrossAutoLine(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         break;
                     case 6:
                         path = new CrossAutoLineFast(robot);
                         addSequential(path);
-                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         break;
                 }
                 break;
