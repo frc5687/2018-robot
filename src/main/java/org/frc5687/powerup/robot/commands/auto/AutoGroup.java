@@ -55,16 +55,10 @@ public class AutoGroup extends CommandGroup {
                 DynamicPathCommand path;
                 switch (position) {
                     case 1:
-                        path = new CrossAutoLine(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        buildAutoCross(robot);
                         break;
                     case 2:
-                        path = new CrossAutoLine(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        buildAutoCross(robot);
                         break;
                     case 3:
                         path = new CrossAutoLineToLeftOfPowerCube(robot);
@@ -73,22 +67,13 @@ public class AutoGroup extends CommandGroup {
                         //addSequential(new AutoZeroCarriage(robot.getCarriage())); Unsure about where this will end up, so I'm not auto zeroing here
                         break;
                     case 4:
-                        path = new CrossAutoLine(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        buildAutoCross(robot);
                         break;
                     case 5:
-                        path = new CrossAutoLine(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        buildAutoCross(robot);
                         break;
                     case 6:
-                        path = new CrossAutoLineFast(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        buildAutoCross(robot);
                         break;
                 }
                 break;
@@ -166,18 +151,23 @@ public class AutoGroup extends CommandGroup {
                         addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarLeftToLeftScale(robot));
                         break;
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        buildAutoCross(robot);
+                        break;
                     case Constants.AutoChooser.Position.CENTER:
                         // Sit here as we don't have anything
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        addParallel(new AutoZeroCarriageThenLower(robot));
+                        buildAutoCross(robot);
+                        break;
+/*                        addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarRightToLeftScalePartOne(robot));
                         //addSequential(new FarRightToLeftScalePartTwo(robot));
                         addParallel(new PrepIntakeForScale(robot, 20.0, 5000, false));
                         addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 60, 0.3, true, true, -90, 10000, ""));
                         addSequential(new FarRightToLeftScalePartThree(robot));
                         addSequential(new AutoEject(robot.getIntake(), -1.0));
-                        break;
+                        break;*/
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         if (robot.getArm().isHealthy()) {
                             addParallel(new PrepIntakeForScale(robot, 180.0, 10000, true));
@@ -209,6 +199,14 @@ public class AutoGroup extends CommandGroup {
         }
     }
 
+    private void buildAutoCross(Robot robot) {
+        DynamicPathCommand path = new CrossAutoLine(robot);
+        addSequential(path);
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
+        addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        return;
+
+    }
     private void straightSwitch(Robot robot) {
         double distance = 95.0;
         addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), distance, 0.4, true, true, 5000, "auto"));
