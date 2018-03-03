@@ -7,6 +7,7 @@ import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 public class AutoZeroCarriageThenLower extends CommandGroup {
     public AutoZeroCarriageThenLower(Robot robot) {
         addSequential(new AutoZeroCarriage(robot.getCarriage()));
+        // TODO: Refactor out magic number
         addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -600));
     }
 }
