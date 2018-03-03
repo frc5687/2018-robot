@@ -104,6 +104,9 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        // Reset the lights slider in case it was left on
+        SmartDashboard.putNumber("DB/Slider 0", 0.0);
+
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
         int retries = 100;
@@ -150,7 +153,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        _lights.setColors();
         updateDashboard();
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);

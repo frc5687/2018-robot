@@ -24,7 +24,6 @@ public class Lights extends Subsystem {
         _robot = robot;
         _left = new Spark(RobotMap.Lights.LEFT);
         _right = new Spark(RobotMap.Lights.RIGHT);
-        SmartDashboard.putNumber("Lights/TestColor", 0.0);
     }
 
     public void initialize() {
@@ -37,10 +36,12 @@ public class Lights extends Subsystem {
     }
 
     public void setLeft(double val) {
+        DriverStation.reportError("Setting left to " + val, false);
         _left.set(val);
     }
 
     public void setRight(double val) {
+        DriverStation.reportError("Setting right to " + val, false);
         _right.set(val);
     }
 
@@ -48,20 +49,6 @@ public class Lights extends Subsystem {
         setLeft(leftVal);
         setRight(rightVal);
     }
-
-    public DriverStation.Alliance getAlliance() {
-        return _alliance;
-    }
-
-    public void setToAllianceColor() {
-        if (_alliance == null) { return; }
-        if (getAlliance() == DriverStation.Alliance.Blue) {
-            setBoth(Constants.Lights.SOLID_BLUE, Constants.Lights.SOLID_BLUE);
-        } else if (getAlliance() == DriverStation.Alliance.Red) {
-            setBoth(Constants.Lights.SOLID_RED, Constants.Lights.SOLID_RED);
-        }
-    }
-
 
     public void setColors() {
         Intake intake = _robot.getIntake();
@@ -75,8 +62,8 @@ public class Lights extends Subsystem {
         } else if (intake.isRunning()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_RUNNING;
         } else if (DriverStation.getInstance().isOperatorControl()) {
-            if (SmartDashboard.getNumber("Lights/TestColor", 0.0) != 0.0) {
-                _mainLeftColor = _mainRightColor = SmartDashboard.getNumber("Lights/TestColor", 0.0);
+            if (SmartDashboard.getNumber("DB/Slider 0", 0.0) != 0.0) {
+                _mainLeftColor = _mainRightColor = SmartDashboard.getNumber("DB/Slider 0", 0.0);
             } else {
                 _mainLeftColor = _mainRightColor = (_alliance == DriverStation.Alliance.Blue) ? Constants.Lights.TELEOP_BLUE : Constants.Lights.TELEOP_RED;
             }
@@ -87,7 +74,6 @@ public class Lights extends Subsystem {
         } else {
             _mainLeftColor = _mainRightColor = Constants.Lights.DEFAULT;
         }
-
         setLeft(_mainLeftColor);
         setRight(_mainRightColor);
     }
