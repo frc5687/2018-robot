@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public PDP getPDP() { return pdp; }
 
     public Lights getLights() {
         return _lights;
