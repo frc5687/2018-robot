@@ -19,11 +19,11 @@ public class DriveLights extends Command {
 
     @Override
     protected void initialize() {
-        _lights.setToAllianceColor();
+        _lights.initialize();
     }
 
     @Override
     protected void execute() {
-        _lights.setToAllianceColor();
+        _lights.setColors();
     }
 }

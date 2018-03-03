@@ -33,8 +33,7 @@ public class Climber extends Subsystem {
         if (_pdp.excessiveCurrent(RobotMap.PDP.CLIMBER_SP, Constants.Climber.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
-        SmartDashboard.putNumber("Climber/rawSpeed", speed);
-        SmartDashboard.putNumber("Climber/speed", speed * (Constants.Climber.MOTOR_INVERT ? -1 : 1));
+        SmartDashboard.putNumber("Climber/speed", speed);
         motor.set(speed);
     }
 }
