@@ -6,7 +6,48 @@ public class Constants {
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
         public static final double SOLID_BLUE = 0.87;
+        public static final double PULSING_BLUE = -0.09;
+        public static final double BEATING_BLUE = 0.23;
+
         public static final double SOLID_RED = 0.61;
+        public static final double PULSING_RED = -0.11;
+        public static final double BEATING_RED = 0.25;
+
+        public static final double SOLID_GREEN = 0.77;
+        public static final double PULSING_GREEN = 0.77; // replace
+        public static final double BEATING_GREEN = 0.00; // unused
+
+        public static final double SOLID_PURPLE = 0.91;
+        public static final double PULSING_PURPLE = 0.05;
+        public static final double BEATING_PURPLE = 0.00;
+
+        public static final double SOLID_ORANGE = 0.06;
+        public static final double PULSING_ORANGE = 0.07;
+        public static final double BEATING_ORANGE = 0.08;
+
+        public static final double SOLID_YELLOW = 0.09;
+        public static final double PULSING_YELLOW = 0.10;
+        public static final double BEATING_YELLOW = 0.11;
+
+        public static final double CONFETTI = -0.87;
+
+
+        public static final double PLATE_DETECTED = CONFETTI;
+        public static final double CUBE_SECURED = PULSING_YELLOW;
+
+        public static final double CUBE_DETECTED = PULSING_GREEN;
+        public static final double INTAKE_RUNNING = SOLID_GREEN;
+
+        public static final double TELEOP_BLUE = SOLID_BLUE;
+        public static final double TELEOP_RED = SOLID_RED;
+
+        public static final double AUTO_BLUE =  PULSING_BLUE;
+        public static final double AUTO_RED = PULSING_RED;
+
+        public static final double DISABLED_BLUE = BEATING_BLUE;
+        public static final double DISABLD_RED = BEATING_RED;
+
+        public static final double DEFAULT = BEATING_PURPLE;
     }
 
     public class DriveTrain {
@@ -31,6 +72,7 @@ public class Constants {
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
+        public static final double PLATE_MINIMUM_CLARANCE = 24.0;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;

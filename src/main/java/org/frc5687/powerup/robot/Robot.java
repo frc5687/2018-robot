@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
 
         oi.initializeButtons(this);
         LiveWindow.disableAllTelemetry();
-
+        _lights.initialize();
     }
 
     public Arm getArm() { return _arm; }
@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        _lights.setColors();
         updateDashboard();
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);

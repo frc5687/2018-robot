@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot.subsystems;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
@@ -15,14 +16,18 @@ public class Lights extends Subsystem {
     private DriverStation.Alliance _alliance;
 
     private double _mainLeftColor;
-    private int _mainRightColor;
-    private int _alertLeftColor;
-    private int _alertRightColor;
+    private double _mainRightColor;
+    private double _alertLeftColor;
+    private double _alertRightColor;
 
     public Lights(Robot robot) {
         _robot = robot;
         _left = new Spark(RobotMap.Lights.LEFT);
         _right = new Spark(RobotMap.Lights.RIGHT);
+        SmartDashboard.putNumber("Lights/TestColor", 0.0);
+    }
+
+    public void initialize() {
         _alliance = DriverStation.getInstance().getAlliance();
     }
 
@@ -44,18 +49,12 @@ public class Lights extends Subsystem {
         setRight(rightVal);
     }
 
-    public void updateAlliance() {
-        _alliance = DriverStation.getInstance().getAlliance();
-    }
-
     public DriverStation.Alliance getAlliance() {
         return _alliance;
     }
 
     public void setToAllianceColor() {
-        if (_alliance == null) {
-            updateAlliance();
-        }
+        if (_alliance == null) { return; }
         if (getAlliance() == DriverStation.Alliance.Blue) {
             setBoth(Constants.Lights.SOLID_BLUE, Constants.Lights.SOLID_BLUE);
         } else if (getAlliance() == DriverStation.Alliance.Red) {
@@ -67,7 +66,7 @@ public class Lights extends Subsystem {
     public void setColors() {
         Intake intake = _robot.getIntake();
 
-        if (intake.isPlateDetected()) {
+        if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
         } else if (intake.cubeIsSecured()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_SECURED;
@@ -76,7 +75,11 @@ public class Lights extends Subsystem {
         } else if (intake.isRunning()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_RUNNING;
         } else if (DriverStation.getInstance().isOperatorControl()) {
-            _mainLeftColor = _mainRightColor =(_alliance == DriverStation.Alliance.Blue) ?  Constants.Lights.TELEOP_BLUE : Constants.Lights.TELEOP_RED;
+            if (SmartDashboard.getNumber("Lights/TestColor", 0.0) != 0.0) {
+                _mainLeftColor = _mainRightColor = SmartDashboard.getNumber("Lights/TestColor", 0.0);
+            } else {
+                _mainLeftColor = _mainRightColor = (_alliance == DriverStation.Alliance.Blue) ? Constants.Lights.TELEOP_BLUE : Constants.Lights.TELEOP_RED;
+            }
         } else if (DriverStation.getInstance().isAutonomous()) {
             _mainLeftColor = _mainRightColor =(_alliance == DriverStation.Alliance.Blue) ?  Constants.Lights.AUTO_BLUE : Constants.Lights.AUTO_RED;
         } else if (DriverStation.getInstance().isDisabled()) {
