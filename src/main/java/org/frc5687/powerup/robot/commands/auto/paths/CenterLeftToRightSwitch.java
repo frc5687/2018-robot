@@ -17,6 +17,11 @@ public class CenterLeftToRightSwitch extends DynamicPathCommand {
     }
 
     @Override
+    public double getLeftFollowerkP() {
+        return 6;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 272;
         Trajectory left = new Trajectory(num_elements);
