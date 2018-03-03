@@ -19,7 +19,7 @@ public class MoveArmToSetpointPID extends Command {
     private double _target;
     private Arm _arm;
     private boolean canFinish;
-    private long _timeout = 5000;
+    private long _timeout = 10000;
     private long _endMillis;
 
 
