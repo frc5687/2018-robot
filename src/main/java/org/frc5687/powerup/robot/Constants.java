@@ -23,7 +23,7 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = false;
         public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
-        public static final double SERVO_BOTTOM = 0.4;
+        public static final double SERVO_BOTTOM = 0.45;
         public static final double SERVO_UP = 1.0;
         public static final long EJECT_TIME = 350;
 
@@ -103,7 +103,7 @@ public class Constants {
                 }
 
                 public class Cheese {
-                    public static final double kP = 7;//1.06;//0.001;//1.70;//0.80;
+                    public static final double kP = 8;//1.06;//0.001;//1.70;//0.80;
                     public static final double kI = 0.0;
                     public static final double kD = 0.1;//.3;
                     public static final double kT = 0.4; // Used for turning correction. -0.68 works well
@@ -236,7 +236,7 @@ public class Constants {
         public static final int ENCODER_TOP_COMP = 0;
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
-        public static final int ENCODER_DRIVE_COMP = -582; // -394
+        public static final int ENCODER_DRIVE_COMP = -530; // -394
         public static final int ENCODER_BOTTOM_COMP = -955;
         public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
 
@@ -270,7 +270,7 @@ public class Constants {
             public static final double ENCODER_TOP = 340;
         }
 
-        public static final double HOLD_SPEED_COMP = 0.1;
+        public static final double HOLD_SPEED_COMP = 0.135;
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
@@ -290,10 +290,10 @@ public class Constants {
             public static final double INTAKE_COMP = 50.0;
             public static final double INTAKE_PROTO = 47.0;
 
-            public static final double DRIVE_COMP = 33.0;
+            public static final double DRIVE_COMP = 41.0;
             public static final double DRIVE_PROTO = 45.0;
 
-            public static final double SWITCH_HEIGHT_COMP = 85.0;  // TODO: Tune
+            public static final double SWITCH_HEIGHT_COMP = 85.0;
             public static final double SWITCH_HEIGHT_PROTO = 85.0;
 
             public static final double TOP = 170.5;
