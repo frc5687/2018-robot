@@ -231,4 +231,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Intake/IntakeHeight", intakeHeight);
         return intakeHeight;
     }
+
+    public boolean isInWarningPeriod() {
+        double remaining = DriverStation.getInstance().getMatchTime();
+        return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
+    }
 }

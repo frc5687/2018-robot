@@ -2,6 +2,9 @@ package org.frc5687.powerup.robot;
 
 public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
+    public static final double START_ALERT = 32;
+    public static final double END_ALERT = 28;
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -51,6 +54,7 @@ public class Constants {
         public static final double CLIMBER_UP = -0.85;  // American Up
         public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
+        public static final double TIME_WARNING = -.07;
     }
 
     public class DriveTrain {
