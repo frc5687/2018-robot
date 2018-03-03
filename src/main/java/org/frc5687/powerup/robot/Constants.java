@@ -25,7 +25,7 @@ public class Constants {
         public static final double PULSING_ORANGE = 0.07;
         public static final double BEATING_ORANGE = 0.08;
 
-        public static final double SOLID_YELLOW = 0.09;
+        public static final double SOLID_YELLOW = 0.69;
         public static final double PULSING_YELLOW = 0.10;
         public static final double BEATING_YELLOW = 0.11;
 
@@ -354,10 +354,11 @@ public class Constants {
     }
 
     public class Climber {
-        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
-        public static final boolean MOTOR_INVERT = true;
+        public static final double PDP_EXCESSIVE_CURRENT = 100.0;
+        public static final boolean MOTOR_INVERT = false;
         public static final double WIND_SPEED = 1.0;
         public static final double UNWIND_SPEED = -1.0;
+        public static final double HOLD_SPEED = 0.30; // Number pulled out of thin air by JohnZ
     }
 
     public class RotarySwitch {

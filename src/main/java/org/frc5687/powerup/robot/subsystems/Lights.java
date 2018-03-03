@@ -36,12 +36,12 @@ public class Lights extends Subsystem {
     }
 
     public void setLeft(double val) {
-        DriverStation.reportError("Setting left to " + val, false);
+        // DriverStation.reportError("Setting left to " + val, false);
         _left.set(val);
     }
 
     public void setRight(double val) {
-        DriverStation.reportError("Setting right to " + val, false);
+        // DriverStation.reportError("Setting right to " + val, false);
         _right.set(val);
     }
 
