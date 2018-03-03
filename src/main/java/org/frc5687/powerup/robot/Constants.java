@@ -66,7 +66,7 @@ public class Constants {
         public static final int TEST_TIME  = 1000;
         public static final double MIN_AMPS = 2.0;
         public static final double MONITOR_THRESHOLD_SPEED = 0.1;
-        public static final double MONITOR_THRESHOLD_AMPS = 10.0;
+        public static final double MONITOR_THRESHOLD_AMPS = 1.0;
     }
 
     public class Intake {
