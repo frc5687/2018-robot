@@ -15,6 +15,8 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = true;
         public static final double SENSITIVITY = 0.75;
         public static final double TALL_CAP_HEIGHT =  72.0;
+        public static final int TEST_TIME  = 1000;
+        public static final double MIN_AMPS = 2.0;
     }
 
     public class Intake {
