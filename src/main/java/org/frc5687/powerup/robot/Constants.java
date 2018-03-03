@@ -33,9 +33,9 @@ public class Constants {
 
 
         public static final double PLATE_DETECTED = -0.07;  // Gold strobe
-        public static final double CUBE_SECURED = 0.81;  // White shot
+        public static final double CUBE_SECURED = -0.81;  // White shot
 
-        public static final double CUBE_DETECTED = 0.47;  // Forest twinkle
+        public static final double CUBE_DETECTED = -0.47;  // Forest twinkle
         public static final double INTAKE_RUNNING =  -.91; // green blue strobe;
 
         public static final double TELEOP_BLUE = SOLID_BLUE;
@@ -48,8 +48,8 @@ public class Constants {
         public static final double DISABLD_RED = BEATING_RED;
 
         public static final double DEFAULT = BEATING_PURPLE;
-        public static final double CLIMBER_UP = 0.85;  // American Up
-        public static final double CLIMBER_HOLD = 0.89; // Party stobe
+        public static final double CLIMBER_UP = -0.85;  // American Up
+        public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
     }
 
