@@ -111,7 +111,7 @@ public class DynamicPathCommand extends Command {
         followerRight.setTrajectory(path.getRightWheelTrajectory());
         followerRight.reset();
 
-        lastHeading = followerLeft.getLastSegment().heading;
+        lastHeading = followerLeft.getLastHeadingInNavxUnits();
 
         _thread.start();
 
