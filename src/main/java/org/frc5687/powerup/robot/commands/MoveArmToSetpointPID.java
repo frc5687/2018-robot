@@ -45,21 +45,19 @@ public class MoveArmToSetpointPID extends Command {
         this.delayFinish = true;
     }
 
-    public void permitFinish() {
-    }
-
     @Override
     protected void end() {
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
-        if (!delayFinish) {
-            _arm.disable();
-        }
+        _arm.disable();
     }
 
     @Override
     protected boolean isFinished() {
+        if (delayFinish) {
+            return !_arm.getPIDController().isEnabled();
+        }
         if (System.currentTimeMillis() >= _endMillis) {
             DriverStation.reportError("MoveArmToSetpointPID timed out at " + _endMillis + "ms", false);
             return true;

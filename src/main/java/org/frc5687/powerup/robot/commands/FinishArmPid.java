@@ -9,6 +9,7 @@ public class FinishArmPid extends Command {
     private boolean _isFinished;
 
     public FinishArmPid(Arm arm) {
+        requires(arm);
         _arm = arm;
     }
 
