@@ -15,12 +15,14 @@ public class Climber extends Subsystem {
 
     private OI oi;
     private PDP _pdp;
+    private double _lastSpeed = 0;
 
     public Climber(OI oi, PDP pdp) {
         motor = new VictorSP(RobotMap.Climber.MOTOR);
         motor.setName("Climber");
         this.oi = oi;
         _pdp = pdp;
+        _lastSpeed = 0;
     }
 
     @Override
@@ -34,6 +36,11 @@ public class Climber extends Subsystem {
             speed = 0.0;
         }
         SmartDashboard.putNumber("Climber/speed", speed);
+        _lastSpeed = speed;
         motor.set(speed);
+    }
+
+    public double getDirection() {
+        return _lastSpeed;
     }
 }

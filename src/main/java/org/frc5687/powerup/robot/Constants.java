@@ -2,6 +2,9 @@ package org.frc5687.powerup.robot;
 
 public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
+    public static final double START_ALERT = 32;
+    public static final double END_ALERT = 28;
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -32,11 +35,11 @@ public class Constants {
         public static final double CONFETTI = -0.87;
 
 
-        public static final double PLATE_DETECTED = CONFETTI;
-        public static final double CUBE_SECURED = PULSING_YELLOW;
+        public static final double PLATE_DETECTED = -0.07;  // Gold strobe
+        public static final double CUBE_SECURED = -0.81;  // White shot
 
-        public static final double CUBE_DETECTED = PULSING_GREEN;
-        public static final double INTAKE_RUNNING = SOLID_GREEN;
+        public static final double CUBE_DETECTED = -0.47;  // Forest twinkle
+        public static final double INTAKE_RUNNING =  -.91; // green blue strobe;
 
         public static final double TELEOP_BLUE = SOLID_BLUE;
         public static final double TELEOP_RED = SOLID_RED;
@@ -48,6 +51,10 @@ public class Constants {
         public static final double DISABLD_RED = BEATING_RED;
 
         public static final double DEFAULT = BEATING_PURPLE;
+        public static final double CLIMBER_UP = -0.85;  // American Up
+        public static final double CLIMBER_HOLD = -0.89; // Party stobe
+        public static final double CLIMBER_DOWN = PULSING_BLUE;
+        public static final double TIME_WARNING = -.07;
     }
 
     public class DriveTrain {
@@ -58,6 +65,8 @@ public class Constants {
         public static final double TALL_CAP_HEIGHT =  72.0;
         public static final int TEST_TIME  = 1000;
         public static final double MIN_AMPS = 2.0;
+        public static final double MONITOR_THRESHOLD_SPEED = 0.1;
+        public static final double MONITOR_THRESHOLD_AMPS = 1.0;
     }
 
     public class Intake {

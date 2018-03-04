@@ -29,6 +29,18 @@ public class DynamicPathCommand extends Command {
         return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT;
     }
 
+    public double getFollowerkP() {
+        return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP;
+    }
+
+    public double getRightFollowerkP() {
+        return getFollowerkP();
+    }
+
+    public double getLeftFollowerkP() {
+        return getFollowerkP();
+    }
+
     class PeriodicRunnable implements java.lang.Runnable {
         private DynamicPathCommand _d;
         long lastRun = 0;
@@ -92,14 +104,14 @@ public class DynamicPathCommand extends Command {
         starting_heading = _driveTrain.getYaw();
 
         followerLeft.configure(
-                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP,
+                getLeftFollowerkP(),
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kI,
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kD,
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kV.IPS,
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
         followerRight.configure(
-                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP,
+                getRightFollowerkP(),
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kI,
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kD,
                 Constants.Auto.Drive.TrajectoryFollowing.Cheese.kV.IPS,
@@ -111,7 +123,7 @@ public class DynamicPathCommand extends Command {
         followerRight.setTrajectory(path.getRightWheelTrajectory());
         followerRight.reset();
 
-        lastHeading = followerLeft.getLastSegment().heading;
+        lastHeading = followerLeft.getLastHeadingInNavxUnits();
 
         _thread.start();
 

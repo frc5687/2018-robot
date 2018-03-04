@@ -52,8 +52,10 @@ public class Lights extends Subsystem {
 
     public void setColors() {
         Intake intake = _robot.getIntake();
-
-        if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
+        Climber climber = _robot.getClimber();
+        if (_robot.isInWarningPeriod()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.TIME_WARNING;
+        } else if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
         } else if (intake.cubeIsSecured()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_SECURED;
@@ -61,6 +63,12 @@ public class Lights extends Subsystem {
             _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_DETECTED;
         } else if (intake.isRunning()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_RUNNING;
+        } else if (climber.getDirection()>Constants.Climber.HOLD_SPEED) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.CLIMBER_UP;
+        } else if (climber.getDirection()>0) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.CLIMBER_HOLD;
+        } else if (climber.getDirection()<0) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.CLIMBER_DOWN;
         } else if (DriverStation.getInstance().isOperatorControl()) {
             if (SmartDashboard.getNumber("DB/Slider 0", 0.0) != 0.0) {
                 _mainLeftColor = _mainRightColor = SmartDashboard.getNumber("DB/Slider 0", 0.0);
