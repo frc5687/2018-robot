@@ -14,7 +14,6 @@ public class FinishArmPid extends Command {
 
     @Override
     protected void initialize() {
-        DriverStation.reportError("You should not be using this Command!!! (FinishArmPid)", false);
         _arm.disable();
         _isFinished = true;
     }
