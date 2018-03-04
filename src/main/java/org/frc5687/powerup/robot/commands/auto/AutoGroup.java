@@ -107,7 +107,7 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         if (robot.getArm().isHealthy()) {
-                            addParallel(new FinishArmPid(armPid));
+                            addParallel(new FinishArmPid(robot.getArm()));
                         }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
@@ -126,7 +126,7 @@ public class AutoGroup extends CommandGroup {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         if (robot.getArm().isHealthy()) {
-                            addParallel(new FinishArmPid(armPid));
+                            addParallel(new FinishArmPid(robot.getArm()));
                         }
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side

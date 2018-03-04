@@ -18,7 +18,7 @@ public class MoveArmToSetpointPID extends Command {
 
     private double _target;
     private Arm _arm;
-    private boolean canFinish;
+    private boolean delayFinish;
     private long _timeout = 10000;
     private long _endMillis;
 
@@ -27,26 +27,25 @@ public class MoveArmToSetpointPID extends Command {
         requires(arm);
         _arm = arm;
         _target = target;
-        canFinish = true;
+        delayFinish = false;
     }
 
     public MoveArmToSetpointPID(Arm arm, double target, long timeout) {
         requires(arm);
         _arm = arm;
         _target = target;
-        canFinish = true;
         _timeout = timeout;
+        delayFinish = false;
     }
 
     public MoveArmToSetpointPID(Arm arm, double target, boolean delayFinish) {
         requires(arm);
         _arm = arm;
         _target = target;
-        canFinish = false;
+        this.delayFinish = true;
     }
 
     public void permitFinish() {
-        canFinish = true;
     }
 
     @Override
@@ -54,7 +53,9 @@ public class MoveArmToSetpointPID extends Command {
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
-        _arm.disable();
+        if (!delayFinish) {
+            _arm.disable();
+        }
     }
 
     @Override
@@ -63,7 +64,7 @@ public class MoveArmToSetpointPID extends Command {
             DriverStation.reportError("MoveArmToSetpointPID timed out at " + _endMillis + "ms", false);
             return true;
         }
-        if (canFinish && _arm.onTarget()) {
+        if (_arm.onTarget()) {
             DriverStation.reportError("MoveArmToSetpointPID completed at " + _arm.getAngle(), false);
             return true;
         }
