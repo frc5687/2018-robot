@@ -108,7 +108,28 @@ public class Intake extends Subsystem {
 
     }
 
-    public boolean isRunning() {
+    public boolean isIntaking() {
         return (_lastRightSpeed > Constants.Intake.HOLD_SPEED || _lastLeftSpeed > Constants.Intake.HOLD_SPEED);
     }
+
+    public boolean isLeftIntaking() {
+        return (_lastLeftSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+    public boolean isRightIntaking() {
+        return (_lastRightSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+
+    public boolean isEjecting() {
+        return (_lastRightSpeed < 0 || _lastLeftSpeed < 0);
+    }
+
+    public boolean isLeftEjecting() {
+        return (_lastLeftSpeed < 0);
+    }
+    public boolean isRightEjecting() {
+        return (_lastRightSpeed < 0);
+    }
+
 }

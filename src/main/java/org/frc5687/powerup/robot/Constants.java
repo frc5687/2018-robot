@@ -39,7 +39,8 @@ public class Constants {
         public static final double CUBE_SECURED = -0.81;  // White shot
 
         public static final double CUBE_DETECTED = -0.47;  // Forest twinkle
-        public static final double INTAKE_RUNNING =  -.91; // green blue strobe;
+        public static final double INTAKE_IN =  -0.91; // green blue strobe;
+        public static final double INTAKE_OUT = -0.93; // red strobe!
 
         public static final double TELEOP_BLUE = SOLID_BLUE;
         public static final double TELEOP_RED = SOLID_RED;
@@ -274,7 +275,7 @@ public class Constants {
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double HOLD_SPEED = 0.05;
+        public static final double HOLD_SPEED = 0.01;
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 

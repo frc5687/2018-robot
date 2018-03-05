@@ -59,10 +59,12 @@ public class Lights extends Subsystem {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
         } else if (intake.cubeIsSecured()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_SECURED;
-        } else if (intake.isRunning() && intake.cubeIsDetected()) {
+        } else if (intake.isIntaking() && intake.cubeIsDetected()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_DETECTED;
-        } else if (intake.isRunning()) {
-            _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_RUNNING;
+        } else if (intake.isIntaking()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_IN;
+        } else if (intake.isEjecting()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_OUT;
         } else if (climber.getDirection()>Constants.Climber.HOLD_SPEED) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CLIMBER_UP;
         } else if (climber.getDirection()>0) {
