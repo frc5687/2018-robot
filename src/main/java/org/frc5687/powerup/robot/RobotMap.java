@@ -33,7 +33,6 @@ public class RobotMap {
     public class Arm {
         public static final int MOTOR = PWM.RIO6;
         public static final int HALL_EFFECT_STARTING_POSITION = DIO.RIO4;
-        public static final int STARTING_POSITION_LED = 10;
         public static final int ENCODER_A = DIO.navX12;
         public static final int ENCODER_B = DIO.navX11;
         public static final int POTENTIOMETER = ANALOG.navX4;

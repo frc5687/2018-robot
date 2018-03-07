@@ -16,7 +16,6 @@ public class Arm extends PIDSubsystem {
     private VictorSP _motor;
     private OI _oi;
     private DigitalInput hallEffect;
-    private DigitalOutput led;
     private AnglePotentiometer _pot;
     private double TOP;
     private double BOTTOM;
@@ -43,7 +42,6 @@ public class Arm extends PIDSubsystem {
         motorInversionMultiplier = (isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO) ? -1 : 1;
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
-        led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
         _pot = isCompetitionBot ?
                 new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
                 : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
@@ -124,11 +122,6 @@ public class Arm extends PIDSubsystem {
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
         SmartDashboard.putNumber("Arm/potAngle", getPot());
         SmartDashboard.putNumber("Arm/potRaw", _pot.getRaw());
-    }
-
-    @Override
-    public void periodic() {
-        led.set(inStartingPosition());
     }
 
     public boolean isCompetitionBot() {
