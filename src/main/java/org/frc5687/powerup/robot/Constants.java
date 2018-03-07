@@ -86,6 +86,12 @@ public class Constants {
         public static final long SETTLE_TIME = 750;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
 
+        public static final double TEST_INTAKE_SPEED = 0.5;
+        public static final double TEST_EJECT_SPEED = -0.5;
+
+        public static final double PDP_OPERATING_MIN = 1.0; // TODO: Tune
+        public static final double PDP_OPERATING_MAX = 45.0; // TODO: Tune
+
         public class SIDE_IR {
             public static final boolean ENABLED = false;
             public static final int DETECTION_THRESHOLD = 1200;
