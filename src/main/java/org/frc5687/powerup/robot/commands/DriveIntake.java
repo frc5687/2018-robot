@@ -5,9 +5,6 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Intake;
 
-/**
- * Command for controlling each side of the drive train with a joystick
- */
 public class DriveIntake extends Command {
     private Intake intake;
     private OI oi;
