@@ -44,11 +44,28 @@ public class Intake extends Subsystem {
         setDefaultCommand(new DriveIntake(this, oi));
     }
 
-    public void drive(double leftSpeed, double rightSpeed) {
+    public double getDefaultLeftSpeed() {
+        double speed = 0.0;
         if (cubeIsDetected()) {
-            if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
-            if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
+            speed = Constants.Intake.HOLD_SPEED;
         }
+        return speed;
+    }
+
+    public double getDefaultRightSpeed() {
+        double speed = 0.0;
+        if (cubeIsDetected()) {
+            speed = Constants.Intake.HOLD_SPEED;
+        }
+        return speed;
+    }
+
+    public void drive(double leftSpeed, double rightSpeed) {
+        if (leftSpeed == 0 && rightSpeed == 0) {
+            leftSpeed = getDefaultLeftSpeed();
+            rightSpeed = getDefaultRightSpeed();
+        }
+
         _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
 
