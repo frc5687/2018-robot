@@ -2,11 +2,60 @@ package org.frc5687.powerup.robot;
 
 public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
+    public static final double START_ALERT = 32;
+    public static final double END_ALERT = 28;
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
         public static final double SOLID_BLUE = 0.87;
+        public static final double PULSING_BLUE = -0.09;
+        public static final double BEATING_BLUE = 0.23;
+
         public static final double SOLID_RED = 0.61;
+        public static final double PULSING_RED = -0.11;
+        public static final double BEATING_RED = 0.25;
+
+        public static final double SOLID_GREEN = 0.77;
+        public static final double PULSING_GREEN = 0.77; // replace
+        public static final double BEATING_GREEN = 0.00; // unused
+
+        public static final double SOLID_PURPLE = 0.91;
+        public static final double PULSING_PURPLE = 0.05;
+        public static final double BEATING_PURPLE = 0.00;
+
+        public static final double SOLID_ORANGE = 0.06;
+        public static final double PULSING_ORANGE = 0.07;
+        public static final double BEATING_ORANGE = 0.08;
+
+        public static final double SOLID_YELLOW = 0.69;
+        public static final double PULSING_YELLOW = 0.10;
+        public static final double BEATING_YELLOW = 0.11;
+
+        public static final double CONFETTI = -0.87;
+
+
+        public static final double PLATE_DETECTED = -0.07;  // Gold strobe
+        public static final double CUBE_SECURED = -0.81;  // White shot
+
+        public static final double CUBE_DETECTED = -0.47;  // Forest twinkle
+        public static final double INTAKE_IN =  -0.91; // green blue strobe;
+        public static final double INTAKE_OUT = -0.93; // red strobe!
+
+        public static final double TELEOP_BLUE = SOLID_BLUE;
+        public static final double TELEOP_RED = SOLID_RED;
+
+        public static final double AUTO_BLUE =  PULSING_BLUE;
+        public static final double AUTO_RED = PULSING_RED;
+
+        public static final double DISABLED_BLUE = BEATING_BLUE;
+        public static final double DISABLD_RED = BEATING_RED;
+
+        public static final double DEFAULT = BEATING_PURPLE;
+        public static final double CLIMBER_UP = -0.85;  // American Up
+        public static final double CLIMBER_HOLD = -0.89; // Party stobe
+        public static final double CLIMBER_DOWN = PULSING_BLUE;
+        public static final double TIME_WARNING = -.07;
     }
 
     public class DriveTrain {
@@ -15,6 +64,10 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = true;
         public static final double SENSITIVITY = 0.75;
         public static final double TALL_CAP_HEIGHT =  72.0;
+        public static final int TEST_TIME  = 1000;
+        public static final double MIN_AMPS = 2.0;
+        public static final double MONITOR_THRESHOLD_SPEED = 0.1;
+        public static final double MONITOR_THRESHOLD_AMPS = 1.0;
     }
 
     public class Intake {
@@ -23,7 +76,7 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = false;
         public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
-        public static final double SERVO_BOTTOM = 0.4;
+        public static final double SERVO_BOTTOM = 0.45;
         public static final double SERVO_UP = 1.0;
         public static final long EJECT_TIME = 350;
 
@@ -31,6 +84,7 @@ public class Constants {
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
+        public static final double PLATE_MINIMUM_CLARANCE = 24.0;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;
@@ -103,7 +157,7 @@ public class Constants {
                 }
 
                 public class Cheese {
-                    public static final double kP = 7;//1.06;//0.001;//1.70;//0.80;
+                    public static final double kP = 8;//1.06;//0.001;//1.70;//0.80;
                     public static final double kI = 0.0;
                     public static final double kD = 0.1;//.3;
                     public static final double kT = 0.4; // Used for turning correction. -0.68 works well
@@ -221,7 +275,7 @@ public class Constants {
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double HOLD_SPEED = 0.05;
+        public static final double HOLD_SPEED = 0.01;
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 
@@ -236,7 +290,7 @@ public class Constants {
         public static final int ENCODER_TOP_COMP = 0;
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
-        public static final int ENCODER_DRIVE_COMP = -582; // -394
+        public static final int ENCODER_DRIVE_COMP = -530; // -394
         public static final int ENCODER_BOTTOM_COMP = -955;
         public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
 
@@ -263,15 +317,22 @@ public class Constants {
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
 
-        public static final double ENCODER_START = 0;
-        public static final double ENCODER_MIDDLE = 133;
-        public static final double ENCODER_FENCE = 90;
-        public static final double ENCODER_TOP = 340;
-        public static final double HOLD_SPEED_COMP = 0.1;
+        public class Encoder {
+            public static final double ENCODER_START = 0;
+            public static final double ENCODER_MIDDLE = 133;
+            public static final double ENCODER_FENCE = 90;
+            public static final double ENCODER_TOP = 340;
+        }
+
+        public static final double HOLD_SPEED_COMP = 0.135;
         public static final double HOLD_SPEED_PROTO = 0.0;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
         public static final double SENSITIVITY = 0.75;
+
+        public static final double MAX_SPEED = 0.75;
+        public static final double MIN_SPEED = -.5;
+
 
         public class Pot {
             public static final double TOP_COMP = 166.0;
@@ -283,11 +344,11 @@ public class Constants {
             public static final double INTAKE_COMP = 50.0;
             public static final double INTAKE_PROTO = 47.0;
 
-            public static final double DRIVE_COMP = 33.0;
+            public static final double DRIVE_COMP = 41.0;
             public static final double DRIVE_PROTO = 45.0;
 
-            public static final double SWITCH_HEIGHT_COMP = 50.0;
-            public static final double SWITCH_HEIGHT_PROTO = 50.0; // TODO: Tune
+            public static final double SWITCH_HEIGHT_COMP = 85.0;
+            public static final double SWITCH_HEIGHT_PROTO = 85.0;
 
             public static final double TOP = 170.5;
             public static final double BOTTOM = 31.8;
@@ -303,10 +364,11 @@ public class Constants {
     }
 
     public class Climber {
-        public static final double PDP_EXCESSIVE_CURRENT = 55.0;
-        public static final boolean MOTOR_INVERT = true;
+        public static final double PDP_EXCESSIVE_CURRENT = 100.0;
+        public static final boolean MOTOR_INVERT = false;
         public static final double WIND_SPEED = 1.0;
         public static final double UNWIND_SPEED = -1.0;
+        public static final double HOLD_SPEED = 0.30; // Number pulled out of thin air by JohnZ
     }
 
     public class RotarySwitch {

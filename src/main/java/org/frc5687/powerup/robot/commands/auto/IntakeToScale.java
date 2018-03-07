@@ -12,7 +12,7 @@ public class IntakeToScale extends CommandGroup {
     public IntakeToScale(Carriage carriage, Arm arm) {
         int ENCODER_TOP = carriage.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
         addParallel(new MoveCarriageToSetpointPID(carriage, ENCODER_TOP));
-        addParallel(new MoveArmToSetpointPID(arm, Constants.Arm.ENCODER_TOP));
+        addParallel(new MoveArmToSetpointPID(arm, arm.isCompetitionBot() ? Constants.Arm.Pot.TOP_COMP : Constants.Arm.Pot.TOP_PROTO));
     }
 }
 

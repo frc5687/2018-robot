@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.commands.KillAll;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
@@ -74,7 +75,7 @@ public class Robot extends TimedRobot {
 
         oi.initializeButtons(this);
         LiveWindow.disableAllTelemetry();
-
+        _lights.initialize();
     }
 
     public Arm getArm() { return _arm; }
@@ -104,6 +105,9 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        // Reset the lights slider in case it was left on
+        SmartDashboard.putNumber("DB/Slider 0", 0.0);
+
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
         int retries = 100;
@@ -154,6 +158,9 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
+        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
+            new KillAll(this).start();
+        }
     }
 
     @Override
@@ -224,5 +231,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Intake/ArmHeight", armHeight);
         SmartDashboard.putNumber("Intake/IntakeHeight", intakeHeight);
         return intakeHeight;
+    }
+
+    public boolean isInWarningPeriod() {
+        double remaining = DriverStation.getInstance().getMatchTime();
+        return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
     }
 }
