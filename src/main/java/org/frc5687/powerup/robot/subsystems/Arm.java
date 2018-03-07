@@ -31,7 +31,7 @@ public class Arm extends PIDSubsystem {
 
     public Arm (OI oi, PDP pdp, boolean isCompetitionBot) {
         super("Arm", kP, kI, kD, kF, 0.02);
-        setAbsoluteTolerance(5);
+        setAbsoluteTolerance(Constants.Arm.Pot.TOLERANCE);
         _isCompetitionBot = isCompetitionBot;
         TOP = isCompetitionBot ? Constants.Arm.Pot.TOP_COMP : Constants.Arm.Pot.TOP_PROTO;
         BOTTOM = isCompetitionBot ? Constants.Arm.Pot.BOTTOM_COMP : Constants.Arm.Pot.BOTTOM_PROTO;
