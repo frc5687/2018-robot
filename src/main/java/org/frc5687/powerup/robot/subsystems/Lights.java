@@ -59,22 +59,12 @@ public class Lights extends Subsystem {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
         } else if (intake.cubeIsSecured()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_SECURED;
-        } else if (intake.isIntaking() || intake.isEjecting()) {
-            if (intake.isLeftIntaking() && intake.cubeIsDetected()) {
-                _mainLeftColor = Constants.Lights.CUBE_DETECTED;
-            } else if (intake.isLeftIntaking()) {
-                _mainLeftColor = Constants.Lights.INTAKE_IN;
-            } else if (intake.isLeftEjecting()) {
-                _mainLeftColor = Constants.Lights.INTAKE_OUT;
-            }
-
-            if (intake.isRightIntaking() && intake.cubeIsDetected()) {
-                _mainRightColor = Constants.Lights.CUBE_DETECTED;
-            } else if (intake.isRightIntaking()) {
-                _mainRightColor = Constants.Lights.INTAKE_IN;
-            } else if (intake.isRightEjecting()) {
-                _mainRightColor = Constants.Lights.INTAKE_OUT;
-            }
+        } else if (intake.isIntaking() && intake.cubeIsDetected()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.CUBE_DETECTED;
+        } else if (intake.isIntaking()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_IN;
+        } else if (intake.isEjecting()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.INTAKE_OUT;
         } else if (climber.getDirection()>Constants.Climber.HOLD_SPEED) {
             _mainLeftColor = _mainRightColor = Constants.Lights.CLIMBER_UP;
         } else if (climber.getDirection()>0) {
