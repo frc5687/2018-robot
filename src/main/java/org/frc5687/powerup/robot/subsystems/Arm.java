@@ -51,10 +51,10 @@ public class Arm extends PIDSubsystem {
 
     public void drive(double speed) {
         if(atTop() && speed > 0) {
-            SmartDashboard.putString("Arm/Capped)", "Top");
+            SmartDashboard.putString("Arm/Capped", "Top");
             speed = 0.0;
         } else if (atBottom() && speed < 0) {
-            SmartDashboard.putString("Arm/Capped)", "Bottom");
+            SmartDashboard.putString("Arm/Capped", "Bottom");
             speed = 0.0;
         }
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
