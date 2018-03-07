@@ -27,12 +27,12 @@ public class TestIntake extends CommandGroup {
             DriverStation.reportError("There is not a cube detected. There should be a cube detected", false);
         }
 
-        if (!intake.switchDetected()) {
-            DriverStation.reportError("Switch / Floor is not detected. There should be a switch / floor detected", false);
+        if (!intake.isPlateDetected()) {
+            DriverStation.reportError("Plate is not detected. There should be a switch / floor detected", false);
         }
         addSequential(new AutoZeroCarriage(carriage));
-        if (intake.switchDetected()) {
-            DriverStation.reportError("Switch / Floor detected. There should not be a switch / floor detected!", false);
+        if (intake.isPlateDetected()) {
+            DriverStation.reportError("Plate detected. There should not be a switch / floor detected!", false);
         }
     }
 }
