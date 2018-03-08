@@ -26,6 +26,7 @@ public class JeVoisProxy {
             listenerThread.start();
             initializedProperly = true;
         } catch (Exception e) {
+            DriverStation.reportError("Error while initializing JeVois Listener: " + e.getStackTrace().toString(), false);
             initializedProperly = false;
         }
         SmartDashboard.putBoolean("JeVois/initializedProperly", initializedProperly);
