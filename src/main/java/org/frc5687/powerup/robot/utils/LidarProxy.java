@@ -13,6 +13,7 @@ public class LidarProxy {
 
     public LidarProxy(SerialPort.Port port) {
         setup(port);
+        raw = "";
     }
 
     private void setup(SerialPort.Port port) {
