@@ -6,14 +6,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LidarProxy {
     private double lastReadDistance;
-    private String raw;
     private LidarListener _listener;
     private Thread _thread;
     private boolean _initializedProperly;
 
     public LidarProxy(SerialPort.Port port) {
         setup(port);
-        raw = "";
     }
 
     private void setup(SerialPort.Port port) {
@@ -33,10 +31,6 @@ public class LidarProxy {
         return lastReadDistance;
     }
 
-    public String getRaw() {
-        return raw;
-    }
-
     protected class LidarListener implements Runnable {
         private SerialPort _port;
         private LidarProxy _proxy;
@@ -50,22 +44,12 @@ public class LidarProxy {
         public void run() {
             while (true) {
                 try {
-                    //byte[] read = _port.read(_port.getBytesReceived());
                     SmartDashboard.putNumber("Lidar/_port.getBytesReceived()", _port.getBytesReceived());
+                    byte[] read = _port.read(1);
+                    //String r = _port.readString();
                     //SmartDashboard.putNumber("Lidar/readLength", read.length);
-                    /*
-                    SmartDashboard.putNumber("Lidar/bytes/1", read[0]);
-                    SmartDashboard.putNumber("Lidar/bytes/2", read[1]);
-                    SmartDashboard.putNumber("Lidar/bytes/3", read[2]);
-                    SmartDashboard.putNumber("Lidar/bytes/4", read[3]);
-                    SmartDashboard.putNumber("Lidar/bytes/5", read[4]);
-                    SmartDashboard.putNumber("Lidar/bytes/6", read[5]);
-                    SmartDashboard.putNumber("Lidar/bytes/7", read[6]);
-                    SmartDashboard.putNumber("Lidar/bytes/8", read[7]);
-                    SmartDashboard.putNumber("Lidar/bytes/9", read[8]);
-                    */
                 } catch (Exception e) {
-                    DriverStation.reportError("LidarListener exception: " + e.getStackTrace().toString(), false);
+                    DriverStation.reportError("LidarListener exception: " + e.toString(), false);
                 }
             }
         }

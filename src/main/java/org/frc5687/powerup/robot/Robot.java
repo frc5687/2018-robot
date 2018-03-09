@@ -194,7 +194,6 @@ public class Robot extends TimedRobot {
             intake.updateDashboard();
             estimateIntakeHeight();
             updateTick = 0;
-            SmartDashboard.putString("Lidar/getRaw()", lidarProxy.getRaw());
         }
     }
     public boolean pickConstant(boolean competitionValue, boolean practiceValue){
