@@ -181,12 +181,12 @@ public class OI {
     public void initializeButtons(Robot robot) {
         carriageZeroEncoder.whenPressed(new AutoZeroCarriage(robot.getCarriage()));
 
-        driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm(), robot.getIntake()));
         driverArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
         driverArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         driverArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
-        operatorArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        operatorArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm(), robot.getIntake()));
         operatorArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
         operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
