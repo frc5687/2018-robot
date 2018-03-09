@@ -44,12 +44,26 @@ public class LidarProxy {
         protected LidarListener(LidarProxy proxy, SerialPort.Port port) {
             _proxy = proxy;
             _port = new SerialPort(115200, port);
+            //_port.setReadBufferSize(9);
         }
 
         public void run() {
             while (true) {
                 try {
-                    _proxy.raw = _proxy.raw.concat(_port.readString());
+                    //byte[] read = _port.read(_port.getBytesReceived());
+                    SmartDashboard.putNumber("Lidar/_port.getBytesReceived()", _port.getBytesReceived());
+                    //SmartDashboard.putNumber("Lidar/readLength", read.length);
+                    /*
+                    SmartDashboard.putNumber("Lidar/bytes/1", read[0]);
+                    SmartDashboard.putNumber("Lidar/bytes/2", read[1]);
+                    SmartDashboard.putNumber("Lidar/bytes/3", read[2]);
+                    SmartDashboard.putNumber("Lidar/bytes/4", read[3]);
+                    SmartDashboard.putNumber("Lidar/bytes/5", read[4]);
+                    SmartDashboard.putNumber("Lidar/bytes/6", read[5]);
+                    SmartDashboard.putNumber("Lidar/bytes/7", read[6]);
+                    SmartDashboard.putNumber("Lidar/bytes/8", read[7]);
+                    SmartDashboard.putNumber("Lidar/bytes/9", read[8]);
+                    */
                 } catch (Exception e) {
                     DriverStation.reportError("LidarListener exception: " + e.getStackTrace().toString(), false);
                 }
