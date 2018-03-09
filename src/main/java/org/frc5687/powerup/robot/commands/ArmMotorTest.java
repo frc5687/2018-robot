@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import static java.lang.Math.abs;
 
 
-public class ArmSelfTest extends Command {
+public class ArmMotorTest extends Command {
     private Arm arm;
     private Carriage carriage;
     private PDP pdp;
@@ -25,7 +25,7 @@ public class ArmSelfTest extends Command {
     private double topAngle;
     private double startAngle;
 
-    public ArmSelfTest(Arm arm, Carriage carriage){
+    public ArmMotorTest(Arm arm, Carriage carriage){
      requires(arm);
      requires(carriage);
 
