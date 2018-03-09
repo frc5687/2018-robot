@@ -5,6 +5,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
+import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
+import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
+import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.utils.Gamepad;
 import org.frc5687.powerup.robot.utils.Helpers;
@@ -158,13 +162,12 @@ public class OI {
     }
 
     public double getClimberSpeed() {
-        double speed = 0;
         if (climberWind.get()) {
-            speed = Constants.Climber.WIND_SPEED;
+            return 1;
         } else if (climberUnwind.get()) {
-            speed = Constants.Climber.UNWIND_SPEED;
+            return -1;
         }
-        return speed;
+        return 0;
     }
 
     public int getDriverPOV() {

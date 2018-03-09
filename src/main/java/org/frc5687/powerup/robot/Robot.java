@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
 
         oi.initializeButtons(this);
         LiveWindow.disableAllTelemetry();
-
+        _lights.initialize();
     }
 
     public Arm getArm() { return _arm; }
@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public PDP getPDP() { return pdp; }
 
     public Lights getLights() {
         return _lights;
@@ -104,6 +105,9 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        // Reset the lights slider in case it was left on
+        SmartDashboard.putNumber("DB/Slider 0", 0.0);
+
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
         int retries = 100;
@@ -227,5 +231,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Intake/ArmHeight", armHeight);
         SmartDashboard.putNumber("Intake/IntakeHeight", intakeHeight);
         return intakeHeight;
+    }
+
+    public boolean isInWarningPeriod() {
+        double remaining = DriverStation.getInstance().getMatchTime();
+        return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
     }
 }

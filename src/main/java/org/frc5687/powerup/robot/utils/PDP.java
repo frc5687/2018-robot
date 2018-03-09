@@ -26,7 +26,7 @@ public class PDP extends PowerDistributionPanel {
         SmartDashboard.putNumber("PDP/Current/14(carriageSP)", getCurrent(14));
         SmartDashboard.putNumber("PDP/Current/15(armSP)", getCurrent(15));
     }
-
+    
     public boolean excessiveCurrent(int channel, double threshold) {
         return getCurrent(channel) >= threshold;
     }

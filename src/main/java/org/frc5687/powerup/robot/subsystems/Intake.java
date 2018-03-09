@@ -20,6 +20,9 @@ public class Intake extends Subsystem {
     private Servo servo;
     private double _lastServoPos;
 
+    private double _lastLeftSpeed;
+    private double _lastRightSpeed;
+
     private OI oi;
 
     public Intake(OI oi) {
@@ -46,7 +49,10 @@ public class Intake extends Subsystem {
             if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
             if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
         }
+        _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
+
+        _lastRightSpeed = rightSpeed;
         rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
     }
 
@@ -83,7 +89,7 @@ public class Intake extends Subsystem {
         return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
     }
 
-    public boolean switchDetected() {
+    public boolean isPlateDetected() {
         if (!Constants.Intake.DOWN_IR.ENABLED) {
             return false;
         }
@@ -100,6 +106,30 @@ public class Intake extends Subsystem {
     @Override
     public void periodic(){
 
+    }
+
+    public boolean isIntaking() {
+        return (_lastRightSpeed > Constants.Intake.HOLD_SPEED || _lastLeftSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+    public boolean isLeftIntaking() {
+        return (_lastLeftSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+    public boolean isRightIntaking() {
+        return (_lastRightSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+
+    public boolean isEjecting() {
+        return (_lastRightSpeed < 0 || _lastLeftSpeed < 0);
+    }
+
+    public boolean isLeftEjecting() {
+        return (_lastLeftSpeed < 0);
+    }
+    public boolean isRightEjecting() {
+        return (_lastRightSpeed < 0);
     }
 
 }

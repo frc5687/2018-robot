@@ -123,4 +123,8 @@ public class TrajectoryFollower {
   public Trajectory.Segment getLastSegment() {
     return profile_.getSegment(profile_.getNumSegments() - 1);
   }
+
+  public double getLastHeadingInNavxUnits() {
+    return ChezyMath.boundAngleNeg180to180Degrees(-Math.toDegrees(getLastSegment().heading));
+  }
 }
