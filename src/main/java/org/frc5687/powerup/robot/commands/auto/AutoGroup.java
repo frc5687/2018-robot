@@ -174,7 +174,7 @@ public class AutoGroup extends CommandGroup {
                         }
                         path = new FarRightToRightScale(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), Math.toDegrees(-path.lastHeading), 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -40, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         /*
                         addSequential(new FarRightToRightScalePartTwo(robot));
