@@ -141,6 +141,17 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, left side
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, right side
+                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+                        armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
+                        if (robot.getArm().isHealthy()) {
+                            addParallel(armPid);
+                        }
+                        addSequential(new FarRightToRightSwitchSide(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
+                        if (robot.getCarriage().isHealthy()) {
+                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
+                        }
                         break;
                 }
                 break;
@@ -148,8 +159,10 @@ public class AutoGroup extends CommandGroup {
                 SmartDashboard.putString("Auto/Mode", "Scale Only");
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
-                        addParallel(new AutoZeroCarriageThenLower(robot));
+                        addParallel(new PrepIntakeForScale(robot, 3000, true));
                         addSequential(new FarLeftToLeftScale(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 40, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);
