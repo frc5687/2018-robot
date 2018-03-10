@@ -26,4 +26,17 @@ public class PrepIntakeForScale extends CommandGroup {
             addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5.0, 5000));
         }
     }
+
+    public PrepIntakeForScale(Robot robot, long millis, boolean zeroCarriageFirst) {
+        if (zeroCarriageFirst) {
+            addParallel(new AutoZeroCarriageThenLower(robot));
+        }
+        addSequential(new AutoWaitForMillis(millis));
+        if (robot.getArm().isHealthy()) {
+            addSequential(new MoveArmToSetpointPID(robot.getArm(), 150));
+        }
+        if (robot.getCarriage().isHealthy()) {
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), -5.0, 5000));
+        }
+    }
 }
