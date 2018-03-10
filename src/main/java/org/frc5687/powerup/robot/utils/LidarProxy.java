@@ -45,9 +45,10 @@ public class LidarProxy {
             while (true) {
                 try {
                     SmartDashboard.putNumber("Lidar/_port.getBytesReceived()", _port.getBytesReceived());
-                    byte[] read = _port.read(1);
-                    //String r = _port.readString();
-                    //SmartDashboard.putNumber("Lidar/readLength", read.length);
+                    byte[] read = _port.read(9);
+                    SmartDashboard.putNumber("Lidar/readLength", read.length);
+                    SmartDashboard.putNumber("Lidar/bytes/3", new Integer(read[2] & 0xFF));
+                    _proxy.lastReadDistance = read[2] & 0xFF;
                 } catch (Exception e) {
                     DriverStation.reportError("LidarListener exception: " + e.toString(), false);
                 }
