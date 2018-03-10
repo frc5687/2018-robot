@@ -102,6 +102,11 @@ public class Constants {
             public static final int DETECTED_THRESHOLD = 1140;
             public static final int SECURED_THRESHOLD = 1600;
         }
+
+        public class Lidar {
+            public static final boolean ENABLED = true;
+            public static final int DETECTION_THRESHOLD = 55;
+        }
     }
 
     public class Auto {

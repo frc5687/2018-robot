@@ -31,6 +31,10 @@ public class LidarProxy {
         return lastReadDistance;
     }
 
+    public boolean isInitializedProperly() {
+        return _initializedProperly;
+    }
+
     protected class LidarListener implements Runnable {
         private SerialPort _port;
         private LidarProxy _proxy;
