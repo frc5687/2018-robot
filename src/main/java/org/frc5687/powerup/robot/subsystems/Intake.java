@@ -6,9 +6,11 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.LidarProxy;
 
 
 public class Intake extends Subsystem {
@@ -24,9 +26,10 @@ public class Intake extends Subsystem {
     private double _lastRightSpeed;
 
     private OI oi;
+    private LidarProxy lidar;
     private boolean _isCompetitionBot;
 
-    public Intake(OI oi, boolean isCompetitionBot) {
+    public Intake(Robot robot, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
         servo = new Servo(RobotMap.Intake.SERVO);
@@ -34,7 +37,8 @@ public class Intake extends Subsystem {
         leftMotor.setName("Intake", "Left Victor");
         rightMotor.setName("Intake", "Right Victor");
 
-        this.oi = oi;
+        oi = robot.getOI();
+        lidar = robot.getLidarProxy();
         _isCompetitionBot = isCompetitionBot;
 
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
@@ -105,11 +109,24 @@ public class Intake extends Subsystem {
         return irDown.getValue() > Constants.Intake.DOWN_IR.DETECTION_THRESHOLD;
     }
 
+    public int isScaleDetected() {
+        int lidar_val = 0;
+        int ir_val = 0;
+        if (Constants.Intake.DOWN_IR.ENABLED && irDown.getValue() >= Constants.Intake.DOWN_IR.DETECTION_THRESHOLD) {
+            ir_val = 1;
+        }
+        if (lidar.isInitializedProperly() && Constants.Intake.Lidar.ENABLED && lidar.get() >= Constants.Intake.Lidar.DETECTION_THRESHOLD) {
+            lidar_val = 2;
+        }
+        return lidar_val + ir_val;
+    }
+
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
+        SmartDashboard.putNumber("Intake/isScaleDetected()", isScaleDetected());
     }
 
     @Override
