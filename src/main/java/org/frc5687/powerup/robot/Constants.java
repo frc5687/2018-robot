@@ -11,11 +11,6 @@ public class Constants {
     }
 
     public class IRPID {
-        public static final double kP = 0.05;
-        public static final double kI = 0.00;
-        public static final double kD = 0.03;
-        public static final double TOLERANCE = .5;
-
         /**
          * a in the voltage-to-distance equation distance = a * voltage ^ b
          */
