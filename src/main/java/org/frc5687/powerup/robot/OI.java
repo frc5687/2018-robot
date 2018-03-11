@@ -1,6 +1,8 @@
 package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -53,6 +55,8 @@ public class OI {
     private POV driverPOV;
 
     private Robot _robot;
+
+    private double endRumble;
 
     public OI(Robot robot) {
         _robot = robot;
@@ -205,6 +209,28 @@ public class OI {
         DriverStation.reportError("robot " + (robot==null), false);
         DriverStation.reportError("carriage " + (robot.getCarriage()==null), false);
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
+    }
+
+    public void rumbleLeft() {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
+        endRumble = DriverStation.getInstance().getMatchTime() - Constants.OI.RUMBLE_DURATION;
+    }
+
+    public void rumbleRight() {
+        driverGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
+        endRumble = DriverStation.getInstance().getMatchTime() - Constants.OI.RUMBLE_DURATION;
+    }
+
+    public void poll() {
+        if (endRumble > 0 && DriverStation.getInstance().getMatchTime() > endRumble) {
+            endRumble = 0;
+            driverGamepad.setRumble(RumbleType.kLeftRumble, 0);
+            driverGamepad.setRumble(RumbleType.kRightRumble, 0);
+            operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
+            operatorGamepad.setRumble(RumbleType.kRightRumble, 0);
+        }
     }
 
 }
