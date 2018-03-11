@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
@@ -15,6 +16,7 @@ import org.frc5687.powerup.robot.subsystems.DriveTrain;
 public class PrepIntakeForScale extends CommandGroup {
 
     public PrepIntakeForScale(Robot robot, double inches, long millis, boolean zeroCarriageFirst) {
+        robot.getCarriage().setHoldSpeed(Constants.Carriage.HOLD_SPEED_AT_SCALE);
         if (zeroCarriageFirst) {
             addParallel(new AutoZeroCarriageThenLower(robot));
         }

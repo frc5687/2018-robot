@@ -20,14 +20,15 @@ public class DriveCarriage extends Command {
 
     @Override
     protected void execute() {
-        double oiSpeed = oi.getCarriageSpeed();
+        double oiSpeed = DriverStation.getInstance().isAutonomous() ? 0 : oi.getCarriageSpeed();
         if (oiSpeed != 0.0) {
             carriage.disable();
             DriverStation.reportError("DriveCarriage requesting oiSpeed: " + Double.toString(oiSpeed), false);
+            carriage.setHoldSpeed(Constants.Carriage.HOLD_SPEED);
             carriage.drive(oiSpeed);
         } else if (!carriage.getPIDController().isEnabled()) {
-            DriverStation.reportError("DriveCarriage requested Hold Speed: " + Double.toString(Constants.Carriage.HOLD_SPEED), false);
-            carriage.drive(Constants.Carriage.HOLD_SPEED);
+            DriverStation.reportError("DriveCarriage requested Hold Speed: " + Double.toString(carriage.getHoldSpeed()), false);
+            carriage.drive(carriage.getHoldSpeed());
         }
     }
 

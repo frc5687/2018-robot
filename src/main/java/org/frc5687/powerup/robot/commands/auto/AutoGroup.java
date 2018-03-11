@@ -139,6 +139,17 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_RIGHT: // Position 5, right side
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, left side
+                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+                        armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
+                        if (robot.getArm().isHealthy()) {
+                            addParallel(armPid);
+                        }
+                        addSequential(new FarRightToLeftSwitchBehind(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -179, 0.5));
+                        addSequential(new AutoEject(robot.getIntake()));
+                        if (robot.getCarriage().isHealthy()) {
+                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
+                        }
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, right side
                         armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
@@ -183,11 +194,10 @@ public class AutoGroup extends CommandGroup {
                         break;*/
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         if (robot.getArm().isHealthy()) {
-                            addParallel(new PrepIntakeForScale(robot, 3000, true));
+                            addParallel(new PrepIntakeForScale(robot, 100, 5000, true));
                         }
-                        path = new FarRightToRightScale(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -40, 0.5));
+                        addSequential(new FarRightToRightScale(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
                         /*
                         addSequential(new FarRightToRightScalePartTwo(robot));
