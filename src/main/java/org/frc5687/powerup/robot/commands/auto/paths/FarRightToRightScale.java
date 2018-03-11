@@ -13,7 +13,7 @@ public class FarRightToRightScale extends DynamicPathCommand {
 
     @Override
     public double getkT() {
-        return 0.8;
+        return 2.4;
     }
 
     @Override

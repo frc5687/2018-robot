@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
         _arm = new Arm(oi, pdp, _isCompetitionBot);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
-        intake = new Intake(this);
+        intake = new Intake(this, _isCompetitionBot);
         _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);

@@ -27,8 +27,9 @@ public class Intake extends Subsystem {
 
     private OI oi;
     private LidarProxy lidar;
+    private boolean _isCompetitionBot;
 
-    public Intake(Robot robot) {
+    public Intake(Robot robot, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
         servo = new Servo(RobotMap.Intake.SERVO);
@@ -38,6 +39,7 @@ public class Intake extends Subsystem {
 
         oi = robot.getOI();
         lidar = robot.getLidarProxy();
+        _isCompetitionBot = isCompetitionBot;
 
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
@@ -58,7 +60,13 @@ public class Intake extends Subsystem {
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
 
         _lastRightSpeed = rightSpeed;
-        rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
+        rightMotor.set(
+                rightSpeed * (
+                    (
+                            _isCompetitionBot ? Constants.Intake.RIGHT_MOTORS_INVERTED_COMP : Constants.Intake.RIGHT_MOTORS_INVERTED_PROTO
+                    ) ? -1 : 1
+                )
+        );
     }
 
     public void driveServo(double val) {

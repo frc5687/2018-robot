@@ -73,7 +73,8 @@ public class Constants {
     public class Intake {
         public static final double DEADBAND = 0.05;
         public static final boolean LEFT_MOTORS_INVERTED = true;
-        public static final boolean RIGHT_MOTORS_INVERTED = false;
+        public static final boolean RIGHT_MOTORS_INVERTED_COMP = false;
+        public static final boolean RIGHT_MOTORS_INVERTED_PROTO = true;
         public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
         public static final double SERVO_BOTTOM = 0.87;
