@@ -7,10 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.commands.KillAll;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
+import org.frc5687.powerup.robot.utils.LidarProxy;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends TimedRobot {
@@ -25,11 +27,13 @@ public class Robot extends TimedRobot {
     private Carriage carriage;
     private Climber _climber;
     private Arm _arm;
+    private Lights _lights;
     public AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
     public JeVoisProxy jeVoisProxy;
+    private LidarProxy lidarProxy;
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
     private long lastPeriod;
@@ -53,10 +57,12 @@ public class Robot extends TimedRobot {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+        lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         _arm = new Arm(oi, pdp, _isCompetitionBot);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
-        intake = new Intake(oi);
+        intake = new Intake(oi, _isCompetitionBot);
+        _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
@@ -72,7 +78,7 @@ public class Robot extends TimedRobot {
 
         oi.initializeButtons(this);
         LiveWindow.disableAllTelemetry();
-
+        _lights.initialize();
     }
 
     public Arm getArm() { return _arm; }
@@ -81,7 +87,11 @@ public class Robot extends TimedRobot {
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public PDP getPDP() { return pdp; }
+    public Lights getLights() { return _lights; }
     public JeVoisProxy getJeVoisProxy() { return jeVoisProxy; }
+    public LidarProxy getLidarProxy() { return lidarProxy; }
+
 
 
     @Override
@@ -95,6 +105,9 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        // Reset the lights slider in case it was left on
+        SmartDashboard.putNumber("DB/Slider 0", 0.0);
+
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
         int retries = 100;
@@ -145,6 +158,9 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
+        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
+            new KillAll(this).start();
+        }
     }
 
     @Override
@@ -215,5 +231,10 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Intake/ArmHeight", armHeight);
         SmartDashboard.putNumber("Intake/IntakeHeight", intakeHeight);
         return intakeHeight;
+    }
+
+    public boolean isInWarningPeriod() {
+        double remaining = DriverStation.getInstance().getMatchTime();
+        return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
     }
 }

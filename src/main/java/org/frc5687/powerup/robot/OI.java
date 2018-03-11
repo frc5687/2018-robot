@@ -5,9 +5,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
+import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
+import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
+import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.utils.Gamepad;
 import org.frc5687.powerup.robot.utils.Helpers;
+import org.frc5687.powerup.robot.utils.POV;
 
 public class OI {
     public class ButtonNumbers {
@@ -20,8 +25,8 @@ public class OI {
     private Joystick driverGamepad;
     private Gamepad operatorGamepad;
 
-    private JoystickButton intakeLeftOut;
-    private JoystickButton intakeRightOut;
+    private JoystickButton intakeLeftIn;
+    private JoystickButton intakeRightIn;
 
     private JoystickButton climberWind;
     private JoystickButton climberUnwind;
@@ -45,6 +50,8 @@ public class OI {
     private JoystickButton driverCarriageUp;
     private JoystickButton driverCarriageDown;
 
+    private POV driverPOV;
+
     private Robot _robot;
 
     public OI(Robot robot) {
@@ -65,8 +72,8 @@ public class OI {
         climberUnwind = new JoystickButton(driverGamepad, Gamepad.Buttons.BACK.getNumber());
         climberWind = new JoystickButton(driverGamepad, Gamepad.Buttons.START.getNumber());
 
-        intakeLeftOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
-        intakeRightOut = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
+        intakeLeftIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
+        intakeRightIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
         servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
 
@@ -94,17 +101,20 @@ public class OI {
                 getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS),
                 -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)
         );
-        double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS);
-        SmartDashboard.putNumber("Intake/left/driver", driver);
-        SmartDashboard.putNumber("Intake/left/operator", operator);
-        double trigger = Helpers.absMax(driver, operator);
-        trigger = Helpers.applySensitivityFactor(trigger, Constants.Intake.SENSITIVITY);
-
-        if (intakeLeftOut.get()) {
-            return Constants.Intake.OUTTAKE_SPEED;
-        } else if (Math.abs(trigger) > Constants.Intake.DEADBAND) {
-            return trigger;
+        if (intakeLeftIn.get()){
+            return Constants.Intake.INTAKE_SPEED;
         }
+        SmartDashboard.putNumber("Intake/left/driver", driver);
+        double driverTrigger = driver;
+        driverTrigger = Helpers.applySensitivityFactor(driverTrigger, Constants.Intake.SENSITIVITY);
+
+        if (Math.abs(getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS)) > Constants.Intake.DEADBAND) {
+            return Helpers.applySensitivityFactor(-getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS), Constants.Intake.SENSITIVITY);
+        }
+        if (Math.abs(driverTrigger) > Constants.Intake.DEADBAND) {
+            return driverTrigger;
+        }
+
         return 0;
     }
 
@@ -113,14 +123,19 @@ public class OI {
                 getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_TRIGGER_AXIS),
                 -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)
         );
-        double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
+        if(intakeRightIn.get()){
+            return Constants.Intake.INTAKE_SPEED;
+        }
         SmartDashboard.putNumber("Intake/right/driver", driver);
-        SmartDashboard.putNumber("Intake/right/operator", operator);
-        double trigger = Helpers.absMax(driver, operator);
+        double trigger = driver;
         trigger = Helpers.applySensitivityFactor(trigger, Constants.Intake.SENSITIVITY);
 
-        if (intakeRightOut.get()) {
-            return Constants.Intake.OUTTAKE_SPEED;
+        if (Math.abs(getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS)) > Constants.Intake.DEADBAND) {
+            return Helpers.applySensitivityFactor(-getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS), Constants.Intake.SENSITIVITY);
+        }
+
+        if (getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS) > Constants.Intake.DEADBAND) {
+            return getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_TRIGGER_AXIS);
         } else if (Math.abs(trigger) > Constants.Intake.DEADBAND) {
             return trigger;
         }
@@ -147,13 +162,20 @@ public class OI {
     }
 
     public double getClimberSpeed() {
-        double speed = 0;
         if (climberWind.get()) {
-            speed = Constants.Climber.WIND_SPEED;
+            return 1;
         } else if (climberUnwind.get()) {
-            speed = Constants.Climber.UNWIND_SPEED;
+            return -1;
         }
-        return speed;
+        return 0;
+    }
+
+    public int getDriverPOV() {
+        return POV.fromWPILIbAngle(0, driverGamepad.getPOV()).getDirectionValue();
+    }
+
+    public int getOperatorPOV() {
+        return POV.fromWPILIbAngle(0, operatorGamepad.getPOV()).getDirectionValue();
     }
 
     private double getSpeedFromAxis(Joystick gamepad, int axisNumber) {

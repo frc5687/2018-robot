@@ -13,6 +13,6 @@ public class WaitUntilSwitchDetected extends Command {
 
     @Override
     protected boolean isFinished() {
-        return _robot.getIntake().switchDetected();
+        return _robot.getIntake().isPlateDetected();
     }
 }

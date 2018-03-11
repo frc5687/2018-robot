@@ -4,6 +4,11 @@ public class RobotMap {
 
     public static final int IDENTITY_FLAG = DIO.RIO9;
 
+    public class Lights {
+        public static final int LEFT = PWM.navX18;
+        public static final int RIGHT = PWM.navX19;
+    }
+
     public class DriveTrain {
 
     }
@@ -45,6 +50,7 @@ public class RobotMap {
     }
 
     public class PDP {
+        // Make sure to change PDP.java when changing these
         public static final int INTAKE_LEFT_SP = 0;
         public static final int RIGHT_REAR_SPX = 1;
         public static final int RIGHT_FRONT_SRX = 2;

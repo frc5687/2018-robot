@@ -1,5 +1,6 @@
 package com.team254.lib.trajectory;
 
+import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -103,6 +104,10 @@ public class TrajectoryFollower {
     }
   }
 
+  public double getNavxHeading() {
+    return ChezyMath.boundAngleNeg180to180Degrees(-Math.toDegrees(current_heading));
+  }
+
   public double getHeading() {
     return current_heading;
   }
@@ -117,5 +122,9 @@ public class TrajectoryFollower {
 
   public Trajectory.Segment getLastSegment() {
     return profile_.getSegment(profile_.getNumSegments() - 1);
+  }
+
+  public double getLastHeadingInNavxUnits() {
+    return ChezyMath.boundAngleNeg180to180Degrees(-Math.toDegrees(getLastSegment().heading));
   }
 }

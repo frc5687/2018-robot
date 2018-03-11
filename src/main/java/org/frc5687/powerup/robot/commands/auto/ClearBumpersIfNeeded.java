@@ -8,6 +8,7 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
 public class ClearBumpersIfNeeded extends Command {
     private Carriage _carriage;
     private int ENCODER_CLEAR_BUMPERS;
+    private long endTimeMillis;
 
     public ClearBumpersIfNeeded(Carriage carriage) {
         _carriage = carriage;
@@ -20,10 +21,16 @@ public class ClearBumpersIfNeeded extends Command {
         DriverStation.reportError("Starting ClearBumpersIfNeeded", false);
         _carriage.setSetpoint(ENCODER_CLEAR_BUMPERS);
         _carriage.enable();
+        endTimeMillis = System.currentTimeMillis() + 15000;
     }
 
     @Override
     protected boolean isFinished() {
+        if(System.currentTimeMillis() < endTimeMillis){
+            DriverStation.reportError("ClearBumpersIfNeeded timed out", false);
+            return true;
+        }
+
         return _carriage.getPos() > ENCODER_CLEAR_BUMPERS;
     }
 

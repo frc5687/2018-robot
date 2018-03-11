@@ -3,11 +3,10 @@ package org.frc5687.powerup.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -39,6 +38,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     private double _priorLeft = 0;
     private double _priorRight = 0;
+
+    private boolean _leftFrontLost = false;
+    private boolean _leftRearLost = false;
+    private boolean _rightFrontLost = false;
+    private boolean _rightRearLost = false;
+
 
     public DriveTrain(Robot robot,  AHRS imu, OI oi) {
         _robot = robot;
@@ -171,10 +176,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     public float getYaw() {
         return imu.getYaw();
-    }
-
-    public float getCheesyYaw() {
-        return -getYaw();
     }
 
     /**
@@ -346,6 +347,30 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);
         SmartDashboard.clearPersistent("*");
+
+        _leftFrontLost = checkCIM(_priorLeft, _leftFrontLost, RobotMap.PDP.LEFT_FRONT_SRX, "left", "front");
+        _leftRearLost = checkCIM(_priorLeft, _leftRearLost, RobotMap.PDP.LEFT_REAR_SPX, "left", "rear");
+        _rightFrontLost = checkCIM(_priorRight, _rightFrontLost, RobotMap.PDP.RIGHT_FRONT_SRX, "right", "front");
+        _rightRearLost = checkCIM(_priorRight, _rightRearLost, RobotMap.PDP.RIGHT_REAR_SPX, "right", "rear");
+
+    }
+
+
+    private boolean checkCIM(double priorSpeed, boolean lost, int pdpChannel, String side, String pos) {
+        double currentDraw = _robot.getPDP().getCurrent(pdpChannel);
+        double checkSpeed = Math.abs(priorSpeed);
+        if (lost) {
+            if ((checkSpeed > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED) && (currentDraw < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS)) {
+                DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                return false;
+            }
+        } else {
+            if (Math.abs(_priorLeft) > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED && _robot.getPDP().getCurrent(pdpChannel) < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS) {
+                DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                return true;
+            }
+        }
+        return lost;
     }
 
     @Override

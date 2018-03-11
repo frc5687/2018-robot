@@ -36,7 +36,7 @@ public class Arm extends PIDSubsystem {
         TOP = isCompetitionBot ? Constants.Arm.Pot.TOP_COMP : Constants.Arm.Pot.TOP_PROTO;
         BOTTOM = isCompetitionBot ? Constants.Arm.Pot.BOTTOM_COMP : Constants.Arm.Pot.BOTTOM_PROTO;
         setInputRange(BOTTOM, TOP);
-        setOutputRange(-.25, 0.75);
+        setOutputRange(Constants.Arm.MIN_SPEED, Constants.Arm.MAX_SPEED);
         _oi=oi;
         _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
@@ -60,7 +60,8 @@ public class Arm extends PIDSubsystem {
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
-        speed = Math.max(speed, -.5);
+        speed = Math.max(speed, Constants.Arm.MIN_SPEED);
+        speed = Math.min(speed, Constants.Arm.MAX_SPEED);
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
     }
@@ -100,7 +101,7 @@ public class Arm extends PIDSubsystem {
      * @return the position of the arm in the range of 0 to 1. 0 is the bottom and 1 is the top.
      */
     public double getPosition() {
-        return (double) encoder.get() / (double) Constants.Arm.ENCODER_TOP;
+        return getAngle();
     }
 
     @Override

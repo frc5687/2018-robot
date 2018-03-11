@@ -23,6 +23,10 @@ deploy {
     }
 }
 
+wpi {
+    wpilibVersion = '2018.4.1'
+}
+
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Phoenix (Talon SRX)
 // and NavX.
 dependencies {

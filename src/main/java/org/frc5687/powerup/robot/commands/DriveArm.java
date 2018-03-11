@@ -1,7 +1,9 @@
 package org.frc5687.powerup.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Arm;
 
@@ -22,7 +24,10 @@ public class DriveArm extends Command {
 
     @Override
     protected void execute() {
-        double speed = oi.getArmSpeed();
+        // TODO: Add protobot value
+        double speed = DriverStation.getInstance().isAutonomous()
+                ? Constants.Arm.HOLD_SPEED_COMP :
+                oi.getArmSpeed();
         SmartDashboard.putNumber("Arm/Speed", speed);
         arm.drive(speed);
     }

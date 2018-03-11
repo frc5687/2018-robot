@@ -21,7 +21,7 @@ public class AutoDriveSimple extends Command {
     @Override
     protected boolean isFinished() {
         if (_drivetrain.getDistance() >= _distance) {
-            _drivetrain.setPower(0,0);
+            _drivetrain.setPower(0,0, true);
             return true;
         }
         return false;

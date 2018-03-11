@@ -20,9 +20,13 @@ public class Intake extends Subsystem {
     private Servo servo;
     private double _lastServoPos;
 
-    private OI oi;
+    private double _lastLeftSpeed;
+    private double _lastRightSpeed;
 
-    public Intake(OI oi) {
+    private OI oi;
+    private boolean _isCompetitionBot;
+
+    public Intake(OI oi, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
         servo = new Servo(RobotMap.Intake.SERVO);
@@ -31,6 +35,8 @@ public class Intake extends Subsystem {
         rightMotor.setName("Intake", "Right Victor");
 
         this.oi = oi;
+        _isCompetitionBot = isCompetitionBot;
+
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
 
@@ -46,8 +52,17 @@ public class Intake extends Subsystem {
             if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
             if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
         }
+        _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
-        rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
+
+        _lastRightSpeed = rightSpeed;
+        rightMotor.set(
+                rightSpeed * (
+                    (
+                            _isCompetitionBot ? Constants.Intake.RIGHT_MOTORS_INVERTED_COMP : Constants.Intake.RIGHT_MOTORS_INVERTED_PROTO
+                    ) ? -1 : 1
+                )
+        );
     }
 
     public void driveServo(double val) {
@@ -83,7 +98,7 @@ public class Intake extends Subsystem {
         return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
     }
 
-    public boolean switchDetected() {
+    public boolean isPlateDetected() {
         if (!Constants.Intake.DOWN_IR.ENABLED) {
             return false;
         }
@@ -100,6 +115,30 @@ public class Intake extends Subsystem {
     @Override
     public void periodic(){
 
+    }
+
+    public boolean isIntaking() {
+        return (_lastRightSpeed > Constants.Intake.HOLD_SPEED || _lastLeftSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+    public boolean isLeftIntaking() {
+        return (_lastLeftSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+    public boolean isRightIntaking() {
+        return (_lastRightSpeed > Constants.Intake.HOLD_SPEED);
+    }
+
+
+    public boolean isEjecting() {
+        return (_lastRightSpeed < 0 || _lastLeftSpeed < 0);
+    }
+
+    public boolean isLeftEjecting() {
+        return (_lastLeftSpeed < 0);
+    }
+    public boolean isRightEjecting() {
+        return (_lastRightSpeed < 0);
     }
 
 }
