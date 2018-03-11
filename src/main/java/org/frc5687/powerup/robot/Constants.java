@@ -5,6 +5,11 @@ public class Constants {
     public static final double START_ALERT = 32;
     public static final double END_ALERT = 28;
 
+    public enum IR_SENSORS {
+        GP2Y0A21YK, // 10cm to 80cm
+        GP2Y0A41SK0F // 4cm to 30cm
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
