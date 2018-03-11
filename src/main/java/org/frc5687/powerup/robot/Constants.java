@@ -5,9 +5,25 @@ public class Constants {
     public static final double START_ALERT = 32;
     public static final double END_ALERT = 28;
 
-    public enum IR_SENSORS {
+    public enum IR_SENSOR {
         GP2Y0A21YK, // 10cm to 80cm
         GP2Y0A41SK0F // 4cm to 30cm
+    }
+
+    public class IRPID {
+        public static final double kP = 0.05;
+        public static final double kI = 0.00;
+        public static final double kD = 0.03;
+        public static final double TOLERANCE = .5;
+
+        /**
+         * a in the voltage-to-distance equation distance = a * voltage ^ b
+         */
+        public static final double TRANSFORM_COEFFICIENT = 27.385;
+        /**
+         * b in the voltage-to-distance equation distance = a * voltage ^ b
+         */
+        public static final double TRANSFORM_POWER = -1.203;
     }
 
 
@@ -92,17 +108,16 @@ public class Constants {
         public static final long SETTLE_TIME = 750;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
 
-        public class SIDE_IR {
-            public static final boolean ENABLED = false;
-            public static final int DETECTION_THRESHOLD = 1200;
-        }
-
         public class DOWN_IR {
+            public final IR_SENSOR COMP_HARDWARE = IR_SENSOR.GP2Y0A21YK; // TODO: Verify
+            public final IR_SENSOR PROTO_HARDWARE = IR_SENSOR.GP2Y0A41SK0F; // TODO: Verify
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 800;
         }
 
         public class BACK_IR {
+            public final IR_SENSOR COMP_HARDWARE = IR_SENSOR.GP2Y0A21YK; // TODO: Verify
+            public final IR_SENSOR PROTO_HARDWARE = IR_SENSOR.GP2Y0A41SK0F; // TODO: Verify
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
             public static final int DETECTED_THRESHOLD = 1140;
@@ -176,22 +191,6 @@ public class Constants {
                         public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
                     }
                 }
-            }
-
-            public class IRPID {
-                public static final double kP = 0.05;
-                public static final double kI = 0.00;
-                public static final double kD = 0.03;
-                public static final double TOLERANCE = .5;
-
-                /**
-                 * a in the voltage-to-distance equation distance = a * voltage ^ b
-                 */
-                public static final double TRANSFORM_COEFFICIENT = 27.385;
-                /**
-                 * b in the voltage-to-distance equation distance = a * voltage ^ b
-                 */
-                public static final double TRANSFORM_POWER = -1.203;
             }
 
             public class EncoderPID {
