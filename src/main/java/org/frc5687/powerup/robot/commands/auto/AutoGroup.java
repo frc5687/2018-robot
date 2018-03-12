@@ -1,6 +1,5 @@
 package org.frc5687.powerup.robot.commands.auto;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -240,14 +239,16 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void buildSimpleSwitch(Robot robot, int switchFactor) {
-        double clear = 48.0;
-        double approach = 48.0;
+        double clear = 30.0;
+        double traverse = 79.0;
+        double approach = 24.0;
+
         double angle = switchFactor < 0 ? -45 : 45;
 
-        double retreat1 = 12.0;
+        double retreat1 = 24.0;
 
-        double cube2Angle = switchFactor < 0 ? 50 : -50;
-        double cube2Distance = 24.0;
+        double cube2Angle = switchFactor < 0 ? 90 : -90;
+        double cube2Distance = 38.0;
 
         double cube3Angle = switchFactor < 0 ? 55 : -55;
         double cube3Distance = 32.0;
@@ -257,23 +258,26 @@ public class AutoGroup extends CommandGroup {
             case -Constants.AutoChooser.Position.CENTER:
                 // Move away from wall while zeroing the carriage
                 addParallel(new AutoZeroCarriage(robot.getCarriage()));
-                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), clear, 0.75, true, true, 2000, "Clear wall"));
-
+                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), clear, 0.75, true, true, 5000, "Clear wall"));
                 // Turn towards correct side
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), angle, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), angle, 0.5, 2000));
 
                 // Approach while raising arm
                 addParallel(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
-                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), approach, 0.75, true, true, 2000, "Approach switch"));
+                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), traverse, 0.75, true, true, 5000, "Approach switch"));
 
+                /*
                 // Turn towards switch
                 addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
+
+                //
+                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), approach, 0.5, true, true, 5000, "Approach switch"));
 
                 // Eject
                 addSequential(new AutoEject(robot.getIntake(), Constants.Intake.OUTTAKE_SPEED));
 
                 // Back away
-                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -retreat1, 0.75, true, true, 2000, "Retreat from 1st cube"));
+                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -retreat1, 0.5, true, true, 5000, "Retreat from 1st cube"));
 
                 // Turn while starting to intake
                 addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
@@ -281,7 +285,7 @@ public class AutoGroup extends CommandGroup {
 
                 // Auto-intake and approach cube2
                 addParallel(new AutoIntake(robot.getIntake()));
-                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), cube2Distance, 0.75, true, true, 2000, "Approach 2nd cube"));
+                addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), cube2Distance, 0.5, true, true, 2000, "Approach 2nd cube"));
 
                 // Retreat while raising intake
                 addParallel(new IntakeToScale(robot.getCarriage(), robot.getArm()));
@@ -308,7 +312,7 @@ public class AutoGroup extends CommandGroup {
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), cube3Distance, 0.75, true, true, 2000, "Approach 3rd cube"));
 
                 // Retreat while raising intake
-                addParallel(new IntakeToScale(robot.getCarriage(), robot.getArm()));
+                addParallel(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -cube3Distance, 0.75, true, true, 2000, "Retrieve 3rd cube"));
 
                 // Turn towards switch
@@ -319,11 +323,11 @@ public class AutoGroup extends CommandGroup {
 
                 // Eject
                 addSequential(new AutoEject(robot.getIntake(), Constants.Intake.OUTTAKE_SPEED));
-
-
+                /*
+                */
                 break;
         }
-        addSequential(new AutoEject(robot.getIntake()));
+        //addSequential(new AutoEject(robot.getIntake()));
     }
 
 
