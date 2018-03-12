@@ -211,25 +211,18 @@ public class OI {
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
     }
 
-    public void rumbleLeft() {
-        driverGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
-        operatorGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
-        endRumble = DriverStation.getInstance().getMatchTime() - Constants.OI.RUMBLE_DURATION;
-    }
-
-    public void rumbleRight() {
-        driverGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
-        operatorGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
-        endRumble = DriverStation.getInstance().getMatchTime() - Constants.OI.RUMBLE_DURATION;
-    }
-
     public void poll() {
-        if (endRumble > 0 && DriverStation.getInstance().getMatchTime() > endRumble) {
-            endRumble = 0;
+        if (DriverStation.getInstance().getMatchTime() > 30 - (Constants.OI.RUMBLE_DURATION / 2) && DriverStation.getInstance().getMatchTime() < 30 + (Constants.OI.RUMBLE_DURATION / 2)) {
+            driverGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
+            driverGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
+            operatorGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
+            operatorGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
+        else {
             driverGamepad.setRumble(RumbleType.kLeftRumble, 0);
             driverGamepad.setRumble(RumbleType.kRightRumble, 0);
             operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
             operatorGamepad.setRumble(RumbleType.kRightRumble, 0);
+            }
         }
     }
 
