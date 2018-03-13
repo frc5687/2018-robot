@@ -76,10 +76,12 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
+        /*
         if (!controller.onTarget()) {
             _onTargetSince = 0;
             return false;
         }
+        */
 
         if(System.currentTimeMillis() >= _endTimeMillis){
             DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms", false);

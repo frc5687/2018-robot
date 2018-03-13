@@ -100,8 +100,8 @@ public class Constants {
         public class BACK_IR {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
-            public static final int DETECTED_THRESHOLD = 1140;
-            public static final int SECURED_THRESHOLD = 1600;
+            public static final int DETECTED_THRESHOLD = 900;
+            public static final int SECURED_THRESHOLD = 1080;
         }
     }
 
@@ -115,8 +115,8 @@ public class Constants {
 
             public static final double kP = 0.05;
             public static final double kI = 0.15;
-            public static final double kD = 0.1;
-            public static final double TOLERANCE = 5.5; // 0.5
+            public static final double kD = 0.25;
+            public static final double TOLERANCE = 1.0; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
@@ -151,10 +151,10 @@ public class Constants {
 
             public class TrajectoryFollowing {
                 public class Talon {
-                    public static final double kP = 0.0; // Talon doesn't use kP
-                    public static final double kI = 0.0;
+                    public static final double kP = 0.15; // Talon doesn't use kP
+                    public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.38; // 0.28 works well
+                    public static final double kF = 0.2; // 0.28 works well
                 }
 
                 public class Cheese {
@@ -276,7 +276,7 @@ public class Constants {
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double HOLD_SPEED = 0.01;
+        public static final double HOLD_SPEED = 0.2; // was 0.01 on comp bot
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 
