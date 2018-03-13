@@ -27,8 +27,9 @@ public class DriveCarriage extends Command {
             carriage.setHoldSpeed(Constants.Carriage.HOLD_SPEED);
             carriage.drive(oiSpeed);
         } else if (!carriage.getPIDController().isEnabled()) {
-            DriverStation.reportError("DriveCarriage requested Hold Speed: " + Double.toString(carriage.getHoldSpeed()), false);
-            carriage.drive(carriage.getHoldSpeed());
+            double holdSpeed = carriage.calculateHoldSpeed();
+            DriverStation.reportError("DriveCarriage requested Hold Speed: " + Double.toString(holdSpeed), false);
+            carriage.drive(holdSpeed);
         }
     }
 
