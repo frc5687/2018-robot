@@ -202,25 +202,6 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new FarRightToRightScale(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -40, 0.5, 700));
                         addSequential(new AutoEject(robot.getIntake()));
-                        /*
-                        addSequential(new FarRightToRightScalePartTwo(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -120, 0.5, 2000));
-                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 0.5));
-                        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 4, 0.3, true, true, 2000, ""));
-                        if (robot.getArm().isHealthy()) {
-                            addSequential(new MoveArmToSetpointPID(robot.getArm(), 42));
-                        }
-                        if (robot.getCarriage().isHealthy()) {
-                            double ENCODER_BOTTOM = robot.getCarriage().isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
-                            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), ENCODER_BOTTOM));
-                        }
-                        addParallel(new AutoIntake(robot.getIntake()));
-                        addSequential(new FarRightToRightScalePartThree(robot));
-                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -6.0, 0.3, true, true, 2000,"retreat"));
-                        addSequential(new MoveArmToSetpointPID(robot.getArm(), 100));
-                        addSequential(new AutoEject(robot.getIntake()));
-                        //addSequential(new FarRightToRightScalePartThree(robot));
-                        */
                         break;
                 }
                 break;
