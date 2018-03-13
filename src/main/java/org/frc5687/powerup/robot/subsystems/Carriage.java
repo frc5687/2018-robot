@@ -45,13 +45,13 @@ public class Carriage extends PIDSubsystem {
     public double calculateHoldSpeed() {
         double pos = getPos();
         if (pos > 0) {
-            return 0.4;
+            return 0.42;
         } else if (pos > -20) {
-            return 0.4;
+            return 0.42;
         } else if (pos > -50) {
-            return 0.38;
+            return 0.42;
         } else if (pos > -100) {
-            return 0.35;
+            return 0.42;
         } else if (pos > -200) {
             return 0.3;
         } else if (pos > -400) {

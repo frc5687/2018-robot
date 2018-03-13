@@ -186,15 +186,27 @@ public class AutoGroup extends CommandGroup {
                         // Sit here as we don't have anything
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        /*
                         if (robot.getArm().isHealthy()) {
                             addParallel(new PrepIntakeForScale(robot, 270, 10000, true));
                         }
+
                         addSequential(new FarRightToLeftScale(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
                         addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 1.0, ""));
                         addSequential(new AutoEject(robot.getIntake()));
+                        */
+                        addParallel(new AutoZeroCarriageThenLower(robot));
+                        addSequential(new FarRightToLeftScaleDeadPartOne(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.8));
+                        addParallel(new PrepIntakeForScale(robot, 1600, false));
+                        addSequential(new FarRightToLeftScaleDeadPartTwo(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.8));
+                        addSequential(new FarRightToLeftScaleDeadPartThree(robot));
+                        addSequential(new AutoEject(robot.getIntake()));
                         break;
-/*                        addParallel(new AutoZeroCarriageThenLower(robot));
+                        /*
+                        addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarRightToLeftScalePartOne(robot));
                         //addSequential(new FarRightToLeftScalePartTwo(robot));
                         addParallel(new PrepIntakeForScale(robot, 20.0, 5000, false));
