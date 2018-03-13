@@ -23,7 +23,6 @@ public class KillAll extends Command {
     protected void initialize() {
         _robot.getArm().disable();
         _robot.getCarriage().disable();
-        _robot.getCarriage().setHoldSpeed(Constants.Carriage.HOLD_SPEED);
         _finished = true;
         DriverStation.reportError("Initialize KillAll Command", false);
     }

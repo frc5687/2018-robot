@@ -277,8 +277,6 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double HOLD_SPEED = 0.2; // was 0.01 on comp bot
-        public static final double HOLD_SPEED_AT_INTAKE = -0.1;
-        public static final double HOLD_SPEED_AT_SCALE = 0.5;
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 

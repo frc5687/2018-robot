@@ -16,7 +16,6 @@ import org.frc5687.powerup.robot.subsystems.DriveTrain;
 public class PrepIntakeForScale extends CommandGroup {
 
     public PrepIntakeForScale(Robot robot, double inches, long millis, boolean zeroCarriageFirst) {
-        robot.getCarriage().setHoldSpeed(Constants.Carriage.HOLD_SPEED_AT_SCALE);
         if (zeroCarriageFirst) {
             addParallel(new AutoZeroCarriageThenLower(robot));
         }

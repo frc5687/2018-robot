@@ -24,7 +24,6 @@ public class DriveCarriage extends Command {
         if (oiSpeed != 0.0) {
             carriage.disable();
             DriverStation.reportError("DriveCarriage requesting oiSpeed: " + Double.toString(oiSpeed), false);
-            carriage.setHoldSpeed(Constants.Carriage.HOLD_SPEED);
             carriage.drive(oiSpeed);
         } else if (!carriage.getPIDController().isEnabled()) {
             double holdSpeed = carriage.calculateHoldSpeed();

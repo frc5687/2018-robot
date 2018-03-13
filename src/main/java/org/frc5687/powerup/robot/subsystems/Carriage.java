@@ -19,7 +19,6 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
-    private double _holdSpeed;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -151,14 +150,6 @@ public class Carriage extends PIDSubsystem {
 
     public boolean isInBottomZone() {
         return getPos() < (_isCompetitionBot ? Constants.Carriage.START_BOTTOM_ZONE_COMP : Constants.Carriage.START_BOTTOM_ZONE_PROTO);
-    }
-
-    public void setHoldSpeed(double speed) {
-        _holdSpeed = speed;
-    }
-
-    public double getHoldSpeed() {
-        return _holdSpeed;
     }
 
     public double estimateHeight() {
