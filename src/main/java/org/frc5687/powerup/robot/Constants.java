@@ -151,10 +151,10 @@ public class Constants {
 
             public class TrajectoryFollowing {
                 public class Talon {
-                    public static final double kP = 0.0; // Talon doesn't use kP
-                    public static final double kI = 0.0;
+                    public static final double kP = 0.15; // Talon doesn't use kP
+                    public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.38; // 0.28 works well
+                    public static final double kF = 0.2; // 0.28 works well
                 }
 
                 public class Cheese {
@@ -276,7 +276,7 @@ public class Constants {
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
 
-        public static final double HOLD_SPEED = 0.01;
+        public static final double HOLD_SPEED = 0.2; // was 0.01 on comp bot
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 
