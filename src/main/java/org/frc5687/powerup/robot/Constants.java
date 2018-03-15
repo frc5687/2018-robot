@@ -277,6 +277,37 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
 
         public static final double HOLD_SPEED = 0.2; // was 0.01 on comp bot
+        public class HoldSpeeds {
+            public static final double PAST_TOP_PROTO = 0.42;
+            public static final double PAST_TOP_GRETA = 0.0;
+
+            public static final double PAST_NEG_20_PROTO = 0.42;
+            public static final double PAST_NEG_20_GRETA = 0.0;
+
+            public static final double PAST_NEG_50_PROTO = 0.42;
+            public static final double PAST_NEG_50_GRETA = 0.0;
+
+            public static final double PAST_NEG_100_PROTO = 0.42;
+            public static final double PAST_NEG_100_GRETA = 0.0;
+
+            public static final double PAST_NEG_200_PROTO = 0.3;
+            public static final double PAST_NEG_200_GRETA = 0.0;
+
+            public static final double PAST_NEG_400_PROTO = 0.2;
+            public static final double PAST_NEG_400_GRETA = 0.0;
+
+            public static final double PAST_NEG_500_PROTO = 0.1;
+            public static final double PAST_NEG_500_GRETA = 0.0;
+
+            public static final double PAST_NEG_600_PROTO = -0.2;
+            public static final double PAST_NEG_600_GRETA = 0.0;
+
+            public static final double PAST_NEG_700_PROTO = -0.3;
+            public static final double PAST_NEG_700_GRETA = 0.0;
+
+            public static final double PAST_NEG_800_PROTO = -0.4;
+            public static final double PAST_NEG_800_GRETA = 0.0;
+        }
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 
@@ -326,7 +357,7 @@ public class Constants {
         }
 
         public static final double HOLD_SPEED_COMP = 0.135;
-        public static final double HOLD_SPEED_PROTO = 0.0;
+        public static final double HOLD_SPEED_PROTO = 0.135;
         public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
         public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
         public static final double SENSITIVITY = 0.75;

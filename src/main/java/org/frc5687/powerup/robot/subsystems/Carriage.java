@@ -45,25 +45,25 @@ public class Carriage extends PIDSubsystem {
     public double calculateHoldSpeed() {
         double pos = getPos();
         if (pos > 0) {
-            return 0.42;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_TOP_GRETA :Constants.Carriage.HoldSpeeds.PAST_TOP_PROTO;
         } else if (pos > -20) {
-            return 0.42;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_20_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_20_PROTO;
         } else if (pos > -50) {
-            return 0.42;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_50_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_50_PROTO;
         } else if (pos > -100) {
-            return 0.42;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_100_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_100_PROTO;
         } else if (pos > -200) {
-            return 0.3;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_200_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_200_PROTO;
         } else if (pos > -400) {
-            return 0.2;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_400_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_400_PROTO;
         } else if (pos > -500) {
-            return 0.1;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_500_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_500_PROTO;
         } else if (pos > -600) {
-            return -0.2;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_600_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_600_PROTO;
         } else if (pos > -700) {
-            return -0.3;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_700_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_700_PROTO;
         } else if (pos > -800) {
-            return -0.4;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
         }
         return 0.0;
     }
