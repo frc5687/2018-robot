@@ -217,13 +217,14 @@ public class OI {
             driverGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
             operatorGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
             operatorGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
+        }
         else {
             driverGamepad.setRumble(RumbleType.kLeftRumble, 0);
             driverGamepad.setRumble(RumbleType.kRightRumble, 0);
             operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
             operatorGamepad.setRumble(RumbleType.kRightRumble, 0);
-            }
         }
     }
+
 
 }
