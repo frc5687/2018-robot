@@ -390,19 +390,24 @@ public class Constants {
 
         public class HoldSpeeds {
             public static final double PAST_160_CUBE_PROTO = 0.0;
-            public static final double PAST_160_CUBE_GRETA = 0.2;
+            public static final double PAST_160_CUBE_GRETA = 0.1;
             public static final double PAST_160_NO_CUBE_PROTO = 0.0;
             public static final double PAST_160_NO_CUBE_GRETA = 0.1;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.2;
+            public static final double PAST_90_CUBE_GRETA = 0.1;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.2;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
+
+            public static final double PAST_40_CUBE_PROTO = 0.0;
+            public static final double PAST_40_CUBE_GRETA = 0.1;
+            public static final double PAST_40_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_40_NO_CUBE_GRETA = 0.0;
 
             public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
             public static final double PAST_BOTTOM_CUBE_GRETA = -0.1;
             public static final double PAST_BOTTOM_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_BOTTOM_NO_CUBE_GRETA = 0.1;
+            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.1;
         }
     }
 
