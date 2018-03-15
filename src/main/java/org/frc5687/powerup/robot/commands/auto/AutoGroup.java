@@ -105,7 +105,7 @@ public class AutoGroup extends CommandGroup {
                         path = new CenterLeftToLeftSwitch(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        addSequential(new AutoEject(robot.getIntake(), -0.42));
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
@@ -124,7 +124,7 @@ public class AutoGroup extends CommandGroup {
                         path = new CenterLeftToRightSwitch(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        addSequential(new AutoEject(robot.getIntake(), -0.42));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
