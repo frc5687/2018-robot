@@ -42,6 +42,32 @@ public class Carriage extends PIDSubsystem {
         _isCompetitionBot = isCompetitionBot;
     }
 
+    public double calculateHoldSpeed() {
+        double pos = getPos();
+        if (pos > 0) {
+            return 0.4;
+        } else if (pos > -20) {
+            return 0.4;
+        } else if (pos > -50) {
+            return 0.38;
+        } else if (pos > -100) {
+            return 0.35;
+        } else if (pos > -200) {
+            return 0.3;
+        } else if (pos > -400) {
+            return 0.2;
+        } else if (pos > -500) {
+            return 0.1;
+        } else if (pos > -600) {
+            return -0.2;
+        } else if (pos > -700) {
+            return -0.3;
+        } else if (pos > -800) {
+            return -0.4;
+        }
+        return 0.0;
+    }
+
     public void drive(double desiredSpeed) {
         drive(desiredSpeed, false);
     }
@@ -132,7 +158,5 @@ public class Carriage extends PIDSubsystem {
         } else {
             return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_PROTO) * Constants.Carriage.RANGE_INCHES);
         }
-
-
     }
 }
