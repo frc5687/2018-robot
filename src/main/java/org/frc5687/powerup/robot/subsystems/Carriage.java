@@ -76,9 +76,9 @@ public class Carriage extends PIDSubsystem {
         double speed = desiredSpeed;
         if (!overrideCaps) {
             if (speed > 0 && isAtTop()) {
-                speed = Constants.Carriage.HOLD_SPEED;
+                speed = calculateHoldSpeed();
             } else if (speed < 0 && isAtBottom()) {
-                speed = -Constants.Carriage.HOLD_SPEED;
+                speed = calculateHoldSpeed();
             } else if (speed > 0 && isInTopZone()) {
                 speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
             } else if (speed < 0 && isInBottomZone()) {
