@@ -275,8 +275,6 @@ public class Constants {
         public static final double PDP_EXCESSIVE_CURRENT = 100.0;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
-
-        public static final double HOLD_SPEED = 0.2; // was 0.01 on comp bot
         public class HoldSpeeds {
             public static final double PAST_TOP_PROTO = 0.42;
             public static final double PAST_TOP_GRETA = 0.0;
