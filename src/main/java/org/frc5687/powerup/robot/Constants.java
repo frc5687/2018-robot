@@ -340,7 +340,7 @@ public class Constants {
         public static final double RANGE_INCHES = TOP_INCHES - BOTTOM_INCHES;
 
         public static final double MAXIMUM_SPEED  = 1.0;
-        public static final double MINIMUM_SPEED  = -.5;
+        public static final double MINIMUM_SPEED  = -.7;
     }
 
     public class Arm {
