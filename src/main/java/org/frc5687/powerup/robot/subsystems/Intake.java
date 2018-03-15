@@ -48,7 +48,7 @@ public class Intake extends Subsystem {
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
-        if (cubeIsDetected()) {
+        if (cubeIsSecured()) {
             if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
             if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
         }
