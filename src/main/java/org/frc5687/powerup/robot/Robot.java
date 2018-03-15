@@ -58,10 +58,10 @@ public class Robot extends TimedRobot {
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
-        _arm = new Arm(oi, pdp, _isCompetitionBot);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
         intake = new Intake(oi, _isCompetitionBot);
+        _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
         _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);

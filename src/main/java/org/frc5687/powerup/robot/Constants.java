@@ -353,11 +353,6 @@ public class Constants {
             public static final double ENCODER_FENCE = 90;
             public static final double ENCODER_TOP = 340;
         }
-
-        public static final double HOLD_SPEED_COMP = 0.135;
-        public static final double HOLD_SPEED_PROTO = 0.135;
-        public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
-        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
         public static final double SENSITIVITY = 0.75;
 
         public static final double MAX_SPEED = 0.75;
@@ -391,6 +386,23 @@ public class Constants {
         }
 
         public static final double LENGTH = 34.0;
+
+        public class HoldSpeeds {
+            public static final double PAST_160_CUBE_PROTO = 0.0;
+            public static final double PAST_160_CUBE_GRETA = 0.0;
+            public static final double PAST_160_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_160_NO_CUBE_GRETA = 0.0;
+
+            public static final double PAST_90_CUBE_PROTO = 0.0;
+            public static final double PAST_90_CUBE_GRETA = 0.0;
+            public static final double PAST_90_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.0;
+
+            public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
+            public static final double PAST_BOTTOM_CUBE_GRETA = 0.0;
+            public static final double PAST_BOTTOM_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_BOTTOM_NO_CUBE_GRETA = 0.0;
+        }
     }
 
     public class Climber {
