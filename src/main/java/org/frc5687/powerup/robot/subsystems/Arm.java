@@ -15,6 +15,7 @@ public class Arm extends PIDSubsystem {
     private Encoder encoder;
     private VictorSP _motor;
     private OI _oi;
+    private Intake _intake;
     private DigitalInput hallEffect;
     private DigitalOutput led;
     private AnglePotentiometer _pot;
@@ -29,7 +30,7 @@ public class Arm extends PIDSubsystem {
     public static final double kF = 0;
 
 
-    public Arm (OI oi, PDP pdp, boolean isCompetitionBot) {
+    public Arm (OI oi, PDP pdp, Intake intake, boolean isCompetitionBot) {
         super("Arm", kP, kI, kD, kF, 0.02);
         setAbsoluteTolerance(5);
         _isCompetitionBot = isCompetitionBot;
@@ -38,6 +39,7 @@ public class Arm extends PIDSubsystem {
         setInputRange(BOTTOM, TOP);
         setOutputRange(Constants.Arm.MIN_SPEED, Constants.Arm.MAX_SPEED);
         _oi=oi;
+        _intake = intake;
         _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
         motorInversionMultiplier = (isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO) ? -1 : 1;
@@ -47,6 +49,26 @@ public class Arm extends PIDSubsystem {
         _pot = isCompetitionBot ?
                 new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
                 : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
+    }
+
+    public double calculateHoldSpeed() {
+        return calculateHoldSpeed(false);
+    }
+
+    public double calculateHoldSpeed(boolean cubeDetected) {
+        double ang = getPot();
+        if (ang > 160 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_PROTO;
+        } else if (ang > 160) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_CUBE_PROTO;
+        } else if (ang > 90 & cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_CUBE_PROTO;
+        } else if (ang > 90) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_PROTO;
+        } else if (cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_PROTO;
+        }
+        return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_BOTTOM_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_BOTTOM_NO_CUBE_PROTO;
     }
 
     public void drive(double speed) {
@@ -69,7 +91,7 @@ public class Arm extends PIDSubsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new DriveArm(this, _oi));
+        setDefaultCommand(new DriveArm(this, _oi, _intake));
     }
 
     public boolean inStartingPosition () {

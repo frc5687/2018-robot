@@ -6,14 +6,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Arm;
+import org.frc5687.powerup.robot.subsystems.Intake;
 
 public class DriveArm extends Command {
     private Arm arm;
     private OI oi;
+    private Intake intake;
 
-    public DriveArm(Arm arm, OI oi){
+    public DriveArm(Arm arm, OI oi, Intake intake){
         requires(arm);
         this.arm = arm;
+        this.intake = intake;
         this.oi = oi;
     }
 
@@ -24,11 +27,13 @@ public class DriveArm extends Command {
 
     @Override
     protected void execute() {
-        // TODO: Add protobot value
-        double speed = DriverStation.getInstance().isAutonomous()
-                ? Constants.Arm.HOLD_SPEED_COMP :
-                oi.getArmSpeed();
-        SmartDashboard.putNumber("Arm/Speed", speed);
-        arm.drive(speed);
+        double oiSpeed = DriverStation.getInstance().isAutonomous() ? 0 : oi.getArmSpeed();
+        if (oiSpeed != 0.0) {
+            arm.disable();
+            arm.drive(oiSpeed);
+        } else if (!arm.getPIDController().isEnabled()) {
+            double holdSpeed = arm.calculateHoldSpeed(intake.cubeIsDetected());
+            arm.drive(holdSpeed);
+        }
     }
 }

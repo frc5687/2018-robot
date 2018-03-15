@@ -21,6 +21,8 @@ public class AutoDrive extends Command {
     private long endMillis;
     private long maxMillis;
 
+    private long settleTime = 40;
+    private long settleEnd = 0;
     private boolean usePID;
     private boolean stopOnFinish;
     private double angle;
@@ -29,6 +31,17 @@ public class AutoDrive extends Command {
 
     private DriveTrain driveTrain;
     private AHRS imu;
+
+    private double kPdistance = 0.05; // .07;
+    private double kIdistance = 0.001; // .001;
+    private double kDdistance = 0.2; //.1;
+    private double kTdistance = 0.5;
+
+    private double kPangle = .1;
+    private double kIangle = .01;
+    private double kDangle = 0;
+    private double kTangle;
+
 
     public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, String debug) {
         this(driveTrain, imu, distance, speed, false, true, 0, debug);
@@ -48,6 +61,8 @@ public class AutoDrive extends Command {
      * @param speed Speed to drive
      * @param usePID Whether to use pid or not
      * @param stopOnFinish Whether to stop the motors when we are done
+     * @param angle The angle to drive, in degrees.  Pass 1000 to maintain robot's hading.
+     * @param maxMillis Maximum time in millis to allow the command to run
      */
     public AutoDrive(DriveTrain driveTrain, AHRS imu, double distance, double speed, boolean usePID, boolean stopOnFinish, double angle, long maxMillis, String debug) {
         requires(driveTrain);
@@ -66,30 +81,30 @@ public class AutoDrive extends Command {
     protected void initialize() {
         this.endMillis = maxMillis == 0 ? Long.MAX_VALUE : System.currentTimeMillis() + maxMillis;
         driveTrain.resetDriveEncoders();
+        driveTrain.enableBrakeMode();
         if (usePID) {
             distancePID = new PIDListener();
-            SmartDashboard.putNumber("AutoDrive/kP", Drive.EncoderPID.kP);
-            SmartDashboard.putNumber("AutoDrive/kI", Drive.EncoderPID.kI);
-            SmartDashboard.putNumber("AutoDrive/kD", Drive.EncoderPID.kD);
-            SmartDashboard.putNumber("AutoDrive/kT", Drive.EncoderPID.TOLERANCE);
+            SmartDashboard.putNumber("AutoDrive/kP", kPdistance);
+            SmartDashboard.putNumber("AutoDrive/kI", kIdistance);
+            SmartDashboard.putNumber("AutoDrive/kD", kDdistance);
+            SmartDashboard.putNumber("AutoDrive/kT", kTdistance);
 
-            distanceController = new PIDController(Drive.EncoderPID.kP, Drive.EncoderPID.kI, Drive.EncoderPID.kD, driveTrain, distancePID);
-            //        distanceController.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), SmartDashboard.getNumber("DB/Slider 1", 0), SmartDashboard.getNumber("DB/Slider 2", 0));
-            distanceController.setAbsoluteTolerance(Drive.EncoderPID.TOLERANCE);
+            distanceController = new PIDController(kPdistance, kIdistance, kDdistance, speed, driveTrain, distancePID);
+            distanceController.setAbsoluteTolerance(kTdistance);
             distanceController.setOutputRange(-speed, speed);
             distanceController.setSetpoint(distance);
             distanceController.enable();
         }
 
         anglePID = new PIDListener();
-        angleController = new PIDController(Drive.AnglePID.kP, Drive.AnglePID.kI, Drive.AnglePID.kD, imu, anglePID);
-//        angleController.setPID(SmartDashboard.getNumber("DB/Slider 0", 0), SmartDashboard.getNumber("DB/Slider 1", 0), SmartDashboard.getNumber("DB/Slider 2", 0));
+        angleController = new PIDController(kPangle, kIangle, kDangle, imu, anglePID);
         angleController.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         double maxSpeed = speed * Drive.AnglePID.MAX_DIFFERENCE;
         SmartDashboard.putNumber("AutoDrive/angleMaxSpeed", maxSpeed);
         SmartDashboard.putNumber("AutoDrive/setPoint", driveTrain.getYaw());
         angleController.setOutputRange(-maxSpeed, maxSpeed);
         angleController.setContinuous();
+
         // If an angle is supplied, use that as our setpoint.  Otherwise get the current heading and stick to it!
         angleController.setSetpoint(angle==1000?driveTrain.getYaw():angle);
         angleController.enable();
@@ -115,7 +130,7 @@ public class AutoDrive extends Command {
         SmartDashboard.putNumber("AutoDrive/distanceFactor", distanceFactor);
         SmartDashboard.putNumber("AutoDrive/angleFactor", angleFactor);
 
-        driveTrain.setPower(distanceFactor + angleFactor, distanceFactor - angleFactor);
+        driveTrain.setPower(distanceFactor + angleFactor, distanceFactor - angleFactor, true);
 
         SmartDashboard.putBoolean("AutoDrive/onTarget", distanceController == null ? false : distanceController.onTarget());
         SmartDashboard.putNumber("AutoDrive/imu", driveTrain.getYaw());
@@ -129,11 +144,31 @@ public class AutoDrive extends Command {
             DriverStation.reportError("AutoDrive for " + maxMillis + " timed out.", false);
             return true; }
         if (usePID) {
-            return distanceController.onTarget();
+            if (distanceController.onTarget()) {
+                if (settleTime == 0) {
+                    DriverStation.reportError("AutoDrive nosettle complete at " + driveTrain.getDistance() + " inches", false);
+                    return true;
+                }
+                if (settleEnd > 0) {
+                    if (System.currentTimeMillis() > settleEnd) {
+                        DriverStation.reportError("AutoDrive settled at " + driveTrain.getDistance() + " inches", false);
+                        return true;
+                    }
+                } else {
+                    DriverStation.reportError("AutoDrive settling for " + settleTime + "ms", false);
+                    settleEnd = System.currentTimeMillis() + settleTime;
+                }
+            } else {
+                if (settleEnd > 0) {
+                    DriverStation.reportError("AutoDrive unsettled at " + driveTrain.getDistance() + " inches", false);
+                    settleEnd = 0;
+                }
+            }
         } else {
-
+            DriverStation.reportError("AutoDrive nopid complete at " + driveTrain.getDistance() + " inches", false);
             return distance == 0 ? true : distance < 0 ? (driveTrain.getDistance() < distance) : (driveTrain.getDistance() >  distance);
         }
+        return false;
     }
 
     @Override
@@ -144,7 +179,8 @@ public class AutoDrive extends Command {
             distanceController.disable();
         }
         if (stopOnFinish) {
-            DriverStation.reportError("Stopping.", false);
+            DriverStation.reportError("Stopping at ." + driveTrain.getDistance(), false);
+            driveTrain.enableBrakeMode();
             driveTrain.setPower(0, 0, true);
         }
     }
