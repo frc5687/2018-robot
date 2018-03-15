@@ -84,7 +84,7 @@ public class Intake extends Subsystem {
             return false;
         }
 
-        return irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
+        return irBack.getValue() < Constants.Intake.BACK_IR.NOTHING_THRESHOLD && irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
     }
 
     /**
@@ -95,7 +95,7 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-        return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
+        return irBack.getValue() < Constants.Intake.BACK_IR.NOTHING_THRESHOLD & irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
     }
 
     public boolean isPlateDetected() {
