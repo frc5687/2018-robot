@@ -12,6 +12,7 @@ import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
+import org.frc5687.powerup.robot.utils.LidarProxy;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends TimedRobot {
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
     private PDP pdp;
     private AutoChooser _autoChooser;
     public JeVoisProxy jeVoisProxy;
+    private LidarProxy lidarProxy;
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
     private long lastPeriod;
@@ -55,10 +57,11 @@ public class Robot extends TimedRobot {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+        lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         _arm = new Arm(oi, pdp, _isCompetitionBot);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
-        intake = new Intake(oi);
+        intake = new Intake(oi, _isCompetitionBot);
         _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
@@ -85,12 +88,9 @@ public class Robot extends TimedRobot {
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
     public PDP getPDP() { return pdp; }
-
-    public Lights getLights() {
-        return _lights;
-    }
-
+    public Lights getLights() { return _lights; }
     public JeVoisProxy getJeVoisProxy() { return jeVoisProxy; }
+    public LidarProxy getLidarProxy() { return lidarProxy; }
 
 
 
