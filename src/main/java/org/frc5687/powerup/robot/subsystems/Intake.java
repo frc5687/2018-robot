@@ -48,9 +48,9 @@ public class Intake extends Subsystem {
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
-        if (cubeIsSecured()) {
-            if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
-            if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
+        if (leftSpeed == 0 && rightSpeed == 0) {
+            leftSpeed = Constants.Intake.HOLD_SPEED;
+            rightSpeed = Constants.Intake.HOLD_SPEED;
         }
         _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
