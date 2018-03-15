@@ -59,7 +59,7 @@ public class Constants {
     }
     public class OI {
         public static final double RUMBLE_INTENSITY = 1;
-        public static final double RUMBLE_DURATION = 2; //In seconds
+        public static final double RUMBLE_DURATION = 1; //In seconds
     }
     public class DriveTrain {
         public static final double DEADBAND = 0.0;

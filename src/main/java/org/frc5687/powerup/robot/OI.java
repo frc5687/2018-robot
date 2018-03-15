@@ -212,7 +212,7 @@ public class OI {
     }
 
     public void poll() {
-        if (DriverStation.getInstance().getMatchTime() > 30 - (Constants.OI.RUMBLE_DURATION / 2) && DriverStation.getInstance().getMatchTime() < 30 + (Constants.OI.RUMBLE_DURATION / 2)) {
+        if (DriverStation.getInstance().getMatchTime() > 30 - (Constants.OI.RUMBLE_DURATION) && DriverStation.getInstance().getMatchTime() <= 30) {
             driverGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
             driverGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
             operatorGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
