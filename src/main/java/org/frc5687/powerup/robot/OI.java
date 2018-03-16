@@ -49,6 +49,7 @@ public class OI {
     private JoystickButton driverArmDown;
     private JoystickButton driverCarriageUp;
     private JoystickButton driverCarriageDown;
+    private JoystickButton flashLights;
 
     private POV driverPOV;
 
@@ -82,6 +83,8 @@ public class OI {
 
         driverCarriageUp = new JoystickButton(driverGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         driverCarriageDown = new JoystickButton(driverGamepad, Gamepad.Buttons.LEFT_STICK.getNumber());
+        //Not an actual button a placeholder
+        flashLights = new JoystickButton(operatorGamepad, Constants.GamePad.PLACEHOLDER_BUTTON);
     }
 
     public double getLeftSpeed() {
@@ -94,6 +97,10 @@ public class OI {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_AXIS);
         speed = Helpers.applyDeadband(speed, Constants.DriveTrain.DEADBAND);
         return Helpers.applySensitivityFactor(speed, Constants.DriveTrain.SENSITIVITY);
+    }
+
+    public boolean getLightsFlashing(){
+        return flashLights.get();
     }
 
     public double getLeftIntakeSpeed() {

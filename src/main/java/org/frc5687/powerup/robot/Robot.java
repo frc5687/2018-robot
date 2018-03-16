@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
         intake = new Intake(oi, _isCompetitionBot);
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
-        _lights = new Lights(this);
+        _lights = new Lights(this, oi);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));

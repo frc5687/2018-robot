@@ -51,11 +51,20 @@ public class Constants {
         public static final double DISABLED_BLUE = BEATING_BLUE;
         public static final double DISABLD_RED = BEATING_RED;
 
+        public static final double FLASHING_BUTTON = 0.73; //Lime
+
         public static final double DEFAULT = BEATING_PURPLE;
         public static final double CLIMBER_UP = -0.85;  // American Up
         public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
+
+        public static final double FLASHING_FREQUENCY = 5;
+    }
+
+    public class GamePad {
+        public static final int PLACEHOLDER_BUTTON = 125;
+        //A place holder for the light button
     }
 
     public class DriveTrain {
