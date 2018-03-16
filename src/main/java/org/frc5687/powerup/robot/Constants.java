@@ -81,7 +81,7 @@ public class Constants {
         public static final double SERVO_UP = 0.2;
         public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.35;
+        public static final double HOLD_SPEED = 0.25;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
@@ -100,8 +100,9 @@ public class Constants {
         public class BACK_IR {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
-            public static final int DETECTED_THRESHOLD = 400;
-            public static final int SECURED_THRESHOLD = 1100;
+            public static final int DETECTED_THRESHOLD = 550;
+            public static final int SECURED_THRESHOLD = 1590;
+            public static final int NOTHING_THRESHOLD = 2000;
         }
     }
 
@@ -115,7 +116,7 @@ public class Constants {
 
             public static final double kP = 0.05;
             public static final double kI = 0.01;
-            public static final double kD = 0.2;
+            public static final double kD = 0.3;
             public static final double TOLERANCE = 1.0; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
@@ -277,16 +278,16 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
         public class HoldSpeeds {
             public static final double PAST_TOP_PROTO = 0.42;
-            public static final double PAST_TOP_GRETA = 0.0;
+            public static final double PAST_TOP_GRETA = 0.5;
 
             public static final double PAST_NEG_20_PROTO = 0.42;
-            public static final double PAST_NEG_20_GRETA = 0.0;
+            public static final double PAST_NEG_20_GRETA = 0.5;
 
             public static final double PAST_NEG_50_PROTO = 0.42;
-            public static final double PAST_NEG_50_GRETA = 0.0;
+            public static final double PAST_NEG_50_GRETA = 0.5;
 
             public static final double PAST_NEG_100_PROTO = 0.42;
-            public static final double PAST_NEG_100_GRETA = 0.0;
+            public static final double PAST_NEG_100_GRETA = 0.5;
 
             public static final double PAST_NEG_200_PROTO = 0.3;
             public static final double PAST_NEG_200_GRETA = 0.0;
@@ -389,19 +390,24 @@ public class Constants {
 
         public class HoldSpeeds {
             public static final double PAST_160_CUBE_PROTO = 0.0;
-            public static final double PAST_160_CUBE_GRETA = 0.0;
+            public static final double PAST_160_CUBE_GRETA = 0.25;
             public static final double PAST_160_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_160_NO_CUBE_GRETA = 0.0;
+            public static final double PAST_160_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.0;
+            public static final double PAST_90_CUBE_GRETA = 0.25;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.0;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.25;
+
+            public static final double PAST_40_CUBE_PROTO = 0.0;
+            public static final double PAST_40_CUBE_GRETA = 0.1;
+            public static final double PAST_40_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_40_NO_CUBE_GRETA = 0.0;
 
             public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
-            public static final double PAST_BOTTOM_CUBE_GRETA = 0.0;
+            public static final double PAST_BOTTOM_CUBE_GRETA = -0.1;
             public static final double PAST_BOTTOM_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_BOTTOM_NO_CUBE_GRETA = 0.0;
+            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.1;
         }
     }
 

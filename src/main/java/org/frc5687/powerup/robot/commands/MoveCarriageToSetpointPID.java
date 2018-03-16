@@ -52,6 +52,7 @@ public class MoveCarriageToSetpointPID extends Command {
     protected void end() {
         _carriage.disable();
         DriverStation.reportError("Ending MoveCarriageToSetpointPID", false);
+        _carriage.drive(_carriage.calculateHoldSpeed());
     }
 
     @Override

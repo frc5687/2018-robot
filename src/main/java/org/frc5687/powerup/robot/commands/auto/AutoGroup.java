@@ -105,7 +105,7 @@ public class AutoGroup extends CommandGroup {
                         path = new CenterLeftToLeftSwitch(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        addSequential(new AutoEject(robot.getIntake(), -0.42));
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
@@ -124,7 +124,7 @@ public class AutoGroup extends CommandGroup {
                         path = new CenterLeftToRightSwitch(robot);
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        addSequential(new AutoEject(robot.getIntake(), -0.42));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
@@ -188,20 +188,20 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarRightToLeftScaleDeadPartOne(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.8));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.75, 4000));
                         addParallel(new PrepIntakeForScale(robot, 1600, false));
                         addSequential(new FarRightToLeftScaleDeadPartTwo(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.8));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
                         addSequential(new FarRightToLeftScaleDeadPartThree(robot));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         if (robot.getArm().isHealthy()) {
-                            addParallel(new PrepIntakeForScale(robot, 100, 5000, true));
+                            addParallel(new PrepIntakeForScale(robot, 120, 3500, true));
                         }
                         addSequential(new FarRightToRightScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -40, 0.5, 700));
-                        addSequential(new AutoEject(robot.getIntake()));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.5, 700));
+                        addSequential(new AutoEject(robot.getIntake(), -0.99));
                         break;
                 }
                 break;
@@ -210,6 +210,9 @@ public class AutoGroup extends CommandGroup {
                 break;
             case Constants.AutoChooser.Mode.SCALE_DRIVE:
                 buildSimpleScale(robot, scaleFactor);
+                break;
+            case 11:
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.75, 20000));
                 break;
         }
     }

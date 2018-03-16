@@ -13,9 +13,9 @@ public class CenterLeftToLeftSwitch extends DynamicPathCommand {
 
     @Override
     public double getkT() {
-        return 0.90;
+        return 0.1;
     }
-
+    /*
     @Override
     public double getLeftFollowerkP() {
         return 6;
@@ -25,7 +25,7 @@ public class CenterLeftToLeftSwitch extends DynamicPathCommand {
     public double getRightFollowerkP() {
         return 8.5;
     }
-
+    */
     @Override
     protected boolean loadPath() {
         int num_elements = 290;

@@ -48,9 +48,9 @@ public class Intake extends Subsystem {
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
-        if (cubeIsDetected()) {
-            if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
-            if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
+        if (leftSpeed == 0 && rightSpeed == 0) {
+            leftSpeed = Constants.Intake.HOLD_SPEED;
+            rightSpeed = Constants.Intake.HOLD_SPEED;
         }
         _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
@@ -84,7 +84,7 @@ public class Intake extends Subsystem {
             return false;
         }
 
-        return irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
+        return irBack.getValue() < Constants.Intake.BACK_IR.NOTHING_THRESHOLD && irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
     }
 
     /**
@@ -95,7 +95,7 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-        return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
+        return irBack.getValue() < Constants.Intake.BACK_IR.NOTHING_THRESHOLD & irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
     }
 
     public boolean isPlateDetected() {
