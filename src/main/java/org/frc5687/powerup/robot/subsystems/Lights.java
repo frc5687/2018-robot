@@ -58,7 +58,7 @@ public class Lights extends Subsystem {
         Climber climber = _robot.getClimber();
         if (_robot.isInWarningPeriod()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.TIME_WARNING;
-        }else if (_oi.getLightsFlashing() && System.currentTimeMillis()%1000/Constants.Lights.FLASHING_FREQUENCY > (1000/Constants.Lights.FLASHING_FREQUENCY)/2 ) {
+        }else if (_oi.getLightsFlashing() && (System.currentTimeMillis()%1000/Constants.Lights.FLASHING_FREQUENCY > (1000/Constants.Lights.FLASHING_FREQUENCY)/2) && DriverStation.getInstance().isAutonomous() ) {
             _mainLeftColor = _mainRightColor = Constants.Lights.FLASHING_BUTTON;
         } else if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
