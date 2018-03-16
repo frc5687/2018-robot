@@ -56,6 +56,13 @@ public class Constants {
         public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
+
+        public static final double FLASHING_FREQUENCY = 5;
+    }
+
+    public class GamePad {
+        public static final int PLACEHOLDER_BUTTON = 125;
+        //A place holder for the light button
     }
 
     public class DriveTrain {

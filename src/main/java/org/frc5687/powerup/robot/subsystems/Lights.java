@@ -8,11 +8,13 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveLights;
+import org.frc5687.powerup.robot.OI;
 
 public class Lights extends Subsystem {
     private Robot _robot;
     private Spark _left;
     private Spark _right;
+    private OI _oi;
     private DriverStation.Alliance _alliance;
 
     private double _mainLeftColor;
@@ -20,8 +22,9 @@ public class Lights extends Subsystem {
     private double _alertLeftColor;
     private double _alertRightColor;
 
-    public Lights(Robot robot) {
+    public Lights(Robot robot, OI oi) {
         _robot = robot;
+        _oi = oi;
         _left = new Spark(RobotMap.Lights.LEFT);
         _right = new Spark(RobotMap.Lights.RIGHT);
     }
@@ -55,6 +58,7 @@ public class Lights extends Subsystem {
         Climber climber = _robot.getClimber();
         if (_robot.isInWarningPeriod()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.TIME_WARNING;
+        }else if (_oi.getLightsFlashing() && System.currentTimeMillis()%1000/Constants.Lights.FLASHING_FREQUENCY > (1000/Constants.Lights.FLASHING_FREQUENCY)/2 ) {
         } else if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
         } else if (intake.cubeIsSecured()) {
