@@ -200,7 +200,7 @@ public class AutoGroup extends CommandGroup {
                             addParallel(new PrepIntakeForScale(robot, 120, 3500, true));
                         }
                         addSequential(new FarRightToRightScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -40, 0.5, 700));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.5, 700));
                         addSequential(new AutoEject(robot.getIntake(), -0.99));
                         break;
                 }
