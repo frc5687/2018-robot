@@ -188,10 +188,10 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarRightToLeftScaleDeadPartOne(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.8));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.75, 4000));
                         addParallel(new PrepIntakeForScale(robot, 1600, false));
                         addSequential(new FarRightToLeftScaleDeadPartTwo(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.8));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
                         addSequential(new FarRightToLeftScaleDeadPartThree(robot));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
@@ -210,6 +210,9 @@ public class AutoGroup extends CommandGroup {
                 break;
             case Constants.AutoChooser.Mode.SCALE_DRIVE:
                 buildSimpleScale(robot, scaleFactor);
+                break;
+            case 11:
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.75, 20000));
                 break;
         }
     }
