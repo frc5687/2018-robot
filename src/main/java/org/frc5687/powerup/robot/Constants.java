@@ -99,10 +99,10 @@ public class Constants {
 
         public class BACK_IR {
             public static final boolean ENABLED = true;
-            public static final int DETECTION_THRESHOLD = 1200;
-            public static final int DETECTED_THRESHOLD = 550;
-            public static final int SECURED_THRESHOLD = 1590;
-            public static final int NOTHING_THRESHOLD = 2000;
+            public static final int SECURED_LOW_END = 1500;
+            public static final int SECURED_HIGH_END = 2200;
+            public static final int DETECTED_LOW_END = 400;
+            public static final int DETECTED_HIGH_END = 650;
         }
     }
 

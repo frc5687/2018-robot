@@ -83,19 +83,21 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-
-        return irBack.getValue() < Constants.Intake.BACK_IR.NOTHING_THRESHOLD && irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
+        int dist = irBack.getValue();
+        return Constants.Intake.BACK_IR.SECURED_HIGH_END > dist && dist > Constants.Intake.BACK_IR.SECURED_LOW_END;
     }
 
     /**
-     * Checks if cube is detected
+     * Checks if cube is detected (Should not be used due to inaccuracy in IR sensor used
      * @return Whether or not the infrared sensor sees anything
      */
+    @Deprecated
     public boolean cubeIsDetected() {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-        return irBack.getValue() < Constants.Intake.BACK_IR.NOTHING_THRESHOLD & irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
+        int dist = irBack.getValue();
+        return Constants.Intake.BACK_IR.DETECTED_HIGH_END > dist && dist > Constants.Intake.BACK_IR.DETECTED_LOW_END;
     }
 
     public boolean isPlateDetected() {
