@@ -59,6 +59,7 @@ public class Lights extends Subsystem {
         if (_robot.isInWarningPeriod()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.TIME_WARNING;
         }else if (_oi.getLightsFlashing() && System.currentTimeMillis()%1000/Constants.Lights.FLASHING_FREQUENCY > (1000/Constants.Lights.FLASHING_FREQUENCY)/2 ) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.FLASHING_BUTTON;
         } else if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
         } else if (intake.cubeIsSecured()) {
