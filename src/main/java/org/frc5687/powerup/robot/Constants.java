@@ -16,11 +16,13 @@ public class Constants {
          */
         public static final double TRANSFORM_COEFFICIENT_SHORT = 14.88;
         public static final double TRANSFORM_COEFFICIENT_MEDIUM = 16.98;
+        public static final double TRANSFORM_COEFFICIENT_LONG = 23.91;
         /**
          * b in the voltage-to-distance equation distance = a * voltage ^ b
          */
         public static final double TRANSFORM_POWER_SHORT = -1.3;
         public static final double TRANSFORM_POWER_MEDIUM = -0.86;
+        public static final double TRANSFORM_POWER_LONG = -0.753;
     }
 
 
