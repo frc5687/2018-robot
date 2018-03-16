@@ -33,6 +33,7 @@ public class DriveArm extends Command {
             arm.drive(oiSpeed);
         } else if (!arm.getPIDController().isEnabled()) {
             double holdSpeed = arm.calculateHoldSpeed(intake.cubeIsSecured());
+            DriverStation.reportError("DriveArm: driving arm at " + holdSpeed, false);
             arm.drive(holdSpeed);
         }
     }

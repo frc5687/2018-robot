@@ -101,7 +101,7 @@ public class Constants {
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 1200;
             public static final int DETECTED_THRESHOLD = 550;
-            public static final int SECURED_THRESHOLD = 1700;
+            public static final int SECURED_THRESHOLD = 1590;
             public static final int NOTHING_THRESHOLD = 2000;
         }
     }
@@ -278,16 +278,16 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
         public class HoldSpeeds {
             public static final double PAST_TOP_PROTO = 0.42;
-            public static final double PAST_TOP_GRETA = 0.42;
+            public static final double PAST_TOP_GRETA = 0.5;
 
             public static final double PAST_NEG_20_PROTO = 0.42;
-            public static final double PAST_NEG_20_GRETA = 0.42;
+            public static final double PAST_NEG_20_GRETA = 0.5;
 
             public static final double PAST_NEG_50_PROTO = 0.42;
-            public static final double PAST_NEG_50_GRETA = 0.42;
+            public static final double PAST_NEG_50_GRETA = 0.5;
 
             public static final double PAST_NEG_100_PROTO = 0.42;
-            public static final double PAST_NEG_100_GRETA = 0.42;
+            public static final double PAST_NEG_100_GRETA = 0.5;
 
             public static final double PAST_NEG_200_PROTO = 0.3;
             public static final double PAST_NEG_200_GRETA = 0.0;
@@ -390,14 +390,14 @@ public class Constants {
 
         public class HoldSpeeds {
             public static final double PAST_160_CUBE_PROTO = 0.0;
-            public static final double PAST_160_CUBE_GRETA = 0.1;
+            public static final double PAST_160_CUBE_GRETA = 0.25;
             public static final double PAST_160_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_160_NO_CUBE_GRETA = 0.1;
+            public static final double PAST_160_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.1;
+            public static final double PAST_90_CUBE_GRETA = 0.25;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_40_CUBE_PROTO = 0.0;
             public static final double PAST_40_CUBE_GRETA = 0.1;
