@@ -15,7 +15,7 @@ public class RobotMap {
 
     public class Intake {
         public static final int LEFT_MOTOR = PWM.RIO5 ;
-        public static final int RIGHT_MOTOR = PWM.RIO7 ;
+        public static final int RIGHT_MOTOR = PWM.RIO9;
         public static final int IR_SIDE = ANALOG.RIO0; // Analog
         public static final int IR_BACK = ANALOG.RIO1; // Analog
         public static final int SERVO = PWM.RIO0;
@@ -40,7 +40,7 @@ public class RobotMap {
     }
 
     public class Climber {
-        public static final int MOTOR = PWM.RIO9;
+        public static final int MOTOR = PWM.RIO7;
     }
 
     public class AutoChooser {
@@ -55,9 +55,9 @@ public class RobotMap {
         public static final int RIGHT_REAR_SPX = 1;
         public static final int RIGHT_FRONT_SRX = 2;
         public static final int LEFT_REAR_SPX = 3;
-        public static final int CLIMBER_SP = 10;
+        public static final int CLIMBER_SP = 13;
         public static final int LEFT_FRONT_SRX = 12;
-        public static final int INTAKE_RIGHT_SP = 13;
+        public static final int INTAKE_RIGHT_SP = 10;
         public static final int CARRIAGE_SP = 14;
         public static final int ARM_SP = 15;
     }
