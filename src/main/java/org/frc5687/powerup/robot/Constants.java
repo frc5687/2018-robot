@@ -32,6 +32,8 @@ public class Constants {
         public static final double PULSING_YELLOW = 0.10;
         public static final double BEATING_YELLOW = 0.11;
 
+        public static final double SOLID_BLACK = 0.99;
+
         public static final double CONFETTI = -0.87;
 
 
@@ -42,8 +44,8 @@ public class Constants {
         public static final double INTAKE_IN =  -0.91; // green blue strobe;
         public static final double INTAKE_OUT = -0.93; // red strobe!
 
-        public static final double TELEOP_BLUE = SOLID_BLUE;
-        public static final double TELEOP_RED = SOLID_RED;
+        public static final double TELEOP_BLUE = SOLID_BLACK;
+        public static final double TELEOP_RED = SOLID_BLACK;
 
         public static final double AUTO_BLUE =  PULSING_BLUE;
         public static final double AUTO_RED = PULSING_RED;
