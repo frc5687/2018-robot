@@ -1,5 +1,6 @@
 package com.team254.lib.trajectory;
 
+import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,6 +34,26 @@ public class TrajectoryFollower {
     ka_ = ka;
   }
 
+  public void configurekP(double kp) {
+    kp_ = kp;
+  }
+
+  public void configurekI(double ki) {
+    ki_ = ki;
+  }
+
+  public void configurekD(double kd) {
+    kd_ = kd;
+  }
+
+  public void configurekV(double kv) {
+    kv_ = kv;
+  }
+
+  public void configurekA(double ka) {
+    ka_ = ka;
+  }
+
   public void reset() {
     last_error_ = 0.0;
     current_segment = 0;
@@ -51,7 +72,9 @@ public class TrajectoryFollower {
       double kd = kd_ * ((posError - last_error_) / segment.dt - segment.vel);
       double kv = kv_ * segment.vel;
       double ka = ka_ * segment.acc;
-      double output = kp + kd + kv + ka + (kv_ * velError);
+      //double output = kp + kd + kv + ka + (kv_ * velError);// If you want to correct velocity in here
+      double output = kp + kd + kv;
+
       /*
       double output = kp_ * error + kd_ * ((error - last_error_)
               / segment.dt - segment.vel) + (kv_ * segment.vel
@@ -66,14 +89,23 @@ public class TrajectoryFollower {
       SmartDashboard.putNumber("TF/" + _name + "/kv", kv);
       SmartDashboard.putNumber("TF/" + _name + "/velError", velError);
       SmartDashboard.putNumber("TF/" + _name + "/velErrorOutput", (kv_ * velError));
+      SmartDashboard.putNumber("TF/" + _name + "/velActual", velocityIPS);
+      SmartDashboard.putNumber("TF/" + _name + "/posError", posError);
+      SmartDashboard.putNumber("TF/" + _name + "/posActual", distance_so_far);
+      SmartDashboard.putNumber("TF/" + _name + "/posGoal", segment.pos);
       SmartDashboard.putNumber("TF/" + _name + "/output", output);
+      SmartDashboard.putNumber("TF/" + _name + "/goalVelIPS", segment.vel);
       SmartDashboard.putNumber("TF/" + _name + "/current_segment", current_segment);
-      DriverStation.reportError(_name + " kp: " + kp + "kv: " + kv + " output: " + output, false);
+      //DriverStation.reportError(_name + " kp: " + kp + "kv: " + kv + " output: " + output, false);
       //System.out.println("so far: " + distance_so_far + "; output: " + output);
       return output;
     } else {
       return 0;
     }
+  }
+
+  public double getNavxHeading() {
+    return ChezyMath.boundAngleNeg180to180Degrees(-Math.toDegrees(current_heading));
   }
 
   public double getHeading() {
@@ -90,5 +122,9 @@ public class TrajectoryFollower {
 
   public Trajectory.Segment getLastSegment() {
     return profile_.getSegment(profile_.getNumSegments() - 1);
+  }
+
+  public double getLastHeadingInNavxUnits() {
+    return ChezyMath.boundAngleNeg180to180Degrees(-Math.toDegrees(getLastSegment().heading));
   }
 }

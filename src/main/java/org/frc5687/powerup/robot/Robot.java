@@ -7,15 +7,16 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.powerup.robot.commands.CarriageZeroEncoder;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointTrajectory;
-import org.frc5687.powerup.robot.commands.TestDriveTrainSpeed;
+import org.frc5687.powerup.robot.commands.KillAll;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
+<<<<<<< HEAD
 import org.frc5687.powerup.robot.utils.Logger;
+=======
+import org.frc5687.powerup.robot.utils.LidarProxy;
+>>>>>>> Fix/SouthCTDayOne
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends TimedRobot {
@@ -31,11 +32,13 @@ public class Robot extends TimedRobot {
     private Climber _climber;
     private Logger _logger;
     private Arm _arm;
-    public static AHRS imu;
+    private Lights _lights;
+    public AHRS imu;
     private UsbCamera camera;
     private PDP pdp;
     private AutoChooser _autoChooser;
-    public static JeVoisProxy jeVoisProxy;
+    public JeVoisProxy jeVoisProxy;
+    private LidarProxy lidarProxy;
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
     private long lastPeriod;
@@ -59,6 +62,7 @@ public class Robot extends TimedRobot {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+<<<<<<< HEAD
         _arm = new Arm(oi, _isCompetitionBot);
         driveTrain = new DriveTrain(imu, oi);
         carriage = new Carriage(oi, _isCompetitionBot);
@@ -66,11 +70,21 @@ public class Robot extends TimedRobot {
         _climber = new Climber(oi);
         setupLogging();
         _logger.addLine("Robot turned on");
+=======
+        //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
+        driveTrain = new DriveTrain(this, imu, oi);
+        carriage = new Carriage(oi, pdp, _isCompetitionBot);
+        intake = new Intake(oi, _isCompetitionBot);
+        _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
+        intake.setArm(_arm);
+        _lights = new Lights(this);
+        _climber = new Climber(oi, pdp);
+>>>>>>> Fix/SouthCTDayOne
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         _logger.addLine("This is " + (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
-        //setPeriod(0.01);
+        setPeriod(1 / Constants.CYCLES_PER_SECOND);
 
         try {
             camera = CameraServer.getInstance().startAutomaticCapture(0);
@@ -81,14 +95,20 @@ public class Robot extends TimedRobot {
 
         oi.initializeButtons(this);
         LiveWindow.disableAllTelemetry();
-
+        _lights.initialize();
     }
+
     public Arm getArm() { return _arm; }
     public DriveTrain getDriveTrain() { return driveTrain; }
     public Carriage getCarriage() { return carriage; }
     public Climber getClimber() { return _climber; }
     public Intake getIntake() { return intake; }
     public AHRS getIMU() { return imu; }
+    public PDP getPDP() { return pdp; }
+    public Lights getLights() { return _lights; }
+    public JeVoisProxy getJeVoisProxy() { return jeVoisProxy; }
+    public LidarProxy getLidarProxy() { return lidarProxy; }
+
 
 
     @Override
@@ -100,7 +120,11 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         imu.reset();
         driveTrain.resetDriveEncoders();
+        driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        // Reset the lights slider in case it was left on
+        SmartDashboard.putNumber("DB/Slider 0", 0.0);
+
         String gameData = DriverStation.getInstance().getGameSpecificMessage();
         if (gameData==null) { gameData = ""; }
         int retries = 100;
@@ -126,19 +150,22 @@ public class Robot extends TimedRobot {
         }
         int autoPosition = _autoChooser.positionSwitchValue();
         int autoMode = _autoChooser.modeSwitchValue();
+        long autoDelayInMillis = _autoChooser.getDelayMillis();
         SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
         SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
-        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
+        SmartDashboard.putString("Auto/Delay", Long.toString(autoDelayInMillis) + "ms");
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", delay:" + Long.toString(autoDelayInMillis) + "ms, switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
         _logger.addLine("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide);
-        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, autoDelayInMillis,this);
         autoCommand.start();
     }
 
     @Override
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
+        driveTrain.enableCoastMode();
     }
 
     @Override
@@ -151,11 +178,15 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
+        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
+            new KillAll(this).start();
+        }
     }
 
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+        driveTrain.enableCoastMode();
     }
 
     @Override
@@ -181,6 +212,7 @@ public class Robot extends TimedRobot {
             carriage.updateDashboard();
             driveTrain.updateDashboard();
             intake.updateDashboard();
+            estimateIntakeHeight();
             updateTick = 0;
         }
     }
@@ -201,6 +233,7 @@ public class Robot extends TimedRobot {
         return _isCompetitionBot;
     }
 
+<<<<<<< HEAD
     protected void setupLogging() {
         DriverStation ds = DriverStation.getInstance();
         String fn = "/home/lvuser/robot";
@@ -219,5 +252,30 @@ public class Robot extends TimedRobot {
                 break;
         }
         _logger = new Logger(fn);
+=======
+    @Override
+    protected void loopFunc() {
+        try {
+            super.loopFunc();
+        } catch (Throwable throwable) {
+            DriverStation.reportError("Unhandled exception: " + throwable.toString(), throwable.getStackTrace());
+            System.exit(1);
+        }
+    }
+
+    public double estimateIntakeHeight() {
+        double carriageHeight = carriage.estimateHeight();
+        double armHeight = _arm.estimateHeight();
+        double intakeHeight = carriageHeight + armHeight;
+        SmartDashboard.putNumber("Intake/CarriageHeight", carriageHeight);
+        SmartDashboard.putNumber("Intake/ArmHeight", armHeight);
+        SmartDashboard.putNumber("Intake/IntakeHeight", intakeHeight);
+        return intakeHeight;
+    }
+
+    public boolean isInWarningPeriod() {
+        double remaining = DriverStation.getInstance().getMatchTime();
+        return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
+>>>>>>> Fix/SouthCTDayOne
     }
 }

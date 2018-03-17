@@ -9,8 +9,10 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveCarriage;
+import org.frc5687.powerup.robot.utils.PDP;
 
 public class Carriage extends PIDSubsystem {
+    private PDP _pdp;
     private Encoder encoder;
     private VictorSP _motor;
     private OI _oi;
@@ -23,15 +25,16 @@ public class Carriage extends PIDSubsystem {
     public static final double kD = 0.1;
     public static final double kF = 0.5;
 
-    public Carriage(OI oi, boolean isCompetitionBot) {
+    public Carriage(OI oi, PDP pdp, boolean isCompetitionBot) {
         super("Carriage", kP, kI, kD, kF);
         setAbsoluteTolerance(15);
         setInputRange(
                 isCompetitionBot ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO,
                 isCompetitionBot ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO
         );
-        setOutputRange(-.50, 0.75);
+        setOutputRange(Constants.Carriage.MINIMUM_SPEED, Constants.Carriage.MAXIMUM_SPEED);
         _oi = oi;
+        _pdp = pdp;
         _motor = new VictorSP(RobotMap.Carriage.MOTOR);
         encoder = new Encoder(RobotMap.Carriage.ENCODER_A, RobotMap.Carriage.ENCODER_B);
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
@@ -39,22 +42,58 @@ public class Carriage extends PIDSubsystem {
         _isCompetitionBot = isCompetitionBot;
     }
 
-    public void drive(double speed) {
-        double _speed = speed;
-        if (_speed > 0 && isAtTop()) {
-            _speed = Constants.Carriage.HOLD_SPEED;
-        } else if (_speed < 0 && isAtBottom()) {
-            _speed = -Constants.Carriage.HOLD_SPEED;
-        } else if (_speed > 0 && isInTopZone()) {
-            _speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
-        } else if (_speed < 0 && isInBottomZone()) {
-            _speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
+    public double calculateHoldSpeed() {
+        double pos = getPos();
+        if (pos > 0) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_TOP_GRETA :Constants.Carriage.HoldSpeeds.PAST_TOP_PROTO;
+        } else if (pos > -20) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_20_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_20_PROTO;
+        } else if (pos > -50) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_50_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_50_PROTO;
+        } else if (pos > -100) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_100_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_100_PROTO;
+        } else if (pos > -200) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_200_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_200_PROTO;
+        } else if (pos > -400) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_400_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_400_PROTO;
+        } else if (pos > -500) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_500_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_500_PROTO;
+        } else if (pos > -600) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_600_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_600_PROTO;
+        } else if (pos > -700) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_700_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_700_PROTO;
+        } else if (pos > -800) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
+        }
+        return 0.0;
+    }
+
+    public void drive(double desiredSpeed) {
+        drive(desiredSpeed, false);
+    }
+
+    public void drive(double desiredSpeed, boolean overrideCaps) {
+        double speed = desiredSpeed;
+        if (!overrideCaps) {
+            if (speed > 0 && isAtTop()) {
+                speed = calculateHoldSpeed();
+            } else if (speed < 0 && isAtBottom()) {
+                speed = calculateHoldSpeed();
+            } else if (speed > 0 && isInTopZone()) {
+                speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
+            } else if (speed < 0 && isInBottomZone()) {
+                speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
+            }
+            if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
+                speed = 0.0;
+            }
+
+            speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
         }
 
-        _speed *= (Constants.Carriage.MOTOR_INVERTED ? -1 : 1);
-        SmartDashboard.putNumber("Carriage/rawSpeed", _speed);
-        SmartDashboard.putNumber("Carriage/speed", -_speed);
-        _motor.setSpeed(_speed);
+        SmartDashboard.putNumber("Carriage/rawSpeed", desiredSpeed);
+        SmartDashboard.putNumber("Carriage/speed", speed);
+        _motor.setSpeed(speed * (Constants.Carriage.MOTOR_INVERTED ? -1 : 1));
     }
 
     @Override
@@ -93,6 +132,8 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putNumber("Carriage/position", getPos());
         SmartDashboard.putBoolean("Carriage/At top", isAtTop());
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
+        SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
+        SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
     }
 
     public boolean isCompetitionBot() {
@@ -100,7 +141,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return false;
+        return true;
     }
 
     public boolean isInTopZone() {
@@ -111,4 +152,11 @@ public class Carriage extends PIDSubsystem {
         return getPos() < (_isCompetitionBot ? Constants.Carriage.START_BOTTOM_ZONE_COMP : Constants.Carriage.START_BOTTOM_ZONE_PROTO);
     }
 
+    public double estimateHeight() {
+        if (_isCompetitionBot) {
+            return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_COMP) * Constants.Carriage.RANGE_INCHES);
+        } else {
+            return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_PROTO) * Constants.Carriage.RANGE_INCHES);
+        }
+    }
 }

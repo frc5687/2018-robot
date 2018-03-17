@@ -6,14 +6,12 @@ import com.team254.lib.trajectory.Trajectory;
 import com.team254.lib.trajectory.TrajectoryFollower;
 import com.team254.lib.util.ChezyMath;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
-import org.frc5687.powerup.robot.utils.Helpers;
 
 public class DynamicPathCommand extends Command {
     private TrajectoryFollower followerLeft = new TrajectoryFollower("left");
@@ -23,14 +21,67 @@ public class DynamicPathCommand extends Command {
     private DriveTrain _driveTrain;
     private AHRS _imu;
     public double lastHeading;
-    public long lastExecute;
+    private Robot _robot;
+    public boolean turnInverted;
+    private Thread _thread;
+
+    public double getkT() {
+        return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT;
+    }
+
+    public double getFollowerkP() {
+        return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP;
+    }
+
+    public double getRightFollowerkP() {
+        return getFollowerkP();
+    }
+
+    public double getLeftFollowerkP() {
+        return getFollowerkP();
+    }
+
+    class PeriodicRunnable implements java.lang.Runnable {
+        private DynamicPathCommand _d;
+        long lastRun = 0;
+
+        public PeriodicRunnable(DynamicPathCommand d) {
+            _d = d;
+        }
+
+        public void run() {
+            while (true) {
+                try {
+                    long now = System.currentTimeMillis();
+                    if (now >= lastRun + 10) {
+                        //DriverStation.reportError("PeriodicRunnable.run() waited enough", false);
+                        lastRun = now;
+                        _d.processSegment();
+                        Thread.sleep(5);
+                    } else {
+                        Thread.sleep(1);
+                    }
+                } catch (Exception e) {
+                    DriverStation.reportError(e.toString(), true);
+                    DriverStation.reportError(e.getStackTrace().toString(), true);
+                }
+            }
+        }
+    }
+    private long endMillis;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();
         _imu = robot.getIMU();
+        _robot = robot;
         requires(_driveTrain);
 
         loadPath();
+
+        if (isReversed()) {
+            path.reverse();
+        }
+        _thread = new Thread(new PeriodicRunnable(this));
     }
 
     public Path getPath() {
@@ -47,23 +98,24 @@ public class DynamicPathCommand extends Command {
     protected void initialize() {
         DriverStation.reportError("Starting DynamicPathCommand", false);
         _driveTrain.resetDriveEncoders();
-        _imu.reset();
+        //_imu.reset();
+        endMillis = System.currentTimeMillis() + 15000;
 
-        starting_heading = _driveTrain.getCheesyYaw();
+        starting_heading = _driveTrain.getYaw();
 
         followerLeft.configure(
-                Constants.Auto.Drive.EncoderPID.kP,
-                Constants.Auto.Drive.EncoderPID.kI,
-                Constants.Auto.Drive.EncoderPID.kD,
-                Constants.Auto.Drive.EncoderPID.kV.IPS,
-                Constants.Auto.Drive.EncoderPID.kA.INCHES
+                getLeftFollowerkP(),
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kI,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kD,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kV.IPS,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
         followerRight.configure(
-                Constants.Auto.Drive.EncoderPID.kP,
-                Constants.Auto.Drive.EncoderPID.kI,
-                Constants.Auto.Drive.EncoderPID.kD,
-                Constants.Auto.Drive.EncoderPID.kV.IPS,
-                Constants.Auto.Drive.EncoderPID.kA.INCHES
+                getRightFollowerkP(),
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kI,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kD,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kV.IPS,
+                Constants.Auto.Drive.TrajectoryFollowing.Cheese.kA.INCHES
         );
 
         followerLeft.setTrajectory(path.getLeftWheelTrajectory());
@@ -71,133 +123,77 @@ public class DynamicPathCommand extends Command {
         followerRight.setTrajectory(path.getRightWheelTrajectory());
         followerRight.reset();
 
-        lastHeading = followerLeft.getLastSegment().heading;
+        lastHeading = followerLeft.getLastHeadingInNavxUnits();
 
-        lastExecute = System.currentTimeMillis();
+        _thread.start();
 
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", false);
     }
 
-    private double calculateTurn() {
-        double goalHeading = Math.toDegrees(followerLeft.getHeading());
-        double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
-        SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
-        double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
-        SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
-
-        double turn = Constants.Auto.Drive.EncoderPID.kT * angleDiff * -1; // multiply by -1 if self correcting, multiply by 1 if following turns
-
-        // Attempts to cap the turn
-        /*
-        if (turn > 0) {
-            turn = Math.min(Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        } else {
-            turn = Math.max(-Constants.Auto.Drive.AnglePID.MAX_DIFFERENCE, turn);
-        }
-        */
-
-        return turn;
+    public void configureFollowerkP(double kp) {
+        followerLeft.configurekP(kp);
+        followerRight.configurekP(kp);
     }
 
+    public void configurekT(double kt) {
 
-    @Override
-    protected void execute() {
-        /*
-         * Log time since last execute
-         */
-        long now = System.currentTimeMillis();
-        SmartDashboard.putNumber("AADynamicPathCommand/timeSinceLastExec", now - lastExecute);
-        lastExecute = now;
+    }
 
+    private double calculateTurn() {
+        double goalHeading = followerLeft.getNavxHeading(); // Example: this is 30deg
+        //double observedHeading = ChezyMath.getDifferenceInAngleDegrees(_driveTrain.getCheesyYaw(), starting_heading);
+        double observedHeading = _driveTrain.getYaw(); // Example: this is 20deg.
+        SmartDashboard.putNumber("AADynamicPathCommand/observedHeading", observedHeading);
+        SmartDashboard.putNumber("AADynamicPathCommand/goalHeading", goalHeading);
+        // Example: We want to be heading 30deg. We are heading 20deg. Our angleDiff of 30deg - 20deg yields 10deg.
+        double angleDiff = ChezyMath.getDifferenceInAngleDegrees(observedHeading, goalHeading);
+        SmartDashboard.putNumber("AADynamicPathCommand/angleDiff", angleDiff);
+        SmartDashboard.putNumber("AADynamicPathCommand/_kT", getkT());
+        // Example: angleDiff is 10deg. We multiply that by kT, which if we pretend is 0.8, yields 8. This means we will
+        // end up increasing our left speed by 8ips, which will help us turn to the right.
+        return getkT() * angleDiff; // multiply by -1 if self correcting, multiply by 1 if following turns
+    }
+
+    /**
+     * Called by the thread every 10ms
+     */
+    protected void processSegment() {
+        DriverStation.reportError("Running processSegment()", false);
         /*
-         * Log Left & Right Distance
+         * Calculate Speed
          */
-        Trajectory.Segment left = followerLeft.getSegment();
-        Trajectory.Segment right = followerRight.getSegment();
 
         double distanceL = _driveTrain.getLeftDistance();
         double distanceR = _driveTrain.getRightDistance();
 
-        double goalDistanceLeft = left.pos;
-        double goalDistanceRight = right.pos;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/distanceL", distanceL);
-        SmartDashboard.putNumber("AADynamicPathCommand/distanceR", distanceR);
-
-        SmartDashboard.putNumber("AADynamicPathCommand/goalDistanceLeft", goalDistanceLeft);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalDistanceRight", goalDistanceRight);
+        double speedLeftMotor = followerLeft.calculate(distanceL, _driveTrain.getLeftVelocityIPS());
+        double speedRightMotor = followerRight.calculate(distanceR, _driveTrain.getRightVelocityIPS());
 
         /*
-         * Log Distance Error
-         */
-
-        double leftError = left.pos - distanceL;
-        double rightError = right.pos - distanceR;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/errorLeft", leftError);
-        SmartDashboard.putNumber("AADynamicPathCommand/errorRight", rightError);
-
-        /*
-         * Log Goal Velocity
-         */
-
-        /*
-        double goalVelocityLeftIPS = left.vel;
-        double goalVelocityLeftMotor = goalVelocityLeftIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
-
-        double goalVelocityRightIPS = right.vel;
-        double goalVelocityRightMotor  = goalVelocityRightIPS * Constants.Auto.Drive.EncoderPID.kV.IPS;
-
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftMotor", goalVelocityLeftMotor);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityLeftIPS", goalVelocityLeftIPS);
-
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightMotor", goalVelocityRightMotor);
-        SmartDashboard.putNumber("AADynamicPathCommand/goalVelocityRightIPS", goalVelocityRightIPS);
-
-        */
-
-        // Entirely feed forward
-        //_driveTrain.tankDrive(goalVelocityLeftMotor, goalVelocityRightMotor);
-
-        /*
-         * Log Calculated Speed
-         */
-
-        double speedLeftMotor = followerLeft.calculate(distanceL, _driveTrain.getLeftRate());
-        double speedRightMotor = followerRight.calculate(distanceR, _driveTrain.getRightRate());
-
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotor", speedLeftMotor);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotor", speedRightMotor);
-
-        // Feed Forward + PID for Sides
-        //_driveTrain.tankDrive(speedLeftMotor, speedRightMotor);
-
-        /*
-         * Log Turn
+         * Calculate Speed with Turn Correction
          */
         double turn = calculateTurn();
         double speedLeftMotorWithTurn = speedLeftMotor + turn;
         double speedRightMotorWithTurn = speedRightMotor - turn;
 
-        _driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
-
         SmartDashboard.putNumber("AADynamicPathCommand/turn", turn);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedLeftMotorWithTurn", speedLeftMotorWithTurn);
-        SmartDashboard.putNumber("AADynamicPathCommand/speedRightMotorWithTurn", speedRightMotorWithTurn);
+        SmartDashboard.putNumber("AADynamicPathCommand/left/totalIPS", speedLeftMotorWithTurn);
+        SmartDashboard.putNumber("AADynamicPathCommand/right/totalIPS", speedRightMotorWithTurn);
 
         /*
          * Drive
          */
 
-        //_driveTrain.tankDrive(speedLeftMotorWithTurn, speedRightMotorWithTurn);
+        _driveTrain.setVelocityIPS(speedLeftMotorWithTurn, speedRightMotorWithTurn);
     }
 
     @Override
     protected void end() {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
         DriverStation.reportError("DynamicPathCommand ended", false);
-        _driveTrain.tankDrive(0, 0);
+        _driveTrain.setPower(0, 0);
+        _thread.stop();
+        DriverStation.reportError("ran stop() method on notifier", false);
     }
 
     @Override
@@ -207,6 +203,11 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected boolean isFinished() {
+        if(System.currentTimeMillis()>endMillis){
+            DriverStation.reportError("DynamicPathCommand timed out", false);
+            return false;
+        }
+
         return followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
     }
 

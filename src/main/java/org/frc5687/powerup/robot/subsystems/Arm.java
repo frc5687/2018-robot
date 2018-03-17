@@ -2,21 +2,27 @@ package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveArm;
 import org.frc5687.powerup.robot.utils.AnglePotentiometer;
+import org.frc5687.powerup.robot.utils.PDP;
 
 public class Arm extends PIDSubsystem {
+    private PDP _pdp;
     private Encoder encoder;
     private VictorSP _motor;
     private OI _oi;
+    private Intake _intake;
     private DigitalInput hallEffect;
     private DigitalOutput led;
     private AnglePotentiometer _pot;
+    private double TOP;
+    private double BOTTOM;
+    private boolean _isCompetitionBot;
+    private int motorInversionMultiplier;
 
     public static final double kP = 0.03;
     public static final double kI = 0.002;
@@ -24,19 +30,49 @@ public class Arm extends PIDSubsystem {
     public static final double kF = 0;
 
 
-    public Arm (OI oi, boolean isCompetitionBot) {
+    public Arm (OI oi, PDP pdp, Intake intake, boolean isCompetitionBot) {
         super("Arm", kP, kI, kD, kF, 0.02);
         setAbsoluteTolerance(5);
-        setInputRange(Constants.Arm.Pot.BOTTOM, Constants.Arm.Pot.TOP);
-        setOutputRange(-.25, 0.75);
+        _isCompetitionBot = isCompetitionBot;
+        TOP = isCompetitionBot ? Constants.Arm.Pot.TOP_COMP : Constants.Arm.Pot.TOP_PROTO;
+        BOTTOM = isCompetitionBot ? Constants.Arm.Pot.BOTTOM_COMP : Constants.Arm.Pot.BOTTOM_PROTO;
+        setInputRange(BOTTOM, TOP);
+        setOutputRange(Constants.Arm.MIN_SPEED, Constants.Arm.MAX_SPEED);
         _oi=oi;
+        _intake = intake;
+        _pdp = pdp;
         _motor=new VictorSP(RobotMap.Arm.MOTOR);
+        motorInversionMultiplier = (isCompetitionBot ? Constants.Arm.MOTOR_INVERTED_COMP : Constants.Arm.MOTOR_INVERTED_PROTO) ? -1 : 1;
         encoder = new Encoder(RobotMap.Arm.ENCODER_A, RobotMap.Arm.ENCODER_B);
         hallEffect = new DigitalInput(RobotMap.Arm.HALL_EFFECT_STARTING_POSITION);
         led = new DigitalOutput(RobotMap.Arm.STARTING_POSITION_LED);
         _pot = isCompetitionBot ?
-                new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 30.0, 0.982, 171.0,  0.592)
-                : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 30.0,  0.592, 171.0, 0.982);
+                new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
+                : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
+    }
+
+    public double calculateHoldSpeed() {
+        return calculateHoldSpeed(false);
+    }
+
+    public double calculateHoldSpeed(boolean cubeDetected) {
+        double ang = getPot();
+        if (ang > 160 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_PROTO;
+        } else if (ang > 160) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_CUBE_PROTO;
+        } else if (ang > 90 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_CUBE_PROTO;
+        } else if (ang > 90) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_PROTO;
+        } else if (ang > 40 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_40_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_40_CUBE_PROTO;
+        } else if (ang > 40) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_40_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_40_NO_CUBE_PROTO;
+        } else if (cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_PROTO;
+        }
+        return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_BOTTOM_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_BOTTOM_NO_CUBE_PROTO;
     }
 
     public void drive(double speed) {
@@ -47,13 +83,19 @@ public class Arm extends PIDSubsystem {
             SmartDashboard.putString("Arm/Capped)", "Bottom");
             speed = 0.0;
         }
+        if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
+            speed = 0.0;
+        }
+        speed = Math.max(speed, Constants.Arm.MIN_SPEED);
+        speed = Math.min(speed, Constants.Arm.MAX_SPEED);
+        speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
     }
 
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new DriveArm(this, _oi));
+        setDefaultCommand(new DriveArm(this, _oi, _intake));
     }
 
     public boolean inStartingPosition () {
@@ -61,12 +103,12 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean atTop() {
-        double diff = getPot() - Constants.Arm.Pot.TOP;
+        double diff = getPot() - TOP;
         return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public boolean atBottom() {
-        double diff = getPot() - Constants.Arm.Pot.BOTTOM;
+        double diff = getPot() - BOTTOM;
         return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
@@ -85,7 +127,7 @@ public class Arm extends PIDSubsystem {
      * @return the position of the arm in the range of 0 to 1. 0 is the bottom and 1 is the top.
      */
     public double getPosition() {
-        return (double) encoder.get() / (double) Constants.Arm.ENCODER_TOP;
+        return getAngle();
     }
 
     @Override
@@ -113,5 +155,18 @@ public class Arm extends PIDSubsystem {
     @Override
     public void periodic() {
         led.set(inStartingPosition());
+    }
+
+    public boolean isCompetitionBot() {
+        return _isCompetitionBot;
+    }
+
+    public boolean isHealthy() {
+        return true;
+    }
+
+    public double estimateHeight() {
+        double armAngleRadians = Math.toRadians(getAngle() - 90);
+        return Math.sin(armAngleRadians) * Constants.Arm.LENGTH;
     }
 }
