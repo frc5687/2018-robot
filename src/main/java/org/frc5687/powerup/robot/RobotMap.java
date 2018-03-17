@@ -18,6 +18,7 @@ public class RobotMap {
         public static final int RIGHT_MOTOR = PWM.RIO9;
         public static final int IR_SIDE = ANALOG.RIO0; // Analog
         public static final int IR_BACK = ANALOG.RIO1; // Analog
+        public static final int IR_UP = ANALOG.navX6;
         public static final int SERVO = PWM.RIO0;
     }
 

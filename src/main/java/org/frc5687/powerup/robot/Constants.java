@@ -81,7 +81,7 @@ public class Constants {
         public static final double SERVO_UP = 0.2;
         public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.35;
+        public static final double HOLD_SPEED = 0.30;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
@@ -103,6 +103,12 @@ public class Constants {
             public static final int SECURED_HIGH_END = Integer.MAX_VALUE;
             public static final int DETECTED_LOW_END = 500;
             public static final int DETECTED_HIGH_END = Integer.MAX_VALUE;
+        }
+
+        public class UP_IR {
+            public static final boolean ENABLED = true;
+            public static final int PLATE_DETECTION_THRESHOLD = 550;
+            public static final double MIN_ARM_ANGLE = 151;
         }
     }
 
