@@ -403,9 +403,9 @@ public class Constants {
             public static final double PAST_160_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.25;
+            public static final double PAST_90_CUBE_GRETA = 0.1;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.25;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
             public static final double PAST_40_CUBE_PROTO = 0.0;
             public static final double PAST_40_CUBE_GRETA = 0.1;
