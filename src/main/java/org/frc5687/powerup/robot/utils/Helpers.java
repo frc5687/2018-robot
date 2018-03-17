@@ -35,6 +35,25 @@ public class Helpers {
     }
 
     /**
+     * Examples:
+     * a=0.5 and b=0.8 yields 0.5
+     * a=-0.5 and b=0.8 yields -0.5
+     * @param a
+     * @param b
+     * @return
+     */
+    public static double absMin(double a, double b) {
+        double absA = Math.abs(a);
+        double absB = Math.abs(b);
+
+        if (absA > absB) {
+            return b;
+        } else {
+            return a;
+        }
+    }
+
+    /**
      * Credit: 862
      * @param inches
      * @return

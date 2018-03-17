@@ -64,6 +64,7 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED = true;
         public static final double SENSITIVITY = 0.75;
         public static final double TALL_CAP_HEIGHT =  72.0;
+        public static final double TIP_PROTECTION_THRESHOLD_HEIGHT = 60;
         public static final int TEST_TIME  = 1000;
         public static final double MIN_AMPS = 2.0;
         public static final double MONITOR_THRESHOLD_SPEED = 0.1;
@@ -466,6 +467,9 @@ public class Constants {
          */
         public static final double ACCELERATION_CAP = TIME_OF_ACCEL == 0 ? 1 : (1  / (TIME_OF_ACCEL * CYCLES_PER_SECOND));
         public static final double ACCELERATION_CAP_TALL =  TIME_OF_ACCEL_TALL == 0 ? 1 : (1 / (TIME_OF_ACCEL_TALL * CYCLES_PER_SECOND));
+
+        public static final double SPEED_CAP = 1.0;
+        public static final double SPEED_CAP_TALL = 0.8;
     }
 
 }

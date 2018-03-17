@@ -158,6 +158,16 @@ public class DriveTrain extends Subsystem implements PIDSource {
             // Limit change in rightSpeed to +/- ACCELERATION_CAP
             rightSpeed = Math.min(rightSpeed, _priorRight + cap);
             rightSpeed = Math.max(rightSpeed, _priorRight - cap);
+
+            boolean applyTallSpeedCap = _robot.estimateIntakeHeight() > Constants.DriveTrain.TIP_PROTECTION_THRESHOLD_HEIGHT;
+
+            rightSpeed = Helpers.absMin(rightSpeed, Constants.Limits.SPEED_CAP);
+            leftSpeed = Helpers.absMin(leftSpeed, Constants.Limits.SPEED_CAP);
+
+            if (applyTallSpeedCap) {
+                rightSpeed = Helpers.absMin(rightSpeed, Constants.Limits.SPEED_CAP_TALL);
+                leftSpeed = Helpers.absMin(leftSpeed, Constants.Limits.SPEED_CAP_TALL);
+            }
         }
         try {
             leftMaster.set(ControlMode.PercentOutput, leftSpeed);
