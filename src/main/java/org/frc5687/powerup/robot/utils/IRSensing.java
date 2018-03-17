@@ -19,6 +19,8 @@ public class IRSensing extends AnalogInput {
         public double getDistance() {
             return Constants.IRPID.TRANSFORM_COEFFICIENT_SHORT * Math.pow(getRaw(), Constants.IRPID.TRANSFORM_POWER_SHORT) / 2.54;
         }
+
+
     }
 
 
@@ -26,6 +28,7 @@ public class IRSensing extends AnalogInput {
         public double getDistance() {
             return Constants.IRPID.TRANSFORM_COEFFICIENT_MEDIUM * Math.pow(getRaw(), Constants.IRPID.TRANSFORM_POWER_MEDIUM) / 2.54;
         }
+
     }
 
 

@@ -9,6 +9,7 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.IRSensing;
 
 
 public class Intake extends Subsystem {
@@ -19,6 +20,8 @@ public class Intake extends Subsystem {
     private AnalogInput irDown;
     private Servo servo;
     private double _lastServoPos;
+    private IRSensing.sensorShort irBackInches;
+    private IRSensing.sensorMedium irDownInches;
 
     private double _lastLeftSpeed;
     private double _lastRightSpeed;
@@ -108,6 +111,8 @@ public class Intake extends Subsystem {
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
+        SmartDashboard.putNumber("Intake/IR Back inches", irBackInches.getDistance());
+        SmartDashboard.putNumber("Intake/IR Down inches", irDownInches.getDistance());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
     }
