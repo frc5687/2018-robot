@@ -142,6 +142,7 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_RIGHT: // Position 5, right side
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, left side
+                        /*
                         armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
                         armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
                         if (robot.getArm().isHealthy()) {
@@ -153,6 +154,8 @@ public class AutoGroup extends CommandGroup {
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
+                        */
+                        buildAutoCross(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, right side
                         armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
