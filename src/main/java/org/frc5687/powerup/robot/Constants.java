@@ -100,9 +100,9 @@ public class Constants {
         public class BACK_IR {
             public static final boolean ENABLED = true;
             public static final int SECURED_LOW_END = 1500;
-            public static final int SECURED_HIGH_END = 2200;
-            public static final int DETECTED_LOW_END = 400;
-            public static final int DETECTED_HIGH_END = 650;
+            public static final int SECURED_HIGH_END = Integer.MAX_VALUE;
+            public static final int DETECTED_LOW_END = 500;
+            public static final int DETECTED_HIGH_END = Integer.MAX_VALUE;
         }
     }
 
