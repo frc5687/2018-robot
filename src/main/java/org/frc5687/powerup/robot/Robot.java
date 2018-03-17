@@ -62,15 +62,6 @@ public class Robot extends TimedRobot {
         pdp = new PDP();
         oi = new OI(this);
         jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
-<<<<<<< HEAD
-        _arm = new Arm(oi, _isCompetitionBot);
-        driveTrain = new DriveTrain(imu, oi);
-        carriage = new Carriage(oi, _isCompetitionBot);
-        intake = new Intake(oi);
-        _climber = new Climber(oi);
-        setupLogging();
-        _logger.addLine("Robot turned on");
-=======
         //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
@@ -79,7 +70,8 @@ public class Robot extends TimedRobot {
         intake.setArm(_arm);
         _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
->>>>>>> Fix/SouthCTDayOne
+        setupLogging();
+        _logger.addLine("Robot turned on");
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         _logger.addLine("This is " + (_isCompetitionBot ? "Diana" : "Jitterbug"));
@@ -233,11 +225,10 @@ public class Robot extends TimedRobot {
         return _isCompetitionBot;
     }
 
-<<<<<<< HEAD
     protected void setupLogging() {
         DriverStation ds = DriverStation.getInstance();
         String fn = "/home/lvuser/robot";
-        switch (ds.getMatchType()){
+        switch (ds.getMatchType()) {
             case Practice:
                 fn = String.format("/home/lvuser/practice-%d-%d", ds.getMatchNumber(), ds.getReplayNumber());
                 break;
@@ -252,7 +243,8 @@ public class Robot extends TimedRobot {
                 break;
         }
         _logger = new Logger(fn);
-=======
+    }
+
     @Override
     protected void loopFunc() {
         try {
@@ -276,6 +268,5 @@ public class Robot extends TimedRobot {
     public boolean isInWarningPeriod() {
         double remaining = DriverStation.getInstance().getMatchTime();
         return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
->>>>>>> Fix/SouthCTDayOne
     }
 }
