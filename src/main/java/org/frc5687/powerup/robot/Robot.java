@@ -134,12 +134,14 @@ public class Robot extends TimedRobot {
         }
         int autoPosition = _autoChooser.positionSwitchValue();
         int autoMode = _autoChooser.modeSwitchValue();
+        long autoDelayInMillis = _autoChooser.getDelayMillis();
         SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
         SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
-        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
-        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
+        SmartDashboard.putString("Auto/Delay", Long.toString(autoDelayInMillis) + "ms");
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", delay:" + Long.toString(autoDelayInMillis) + "ms, switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, autoDelayInMillis,this);
         autoCommand.start();
     }
 

@@ -17,7 +17,7 @@ import org.frc5687.powerup.robot.commands.auto.paths.*;
  * Created by Ben Bernard on 2/2/2018.
  */
 public class AutoGroup extends CommandGroup {
-    public AutoGroup(int mode, int position, int switchSide, int scaleSide, Robot robot) {
+    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, Robot robot) {
         super();
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
@@ -34,6 +34,8 @@ public class AutoGroup extends CommandGroup {
         // addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_FENCE));
         double distance = 0.0;
         MoveArmToSetpointPID armPid;
+
+        addSequential(new AutoWaitForMillis(delayInMillis));
 
         switch (mode) {
             case Constants.AutoChooser.Mode.STAY_PUT:

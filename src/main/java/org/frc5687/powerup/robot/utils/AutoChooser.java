@@ -92,7 +92,7 @@ public class AutoChooser {
         return modeLabels.getOrDefault(mode, "Unused");
     }
 
-    private Integer getDelayMillis() {
+    public Integer getDelayMillis() {
         int val = delaySwitchValue();
         return delayQuantities.getOrDefault(val, 0);
     }
@@ -102,9 +102,6 @@ public class AutoChooser {
     }
 
     public void updateDashboard(){
-        SmartDashboard.putString("Auto/Position", getPositionLabel());
-        SmartDashboard.putString("Auto/Mode", getModeLabel());
-        SmartDashboard.putString("Auto/Delay", Long.toString(getDelayMillis()) + "ms");
         SmartDashboard.putString("AutoChooser/Label/Position", getPositionLabel());
         SmartDashboard.putString("AutoChooser/Label/Mode", getModeLabel());
         SmartDashboard.putString("AutoChooser/Label/Delay", Long.toString(getDelayMillis()) + "ms");
@@ -113,7 +110,7 @@ public class AutoChooser {
         SmartDashboard.putNumber("AutoChooser/Raw/Delay", delaySwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Numeric/Position", positionSwitchValue());
         SmartDashboard.putNumber("AutoChooser/Numeric/Mode", modeSwitchValue());
-        SmartDashboard.putNumber("AutoChooser/Numeric/Delay", delaySwitch.get());
+        SmartDashboard.putNumber("AutoChooser/Numeric/Delay", delaySwitchValue());
 //        SmartDashboard.putString("AutoChooser/Selection", AutoGroup.getDescription(springSwitch.get(), gearSwitch.get(), hopperSwitch.get()));
   }
 }
