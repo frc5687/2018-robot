@@ -32,6 +32,8 @@ public class Constants {
         public static final double PULSING_YELLOW = 0.10;
         public static final double BEATING_YELLOW = 0.11;
 
+        public static final double SOLID_BLACK = 0.99;
+
         public static final double CONFETTI = -0.87;
 
 
@@ -42,8 +44,8 @@ public class Constants {
         public static final double INTAKE_IN =  -0.91; // green blue strobe;
         public static final double INTAKE_OUT = -0.93; // red strobe!
 
-        public static final double TELEOP_BLUE = SOLID_BLUE;
-        public static final double TELEOP_RED = SOLID_RED;
+        public static final double TELEOP_BLUE = SOLID_BLACK;
+        public static final double TELEOP_RED = SOLID_BLACK;
 
         public static final double AUTO_BLUE =  PULSING_BLUE;
         public static final double AUTO_RED = PULSING_RED;
@@ -81,7 +83,7 @@ public class Constants {
         public static final double SERVO_UP = 0.2;
         public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.25;
+        public static final double HOLD_SPEED = 0.30;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
@@ -99,10 +101,16 @@ public class Constants {
 
         public class BACK_IR {
             public static final boolean ENABLED = true;
-            public static final int DETECTION_THRESHOLD = 1200;
-            public static final int DETECTED_THRESHOLD = 550;
-            public static final int SECURED_THRESHOLD = 1590;
-            public static final int NOTHING_THRESHOLD = 2000;
+            public static final int SECURED_LOW_END = 1500;
+            public static final int SECURED_HIGH_END = Integer.MAX_VALUE;
+            public static final int DETECTED_LOW_END = 500;
+            public static final int DETECTED_HIGH_END = Integer.MAX_VALUE;
+        }
+
+        public class UP_IR {
+            public static final boolean ENABLED = true;
+            public static final int PLATE_DETECTION_THRESHOLD = 550;
+            public static final double MIN_ARM_ANGLE = 151;
         }
     }
 
@@ -114,9 +122,9 @@ public class Constants {
 
             public static final double SPEED = 0.6;
 
-            public static final double kP = 0.05;
-            public static final double kI = 0.01;
-            public static final double kD = 0.3;
+            public static final double kP = 0.04;
+            public static final double kI = 0.003;//0.01;
+            public static final double kD = 0.80;//0.3;
             public static final double TOLERANCE = 1.0; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
@@ -395,9 +403,9 @@ public class Constants {
             public static final double PAST_160_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.25;
+            public static final double PAST_90_CUBE_GRETA = 0.1;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.25;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
             public static final double PAST_40_CUBE_PROTO = 0.0;
             public static final double PAST_40_CUBE_GRETA = 0.1;

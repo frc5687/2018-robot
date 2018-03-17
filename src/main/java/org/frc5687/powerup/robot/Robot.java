@@ -56,12 +56,13 @@ public class Robot extends TimedRobot {
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI(this);
-        jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
-        lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
+        //jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+        //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
         intake = new Intake(oi, _isCompetitionBot);
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
+        intake.setArm(_arm);
         _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
@@ -133,12 +134,14 @@ public class Robot extends TimedRobot {
         }
         int autoPosition = _autoChooser.positionSwitchValue();
         int autoMode = _autoChooser.modeSwitchValue();
+        long autoDelayInMillis = _autoChooser.getDelayMillis();
         SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
         SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
-        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
-        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
+        SmartDashboard.putString("Auto/Delay", Long.toString(autoDelayInMillis) + "ms");
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", delay:" + Long.toString(autoDelayInMillis) + "ms, switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, autoDelayInMillis,this);
         autoCommand.start();
     }
 
