@@ -10,9 +10,7 @@ import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.*;
-import org.frc5687.powerup.robot.utils.Gamepad;
-import org.frc5687.powerup.robot.utils.Helpers;
-import org.frc5687.powerup.robot.utils.POV;
+import org.frc5687.powerup.robot.utils.*;
 
 public class OI {
     public class ButtonNumbers {
@@ -24,6 +22,7 @@ public class OI {
 
     private Joystick driverGamepad;
     private Gamepad operatorGamepad;
+    private OperatorConsole console;
 
     private JoystickButton intakeLeftIn;
     private JoystickButton intakeRightIn;
@@ -50,14 +49,60 @@ public class OI {
     private JoystickButton driverCarriageUp;
     private JoystickButton driverCarriageDown;
 
+    private JoystickLight leftDriveEncoderLED;
+    private JoystickLight rightDriveEncoderLED;
+    private JoystickLight leftDriveMotorsLED;
+    private JoystickLight rightDriveMotorsLED;
+
+    private JoystickLight intakeBackIRLED;
+    private JoystickLight intakeDownIRLED;
+
+    private JoystickLight carriageEncoderLED;
+    private JoystickLight carriageMotorLED;
+
+    private JoystickLight armPotLED;
+    private JoystickLight armMotorLED;
+    private JoystickLight armEncoderLED;
+
+    private AxisButton climberHoldUp;
+    private AxisButton climberHoldDown;
+    private AxisButton intakeHoldUp;
+    private AxisButton intakeHoldDown;
+    private AxisButton carriageHoldUp;
+    private AxisButton carriageHoldDown;
+    private AxisButton armHoldUp;
+    private AxisButton armHoldDown;
+
+    private JoystickButton driveCapsOverride;
+    private JoystickButton driveLimitsOverride;
+
+    private JoystickButton climberKill;
+
+    private JoystickButton intakeIROverride;
+    private JoystickButton intakeKill;
+
+    private JoystickButton carriageZero;
+    private JoystickButton carriageCapsOverride;
+    private JoystickButton carriageLimitsOverride;
+    private JoystickButton carriageKill;
+
+    private JoystickButton armZeroTop;
+    private JoystickButton armZeroBottom;
+    private JoystickButton armCapsOverride;
+    private JoystickButton armLimitsOverride;
+    private JoystickButton armKill;
+
+
+
     private POV driverPOV;
 
     private Robot _robot;
 
     public OI(Robot robot) {
         _robot = robot;
-        driverGamepad = new Joystick(0);
+        driverGamepad = new Gamepad(0);
         operatorGamepad = new Gamepad(1);
+        console = new OperatorConsole(2);
 
         driverArmToScaleButton = new JoystickButton(driverGamepad, Gamepad.Buttons.Y.getNumber());
         driverArmToSwitchButton = new JoystickButton(driverGamepad, Gamepad.Buttons.B.getNumber());
@@ -184,18 +229,11 @@ public class OI {
 
     public void initializeButtons(Robot robot) {
         carriageZeroEncoder.whenPressed(new AutoZeroCarriage(robot.getCarriage()));
-
-        driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-        driverArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
-        driverArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
-        driverArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
-
-        operatorArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-        operatorArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
-        operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
-        operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
-
         servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
+
+        initializeDriverGamepad(robot);
+        initializeOperatorGamepad(robot);
+        initializeConsole(robot);
 
         DriverStation.reportError("driverArmToIntakeButton " + (driverArmToIntakeButton ==null), false);
         DriverStation.reportError("driverArmToDriveButton " + (driverArmToDriveButton ==null), false);
@@ -207,4 +245,70 @@ public class OI {
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
     }
 
+    private void initializeDriverGamepad(Robot robot) {
+        driverArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        driverArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        driverArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+        driverArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
+
+    }
+
+    private void initializeOperatorGamepad(Robot robot) {
+        operatorArmToIntakeButton.whenPressed(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        operatorArmToDriveButton.whenPressed(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+        operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
+
+    }
+
+    private void initializeConsole(Robot robot) {
+        // LEDs
+        leftDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.A.getNumber());
+        rightDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.B.getNumber());
+        leftDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.C.getNumber());
+        rightDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.D.getNumber());
+
+        intakeBackIRLED = new JoystickLight(console, OperatorConsole.LEDs.E.getNumber());
+        intakeDownIRLED = new JoystickLight(console, OperatorConsole.LEDs.F.getNumber());
+
+        carriageEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.G.getNumber());
+        carriageMotorLED = new JoystickLight(console, OperatorConsole.LEDs.H.getNumber());
+
+        armPotLED = new JoystickLight(console, OperatorConsole.LEDs.I.getNumber());
+        armMotorLED = new JoystickLight(console, OperatorConsole.LEDs.J.getNumber());
+
+        climberHoldUp = new AxisButton(console, OperatorConsole.Axes.A.getNumber(), 0.75, 1.0);
+        climberHoldDown = new AxisButton(console, OperatorConsole.Axes.A.getNumber(), 0.25, 0.5);
+
+        intakeHoldUp = new AxisButton(console, OperatorConsole.Axes.B.getNumber(), 0.75, 1.0);
+        intakeHoldDown = new AxisButton(console, OperatorConsole.Axes.B.getNumber(), 0.25, 0.5);
+
+        carriageHoldUp = new AxisButton(console, OperatorConsole.Axes.C.getNumber(), 0.75, 1.0);
+        carriageHoldDown = new AxisButton(console, OperatorConsole.Axes.C.getNumber(), 0.25, 0.5);
+
+        armHoldUp = new AxisButton(console, OperatorConsole.Axes.D.getNumber(), 0.75, 1.0);
+        armHoldDown = new AxisButton(console, OperatorConsole.Axes.D.getNumber(), 0.25, 0.5);
+
+        driveCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.A.getNumber());
+        driveLimitsOverride= new JoystickButton(console, OperatorConsole.Buttons.B.getNumber());;
+
+        climberKill = new JoystickButton(console, OperatorConsole.Buttons.C.getNumber());;
+
+        intakeIROverride = new JoystickButton(console, OperatorConsole.Buttons.D.getNumber());;
+        intakeKill = new JoystickButton(console, OperatorConsole.Buttons.E.getNumber());;
+
+        carriageZero = new JoystickButton(console, OperatorConsole.Buttons.F.getNumber());;
+        carriageCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.G.getNumber());;
+        carriageLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.H.getNumber());;
+        carriageKill = new JoystickButton(console, OperatorConsole.Buttons.I.getNumber());;
+
+        armZeroTop = new JoystickButton(console, OperatorConsole.Buttons.J.getNumber());;
+        armZeroBottom = new JoystickButton(console, OperatorConsole.Buttons.K.getNumber());;
+        armCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.L.getNumber());;
+        armLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.M.getNumber());;
+        armKill = new JoystickButton(console, OperatorConsole.Buttons.N.getNumber());;
+
+
+
+    }
 }
