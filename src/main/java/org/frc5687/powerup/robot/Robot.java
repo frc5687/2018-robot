@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI(this);
-        jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+        //jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);

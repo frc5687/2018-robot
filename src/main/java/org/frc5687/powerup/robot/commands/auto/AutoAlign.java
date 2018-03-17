@@ -108,14 +108,13 @@ public class AutoAlign extends Command implements PIDOutput {
         driveTrain.setPower(0,0, true);
         DriverStation.reportError("AutoAlign finished: angle = " + imu.getYaw() + ", time = " + (System.currentTimeMillis() - startTimeMillis), false);
         controller.disable();
+        DriverStation.reportError("AutoAlign.end() controller disabled", false);
     }
 
     @Override
     public void pidWrite(double output) {
-        synchronized (this) {
-            pidOut = output;
-            SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
-        }
+        pidOut = output;
+        //SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
     }
 
     public void setAngle(double angle) {

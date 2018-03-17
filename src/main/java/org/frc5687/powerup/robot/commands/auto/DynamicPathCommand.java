@@ -50,6 +50,7 @@ public class DynamicPathCommand extends Command {
         }
 
         public void run() {
+            // consider checking if in teleop and stopping
             while (true) {
                 try {
                     long now = System.currentTimeMillis();
