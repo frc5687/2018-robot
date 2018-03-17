@@ -53,7 +53,7 @@ public class AutoAlign extends Command implements PIDOutput {
         double kI = Align.kI; // Double.parseDouble(SmartDashboard.getString("DB/String 1", ".006"));
         double kD = Align.kD; //Double.parseDouble(SmartDashboard.getString("DB/String 2", ".09"));
 
-        controller = new PIDController(kP, kI, kD, imu, this);
+        controller = new PIDController(kP, kI, kD, imu, this, 0.01);
         controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         controller.setOutputRange(-speed, speed);
         controller.setAbsoluteTolerance(Align.TOLERANCE);
@@ -105,17 +105,16 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void end() {
+        driveTrain.setPower(0,0, true);
         DriverStation.reportError("AutoAlign finished: angle = " + imu.getYaw() + ", time = " + (System.currentTimeMillis() - startTimeMillis), false);
         controller.disable();
-        driveTrain.setPower(0,0, true);
+        DriverStation.reportError("AutoAlign.end() controller disabled", false);
     }
 
     @Override
     public void pidWrite(double output) {
-        synchronized (this) {
-            pidOut = output;
-            SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
-        }
+        pidOut = output;
+        //SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
     }
 
     public void setAngle(double angle) {

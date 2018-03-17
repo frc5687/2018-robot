@@ -17,7 +17,7 @@ import org.frc5687.powerup.robot.commands.auto.paths.*;
  * Created by Ben Bernard on 2/2/2018.
  */
 public class AutoGroup extends CommandGroup {
-    public AutoGroup(int mode, int position, int switchSide, int scaleSide, Robot robot) {
+    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, Robot robot) {
         super();
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
@@ -34,6 +34,8 @@ public class AutoGroup extends CommandGroup {
         // addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_FENCE));
         double distance = 0.0;
         MoveArmToSetpointPID armPid;
+
+        addSequential(new AutoWaitForMillis(delayInMillis));
 
         switch (mode) {
             case Constants.AutoChooser.Mode.STAY_PUT:
@@ -66,7 +68,7 @@ public class AutoGroup extends CommandGroup {
                     case 3:
                         path = new CrossAutoLineToLeftOfPowerCube(robot);
                         addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5, 2000));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.9, 2000));
                         //addSequential(new AutoZeroCarriage(robot.getCarriage())); Unsure about where this will end up, so I'm not auto zeroing here
                         break;
                     case 4:
@@ -102,10 +104,9 @@ public class AutoGroup extends CommandGroup {
                             addParallel(armPid);
                         }
                         //addParallel(new EjectWhenSwitchDetected(robot));
-                        path = new CenterLeftToLeftSwitch(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        addSequential(new CenterLeftToLeftSwitch(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9));
+                        addSequential(new AutoEject(robot.getIntake(), -0.42));
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
@@ -121,10 +122,9 @@ public class AutoGroup extends CommandGroup {
                             addParallel(armPid);
                         }
                         //addParallel(new EjectWhenSwitchDetected(robot));
-                        path = new CenterLeftToRightSwitch(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5));
-                        addSequential(new AutoEject(robot.getIntake(), -0.62));
+                        addSequential(new CenterLeftToRightSwitch(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9));
+                        addSequential(new AutoEject(robot.getIntake(), -0.42));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
@@ -142,6 +142,7 @@ public class AutoGroup extends CommandGroup {
                     case Constants.AutoChooser.Position.MID_RIGHT: // Position 5, right side
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, left side
+                        /*
                         armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
                         armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
                         if (robot.getArm().isHealthy()) {
@@ -153,6 +154,8 @@ public class AutoGroup extends CommandGroup {
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
+                        */
+                        buildAutoCross(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, right side
                         armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
@@ -161,7 +164,7 @@ public class AutoGroup extends CommandGroup {
                             addParallel(armPid);
                         }
                         addSequential(new FarRightToRightSwitchSide(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.9));
                         addSequential(new AutoEject(robot.getIntake()));
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
@@ -175,7 +178,7 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
                         addSequential(new FarLeftToLeftScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 40, 0.5));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 40, 0.9));
                         addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.5, true, true, 1000,""));
                         addSequential(new AutoEject(robot.getIntake(), -0.3));
                         break;
@@ -188,20 +191,20 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         addParallel(new AutoZeroCarriageThenLower(robot));
                         addSequential(new FarRightToLeftScaleDeadPartOne(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.8));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.9, 4000));
                         addParallel(new PrepIntakeForScale(robot, 1600, false));
                         addSequential(new FarRightToLeftScaleDeadPartTwo(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.8));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
                         addSequential(new FarRightToLeftScaleDeadPartThree(robot));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         if (robot.getArm().isHealthy()) {
-                            addParallel(new PrepIntakeForScale(robot, 100, 5000, true));
+                            addParallel(new PrepIntakeForScale(robot, 120, 3500, true));
                         }
                         addSequential(new FarRightToRightScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -40, 0.5, 700));
-                        addSequential(new AutoEject(robot.getIntake()));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.9, 700));
+                        addSequential(new AutoEject(robot.getIntake(), -0.99));
                         break;
                 }
                 break;
@@ -211,13 +214,16 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.SCALE_DRIVE:
                 buildSimpleScale(robot, scaleFactor);
                 break;
+            case 11:
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.9, 20000));
+                break;
         }
     }
 
     private void buildAutoCross(Robot robot) {
         DynamicPathCommand path = new CrossAutoLine(robot);
         addSequential(path);
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.5, 2000));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.9, 2000));
         addSequential(new AutoZeroCarriage(robot.getCarriage()));
         return;
 
@@ -251,7 +257,7 @@ public class AutoGroup extends CommandGroup {
                 addParallel(new AutoZeroCarriage(robot.getCarriage()));
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), clear, 0.75, true, true, 5000, "Clear wall"));
                 // Turn towards correct side
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), angle, 0.5, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), angle, 0.9, 2000));
 
                 // Approach while raising arm
                 addParallel(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
@@ -259,7 +265,7 @@ public class AutoGroup extends CommandGroup {
 
                 /*
                 // Turn towards switch
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
 
                 //
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), approach, 0.5, true, true, 5000, "Approach switch"));
@@ -272,7 +278,7 @@ public class AutoGroup extends CommandGroup {
 
                 // Turn while starting to intake
                 addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), cube2Angle, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), cube2Angle, 0.9, 2000));
 
                 // Auto-intake and approach cube2
                 addParallel(new AutoIntake(robot.getIntake()));
@@ -283,7 +289,7 @@ public class AutoGroup extends CommandGroup {
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -cube2Distance, 0.75, true, true, 2000, "Retrieve 2nd cube"));
 
                 // Turn towards switch
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
 
                 // Approach again...
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), retreat1, 0.75, true, true, 2000, "Approach with 2nd cube"));
@@ -296,7 +302,7 @@ public class AutoGroup extends CommandGroup {
 
                 // Turn while starting to intake
                 addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), cube3Angle, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), cube3Angle, 0.9, 2000));
 
                 // Auto-intake and approach cube2
                 addParallel(new AutoIntake(robot.getIntake()));
@@ -307,7 +313,7 @@ public class AutoGroup extends CommandGroup {
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -cube3Distance, 0.75, true, true, 2000, "Retrieve 3rd cube"));
 
                 // Turn towards switch
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
 
                 // Approach again...
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), retreat1, 0.75, true, true, 2000, "Approach with 3rd cube"));
@@ -344,7 +350,7 @@ public class AutoGroup extends CommandGroup {
 
                 // turn to angle ? deg while raising intake
                 addParallel(new IntakeToScale(robot.getCarriage(), robot.getArm()));
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), angle, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), angle, 0.9, 2000));
 
                 // Drive forward Y inches
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), Y, 0.5, true, true, 5000, "Approach"));
@@ -363,14 +369,14 @@ public class AutoGroup extends CommandGroup {
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), S, 0.75, true, true, 5000, "AutoDrive past switch"));
 
                 // turn to angle deg
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), traverseAngle, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), traverseAngle, 0.9, 2000));
 
                 // Drive forward T inches
                 addParallel(new PrepIntakeForTraverse(robot, T/2, 5000));
                 addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), T, 0.75, true, true, 5000, "AutoTraverse"));
 
                 // turn to angle 0 deg
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.75, 2000));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
                 // Raise intake
                 addSequential(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
