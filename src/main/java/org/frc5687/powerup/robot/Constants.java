@@ -46,6 +46,8 @@ public class Constants {
         public static final double INTAKE_IN =  -0.91; // green blue strobe;
         public static final double INTAKE_OUT = -0.93; // red strobe!
 
+        public static final double GIMME_CUBE = SOLID_GREEN;
+
         public static final double TELEOP_BLUE = SOLID_BLACK;
         public static final double TELEOP_RED = SOLID_BLACK;
 
