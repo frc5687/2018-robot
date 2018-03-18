@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.KillAll;
+import org.frc5687.powerup.robot.commands.RumbleControllersForNMillis;
 import org.frc5687.powerup.robot.commands.actions.ServoDown;
 import org.frc5687.powerup.robot.commands.actions.ServoUp;
 import org.frc5687.powerup.robot.commands.auto.*;
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot {
     private long lastPeriod;
     private int ticksPerUpdate = 5;
     private int updateTick = 0;
+    private boolean hasRumbledForEndgame;
 
 
     public Robot() {
@@ -151,6 +153,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
         driveTrain.enableCoastMode();
+        hasRumbledForEndgame = false;
     }
 
     @Override
@@ -179,6 +182,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        double matchTime = DriverStation.getInstance().getMatchTime();
+        if (!hasRumbledForEndgame && matchTime <= Constants.OI.START_RUMBLE_AT) {
+            new RumbleControllersForNMillis(oi, 2000, Constants.OI.RUMBLE_DURATION).start();
+            hasRumbledForEndgame = true;
+        }
         if (oi.getOperatorPOV() == 8) {
             new ServoUp(intake).start();
         } else if (oi.getOperatorPOV() == 4) {

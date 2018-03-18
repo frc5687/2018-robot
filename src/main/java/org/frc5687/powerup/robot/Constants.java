@@ -59,7 +59,13 @@ public class Constants {
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
     }
-
+    public class OI {
+        public static final double RUMBLE_INTENSITY = 1;
+        public static final double END_GAME_START = 30; // In seconds
+        public static final double START_RUMBLE_AT = END_GAME_START;
+        public static final double RUMBLE_DURATION = 2; //In seconds
+        public static final double END_RUMBLE_AT = END_GAME_START - RUMBLE_DURATION;
+    }
     public class DriveTrain {
         public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
