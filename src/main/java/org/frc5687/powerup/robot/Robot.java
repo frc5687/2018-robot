@@ -180,7 +180,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        poll();
+        oi.poll();
     }
 
     @Override
@@ -225,10 +225,6 @@ public class Robot extends TimedRobot {
             DriverStation.reportError("Unhandled exception: " + throwable.toString(), throwable.getStackTrace());
             System.exit(1);
         }
-    }
-
-    public void poll(){
-        oi.poll();
     }
 
     public double estimateIntakeHeight() {
