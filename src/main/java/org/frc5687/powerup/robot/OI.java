@@ -208,18 +208,34 @@ public class OI {
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
     }
 
+    public void setDriverGamepadRumble(double leftIntensity, double rightIntensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setDriverGamepadRumble(double intensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
+
+    public void setOperatorGamepadRumble(double leftIntensity, double rightIntensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setOperatorGamepadRumble(double intensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
+
     public void poll() {
         if (DriverStation.getInstance().getMatchTime() > 30 - (Constants.OI.RUMBLE_DURATION) && DriverStation.getInstance().getMatchTime() <= 30) {
-            driverGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
-            driverGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
-            operatorGamepad.setRumble(RumbleType.kLeftRumble, Constants.OI.RUMBLE_INTENSITY);
-            operatorGamepad.setRumble(RumbleType.kRightRumble, Constants.OI.RUMBLE_INTENSITY);
+            setDriverGamepadRumble(Constants.OI.RUMBLE_INTENSITY);
+            setOperatorGamepadRumble(Constants.OI.RUMBLE_INTENSITY);
         }
         else {
-            driverGamepad.setRumble(RumbleType.kLeftRumble, 0);
-            driverGamepad.setRumble(RumbleType.kRightRumble, 0);
-            operatorGamepad.setRumble(RumbleType.kLeftRumble, 0);
-            operatorGamepad.setRumble(RumbleType.kRightRumble, 0);
+            setDriverGamepadRumble(0);
+            setOperatorGamepadRumble(0);
         }
     }
 
