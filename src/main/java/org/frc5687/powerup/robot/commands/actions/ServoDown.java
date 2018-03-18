@@ -16,7 +16,7 @@ public class ServoDown extends Command {
 
     @Override
     protected void initialize() {
-        DriverStation.reportError("ServoUp initialized", false);
+        DriverStation.reportError("ServoDown initialized", false);
         _intake.driveServo(Constants.Intake.SERVO_BOTTOM);
         SmartDashboard.putNumber("Intake/Servo", Constants.Intake.SERVO_BOTTOM);
         _isFinished = true;
