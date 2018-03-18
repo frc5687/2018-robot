@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc5687.powerup.robot.OI;
 
@@ -26,12 +27,14 @@ public class RumbleControllersForNMillis extends Command {
         _endTime = System.currentTimeMillis() + _duration;
         _oi.setDriverGamepadRumble(_driverLeftIntensity, _driverRightIntensity);
         _oi.setOperatorGamepadRumble(_operatorLeftIntensity, _operatorRightIntensity);
+        DriverStation.reportError("RumbleControllersForNMillis initializing. Going to rumble for " + Long.toString(_duration) + "ms", false)
     }
 
     @Override
     protected void end() {
         _oi.setDriverGamepadRumble(0);
         _oi.setOperatorGamepadRumble(0);
+        DriverStation.reportError("RumbleControllersForNMillis ended.", false);
     }
 
     @Override
