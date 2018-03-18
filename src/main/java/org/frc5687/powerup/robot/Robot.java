@@ -109,6 +109,7 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        _manualLightFlashRequested = false;
         // Reset the lights slider in case it was left on
         SmartDashboard.putNumber("DB/Slider 0", 0.0);
 
@@ -151,6 +152,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
+        _manualLightFlashRequested = false;
         driveTrain.enableCoastMode();
     }
 
