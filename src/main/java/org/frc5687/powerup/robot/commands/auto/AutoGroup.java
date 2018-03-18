@@ -105,20 +105,9 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
                         DriverStation.reportError("Switch Only. Position 3. Right Side", false);
-                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
-                        armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
-                        if (robot.getArm().isHealthy()) {
-                            addParallel(armPid);
-                        }
-                        //addParallel(new EjectWhenSwitchDetected(robot));
-                        addSequential(new CenterLeftToRightSwitch(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9));
-                        addSequential(new AutoEject(robot.getIntake(), -0.42));
+                        centerLeftToRightSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
-                        }
-                        if (robot.getArm().isHealthy()) {
-                            addParallel(new FinishArmPid(armPid));
                         }
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
@@ -220,6 +209,13 @@ public class AutoGroup extends CommandGroup {
                         ///addSequential(new BehindAutoLineToLeftSwitch(robot));
                         //addSequential(new AutoEject(robot.getIntake(), -0.42));
                         break;
+                    case Constants.AutoChooser.Position.CENTER:
+                        DriverStation.reportError("Switch Then Pick Up Cube (only switch implemented). Position 3. Right Side", false);
+                        centerLeftToRightSwitch(robot);
+                        if (robot.getCarriage().isHealthy()) {
+                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
+                        }
+                        break;
                 }
                 break;
             case Constants.AutoChooser.Mode.SWITCH_DRIVE:
@@ -257,6 +253,21 @@ public class AutoGroup extends CommandGroup {
         }
         //addParallel(new EjectWhenSwitchDetected(robot));
         addSequential(new CenterLeftToLeftSwitch(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9));
+        addSequential(new AutoEject(robot.getIntake(), -0.42));
+        if (robot.getArm().isHealthy()) {
+            addParallel(new FinishArmPid(armPid));
+        }
+    }
+
+    private void centerLeftToRightSwitch(Robot robot) {
+        double armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+        MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
+        if (robot.getArm().isHealthy()) {
+            addParallel(armPid);
+        }
+        //addParallel(new EjectWhenSwitchDetected(robot));
+        addSequential(new CenterLeftToRightSwitch(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9));
         addSequential(new AutoEject(robot.getIntake(), -0.42));
         if (robot.getArm().isHealthy()) {
