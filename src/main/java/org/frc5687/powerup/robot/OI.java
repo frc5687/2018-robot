@@ -56,8 +56,6 @@ public class OI {
 
     private Robot _robot;
 
-    private double endRumble;
-
     public OI(Robot robot) {
         _robot = robot;
         driverGamepad = new Joystick(0);
