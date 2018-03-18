@@ -149,6 +149,14 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
         driveTrain.enableCoastMode();
+        double matchTime = DriverStation.getInstance().getMatchTime();
+        if (matchTime > Constants.OI.END_RUMBLE_AT && matchTime <= Constants.OI.START_RUMBLE_AT) {
+            oi.setDriverGamepadRumble(Constants.OI.RUMBLE_INTENSITY);
+            oi.setOperatorGamepadRumble(Constants.OI.RUMBLE_INTENSITY);
+        } else {
+            oi.setDriverGamepadRumble(0);
+            oi.setOperatorGamepadRumble(0);
+        }
     }
 
     @Override
@@ -180,7 +188,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        oi.poll();
     }
 
     @Override

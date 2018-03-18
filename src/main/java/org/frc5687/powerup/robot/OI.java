@@ -227,17 +227,4 @@ public class OI {
         operatorGamepad.setRumble(RumbleType.kLeftRumble, intensity);
         operatorGamepad.setRumble(RumbleType.kRightRumble, intensity);
     }
-
-    public void poll() {
-        if (DriverStation.getInstance().getMatchTime() > 30 - (Constants.OI.RUMBLE_DURATION) && DriverStation.getInstance().getMatchTime() <= 30) {
-            setDriverGamepadRumble(Constants.OI.RUMBLE_INTENSITY);
-            setOperatorGamepadRumble(Constants.OI.RUMBLE_INTENSITY);
-        }
-        else {
-            setDriverGamepadRumble(0);
-            setOperatorGamepadRumble(0);
-        }
-    }
-
-
 }
