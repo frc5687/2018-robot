@@ -161,9 +161,6 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
-        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
-            new KillAll(this).start();
-        }
     }
 
     @Override
@@ -180,6 +177,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
+            new KillAll(this).start();
+        }
     }
 
     @Override
