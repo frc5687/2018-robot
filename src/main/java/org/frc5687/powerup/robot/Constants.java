@@ -79,8 +79,8 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED_PROTO = true;
         public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
-        public static final double SERVO_BOTTOM = 0.87;
-        public static final double SERVO_UP = 0.2;
+        public static final double SERVO_UP = 0.87;
+        public static final double SERVO_BOTTOM = 0.2;
         public static final long EJECT_TIME = 350;
 
         public static final double HOLD_SPEED = 0.30;
