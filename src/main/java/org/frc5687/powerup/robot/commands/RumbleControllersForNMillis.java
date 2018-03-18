@@ -27,7 +27,7 @@ public class RumbleControllersForNMillis extends Command {
         _endTime = System.currentTimeMillis() + _duration;
         _oi.setDriverGamepadRumble(_driverLeftIntensity, _driverRightIntensity);
         _oi.setOperatorGamepadRumble(_operatorLeftIntensity, _operatorRightIntensity);
-        DriverStation.reportError("RumbleControllersForNMillis initializing. Going to rumble for " + Long.toString(_duration) + "ms", false)
+        DriverStation.reportError("RumbleControllersForNMillis initializing. Going to rumble for " + Long.toString(_duration) + "ms", false);
     }
 
     @Override
