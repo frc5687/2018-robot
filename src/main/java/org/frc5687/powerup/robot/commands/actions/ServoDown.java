@@ -24,7 +24,7 @@ public class ServoDown extends Command {
 
     @Override
     protected void end() {
-        DriverStation.reportError("ServoUp.end(): ServoUp finished", false);
+        DriverStation.reportError("ServoDown.end(): ServoDown finished", false);
     }
 
     @Override
