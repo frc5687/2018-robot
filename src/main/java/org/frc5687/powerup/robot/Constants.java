@@ -34,6 +34,8 @@ public class Constants {
 
         public static final double SOLID_BLACK = 0.99;
 
+        public static final double SOLID_HOT_PINK = 0.57;
+
         public static final double CONFETTI = -0.87;
 
 
@@ -43,6 +45,8 @@ public class Constants {
         public static final double CUBE_DETECTED = -0.47;  // Forest twinkle
         public static final double INTAKE_IN =  -0.91; // green blue strobe;
         public static final double INTAKE_OUT = -0.93; // red strobe!
+
+        public static final double GIMME_CUBE = SOLID_GREEN;
 
         public static final double TELEOP_BLUE = SOLID_BLACK;
         public static final double TELEOP_RED = SOLID_BLACK;
@@ -59,7 +63,13 @@ public class Constants {
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
     }
-
+    public class OI {
+        public static final double RUMBLE_INTENSITY = 1;
+        public static final double END_GAME_START = 30; // In seconds
+        public static final double START_RUMBLE_AT = END_GAME_START;
+        public static final double RUMBLE_DURATION = 2; //In seconds
+        public static final double END_RUMBLE_AT = END_GAME_START - RUMBLE_DURATION;
+    }
     public class DriveTrain {
         public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
@@ -450,8 +460,8 @@ public class Constants {
             public static final int SWITCH_ONLY = 2;
             public static final int SCALE_ONLY = 3;
             public static final int SWITCH_THEN_SCALE = 4;
-            public static final int SCALE_THEN_SWITCH = 5;
-            public static final int SWITCH_OR_SCALE = 6;
+            public static final int SWITCH_THEN_PICKUP_CUBE = 5;
+            public static final int SWITCH_THEN_SWITCH = 6;
             public static final int SWITCH_DRIVE = 9;
             public static final int SCALE_DRIVE = 10;
         }

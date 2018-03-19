@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.KillAll;
+import org.frc5687.powerup.robot.commands.RumbleControllersForNMillis;
 import org.frc5687.powerup.robot.commands.actions.ServoDown;
 import org.frc5687.powerup.robot.commands.actions.ServoUp;
 import org.frc5687.powerup.robot.commands.auto.*;
@@ -41,6 +42,8 @@ public class Robot extends TimedRobot {
     private long lastPeriod;
     private int ticksPerUpdate = 5;
     private int updateTick = 0;
+    private boolean hasRumbledForEndgame;
+    private boolean _manualLightFlashRequested;
 
 
     public Robot() {
@@ -108,6 +111,8 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        _manualLightFlashRequested = false;
+        hasRumbledForEndgame = false;
         // Reset the lights slider in case it was left on
         SmartDashboard.putNumber("DB/Slider 0", 0.0);
 
@@ -150,7 +155,10 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
+        _manualLightFlashRequested = false;
         driveTrain.enableCoastMode();
+        hasRumbledForEndgame = false;
+        hasRumbledForEndgame = false;
     }
 
     @Override
@@ -179,13 +187,28 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        if (oi.getOperatorPOV() == 8) {
+
+        double matchTime = DriverStation.getInstance().getMatchTime();
+
+        if (!hasRumbledForEndgame && matchTime <= Constants.OI.START_RUMBLE_AT) {
+            new RumbleControllersForNMillis(oi, 2000, Constants.OI.RUMBLE_DURATION).start();
+            hasRumbledForEndgame = true;
+        }
+
+        int operatorPOV = oi.getOperatorPOV();
+        int driverPOV = oi.getDriverPOV();
+
+        if (operatorPOV == 8) {
             new ServoUp(intake).start();
-        } else if (oi.getOperatorPOV() == 4) {
+        } else if (operatorPOV == 4) {
             new ServoDown(intake).start();
-        } else if (oi.getDriverPOV() == 2 || oi.getOperatorPOV() == 2) {
+        }
+
+        if (driverPOV == 2 || operatorPOV == 2) {
             new KillAll(this).start();
         }
+
+        _manualLightFlashRequested = operatorPOV == 6;
     }
 
     @Override
@@ -245,5 +268,9 @@ public class Robot extends TimedRobot {
     public boolean isInWarningPeriod() {
         double remaining = DriverStation.getInstance().getMatchTime();
         return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
+    }
+
+    public boolean isManualLightFlashRequested() {
+        return _manualLightFlashRequested;
     }
 }

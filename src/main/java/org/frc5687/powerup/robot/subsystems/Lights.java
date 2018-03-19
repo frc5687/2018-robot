@@ -53,7 +53,9 @@ public class Lights extends Subsystem {
     public void setColors() {
         Intake intake = _robot.getIntake();
         Climber climber = _robot.getClimber();
-        if (_robot.isInWarningPeriod()) {
+        if (_robot.isManualLightFlashRequested()) {
+            _mainLeftColor = _mainRightColor = Constants.Lights.GIMME_CUBE;
+        } else if (_robot.isInWarningPeriod()) {
             _mainLeftColor = _mainRightColor = Constants.Lights.TIME_WARNING;
         } else if (intake.isPlateDetected() && _robot.estimateIntakeHeight() >= Constants.Intake.PLATE_MINIMUM_CLARANCE) {
             _mainLeftColor = _mainRightColor = Constants.Lights.PLATE_DETECTED;
