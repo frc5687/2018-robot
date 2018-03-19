@@ -179,6 +179,40 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+                        addSequential(new LeftSwitchToBehindAutoLine(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, 0.9));
+                        addParallel(new AutoIntake(robot.getIntake()));
+                        addSequential(new LeftSwitchFacingPowerCubeZoneToPowerCubeZone(robot));
+                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -36, 0.3, true, true, 3000, ""));
+                        break;
+                    case Constants.AutoChooser.Position.CENTER:
+                        DriverStation.reportError("Switch Then Pick Up Cube (only switch implemented). Position 3. Right Side", false);
+                        centerLeftToRightSwitch(robot);
+                        if (robot.getCarriage().isHealthy()) {
+                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
+                        }
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        buildAutoCross(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        farRightToRightSwitch(robot);
+                        break;
+                }
+                break;
+            case Constants.AutoChooser.Mode.SWITCH_THEN_SWITCH:
+                switch (switchFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        buildAutoCross(robot);
+                        break;
+                    case -Constants.AutoChooser.Position.CENTER:
+                        DriverStation.reportError("Switch Then Switch. Position 3. Left Side", false);
+                        centerLeftToLeftSwitch(robot);
+                        if (robot.getCarriage().isHealthy()) {
+                            addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        }
+                        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
                         //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60, 0.6, true, true, 4000, ""));
                         addSequential(new LeftSwitchToBehindAutoLine(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, 0.9));
@@ -194,7 +228,7 @@ public class AutoGroup extends CommandGroup {
                         //addSequential(new AutoEject(robot.getIntake(), -0.42));
                         break;
                     case Constants.AutoChooser.Position.CENTER:
-                        DriverStation.reportError("Switch Then Pick Up Cube (only switch implemented). Position 3. Right Side", false);
+                        DriverStation.reportError("Switch Then Switch (only switch implemented). Position 3. Right Side", false);
                         centerLeftToRightSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
