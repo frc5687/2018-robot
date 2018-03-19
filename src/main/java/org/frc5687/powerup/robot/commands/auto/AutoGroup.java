@@ -45,7 +45,6 @@ public class AutoGroup extends CommandGroup {
                 //addParallel(armPid);
                 //addSequential(new FinishArmPid(armPid));
                 break;
-
             case Constants.AutoChooser.Mode.CROSS_AUTOLINE:
                 /*
                 distance = 120;
@@ -60,9 +59,10 @@ public class AutoGroup extends CommandGroup {
                 DynamicPathCommand path;
                 switch (position) {
                     case 1:
-                        buildAutoCross(robot);
-                        break;
                     case 2:
+                    case 4:
+                    case 5:
+                    case 6:
                         buildAutoCross(robot);
                         break;
                     case 3:
@@ -70,15 +70,6 @@ public class AutoGroup extends CommandGroup {
                         addSequential(path);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.9, 2000));
                         //addSequential(new AutoZeroCarriage(robot.getCarriage())); Unsure about where this will end up, so I'm not auto zeroing here
-                        break;
-                    case 4:
-                        buildAutoCross(robot);
-                        break;
-                    case 5:
-                        buildAutoCross(robot);
-                        break;
-                    case 6:
-                        buildAutoCross(robot);
                         break;
                 }
                 break;
@@ -88,13 +79,14 @@ public class AutoGroup extends CommandGroup {
                 double armTarget;
                 switch(switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT: // Position 1, left side
-                        break;
                     case Constants.AutoChooser.Position.FAR_LEFT:  // Position 1, right side
+                        buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.MID_LEFT: // Position 2, left side:
                         straightSwitch(robot);
                         break;
                     case Constants.AutoChooser.Position.MID_LEFT: // Position 2, right side
+                        buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
                         DriverStation.reportError("Switch Only. Position 3. Left Side", false);
@@ -111,13 +103,14 @@ public class AutoGroup extends CommandGroup {
                         }
                         break;
                     case -Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, left side
+                        buildAutoCross(robot);
                         break;
                     case Constants.AutoChooser.Position.NEAR_RIGHT: // Position 4, right side
                         straightSwitch(robot);
                         break;
                     case -Constants.AutoChooser.Position.MID_RIGHT: // Position 5, left side
-                        break;
                     case Constants.AutoChooser.Position.MID_RIGHT: // Position 5, right side
+                        buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, left side
                         /*
@@ -136,17 +129,7 @@ public class AutoGroup extends CommandGroup {
                         buildAutoCross(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, right side
-                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
-                        armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
-                        if (robot.getArm().isHealthy()) {
-                            addParallel(armPid);
-                        }
-                        addSequential(new FarRightToRightSwitchSide(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.9));
-                        addSequential(new AutoEject(robot.getIntake()));
-                        if (robot.getCarriage().isHealthy()) {
-                            addParallel(new AutoZeroCarriage(robot.getCarriage()));
-                        }
+                        farRightToRightSwitch(robot);
                         break;
                 }
                 break;
@@ -162,9 +145,6 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);
-                        break;
-                    case Constants.AutoChooser.Position.CENTER:
-                        // Sit here as we don't have anything
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         addParallel(new AutoZeroCarriageThenLower(robot));
@@ -188,6 +168,10 @@ public class AutoGroup extends CommandGroup {
                 break;
             case Constants.AutoChooser.Mode.SWITCH_THEN_PICKUP_CUBE:
                 switch (switchFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        buildAutoCross(robot);
+                        break;
                     case -Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
                         centerLeftToLeftSwitch(robot);
@@ -215,6 +199,12 @@ public class AutoGroup extends CommandGroup {
                         if (robot.getCarriage().isHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        buildAutoCross(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        farRightToRightSwitch(robot);
                         break;
                 }
                 break;
@@ -272,6 +262,20 @@ public class AutoGroup extends CommandGroup {
         addSequential(new AutoEject(robot.getIntake(), -0.42));
         if (robot.getArm().isHealthy()) {
             addParallel(new FinishArmPid(armPid));
+        }
+    }
+
+    private void farRightToRightSwitch(Robot robot) {
+        double armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+        MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
+        if (robot.getArm().isHealthy()) {
+            addParallel(armPid);
+        }
+        addSequential(new FarRightToRightSwitchSide(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, 0.9));
+        addSequential(new AutoEject(robot.getIntake()));
+        if (robot.getCarriage().isHealthy()) {
+            addParallel(new AutoZeroCarriage(robot.getCarriage()));
         }
     }
 
