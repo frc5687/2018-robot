@@ -56,7 +56,6 @@ public class AutoGroup extends CommandGroup {
                     addParallel(new AutoDrive(robot.getDriveTrain(), distance, 0.75, true, true, 5000, "auto"));
                 }
                 */
-                DynamicPathCommand path;
                 switch (position) {
                     case 1:
                     case 2:
@@ -66,14 +65,12 @@ public class AutoGroup extends CommandGroup {
                         buildAutoCross(robot);
                         break;
                     case 3:
-                        path = new CrossAutoLineToLeftOfPowerCube(robot);
-                        addSequential(path);
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), path.lastHeading, 0.9, 2000));
+                        addSequential(new CrossAutoLineToLeftOfPowerCube(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, 0.9, 2000));
                         //addSequential(new AutoZeroCarriage(robot.getCarriage())); Unsure about where this will end up, so I'm not auto zeroing here
                         break;
                 }
                 break;
-
             case Constants.AutoChooser.Mode.SWITCH_ONLY:
                 SmartDashboard.putString("Auto/Mode", "Switch Only");
                 double armTarget;
