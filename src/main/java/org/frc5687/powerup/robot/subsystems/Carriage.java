@@ -19,6 +19,7 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
+    private boolean _isHealthy;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -40,6 +41,7 @@ public class Carriage extends PIDSubsystem {
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
         _isCompetitionBot = isCompetitionBot;
+        _isHealthy = true;
     }
 
     public double calculateHoldSpeed() {
@@ -141,7 +143,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return true;
+        return _isHealthy;
     }
 
     public boolean isInTopZone() {
