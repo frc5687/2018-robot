@@ -41,7 +41,7 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.STAY_PUT:
                 // Nothing to do here but look sad
                 //armPid = new MoveArmToSetpointPID(robot.getArm(), 86, true);
-                addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -789));
+                addSequential(new AutoZeroCarriageThenLower(robot));
                 //addParallel(armPid);
                 //addSequential(new FinishArmPid(armPid));
                 break;
