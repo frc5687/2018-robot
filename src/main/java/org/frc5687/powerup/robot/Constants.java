@@ -188,7 +188,7 @@ public class Constants {
                     }
                     public class kA {
                         public static final double METERS = 1.0 / MaxAcceleration.METERS;
-                        public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
+                        public static final double INCHES = 1.0;//1.0 / MaxAcceleration.INCHES;
                     }
                 }
             }
