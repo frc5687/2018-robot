@@ -98,6 +98,7 @@ public class Constants {
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
+        public static final double SCALE_DROP_SPEED = -0.99;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;

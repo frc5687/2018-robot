@@ -138,9 +138,9 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
                         addSequential(new FarLeftToLeftScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 40, 0.9));
-                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.5, true, true, 1000,""));
-                        addSequential(new AutoEject(robot.getIntake(), -0.3));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, 0.9));
+                        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.5, true, true, 1000,""));
+                        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);
@@ -161,7 +161,7 @@ public class AutoGroup extends CommandGroup {
                         }
                         addSequential(new FarRightToRightScale(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.9, 700));
-                        addSequential(new AutoEject(robot.getIntake(), -0.99));
+                        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
                         break;
                 }
                 break;
