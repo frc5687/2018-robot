@@ -76,6 +76,8 @@ public class AutoGroup extends CommandGroup {
                 double armTarget;
                 switch(switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT: // Position 1, left side
+                        farLeftToLeftSwitch(robot);
+                        break;
                     case Constants.AutoChooser.Position.FAR_LEFT:  // Position 1, right side
                         buildAutoCross(robot);
                         break;
@@ -308,6 +310,15 @@ public class AutoGroup extends CommandGroup {
         if (robot.getCarriage().isHealthy()) {
             addParallel(new AutoZeroCarriage(robot.getCarriage()));
         }
+    }
+
+    private void farLeftToLeftSwitch(Robot robot) {
+        double armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armTarget));
+        addSequential(new FarRightToRightSwitchSide(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 0.9));
+        addSequential(new AutoEject(robot.getIntake()));
+        addParallel(new AutoZeroCarriage(robot.getCarriage()));
     }
 
     private void buildSimpleSwitch(Robot robot, int switchFactor) {
