@@ -10,6 +10,8 @@ import org.frc5687.powerup.robot.commands.DriveArm;
 import org.frc5687.powerup.robot.utils.AnglePotentiometer;
 import org.frc5687.powerup.robot.utils.PDP;
 
+import static java.lang.Math.abs;
+
 public class Arm extends PIDSubsystem {
     private PDP _pdp;
     private Encoder encoder;
@@ -23,6 +25,7 @@ public class Arm extends PIDSubsystem {
     private double BOTTOM;
     private boolean _isCompetitionBot;
     private int motorInversionMultiplier;
+    private boolean isHealthy;
 
     public static final double kP = 0.03;
     public static final double kI = 0.002;
@@ -49,6 +52,7 @@ public class Arm extends PIDSubsystem {
         _pot = isCompetitionBot ?
                 new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
                 : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
+        isHealthy = true;
     }
 
     public double calculateHoldSpeed() {
@@ -90,8 +94,10 @@ public class Arm extends PIDSubsystem {
         speed = Math.min(speed, Constants.Arm.MAX_SPEED);
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
+        if (abs(speed)>Constants.Arm.MINIMUM_SPEED){
+            isHealthy = false;
+        }
     }
-
 
     @Override
     protected void initDefaultCommand() {
@@ -104,12 +110,12 @@ public class Arm extends PIDSubsystem {
 
     public boolean atTop() {
         double diff = getPot() - TOP;
-        return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
+        return abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public boolean atBottom() {
         double diff = getPot() - BOTTOM;
-        return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
+        return abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public void zeroEncoder() {
@@ -162,7 +168,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return true;
+        return isHealthy;
     }
 
     public double estimateHeight() {

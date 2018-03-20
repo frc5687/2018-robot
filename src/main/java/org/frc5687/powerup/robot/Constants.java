@@ -366,6 +366,7 @@ public class Constants {
 
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
+        public static final double MINIMUM_SPEED = 0.05;
 
         public class Encoder {
             public static final double ENCODER_START = 0;
