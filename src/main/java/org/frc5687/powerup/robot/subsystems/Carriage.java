@@ -89,6 +89,9 @@ public class Carriage extends PIDSubsystem {
             if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
                 speed = 0.0;
             }
+            if (Math.abs(speed) > Constants.Carriage.MIN_SPEED && _pdp.getCurrent(RobotMap.PDP.CARRIAGE_SP) > Constants.Carriage.PDP_MIN_CURRENT){
+                _isHealthy = false;
+            }
 
             speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
         }

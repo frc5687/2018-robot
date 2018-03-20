@@ -273,8 +273,10 @@ public class Constants {
 
     public class Carriage {
         public static final double PDP_EXCESSIVE_CURRENT = 100.0;
+        public static final double PDP_MIN_CURRENT = 5;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
+        public static final double MIN_SPEED = 0.25;
         public class HoldSpeeds {
             public static final double PAST_TOP_PROTO = 0.42;
             public static final double PAST_TOP_GRETA = 0.0;
@@ -323,6 +325,7 @@ public class Constants {
         public static final int ENCODER_DRIVE_COMP = -530; // -394
         public static final int ENCODER_BOTTOM_COMP = -955;
         public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
+
 
         // public static
         public static final double RUNWAY = 25.5; // in
