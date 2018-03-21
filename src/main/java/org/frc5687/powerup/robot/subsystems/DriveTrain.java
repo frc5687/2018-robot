@@ -59,6 +59,42 @@ public class DriveTrain extends Subsystem implements PIDSource {
         rightFollower.follow(rightMaster);
 
         // Setup motors
+        setupMotorControllers();
+
+        enableBrakeMode();
+
+        configureTalonPID();
+
+        // Encoders
+
+        leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+        rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+
+        leftMaster.setSensorPhase(true);
+        rightMaster.setSensorPhase(true);
+
+        //leftMaster.configMotionProfileTrajectoryPeriod(10, 0);
+        //leftMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10, 0);
+
+        resetDriveEncoders();
+
+        this.imu = imu;
+        this.oi = oi;
+    }
+
+    public void configureTalonPID() {
+        leftMaster.config_kP(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kP, 0);
+        leftMaster.config_kI(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kI, 0);
+        leftMaster.config_kD(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kD, 0);
+        leftMaster.config_kF(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kF, 0);
+
+        rightMaster.config_kP(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kP, 0);
+        rightMaster.config_kI(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kI, 0);
+        rightMaster.config_kD(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kD, 0);
+        rightMaster.config_kF(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kF, 0);
+    }
+
+    public void setupMotorControllers() {
         leftMaster.configPeakOutputForward(HIGH_POW, 0);
         leftFollower.configPeakOutputForward(HIGH_POW, 0);
         rightMaster.configPeakOutputForward(HIGH_POW, 0);
@@ -83,34 +119,6 @@ public class DriveTrain extends Subsystem implements PIDSource {
         leftFollower.setInverted(Constants.DriveTrain.LEFT_MOTORS_INVERTED);
         rightMaster.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         rightFollower.setInverted(Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
-
-        enableBrakeMode();
-
-        leftMaster.config_kP(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kP, 0);
-        leftMaster.config_kI(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kI, 0);
-        leftMaster.config_kD(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kD, 0);
-        leftMaster.config_kF(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kF, 0);
-
-        rightMaster.config_kP(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kP, 0);
-        rightMaster.config_kI(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kI, 0);
-        rightMaster.config_kD(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kD, 0);
-        rightMaster.config_kF(0, Constants.Auto.Drive.TrajectoryFollowing.Talon.kF, 0);
-
-        // Encoders
-
-        leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-        rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-
-        leftMaster.setSensorPhase(true);
-        rightMaster.setSensorPhase(true);
-
-        //leftMaster.configMotionProfileTrajectoryPeriod(10, 0);
-        //leftMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10, 0);
-
-        resetDriveEncoders();
-
-        this.imu = imu;
-        this.oi = oi;
     }
 
     @Override
