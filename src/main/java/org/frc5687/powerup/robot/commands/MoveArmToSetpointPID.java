@@ -55,6 +55,7 @@ public class MoveArmToSetpointPID extends Command {
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         _arm.disable();
+        _arm.drive(_arm.calculateHoldSpeed(true));
     }
 
     @Override
@@ -63,8 +64,14 @@ public class MoveArmToSetpointPID extends Command {
             DriverStation.reportError("MoveArmToSetpointPID timed out at " + _endMillis + "ms", false);
             return true;
         }
-        if (canFinish && _arm.onTarget()) {
-            DriverStation.reportError("MoveArmToSetpointPID completed at " + _arm.getAngle(), false);
+        if (_arm.onTarget()) {
+            /*
+            if (canFinish) {
+                DriverStation.reportError("MoveArmToSetpointPID completed at " + _arm.getAngle(), false);
+                return true;
+            }
+            */
+            DriverStation.reportError("MoveArmToSetpointPID on target but can't finish, except it can thanks to ignoring can finish in isFinished(). Angle at " + _arm.getAngle(), false);
             return true;
         }
 

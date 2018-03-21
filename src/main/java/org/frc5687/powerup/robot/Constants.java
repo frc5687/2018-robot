@@ -32,6 +32,10 @@ public class Constants {
         public static final double PULSING_YELLOW = 0.10;
         public static final double BEATING_YELLOW = 0.11;
 
+        public static final double SOLID_BLACK = 0.99;
+
+        public static final double SOLID_HOT_PINK = 0.57;
+
         public static final double CONFETTI = -0.87;
 
 
@@ -42,8 +46,10 @@ public class Constants {
         public static final double INTAKE_IN =  -0.91; // green blue strobe;
         public static final double INTAKE_OUT = -0.93; // red strobe!
 
-        public static final double TELEOP_BLUE = SOLID_BLUE;
-        public static final double TELEOP_RED = SOLID_RED;
+        public static final double GIMME_CUBE = SOLID_GREEN;
+
+        public static final double TELEOP_BLUE = SOLID_BLACK;
+        public static final double TELEOP_RED = SOLID_BLACK;
 
         public static final double AUTO_BLUE =  PULSING_BLUE;
         public static final double AUTO_RED = PULSING_RED;
@@ -57,7 +63,13 @@ public class Constants {
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
     }
-
+    public class OI {
+        public static final double RUMBLE_INTENSITY = 1;
+        public static final double END_GAME_START = 30; // In seconds
+        public static final double START_RUMBLE_AT = END_GAME_START;
+        public static final double RUMBLE_DURATION = 2; //In seconds
+        public static final double END_RUMBLE_AT = END_GAME_START - RUMBLE_DURATION;
+    }
     public class DriveTrain {
         public static final double DEADBAND = 0.0;
         public static final boolean LEFT_MOTORS_INVERTED = false;
@@ -77,15 +89,16 @@ public class Constants {
         public static final boolean RIGHT_MOTORS_INVERTED_PROTO = true;
         public static final double DROP_SPEED = -0.75;
         public static final double OUTTAKE_SPEED = -0.75;
-        public static final double SERVO_BOTTOM = 0.87;
-        public static final double SERVO_UP = 0.2;
+        public static final double SERVO_UP = 0.87;
+        public static final double SERVO_BOTTOM = 0.2;
         public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.35;
+        public static final double HOLD_SPEED = 0.30;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 750;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
+        public static final double SCALE_DROP_SPEED = -0.99;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;
@@ -99,9 +112,16 @@ public class Constants {
 
         public class BACK_IR {
             public static final boolean ENABLED = true;
-            public static final int DETECTION_THRESHOLD = 1200;
-            public static final int DETECTED_THRESHOLD = 900;
-            public static final int SECURED_THRESHOLD = 1080;
+            public static final int SECURED_LOW_END = 1500;
+            public static final int SECURED_HIGH_END = Integer.MAX_VALUE;
+            public static final int DETECTED_LOW_END = 500;
+            public static final int DETECTED_HIGH_END = Integer.MAX_VALUE;
+        }
+
+        public class UP_IR {
+            public static final boolean ENABLED = true;
+            public static final int PLATE_DETECTION_THRESHOLD = 550;
+            public static final double MIN_ARM_ANGLE = 151;
         }
     }
 
@@ -113,15 +133,15 @@ public class Constants {
 
             public static final double SPEED = 0.6;
 
-            public static final double kP = 0.05;
-            public static final double kI = 0.15;
-            public static final double kD = 0.25;
+            public static final double kP = 0.04;
+            public static final double kI = 0.003;//0.01;
+            public static final double kD = 0.80;//0.3;
             public static final double TOLERANCE = 1.0; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
              */
-            public static final double STEADY_TIME = 100;
+            public static final double STEADY_TIME = 40;
 
         }
 
@@ -168,7 +188,7 @@ public class Constants {
                     }
                     public class kA {
                         public static final double METERS = 1.0 / MaxAcceleration.METERS;
-                        public static final double INCHES = 0.0;//1.0 / MaxAcceleration.INCHES;
+                        public static final double INCHES = 1.0;//1.0 / MaxAcceleration.INCHES;
                     }
                 }
             }
@@ -275,8 +295,37 @@ public class Constants {
         public static final double PDP_EXCESSIVE_CURRENT = 100.0;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
+        public class HoldSpeeds {
+            public static final double PAST_TOP_PROTO = 0.42;
+            public static final double PAST_TOP_GRETA = 0.5;
 
-        public static final double HOLD_SPEED = 0.2; // was 0.01 on comp bot
+            public static final double PAST_NEG_20_PROTO = 0.42;
+            public static final double PAST_NEG_20_GRETA = 0.5;
+
+            public static final double PAST_NEG_50_PROTO = 0.42;
+            public static final double PAST_NEG_50_GRETA = 0.5;
+
+            public static final double PAST_NEG_100_PROTO = 0.42;
+            public static final double PAST_NEG_100_GRETA = 0.5;
+
+            public static final double PAST_NEG_200_PROTO = 0.3;
+            public static final double PAST_NEG_200_GRETA = 0.0;
+
+            public static final double PAST_NEG_400_PROTO = 0.2;
+            public static final double PAST_NEG_400_GRETA = 0.0;
+
+            public static final double PAST_NEG_500_PROTO = 0.1;
+            public static final double PAST_NEG_500_GRETA = 0.0;
+
+            public static final double PAST_NEG_600_PROTO = -0.2;
+            public static final double PAST_NEG_600_GRETA = 0.0;
+
+            public static final double PAST_NEG_700_PROTO = -0.3;
+            public static final double PAST_NEG_700_GRETA = 0.0;
+
+            public static final double PAST_NEG_800_PROTO = -0.4;
+            public static final double PAST_NEG_800_GRETA = 0.0;
+        }
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
 
@@ -309,7 +358,7 @@ public class Constants {
         public static final double RANGE_INCHES = TOP_INCHES - BOTTOM_INCHES;
 
         public static final double MAXIMUM_SPEED  = 1.0;
-        public static final double MINIMUM_SPEED  = -.5;
+        public static final double MINIMUM_SPEED  = -.7;
     }
 
     public class Arm {
@@ -325,11 +374,6 @@ public class Constants {
             public static final double ENCODER_FENCE = 90;
             public static final double ENCODER_TOP = 340;
         }
-
-        public static final double HOLD_SPEED_COMP = 0.135;
-        public static final double HOLD_SPEED_PROTO = 0.0;
-        public static final double HOLD_SPEED_WITH_CUBE_COMP = 0.15;
-        public static final double HOLD_SPEED_WITH_CUBE_PROTO = 0.0;
         public static final double SENSITIVITY = 0.75;
 
         public static final double MAX_SPEED = 0.75;
@@ -363,6 +407,28 @@ public class Constants {
         }
 
         public static final double LENGTH = 34.0;
+
+        public class HoldSpeeds {
+            public static final double PAST_160_CUBE_PROTO = 0.0;
+            public static final double PAST_160_CUBE_GRETA = 0.25;
+            public static final double PAST_160_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_160_NO_CUBE_GRETA = 0.25;
+
+            public static final double PAST_90_CUBE_PROTO = 0.0;
+            public static final double PAST_90_CUBE_GRETA = 0.1;
+            public static final double PAST_90_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
+
+            public static final double PAST_40_CUBE_PROTO = 0.0;
+            public static final double PAST_40_CUBE_GRETA = 0.1;
+            public static final double PAST_40_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_40_NO_CUBE_GRETA = 0.0;
+
+            public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
+            public static final double PAST_BOTTOM_CUBE_GRETA = -0.1;
+            public static final double PAST_BOTTOM_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.1;
+        }
     }
 
     public class Climber {
@@ -396,8 +462,10 @@ public class Constants {
             public static final int SWITCH_ONLY = 2;
             public static final int SCALE_ONLY = 3;
             public static final int SWITCH_THEN_SCALE = 4;
-            public static final int SCALE_THEN_SWITCH = 5;
-            public static final int SWITCH_OR_SCALE = 6;
+            public static final int SWITCH_THEN_PICKUP_CUBE = 5;
+            public static final int SWITCH_THEN_SWITCH = 6;
+            public static final int SWITCH_DRIVE = 9;
+            public static final int SCALE_DRIVE = 10;
         }
     }
     public class Limits {
