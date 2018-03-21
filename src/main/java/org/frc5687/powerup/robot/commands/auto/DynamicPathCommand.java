@@ -98,8 +98,8 @@ public class DynamicPathCommand extends Command {
     @Override
     protected void initialize() {
         DriverStation.reportError("Starting DynamicPathCommand", false);
-        _driveTrain.setupMotorControllers();
-        _driveTrain.configureTalonPID();
+        //_driveTrain.setupMotorControllers();
+        //_driveTrain.configureTalonPID();
         _driveTrain.resetDriveEncoders();
         //_imu.reset();
         endMillis = System.currentTimeMillis() + 15000;
