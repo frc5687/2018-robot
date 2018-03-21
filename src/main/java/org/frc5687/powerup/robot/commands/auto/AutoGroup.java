@@ -157,11 +157,25 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         if (robot.getArm().isHealthy()) {
-                            addParallel(new PrepIntakeForScale(robot, 120, 3500, true));
+                            addParallel(new PrepIntakeForScale(robot, 120, 3400, true));
                         }
                         addSequential(new FarRightToRightScale(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.9, 700));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -157, 0.9));
+                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -967));
+                        addSequential(new MoveArmToSetpointPID(robot.getArm(), 48));
+
+                        addParallel(new AutoIntake(robot.getIntake()));
+                        addSequential(new RightScaleToSecondCube(robot));
+                        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 74, 0.5, true, true, 3000, ""));
+                        addParallel(new MoveArmToSetpointPID(robot.getArm(), 163));
+                        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -74, 0.5, true, true, 3000, ""));
+                        addSequential(new RightScaleToSecondCubeReversed(robot));
+                        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_PROTO));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -65, 0.9, 3000));
+                        addSequential(new AutoEject(robot.getIntake(), -0.99));
                         break;
                 }
                 break;

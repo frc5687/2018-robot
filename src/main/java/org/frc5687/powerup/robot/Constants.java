@@ -96,7 +96,7 @@ public class Constants {
         public static final double HOLD_SPEED = 0.30;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
-        public static final long SETTLE_TIME = 750;
+        public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
         public static final double SCALE_DROP_SPEED = -0.99;
 
@@ -320,10 +320,10 @@ public class Constants {
             public static final double PAST_NEG_600_PROTO = -0.2;
             public static final double PAST_NEG_600_GRETA = 0.0;
 
-            public static final double PAST_NEG_700_PROTO = -0.3;
+            public static final double PAST_NEG_700_PROTO = -0.35;
             public static final double PAST_NEG_700_GRETA = 0.0;
 
-            public static final double PAST_NEG_800_PROTO = -0.4;
+            public static final double PAST_NEG_800_PROTO = -0.45;
             public static final double PAST_NEG_800_GRETA = 0.0;
         }
         public static final double SENSITIVITY = 0.2;
@@ -418,9 +418,9 @@ public class Constants {
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
             public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
-            public static final double PAST_40_CUBE_PROTO = 0.0;
+            public static final double PAST_40_CUBE_PROTO = -0.1;
             public static final double PAST_40_CUBE_GRETA = 0.1;
-            public static final double PAST_40_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_40_NO_CUBE_PROTO = -0.1;
             public static final double PAST_40_NO_CUBE_GRETA = 0.0;
 
             public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
