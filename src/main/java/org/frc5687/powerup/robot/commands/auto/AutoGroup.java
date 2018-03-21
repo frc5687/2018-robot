@@ -163,8 +163,8 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, 0.9, 700));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
 
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -157, 0.9));
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), -967));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -157, 0.9));
                         addSequential(new MoveArmToSetpointPID(robot.getArm(), 48));
 
                         addParallel(new AutoIntake(robot.getIntake()));
