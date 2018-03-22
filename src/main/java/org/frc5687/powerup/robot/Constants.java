@@ -423,14 +423,14 @@ public class Constants {
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
             public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
-            public static final double PAST_40_CUBE_PROTO = -0.1;
+            public static final double PAST_40_CUBE_PROTO = -0.2;
             public static final double PAST_40_CUBE_GRETA = -0.1;
-            public static final double PAST_40_NO_CUBE_PROTO = -0.1;
+            public static final double PAST_40_NO_CUBE_PROTO = -0.2;
             public static final double PAST_40_NO_CUBE_GRETA = -0.1;
 
-            public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
+            public static final double PAST_BOTTOM_CUBE_PROTO = -0.1;
             public static final double PAST_BOTTOM_CUBE_GRETA = -0.20;
-            public static final double PAST_BOTTOM_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_BOTTOM_NO_CUBE_PROTO = -0.1;
             public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.20;
         }
     }
