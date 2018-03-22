@@ -151,6 +151,8 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -45, Constants.Auto.Align.SPEED, 700));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
 
+                        /*
+                        // Second cube not competition ready, so it is commented out.
                         int carriageBottom = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageBottom));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -157, Constants.Auto.Align.SPEED));
@@ -158,6 +160,7 @@ public class AutoGroup extends CommandGroup {
 
                         addParallel(new AutoIntake(robot.getIntake()));
                         addSequential(new RightScaleToSecondCubePartOne(robot));
+                        */
 
                         /*
                         addParallel(new AutoIntake(robot.getIntake()));
