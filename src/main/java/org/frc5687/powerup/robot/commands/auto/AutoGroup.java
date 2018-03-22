@@ -128,6 +128,34 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED));
                         //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.5, true, true, 1000,""));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+                        /*
+                        Align towards second cube
+                         */
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 167, Constants.Auto.Align.SPEED));
+                        /*
+                        Prepare intake
+                         */
+                        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
+                        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.BOTTOM_COMP));
+                        /*
+                        Approach second cube and intake
+                         */
+                        addParallel(new AutoIntake(robot.getIntake()));
+                        addSequential(new LeftScaleToCube(robot));
+                        /*
+                        Go back to the scale
+                         */
+                        addSequential(new LeftScaleToCubeReversed(robot));
+                        /*
+                        Prepare intake
+                         */
+                        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
+                        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
+                        /*
+                        Rotate towards scale
+                         */
+                        addSequential(new AutoAlign(robot, 45));
+                        addSequential(new AutoEject(robot));
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.frc5687.powerup.robot.Constants.Auto.Align;
 
@@ -35,6 +36,14 @@ public class AutoAlign extends Command implements PIDOutput {
     private AHRS imu;
 
     private double _tolerance;
+
+    public AutoAlign(Robot robot, double angle) {
+        this(robot, angle, Align.SPEED);
+    }
+
+    public AutoAlign(Robot robot, double angle, double speed) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, speed);
+    }
 
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
         this(driveTrain, imu, angle, speed, 2000);
