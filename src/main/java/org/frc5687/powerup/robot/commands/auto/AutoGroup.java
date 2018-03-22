@@ -298,7 +298,7 @@ public class AutoGroup extends CommandGroup {
         }
         //addParallel(new EjectWhenSwitchDetected(robot));
         addSequential(new CenterLeftToRightSwitch(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED));
+        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
         if (robot.getArm().isHealthy()) {
             addParallel(new FinishArmPid(armPid));
