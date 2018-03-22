@@ -34,17 +34,24 @@ public class AutoAlign extends Command implements PIDOutput {
     private DriveTrain driveTrain;
     private AHRS imu;
 
+    private double _tolerance;
+
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
         this(driveTrain, imu, angle, speed, 2000);
     }
 
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout) {
+        this(driveTrain, imu, angle, speed, timeout, Align.TOLERANCE);
+    }
+
+    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance) {
         requires(driveTrain);
         this.angle = angle;
         this.speed = speed;
         this.driveTrain = driveTrain;
         this.imu = imu;
         _timeout = timeout;
+        _tolerance = tolerance;
     }
 
     @Override
@@ -56,7 +63,7 @@ public class AutoAlign extends Command implements PIDOutput {
         controller = new PIDController(kP, kI, kD, imu, this, 0.01);
         controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         controller.setOutputRange(-speed, speed);
-        controller.setAbsoluteTolerance(Align.TOLERANCE);
+        controller.setAbsoluteTolerance(_tolerance);
         controller.setContinuous();
         controller.setSetpoint(angle);
         controller.enable();
