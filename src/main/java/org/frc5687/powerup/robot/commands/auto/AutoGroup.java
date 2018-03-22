@@ -226,8 +226,9 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new RightGoPickupCubeReversed(robot));
                         /*
                         Align towards switch
+                        Ends up at x: 50, y: 139.5
                          */
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 16, Constants.Auto.Align.SPEED));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 16, Constants.Auto.Align.SPEED, 2000, 2.2));
                         /*
                         Align arm while going to switch and eject
                          */
