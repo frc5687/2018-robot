@@ -45,7 +45,7 @@ public class Carriage extends PIDSubsystem {
     public double calculateHoldSpeed() {
         double pos = getPos();
         if (pos > 0) {
-            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_TOP_GRETA :Constants.Carriage.HoldSpeeds.PAST_TOP_PROTO;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_TOP_GRETA : Constants.Carriage.HoldSpeeds.PAST_TOP_PROTO;
         } else if (pos > -20) {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_20_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_20_PROTO;
         } else if (pos > -50) {
@@ -64,8 +64,9 @@ public class Carriage extends PIDSubsystem {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_700_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_700_PROTO;
         } else if (pos > -800) {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
+        } else {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
         }
-        return 0.0;
     }
 
     public void drive(double desiredSpeed) {
@@ -134,6 +135,7 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
+        SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
     }
 
     public boolean isCompetitionBot() {
