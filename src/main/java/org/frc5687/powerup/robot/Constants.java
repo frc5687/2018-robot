@@ -408,6 +408,7 @@ public class Constants {
             public static final double SWITCH_HEIGHT_WITH_CARRIAGE = 100;
             public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
 
+            public static final double switchHeightWithCarriageAllTheWayUp = 80;
         }
 
         public static final double LENGTH = 34.0;
