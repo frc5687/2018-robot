@@ -177,30 +177,29 @@ public class AutoGroup extends CommandGroup {
                 }
                 break;
             case Constants.AutoChooser.Mode.SWITCH_THEN_PICKUP_CUBE:
+                double armSwitchAngle;
                 switch (switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
+                        /*
+                        Drive to left switch and deposit cube
+                         */
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
-                        centerLeftToLeftSwitch(robot);
-                        if (robot.getCarriage().isHealthy()) {
-                            addSequential(new AutoZeroCarriage(robot.getCarriage()));
-                        }
-                        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-                        addSequential(new LeftSwitchToBehindAutoLine(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED));
-                        addParallel(new AutoIntake(robot.getIntake()));
-                        addSequential(new LeftSwitchFacingPowerCubeZoneToPowerCubeZone(robot));
-                        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -36, 0.3, true, true, 3000, ""));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25.6, Constants.Auto.Align.SPEED));
+                        armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+                        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
+                        addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
+                        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
                         Drive to right switch and deposit cube
                          */
                         DriverStation.reportError("Switch Then Pick Up Cube (only switch implemented). Position 3. Right Side", false);
-                        double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+                        armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
                         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
