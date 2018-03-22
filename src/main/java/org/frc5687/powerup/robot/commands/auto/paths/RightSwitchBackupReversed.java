@@ -5,15 +5,10 @@ import org.frc5687.powerup.robot.commands.auto.DynamicPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
-public class RightSwitchBackup extends DynamicPathCommand {
+public class RightSwitchBackupReversed extends DynamicPathCommand {
     
-    public RightSwitchBackup(Robot robot) {
+    public RightSwitchBackupReversed(Robot robot) {
         super(robot);
-    }
-
-    @Override
-    public double getkT() {
-        return 0.0;
     }
 
     @Override
@@ -1391,19 +1386,14 @@ public class RightSwitchBackup extends DynamicPathCommand {
 
 
         
-        path = new Path("RightSwitchBackup", new Trajectory.Pair(left, right));
+        path = new Path("RightSwitchBackupReversed", new Trajectory.Pair(left, right));
         return true;
     }
 
-
-
-    public boolean isReversed() {
-        return true; 
-    }
   
 	// WAYPOINT_DATA: [{"position":{"x":118,"y":106},"theta":-0.4014138888872765,"comment":""},{"position":{"x":62,"y":132},"theta":-0.4014138888872765,"comment":""}]
-	// IS_REVERSED: true
-	// FILE_NAME: RightSwitchBackup
+	// IS_REVERSED: false
+	// FILE_NAME: RightSwitchBackupReversed
   // DT: 0.01
   // MAX_VEL: 100
   // MAX_ACC: 70
