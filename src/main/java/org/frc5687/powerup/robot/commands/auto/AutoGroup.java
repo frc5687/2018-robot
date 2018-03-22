@@ -139,6 +139,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new FarRightToLeftScaleDeadPartTwo(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED, 2000));
                         addSequential(new FarRightToLeftScaleDeadPartThree(robot));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED, 3000));
                         addSequential(new AutoEject(robot.getIntake()));
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
