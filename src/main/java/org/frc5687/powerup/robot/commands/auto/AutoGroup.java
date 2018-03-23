@@ -170,6 +170,8 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Rotate towards scale
                          */
+                        addSequential(new AutoAlign(robot, -170, 1000, 4));
+                        addSequential(new AutoAlign(robot, -90, 1000, 4));
                         addSequential(new AutoAlign(robot, 22.8));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
                         break;

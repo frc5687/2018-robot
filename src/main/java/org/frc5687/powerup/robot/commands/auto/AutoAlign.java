@@ -53,6 +53,10 @@ public class AutoAlign extends Command implements PIDOutput {
         this(driveTrain, imu, angle, speed, timeout, Align.TOLERANCE);
     }
 
+    public AutoAlign(Robot robot, double angle, long timeout, double tolerance) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, Align.SPEED, timeout, tolerance);
+    }
+
     public AutoAlign(Robot robot, double angle, double speed, long timeout, double tolerance) {
         this(robot.getDriveTrain(), robot.getIMU(), angle, speed, timeout, tolerance);
     }
