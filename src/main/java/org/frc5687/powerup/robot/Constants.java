@@ -466,7 +466,7 @@ public class Constants {
             public static final int CROSS_AUTOLINE = 1;
             public static final int SWITCH_ONLY = 2;
             public static final int SCALE_ONLY = 3;
-            public static final int SWITCH_THEN_SCALE = 4;
+            public static final int SCALE_TWO_CUBE = 4;
             public static final int SWITCH_THEN_PICKUP_CUBE = 5;
             public static final int SWITCH_THEN_SWITCH = 6;
             public static final int SWITCH_DRIVE = 9;
