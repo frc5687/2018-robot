@@ -64,8 +64,10 @@ public class Carriage extends PIDSubsystem {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_700_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_700_PROTO;
         } else if (pos > -800) {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
+        } else if (pos > -900) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_900_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_900_PROTO;
         } else {
-            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_900_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_900_PROTO;
         }
     }
 
