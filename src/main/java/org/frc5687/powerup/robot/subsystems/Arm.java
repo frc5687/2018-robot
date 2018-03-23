@@ -65,10 +65,10 @@ public class Arm extends PIDSubsystem {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_CUBE_PROTO;
         } else if (ang > 90) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_PROTO;
-        } else if (ang > 40 && cubeDetected) {
-            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_40_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_40_CUBE_PROTO;
-        } else if (ang > 40) {
-            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_40_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_40_NO_CUBE_PROTO;
+        } else if (ang > 55 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_55_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_55_CUBE_PROTO;
+        } else if (ang > 55) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_55_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_55_NO_CUBE_PROTO;
         } else if (cubeDetected) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_PROTO;
         }

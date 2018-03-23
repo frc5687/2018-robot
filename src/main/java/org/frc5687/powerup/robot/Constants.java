@@ -317,16 +317,16 @@ public class Constants {
             public static final double PAST_NEG_400_GRETA = 0.0;
 
             public static final double PAST_NEG_500_PROTO = 0.1;
-            public static final double PAST_NEG_500_GRETA = 0.0;
+            public static final double PAST_NEG_500_GRETA = 0.05;
 
             public static final double PAST_NEG_600_PROTO = -0.2;
             public static final double PAST_NEG_600_GRETA = -0.2;
 
             public static final double PAST_NEG_700_PROTO = -0.35;
-            public static final double PAST_NEG_700_GRETA = -0.20; // TODO: Too low
+            public static final double PAST_NEG_700_GRETA = -0.0; // TODO: Too low
 
             public static final double PAST_NEG_800_PROTO = -0.45;
-            public static final double PAST_NEG_800_GRETA = -0.20; // TODO: Too low
+            public static final double PAST_NEG_800_GRETA = -0.0; // TODO: Too low
 
             public static final double PAST_NEG_900_PROTO = -0.45;
             public static final double PAST_NEG_900_GRETA = -0.45;
@@ -428,15 +428,15 @@ public class Constants {
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
             public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
-            public static final double PAST_40_CUBE_PROTO = -0.2;
-            public static final double PAST_40_CUBE_GRETA = 0.15;
-            public static final double PAST_40_NO_CUBE_PROTO = -0.2;
-            public static final double PAST_40_NO_CUBE_GRETA = 0.1;
+            public static final double PAST_55_CUBE_PROTO = -0.2;
+            public static final double PAST_55_CUBE_GRETA = 0.15;
+            public static final double PAST_55_NO_CUBE_PROTO = -0.2;
+            public static final double PAST_55_NO_CUBE_GRETA = 0.1;
 
             public static final double PAST_BOTTOM_CUBE_PROTO = -0.1;
-            public static final double PAST_BOTTOM_CUBE_GRETA = -0.20;
+            public static final double PAST_BOTTOM_CUBE_GRETA = -0.10;
             public static final double PAST_BOTTOM_NO_CUBE_PROTO = -0.1;
-            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.20;
+            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.10;
         }
     }
 
