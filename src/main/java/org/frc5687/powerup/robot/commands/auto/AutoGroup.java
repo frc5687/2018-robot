@@ -130,7 +130,7 @@ public class AutoGroup extends CommandGroup {
                         farLeftToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        buildAutoCross(robot);
+                        farLeftToRightScale(robot);
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         farRightToLeftScale(robot);
@@ -176,7 +176,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        buildAutoCross(robot);
+                        farLeftToRightScale(robot);
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         farRightToLeftScale(robot);
@@ -427,6 +427,17 @@ public class AutoGroup extends CommandGroup {
         // Auto aline removed since path is good enough
         addSequential(new AutoAlign(robot, 24.8, Constants.Auto.Align.SPEED, 1000, 2.0));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+    }
+
+    private void farLeftToRightScale(Robot robot) {
+        addParallel(new AutoZeroCarriageThenLower(robot));
+        addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 4000));
+        addParallel(new PrepIntakeForScale(robot, 1600, false));
+        addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -18, Constants.Auto.Align.SPEED, 2000));
+        addSequential(new FarLeftToRightScaleDeadPartThree(robot));
+        addSequential(new AutoEject(robot.getIntake()));
     }
 
     private void farRightToLeftScale(Robot robot) {
