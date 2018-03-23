@@ -363,9 +363,6 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.SCALE_DRIVE:
                 buildSimpleScale(robot, scaleFactor);
                 break;
-            case 11:
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, Constants.Auto.Align.SPEED, 20000));
-                break;
         }
     }
 
