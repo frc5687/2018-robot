@@ -34,6 +34,10 @@ public class AutoGroup extends CommandGroup {
         //addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_PROTO));
         // addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.ENCODER_FENCE));
         double distance = 0.0;
+        int carriageIntakePosition;
+        double armSwitchAngle;
+        double armIntakeAngle;
+        int carriageTopPosition;
         MoveArmToSetpointPID armPid;
 
         addSequential(new AutoWaitForMillis(delayInMillis));
@@ -125,18 +129,19 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
                         addSequential(new FarLeftToLeftScale(robot));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED));
+                        // Auto aline removed since path is good enough
+                        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED));
                         //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.5, true, true, 1000,""));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
                         /*
                         Align towards second cube
                          */
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 167, Constants.Auto.Align.SPEED));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 157, Constants.Auto.Align.SPEED));
                         /*
                         Prepare intake
                          */
                         addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
-                        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.BOTTOM_COMP));
+                        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
                         /*
                         Approach second cube and intake
                          */
@@ -205,10 +210,9 @@ public class AutoGroup extends CommandGroup {
                 }
                 break;
             case Constants.AutoChooser.Mode.SWITCH_THEN_PICKUP_CUBE:
-                double armSwitchAngle;
-                int carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
-                double armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
-                int carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
+                carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
+                armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
+                carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
 
                 switch (switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
@@ -313,13 +317,13 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Move Carriage Down and backup
                          */
-                        int carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
+                        carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
                         addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot.getCarriage(), carriageIntakePosition));
                         addSequential(new RightSwitchBackup(robot));
                         /*
                         Move Arm Down while aligning
                          */
-                        double armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
+                        armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, Constants.Auto.Align.SPEED));
                         /*
@@ -330,7 +334,7 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Raise Carriage while backing up
                          */
-                        int carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
+                        carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
                         addSequential(new RightGoPickupCubeReversed(robot));
                         /*
