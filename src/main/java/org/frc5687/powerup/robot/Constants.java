@@ -323,10 +323,13 @@ public class Constants {
             public static final double PAST_NEG_600_GRETA = -0.2;
 
             public static final double PAST_NEG_700_PROTO = -0.35;
-            public static final double PAST_NEG_700_GRETA = -0.35;
+            public static final double PAST_NEG_700_GRETA = -0.20; // TODO: Too low
 
             public static final double PAST_NEG_800_PROTO = -0.45;
-            public static final double PAST_NEG_800_GRETA = -0.45;
+            public static final double PAST_NEG_800_GRETA = -0.20; // TODO: Too low
+
+            public static final double PAST_NEG_900_PROTO = -0.45;
+            public static final double PAST_NEG_900_GRETA = -0.45;
         }
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
