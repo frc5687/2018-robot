@@ -205,6 +205,9 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
                         centerLeftToLeftSwitch(robot);
+                        if (robot.getCarriage().isHealthy()) {
+                            addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        }
                         // Untested, so I commented this out
                         /*
                         Drive to left switch and deposit cube
@@ -282,15 +285,22 @@ public class AutoGroup extends CommandGroup {
                         buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
+                        centerLeftToLeftSwitch(robot);
+                        if (robot.getCarriage().isHealthy()) {
+                            addSequential(new AutoZeroCarriage(robot.getCarriage()));
+                        }
                         /*
                         Drive to left switch and deposit cube
+                        Commented out untested code:
                          */
+                        /*
                         DriverStation.reportError("Switch Then Switch. Position 3. Left Side", false);
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25.6, Constants.Auto.Align.SPEED));
                         armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
                         addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
+                        */
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
