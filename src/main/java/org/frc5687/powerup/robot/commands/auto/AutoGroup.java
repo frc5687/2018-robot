@@ -9,7 +9,6 @@ import org.frc5687.powerup.robot.commands.FinishArmPid;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPIDButFirstZeroIt;
-import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
@@ -140,40 +139,12 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
-            case Constants.AutoChooser.Mode.SCALE_TWO_CUBE:
+            case Constants.AutoChooser.Mode.SCALE_THEN_SCALE:
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         farLeftToLeftScale(robot);
-                        /*
-                        Align towards second cube
-                         */
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 165, Constants.Auto.Align.SPEED));
-                        /*
-                        Prepare intake
-                         */
-                        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
-                        /*
-                        Approach second cube and intake
-                         */
-                        addParallel(new AutoIntake(robot.getIntake()));
-                        addSequential(new LeftScaleToCube(robot));
-                        /*
-                        Go back to the scale
-                         */
-                        addSequential(new LeftScaleToCubeReversed(robot));
-                        /*
-                        Prepare intake
-                         */
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
-                        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
-                        /*
-                        Rotate towards scale
-                         */
-                        addSequential(new AutoAlign(robot, -170, 1000, 4));
-                        addSequential(new AutoAlign(robot, -90, 1000, 4));
-                        addSequential(new AutoAlign(robot, 22.8));
-                        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
+                        leftScaleToSecondCube(robot);
+                        secondCubeToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         farLeftToRightScale(robot);
@@ -193,6 +164,23 @@ public class AutoGroup extends CommandGroup {
                         addParallel(new AutoIntake(robot.getIntake()));
                         addSequential(new RightScaleToSecondCubePartOne(robot));
                         */
+                        break;
+                }
+                break;
+            case Constants.AutoChooser.Mode.SCALE_THEN_SWITCH:
+                switch (scaleFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                        farLeftToLeftScale(robot);
+                        leftScaleToSecondCube(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        farLeftToRightScale(robot);
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        farRightToLeftScale(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        farRightToRightScale(robot);
                         break;
                 }
                 break;
@@ -427,6 +415,42 @@ public class AutoGroup extends CommandGroup {
         // Auto aline removed since path is good enough
         addSequential(new AutoAlign(robot, 24.8, Constants.Auto.Align.SPEED, 1000, 2.0));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+    }
+
+    private void leftScaleToSecondCube(Robot robot) {
+        /*
+        Align towards second cube
+         */
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 165, Constants.Auto.Align.SPEED));
+        /*
+        Prepare intake
+         */
+        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
+        /*
+        Approach second cube and intake
+         */
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new LeftScaleToCube(robot));
+    }
+
+    private void secondCubeToLeftScale(Robot robot) {
+        /*
+        Go back to the scale
+         */
+        addSequential(new LeftScaleToCubeReversed(robot));
+        /*
+        Prepare intake
+         */
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
+        /*
+        Rotate towards scale
+         */
+        addSequential(new AutoAlign(robot, -170, 1000, 4));
+        addSequential(new AutoAlign(robot, -90, 1000, 4));
+        addSequential(new AutoAlign(robot, 22.8));
+        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
     }
 
     private void farLeftToRightScale(Robot robot) {
