@@ -30,8 +30,10 @@ public class AutoChooser {
         modeLabels = new HashMap<Integer, String>();
         modeLabels.put(0, "Stay Put");
         modeLabels.put(1, "Cross The Line");
-        modeLabels.put(2, "Switch Face");
-        modeLabels.put(3, "Scale");
+        modeLabels.put(2, "Switch Then Cube");
+        modeLabels.put(3, "Scale Then Scale");
+        modeLabels.put(4, "Switch Then Switch");
+        modeLabels.put(5, "Scale Then Switch");
         modeLabels.put(9, "Switch using AutoDrive");
         modeLabels.put(10, "Scale using AutoDrive");
 

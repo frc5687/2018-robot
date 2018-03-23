@@ -465,14 +465,14 @@ public class Constants {
         public class Mode {
             public static final int STAY_PUT = 0;
             public static final int CROSS_AUTOLINE = 1;
-            public static final int SWITCH_ONLY = 2;
-            public static final int SCALE_ONLY = 3;
-            public static final int SCALE_THEN_SCALE = 4;
-            public static final int SWITCH_THEN_PICKUP_CUBE = 5;
-            public static final int SWITCH_THEN_SWITCH = 6;
-            public static final int SWITCH_DRIVE = 9;
-            public static final int SCALE_DRIVE = 10;
-            public static final int SCALE_THEN_SWITCH = 11;
+            public static final int SWITCH_THEN_PICKUP_CUBE = 2;
+            public static final int SCALE_THEN_SCALE = 3;
+            public static final int SWITCH_THEN_SWITCH = 4;
+            public static final int SCALE_THEN_SWITCH = 5;
+            public static final int SWITCH_DRIVE = 1001;
+            public static final int SWITCH_ONLY = 10002;
+            public static final int SCALE_DRIVE = 1003;
+            public static final int SCALE_ONLY = 1004;
         }
     }
     public class Limits {
