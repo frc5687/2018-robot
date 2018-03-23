@@ -151,7 +151,7 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Prepare intake
                          */
-                        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
+                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
                         addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
                         /*
                         Approach second cube and intake
@@ -165,13 +165,13 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Prepare intake
                          */
-                        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
+                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
                         addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
                         /*
                         Rotate towards scale
                          */
-                        addSequential(new AutoAlign(robot, 45));
-                        addSequential(new AutoEject(robot));
+                        addSequential(new AutoAlign(robot, 22.8));
+                        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);
