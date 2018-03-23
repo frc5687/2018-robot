@@ -147,11 +147,11 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Align towards second cube
                          */
+                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 165, Constants.Auto.Align.SPEED));
                         /*
                         Prepare intake
                          */
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
                         addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
                         /*
                         Approach second cube and intake
