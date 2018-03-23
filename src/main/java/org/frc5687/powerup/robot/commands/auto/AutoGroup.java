@@ -174,6 +174,7 @@ public class AutoGroup extends CommandGroup {
                         leftScaleToSecondCube(robot);
                         switch (switchFactor) {
                             case -Constants.AutoChooser.Position.FAR_LEFT:
+                                secondCubeToLeftSwitch(robot);
                                 break;
                             case Constants.AutoChooser.Position.FAR_LEFT:
                                 secondCubeToLeftScale(robot);
@@ -473,6 +474,15 @@ public class AutoGroup extends CommandGroup {
         addSequential(new AutoAlign(robot, -140, 1500, 7));
         addSequential(new AutoAlign(robot, 22.8));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
+    }
+
+    private void secondCubeToLeftSwitch(Robot robot) {
+        /*
+        Move back very slightly
+         */
+        addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_MIDDLE_COMP));
+        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.switchHeightWithCarriageHalfwayUp));
+        addSequential(new AutoEject(robot, Constants.Intake.SWITCH_DROP_SPEED));
     }
 
     private void farLeftToRightScale(Robot robot) {
