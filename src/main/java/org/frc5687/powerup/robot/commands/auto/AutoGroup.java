@@ -147,7 +147,7 @@ public class AutoGroup extends CommandGroup {
                         /*
                         Align towards second cube
                          */
-                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 157, Constants.Auto.Align.SPEED));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 165, Constants.Auto.Align.SPEED));
                         /*
                         Prepare intake
                          */
@@ -423,7 +423,7 @@ public class AutoGroup extends CommandGroup {
         addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
         addSequential(new FarLeftToLeftScale(robot));
         // Auto aline removed since path is good enough
-        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED));
+        addSequential(new AutoAlign(robot, 24.8, Constants.Auto.Align.SPEED, 1000, 2.0));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
     }
 
