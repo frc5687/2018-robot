@@ -67,7 +67,7 @@ public class MoveArmToSetpointPID extends Command {
             DriverStation.reportError("MoveArmToSetpointPID on target but can't finish, except it can thanks to ignoring can finish in isFinished(). Angle at " + _arm.getAngle(), false);
             return true;
         }
-        DriverStation.reportError("MoveArmToSetpointPID not on target. Angle at " + _arm.getAngle(), false); // TODO: "EXCESSIVE" logging
+        //DriverStation.reportError("MoveArmToSetpointPID not on target. Angle at " + _arm.getAngle(), false); // TODO: "EXCESSIVE" logging
 
         return false;
     }
