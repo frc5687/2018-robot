@@ -98,7 +98,7 @@ public class Constants {
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
-        public static final double SCALE_DROP_SPEED = -0.99;
+        public static final double SCALE_DROP_SPEED = -0.95;
         public static final double SWITCH_DROP_SPEED = -0.42;
 
         public class SIDE_IR {
@@ -377,7 +377,7 @@ public class Constants {
         public static final double SENSITIVITY = 0.75;
 
         public static final double MAX_SPEED = 0.75;
-        public static final double MIN_SPEED = -.5;
+        public static final double MIN_SPEED = -.75;
 
 
         public class Pot {
