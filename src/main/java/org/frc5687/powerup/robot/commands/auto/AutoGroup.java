@@ -448,8 +448,9 @@ public class AutoGroup extends CommandGroup {
 
     private void secondCubeToLeftScale(Robot robot) {
         /*
-        Go back to the scale
+        Go back to the scale while raising the carriage to drive config
          */
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_DRIVE_COMP));
         addSequential(new LeftScaleToCubeReversed(robot));
         /*
         Prepare intake
@@ -459,8 +460,7 @@ public class AutoGroup extends CommandGroup {
         /*
         Rotate towards scale
          */
-        addSequential(new AutoAlign(robot, -170, 1000, 4));
-        addSequential(new AutoAlign(robot, -90, 1000, 4));
+        addSequential(new AutoAlign(robot, -140, 1500, 7));
         addSequential(new AutoAlign(robot, 22.8));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
     }
