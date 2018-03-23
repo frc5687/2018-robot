@@ -191,6 +191,8 @@ public class AutoGroup extends CommandGroup {
 
                 switch (switchFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
+                        farLeftToLeftSwitch(robot);
+                        break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         buildAutoCross(robot);
                         break;
