@@ -239,14 +239,14 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
-                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        */
+                        /*
                         centerLeftToLeftSwitchThenPickupSecondCube(robot);
+                        */
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -298,14 +298,15 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
-                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        */
+                        /*
                         centerLeftToLeftSwitchThenPickupSecondCube(robot);
+                        secondCubeComingFromLeftSwitchToLeftSwitch(robot);
+                        */
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -419,6 +420,15 @@ public class AutoGroup extends CommandGroup {
         // Raise Carriage while backing up
         addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageTopPosition, 55));
         addSequential(new LeftGoPickupCubeReversed(robot));
+    }
+
+    private void secondCubeComingFromLeftSwitchToLeftSwitch(Robot robot) {
+        double carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
+        double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
+        addSequential(new AutoAlign(robot, -20));
+        addSequential(new LeftOfPowerCubeZoneToLeftSwitch(robot));
+        addSequential(new AutoEject(robot.getIntake()));
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
