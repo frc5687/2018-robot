@@ -5,10 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
-import org.frc5687.powerup.robot.commands.FinishArmPid;
-import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
-import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
-import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPIDButFirstZeroIt;
+import org.frc5687.powerup.robot.commands.*;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
@@ -264,7 +261,7 @@ public class AutoGroup extends CommandGroup {
                         addParallel(new AutoIntake(robot.getIntake()));
                         addSequential(new LeftGoPickupCube(robot));
                         // Raise Carriage while backing up
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
+                        addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageTopPosition, 55));
                         addSequential(new LeftGoPickupCubeReversed(robot));
                         break;
                     case Constants.AutoChooser.Position.CENTER:
