@@ -246,7 +246,7 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         */
-                        centerLeftToLeftSwitchForFirstOfTwoCubes(robot);
+                        centerLeftToLeftSwitchThenPickupSecondCube(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -305,7 +305,7 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         */
-                        centerLeftToLeftSwitchForFirstOfTwoCubes(robot);
+                        centerLeftToLeftSwitchThenPickupSecondCube(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -398,7 +398,7 @@ public class AutoGroup extends CommandGroup {
         }
     }
 
-    private void centerLeftToLeftSwitchForFirstOfTwoCubes(Robot robot) {
+    private void centerLeftToLeftSwitchThenPickupSecondCube(Robot robot) {
         int carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
         double armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
         double carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
