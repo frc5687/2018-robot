@@ -246,23 +246,7 @@ public class AutoGroup extends CommandGroup {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         */
-                        // Drive to left switch and deposit cube
-                        armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
-                        addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
-                        addSequential(new AutoEject(robot, Constants.Intake.SWITCH_DROP_SPEED));
-                        // Move Carriage Down and Back Up
-                        addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
-                        addSequential(new LeftSwitchBackup(robot));
-                        // Move Arm Down while aligning
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
-                        addSequential(new AutoAlign(robot, 21));
-                        // Intake second cube
-                        addParallel(new AutoIntake(robot.getIntake()));
-                        addSequential(new LeftGoPickupCube(robot));
-                        // Raise Carriage while backing up
-                        addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageTopPosition, 55));
-                        addSequential(new LeftGoPickupCubeReversed(robot));
+                        centerLeftToLeftSwitchForFirstOfTwoCubes(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -313,35 +297,15 @@ public class AutoGroup extends CommandGroup {
                         buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
+                        DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
+                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-
-                        DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
-                        /*
-                        // Drive to left switch and deposit cube
-                        armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
-                        addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
-                        addSequential(new AutoEject(robot, Constants.Intake.SWITCH_DROP_SPEED));
-                        // Move Carriage Down and Back Up
-                        addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
-                        addSequential(new LeftSwitchBackup(robot));
-                        // Move Arm Down while aligning
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
-                        addSequential(new AutoAlign(robot, -20));
-                        // Intake second cube
-                        addParallel(new AutoIntake(robot.getIntake()));
-                        addSequential(new LeftGoPickupCube(robot));
-                        // Raise Carriage while backing up
-                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
-                        addSequential(new LeftGoPickupCubeReversed(robot));
-                        // Align towards switch
-                        addSequential(new AutoAlign(robot, -16, Constants.Auto.Align.SPEED, 2000, 2.2));
-                        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.switchHeightWithCarriageAllTheWayUp));
                         */
+                        centerLeftToLeftSwitchForFirstOfTwoCubes(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -432,6 +396,29 @@ public class AutoGroup extends CommandGroup {
         if (robot.getArm().isHealthy()) {
             addParallel(new FinishArmPid(armPid));
         }
+    }
+
+    private void centerLeftToLeftSwitchForFirstOfTwoCubes(Robot robot) {
+        int carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
+        double armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
+        double carriageTopPosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
+        double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        // Drive to left switch and deposit cube
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
+        addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
+        addSequential(new AutoEject(robot, Constants.Intake.SWITCH_DROP_SPEED));
+        // Move Carriage Down and Back Up
+        addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
+        addSequential(new LeftSwitchBackup(robot));
+        // Move Arm Down while aligning
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
+        addSequential(new AutoAlign(robot, 21));
+        // Intake second cube
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new LeftGoPickupCube(robot));
+        // Raise Carriage while backing up
+        addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageTopPosition, 55));
+        addSequential(new LeftGoPickupCubeReversed(robot));
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
