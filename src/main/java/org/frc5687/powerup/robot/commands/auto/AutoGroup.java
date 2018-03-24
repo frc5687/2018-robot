@@ -17,7 +17,7 @@ import org.frc5687.powerup.robot.commands.auto.paths.*;
  * Created by Ben Bernard on 2/2/2018.
  */
 public class AutoGroup extends CommandGroup {
-    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, Robot robot) {
+    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, boolean stayInYourOwnLane, Robot robot) {
         super();
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
@@ -129,10 +129,22 @@ public class AutoGroup extends CommandGroup {
                         farLeftToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        farLeftToRightScale(robot);
+                        if (!stayInYourOwnLane) { // Traverse allowed
+                            farLeftToRightScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
+                            farLeftToLeftSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        farRightToLeftScale(robot);
+                        if (!stayInYourOwnLane) { // Traverse allowed
+                            farRightToLeftScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
+                            farRightToRightSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         farRightToRightScale(robot);
@@ -147,10 +159,22 @@ public class AutoGroup extends CommandGroup {
                         secondCubeToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        farLeftToRightScale(robot);
+                        if (!stayInYourOwnLane) { // Traverse allowed
+                            farLeftToRightScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse !allowed. Get switch.
+                            farLeftToLeftSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        farRightToLeftScale(robot);
+                        if (!stayInYourOwnLane) { // Traverse allowed.
+                            farRightToLeftScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT) { // Traverse !allowed. Get switch.
+                            farRightToRightSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         farRightToRightScale(robot);
@@ -182,10 +206,22 @@ public class AutoGroup extends CommandGroup {
                         }
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        farLeftToRightScale(robot);
+                        if (!stayInYourOwnLane) { // Traverse allowed.
+                            farLeftToRightScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse !allowed. Get switch
+                            farLeftToLeftSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        farRightToLeftScale(robot);
+                        if (!stayInYourOwnLane) { // Traverse allowed
+                            farRightToLeftScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT) { // Traverse !allowed. Get switch
+                            farRightToRightSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
                         farRightToRightScale(robot);

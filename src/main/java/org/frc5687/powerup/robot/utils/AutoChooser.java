@@ -49,8 +49,6 @@ public class AutoChooser {
         delayQuantities.put(8, 2000);
         delayQuantities.put(9, 2500);
         delayQuantities.put(10, 3000);
-        delayQuantities.put(11, 4000);
-        delayQuantities.put(12, 5000);
 
         if (isCompetitionBot) {
             positionSwitch = new RotarySwitch(RobotMap.AutoChooser.POSITION_SWITCH,  Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
@@ -99,6 +97,11 @@ public class AutoChooser {
         return delayQuantities.getOrDefault(val, 0);
     }
 
+    public boolean stayInYourOwnLane() {
+        int val = delaySwitchValue();
+        return val == 11;
+    }
+
     private Integer getDelayMillis(int val) {
         return delayQuantities.getOrDefault(val, 0);
     }
@@ -107,6 +110,7 @@ public class AutoChooser {
         SmartDashboard.putString("AutoChooser/Label/Position", getPositionLabel());
         SmartDashboard.putString("AutoChooser/Label/Mode", getModeLabel());
         SmartDashboard.putString("AutoChooser/Label/Delay", Long.toString(getDelayMillis()) + "ms");
+        SmartDashboard.putBoolean("AutoChooser/Label/stayInYourOwnLane", stayInYourOwnLane());
         SmartDashboard.putNumber("AutoChooser/Raw/Position", positionSwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Raw/Mode", modeSwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Raw/Delay", delaySwitch.getRaw());
