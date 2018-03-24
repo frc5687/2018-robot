@@ -478,7 +478,7 @@ public class AutoGroup extends CommandGroup {
     private void farLeftToLeftScale(Robot robot) {
         addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
         addSequential(new FarLeftToLeftScale(robot));
-        // Auto aline removed since path is good enough
+        // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
         addSequential(new AutoAlign(robot, 24.8, Constants.Auto.Align.SPEED, 1000, 2.0));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
     }
