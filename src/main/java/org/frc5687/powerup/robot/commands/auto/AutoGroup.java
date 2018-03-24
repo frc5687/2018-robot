@@ -259,7 +259,7 @@ public class AutoGroup extends CommandGroup {
                         addSequential(new LeftSwitchBackup(robot));
                         // Move Arm Down while aligning
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
-                        addSequential(new AutoAlign(robot, 19));
+                        addSequential(new AutoAlign(robot, 21));
                         // Intake second cube
                         addParallel(new AutoIntake(robot.getIntake()));
                         addSequential(new LeftGoPickupCube(robot));
