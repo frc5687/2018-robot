@@ -241,15 +241,14 @@ public class AutoGroup extends CommandGroup {
                         buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
-                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                         */
 
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
+                        /*
                         // Drive to left switch and deposit cube
                         armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
@@ -267,6 +266,7 @@ public class AutoGroup extends CommandGroup {
                         // Raise Carriage while backing up
                         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
                         addSequential(new LeftGoPickupCubeReversed(robot));
+                        */
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
@@ -317,15 +317,14 @@ public class AutoGroup extends CommandGroup {
                         buildAutoCross(robot);
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
-                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                         */
 
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
+                        /*
                         // Drive to left switch and deposit cube
                         armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
@@ -346,6 +345,7 @@ public class AutoGroup extends CommandGroup {
                         // Align towards switch
                         addSequential(new AutoAlign(robot, -16, Constants.Auto.Align.SPEED, 2000, 2.2));
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.switchHeightWithCarriageAllTheWayUp));
+                        */
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
