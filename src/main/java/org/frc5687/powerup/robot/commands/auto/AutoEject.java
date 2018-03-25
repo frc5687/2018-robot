@@ -19,6 +19,10 @@ public class AutoEject extends Command {
         this(robot.getIntake());
     }
 
+    public AutoEject(Robot robot, double dropSpeed) {
+        this(robot.getIntake(), dropSpeed);
+    }
+
     public AutoEject(Intake intake) {
         requires(intake);
         _intake = intake;
