@@ -98,7 +98,8 @@ public class Constants {
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
-        public static final double SCALE_DROP_SPEED = -0.99;
+        public static final double SCALE_DROP_SPEED = -0.6;
+        public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SWITCH_DROP_SPEED = -0.42;
 
         public class SIDE_IR {
@@ -377,7 +378,7 @@ public class Constants {
         public static final double SENSITIVITY = 0.75;
 
         public static final double MAX_SPEED = 0.75;
-        public static final double MIN_SPEED = -.5;
+        public static final double MIN_SPEED = -.75;
 
 
         public class Pot {
@@ -466,7 +467,7 @@ public class Constants {
             public static final int CROSS_AUTOLINE = 1;
             public static final int SWITCH_ONLY = 2;
             public static final int SCALE_ONLY = 3;
-            public static final int SWITCH_THEN_SCALE = 4;
+            public static final int SCALE_TWO_CUBE = 4;
             public static final int SWITCH_THEN_PICKUP_CUBE = 5;
             public static final int SWITCH_THEN_SWITCH = 6;
             public static final int SWITCH_DRIVE = 9;
