@@ -21,6 +21,11 @@ public class DriveArm extends Command {
     }
 
     @Override
+    protected void initialize() {
+        DriverStation.reportError("DriveArm initialized", false);
+    }
+
+    @Override
     protected boolean isFinished() {
         return false;
     }
@@ -31,9 +36,10 @@ public class DriveArm extends Command {
         if (oiSpeed != 0.0) {
             arm.disable();
             arm.drive(oiSpeed);
+            //DriverStation.reportError("oiSpeed not zero, presumably because we're not in auto", false); // TODO: "EXCESSIVE" LOGGING
         } else if (!arm.getPIDController().isEnabled()) {
             double holdSpeed = arm.calculateHoldSpeed(intake.cubeIsSecured());
-            //DriverStation.reportError("DriveArm: driving arm at " + holdSpeed, false);
+            //DriverStation.reportError("DriveArm: driving arm at holdspeed: " + holdSpeed, false); // TODO: "EXCESSIVE" LOGGING
             arm.drive(holdSpeed);
         }
     }

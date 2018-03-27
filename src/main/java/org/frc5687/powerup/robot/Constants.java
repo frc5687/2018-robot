@@ -96,9 +96,11 @@ public class Constants {
         public static final double HOLD_SPEED = 0.30;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
-        public static final long SETTLE_TIME = 750;
+        public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
-        public static final double SCALE_DROP_SPEED = -0.99;
+        public static final double SCALE_DROP_SPEED = -0.6;
+        public static final double SCALE_SHOOT_SPEED = -0.70;
+        public static final double SWITCH_DROP_SPEED = -0.42;
 
         public class SIDE_IR {
             public static final boolean ENABLED = false;
@@ -131,7 +133,7 @@ public class Constants {
 
         public class Align {
 
-            public static final double SPEED = 0.6;
+            public static final double SPEED = 0.9;
 
             public static final double kP = 0.04;
             public static final double kI = 0.003;//0.01;
@@ -315,16 +317,19 @@ public class Constants {
             public static final double PAST_NEG_400_GRETA = 0.0;
 
             public static final double PAST_NEG_500_PROTO = 0.1;
-            public static final double PAST_NEG_500_GRETA = 0.0;
+            public static final double PAST_NEG_500_GRETA = 0.05;
 
             public static final double PAST_NEG_600_PROTO = -0.2;
-            public static final double PAST_NEG_600_GRETA = 0.0;
+            public static final double PAST_NEG_600_GRETA = -0.2;
 
-            public static final double PAST_NEG_700_PROTO = -0.3;
-            public static final double PAST_NEG_700_GRETA = 0.0;
+            public static final double PAST_NEG_700_PROTO = -0.35;
+            public static final double PAST_NEG_700_GRETA = -0.0; // TODO: Too low
 
-            public static final double PAST_NEG_800_PROTO = -0.4;
-            public static final double PAST_NEG_800_GRETA = 0.0;
+            public static final double PAST_NEG_800_PROTO = -0.45;
+            public static final double PAST_NEG_800_GRETA = -0.0; // TODO: Too low
+
+            public static final double PAST_NEG_900_PROTO = -0.45;
+            public static final double PAST_NEG_900_GRETA = -0.45;
         }
         public static final double SENSITIVITY = 0.2;
         public static final double ZERO_SPEED = 1.00;
@@ -341,7 +346,7 @@ public class Constants {
         public static final int ENCODER_MIDDLE_COMP = -443;
         public static final int ENCODER_CLEAR_BUMPERS_COMP = -702;
         public static final int ENCODER_DRIVE_COMP = -530; // -394
-        public static final int ENCODER_BOTTOM_COMP = -955;
+        public static final int ENCODER_BOTTOM_COMP = -960;
         public static final int ENCODER_RANGE_COMP = ENCODER_TOP_COMP - ENCODER_BOTTOM_COMP;
 
         // public static
@@ -377,7 +382,7 @@ public class Constants {
         public static final double SENSITIVITY = 0.75;
 
         public static final double MAX_SPEED = 0.75;
-        public static final double MIN_SPEED = -.5;
+        public static final double MIN_SPEED = -.75;
 
 
         public class Pot {
@@ -404,6 +409,11 @@ public class Constants {
             public static final double INTAKE = 47.0;
             public static final double DRIVE = 33.0;
 
+            public static final double SCALE = 150.0;
+            public static final double SWITCH_HEIGHT_WITH_CARRIAGE = 100;
+            public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
+            public static final double switchHeightWithCarriageHalfwayUp = 91;
+            public static final double switchHeightWithCarriageAllTheWayUp = 80;
         }
 
         public static final double LENGTH = 34.0;
@@ -419,15 +429,15 @@ public class Constants {
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
             public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
-            public static final double PAST_40_CUBE_PROTO = 0.0;
-            public static final double PAST_40_CUBE_GRETA = 0.1;
-            public static final double PAST_40_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_40_NO_CUBE_GRETA = 0.0;
+            public static final double PAST_55_CUBE_PROTO = -0.2;
+            public static final double PAST_55_CUBE_GRETA = 0.15;
+            public static final double PAST_55_NO_CUBE_PROTO = -0.2;
+            public static final double PAST_55_NO_CUBE_GRETA = 0.1;
 
-            public static final double PAST_BOTTOM_CUBE_PROTO = 0.0;
-            public static final double PAST_BOTTOM_CUBE_GRETA = -0.1;
-            public static final double PAST_BOTTOM_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.1;
+            public static final double PAST_BOTTOM_CUBE_PROTO = -0.1;
+            public static final double PAST_BOTTOM_CUBE_GRETA = -0.10;
+            public static final double PAST_BOTTOM_NO_CUBE_PROTO = -0.1;
+            public static final double PAST_BOTTOM_NO_CUBE_GRETA = -0.10;
         }
     }
 
@@ -459,13 +469,14 @@ public class Constants {
         public class Mode {
             public static final int STAY_PUT = 0;
             public static final int CROSS_AUTOLINE = 1;
-            public static final int SWITCH_ONLY = 2;
-            public static final int SCALE_ONLY = 3;
-            public static final int SWITCH_THEN_SCALE = 4;
-            public static final int SWITCH_THEN_PICKUP_CUBE = 5;
-            public static final int SWITCH_THEN_SWITCH = 6;
-            public static final int SWITCH_DRIVE = 9;
-            public static final int SCALE_DRIVE = 10;
+            public static final int SWITCH_THEN_PICKUP_CUBE = 2;
+            public static final int SCALE_THEN_SCALE = 3;
+            public static final int SWITCH_THEN_SWITCH = 4;
+            public static final int SCALE_THEN_SWITCH = 5;
+            public static final int SWITCH_DRIVE = 1001;
+            public static final int SWITCH_ONLY = 10002;
+            public static final int SCALE_DRIVE = 1003;
+            public static final int SCALE_ONLY = 1004;
         }
     }
     public class Limits {

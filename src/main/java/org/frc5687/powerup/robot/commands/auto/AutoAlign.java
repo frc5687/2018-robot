@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.frc5687.powerup.robot.Constants.Auto.Align;
 
@@ -34,17 +35,40 @@ public class AutoAlign extends Command implements PIDOutput {
     private DriveTrain driveTrain;
     private AHRS imu;
 
+    private double _tolerance;
+
+    public AutoAlign(Robot robot, double angle) {
+        this(robot, angle, Align.SPEED);
+    }
+
+    public AutoAlign(Robot robot, double angle, double speed) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, speed);
+    }
+
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
         this(driveTrain, imu, angle, speed, 2000);
     }
 
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout) {
+        this(driveTrain, imu, angle, speed, timeout, Align.TOLERANCE);
+    }
+
+    public AutoAlign(Robot robot, double angle, long timeout, double tolerance) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, Align.SPEED, timeout, tolerance);
+    }
+
+    public AutoAlign(Robot robot, double angle, double speed, long timeout, double tolerance) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, speed, timeout, tolerance);
+    }
+
+    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance) {
         requires(driveTrain);
         this.angle = angle;
         this.speed = speed;
         this.driveTrain = driveTrain;
         this.imu = imu;
         _timeout = timeout;
+        _tolerance = tolerance;
     }
 
     @Override
@@ -56,7 +80,7 @@ public class AutoAlign extends Command implements PIDOutput {
         controller = new PIDController(kP, kI, kD, imu, this, 0.01);
         controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         controller.setOutputRange(-speed, speed);
-        controller.setAbsoluteTolerance(Align.TOLERANCE);
+        controller.setAbsoluteTolerance(_tolerance);
         controller.setContinuous();
         controller.setSetpoint(angle);
         controller.enable();
