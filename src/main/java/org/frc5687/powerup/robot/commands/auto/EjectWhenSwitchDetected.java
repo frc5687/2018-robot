@@ -6,7 +6,7 @@ import org.frc5687.powerup.robot.Robot;
 
 public class EjectWhenSwitchDetected extends CommandGroup {
     public EjectWhenSwitchDetected(Robot robot) {
-        addSequential(new AutoWaitForDistance(robot.getArm(), robot.getDriveTrain(), 30, 5000));
+        addSequential(new AutoWaitForDistance(robot.getDriveTrain(), 30, 5000));
         addSequential(new WaitUntilSwitchDetected(robot));
         addSequential(new AutoEject(robot.getIntake(), -0.62));
     }

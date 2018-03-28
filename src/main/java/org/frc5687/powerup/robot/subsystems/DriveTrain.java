@@ -119,18 +119,26 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void enableBrakeMode() {
-        leftMaster.setNeutralMode(NeutralMode.Brake);
-        leftFollower.setNeutralMode(NeutralMode.Brake);
-        rightMaster.setNeutralMode(NeutralMode.Brake);
-        rightFollower.setNeutralMode(NeutralMode.Brake);
+        try {
+            leftMaster.setNeutralMode(NeutralMode.Brake);
+            leftFollower.setNeutralMode(NeutralMode.Brake);
+            rightMaster.setNeutralMode(NeutralMode.Brake);
+            rightFollower.setNeutralMode(NeutralMode.Brake);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.enableBrakeMode exception: " + e.toString(), false);
+        }
         SmartDashboard.putString("DriveTrain/neutralMode", "Brake");
     }
 
     public void enableCoastMode() {
-        leftMaster.setNeutralMode(NeutralMode.Coast);
-        leftFollower.setNeutralMode(NeutralMode.Coast);
-        rightMaster.setNeutralMode(NeutralMode.Coast);
-        rightFollower.setNeutralMode(NeutralMode.Coast);
+        try {
+            leftMaster.setNeutralMode(NeutralMode.Coast);
+            leftFollower.setNeutralMode(NeutralMode.Coast);
+            rightMaster.setNeutralMode(NeutralMode.Coast);
+            rightFollower.setNeutralMode(NeutralMode.Coast);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.enableCoastMode exception: " + e.toString(), false);
+        }
         SmartDashboard.putString("DriveTrain/neutralMode", "Coast");
     }
     public void setPower(double leftSpeed, double rightSpeed) {
@@ -151,8 +159,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
             rightSpeed = Math.min(rightSpeed, _priorRight + cap);
             rightSpeed = Math.max(rightSpeed, _priorRight - cap);
         }
-        leftMaster.set(ControlMode.PercentOutput, leftSpeed);
-        rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+        try {
+            leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+            rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.setPower exception: " + e.toString(), false);
+        }
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
 
@@ -161,8 +173,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void setVelocity(double left, double right) {
-        leftMaster.set(ControlMode.Velocity, left);
-        rightMaster.set(ControlMode.Velocity, right);
+        try {
+            leftMaster.set(ControlMode.Velocity, left);
+            rightMaster.set(ControlMode.Velocity, right);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.setVelocity exception: " + e.toString(), false);
+        }
     }
 
     public void setVelocityIPS(double left, double right) {
@@ -170,8 +186,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void resetDriveEncoders() {
-        leftMaster.setSelectedSensorPosition(0,0,0);
-        rightMaster.setSelectedSensorPosition(0, 0, 0);
+        try {
+            leftMaster.setSelectedSensorPosition(0,0,0);
+            rightMaster.setSelectedSensorPosition(0, 0, 0);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.resetDriveEncoders exception. I suppose this is really bad. : " + e.toString(), false);
+        }
     }
 
     public float getYaw() {

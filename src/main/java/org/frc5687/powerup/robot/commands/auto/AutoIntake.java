@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.subsystems.Intake;
@@ -24,6 +25,7 @@ public class AutoIntake extends Command {
     protected void initialize() {
         super.initialize();
         _state = State.INTAKE;
+        DriverStation.reportError("AutoIntake initializing", false);
     }
 
     @Override
@@ -39,10 +41,15 @@ public class AutoIntake extends Command {
                 break;
             case SETTLE:
                 if (System.currentTimeMillis() > _endMillis) {
-                    _intake.drive(Constants.Intake.HOLD_SPEED, Constants.Intake.HOLD_SPEED);
+                    _intake.drive(Constants.Intake.INTAKE_SPEED, Constants.Intake.INTAKE_SPEED);
                     _state = State.HOLD;
                 }
         }
+    }
+
+    @Override
+    protected void end() {
+        DriverStation.reportError("AutoIntake ending", false);
     }
 
     @Override
