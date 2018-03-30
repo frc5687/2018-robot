@@ -425,7 +425,6 @@ public class AutoGroup extends CommandGroup {
     private void secondCubeComingFromLeftSwitchToLeftSwitch(Robot robot) {
         double armSwitchAngle = 91;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, Constants.Auto.Align.SPEED, 1500));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), 2000));
         addSequential(new LeftOfPowerCubeZoneToLeftSwitch(robot));
     }
