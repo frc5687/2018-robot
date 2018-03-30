@@ -406,8 +406,8 @@ public class AutoGroup extends CommandGroup {
         int carriageMiddleHeight = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_MIDDLE_COMP : Constants.Carriage.ENCODER_MIDDLE_PROTO;
         // Drive to left switch and deposit cube
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, 2780));
         addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
-        addSequential(new AutoEject(robot, Constants.Intake.SWITCH_DROP_SPEED));
         // Move Carriage Down and Back Up
         addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
         addSequential(new LeftSwitchBackup(robot));
@@ -426,8 +426,8 @@ public class AutoGroup extends CommandGroup {
         double armSwitchAngle = 91;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, Constants.Auto.Align.SPEED, 1500));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), 2000));
         addSequential(new LeftOfPowerCubeZoneToLeftSwitch(robot));
-        addSequential(new AutoEject(robot.getIntake()));
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
