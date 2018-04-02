@@ -2,6 +2,7 @@ package org.frc5687.powerup.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 
 public class KillAll extends Command {

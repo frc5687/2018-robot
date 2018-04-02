@@ -50,11 +50,12 @@ public class DynamicPathCommand extends Command {
         }
 
         public void run() {
+            // consider checking if in teleop and stopping
             while (true) {
                 try {
                     long now = System.currentTimeMillis();
                     if (now >= lastRun + 10) {
-                        DriverStation.reportError("PeriodicRunnable.run() waited enough", false);
+                        //DriverStation.reportError("PeriodicRunnable.run() waited enough", false);
                         lastRun = now;
                         _d.processSegment();
                         Thread.sleep(5);
@@ -158,7 +159,7 @@ public class DynamicPathCommand extends Command {
      * Called by the thread every 10ms
      */
     protected void processSegment() {
-        DriverStation.reportError("Running processSegment()", false);
+        //DriverStation.reportError("Running processSegment()", false);
         /*
          * Calculate Speed
          */
@@ -193,7 +194,7 @@ public class DynamicPathCommand extends Command {
         DriverStation.reportError("DynamicPathCommand ended", false);
         _driveTrain.setPower(0, 0);
         _thread.stop();
-        DriverStation.reportError("ran stop() method on notifier", false);
+        DriverStation.reportError("ran stop() method on thread", false);
     }
 
     @Override

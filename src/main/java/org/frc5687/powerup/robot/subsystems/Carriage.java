@@ -42,6 +42,35 @@ public class Carriage extends PIDSubsystem {
         _isCompetitionBot = isCompetitionBot;
     }
 
+    public double calculateHoldSpeed() {
+        double pos = getPos();
+        if (pos > 0) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_TOP_GRETA : Constants.Carriage.HoldSpeeds.PAST_TOP_PROTO;
+        } else if (pos > -20) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_20_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_20_PROTO;
+        } else if (pos > -50) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_50_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_50_PROTO;
+        } else if (pos > -100) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_100_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_100_PROTO;
+        } else if (pos > -200) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_200_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_200_PROTO;
+        } else if (pos > -400) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_400_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_400_PROTO;
+        } else if (pos > -500) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_500_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_500_PROTO;
+        } else if (pos > -600) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_600_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_600_PROTO;
+        } else if (pos > -700) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_700_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_700_PROTO;
+        } else if (pos > -800) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
+        } else if (pos > -900) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_900_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_900_PROTO;
+        } else {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_900_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_900_PROTO;
+        }
+    }
+
     public void drive(double desiredSpeed) {
         drive(desiredSpeed, false);
     }
@@ -50,9 +79,9 @@ public class Carriage extends PIDSubsystem {
         double speed = desiredSpeed;
         if (!overrideCaps) {
             if (speed > 0 && isAtTop()) {
-                speed = Constants.Carriage.HOLD_SPEED;
+                speed = calculateHoldSpeed();
             } else if (speed < 0 && isAtBottom()) {
-                speed = -Constants.Carriage.HOLD_SPEED;
+                speed = calculateHoldSpeed();
             } else if (speed > 0 && isInTopZone()) {
                 speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
             } else if (speed < 0 && isInBottomZone()) {
@@ -108,6 +137,7 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
+        SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
     }
 
     public boolean isCompetitionBot() {
@@ -132,7 +162,5 @@ public class Carriage extends PIDSubsystem {
         } else {
             return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_PROTO) * Constants.Carriage.RANGE_INCHES);
         }
-
-
     }
 }

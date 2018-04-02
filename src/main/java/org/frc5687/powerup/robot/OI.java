@@ -1,10 +1,15 @@
 package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
+import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
+import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
+import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.utils.Gamepad;
 import org.frc5687.powerup.robot.utils.Helpers;
@@ -140,10 +145,10 @@ public class OI {
 
     public double getCarriageSpeed() {
         double operator = -getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
-        double driver = driverCarriageUp.get() ? 1 : (driverCarriageDown.get() ? -0.3 : 0);
+        double driver = driverCarriageUp.get() ? 1 : (driverCarriageDown.get() ? -0.99 : 0);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed, Constants.Carriage.SENSITIVITY);
-        return Helpers.applyDeadband(speed, Constants.Carriage.DEADBAND, .1);
+        return Helpers.applyDeadband(speed, Constants.Carriage.DEADBAND);
     }
 
     public double getArmSpeed() {
@@ -151,10 +156,7 @@ public class OI {
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed,Constants.Arm.SENSITIVITY);
-        double holdSpeed = _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO);
-        double holdSpeedWithCube = _robot.pickConstant(Constants.Arm.HOLD_SPEED_WITH_CUBE_COMP, Constants.Arm.HOLD_SPEED_WITH_CUBE_PROTO);
-        double final_speed = _robot.getIntake().cubeIsDetected() ? holdSpeedWithCube : holdSpeed;
-        return Helpers.applyDeadband(-speed, 0.05, final_speed);
+        return Helpers.applyDeadband(-speed, 0.05);
     }
 
     public double getClimberSpeed() {
@@ -203,4 +205,23 @@ public class OI {
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
     }
 
+    public void setDriverGamepadRumble(double leftIntensity, double rightIntensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setDriverGamepadRumble(double intensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
+
+    public void setOperatorGamepadRumble(double leftIntensity, double rightIntensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setOperatorGamepadRumble(double intensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
 }

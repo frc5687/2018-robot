@@ -17,15 +17,18 @@ public class Intake extends Subsystem {
     private VictorSP rightMotor;
     private AnalogInput irBack;
     private AnalogInput irDown;
+    private AnalogInput irUp;
     private Servo servo;
+    private Arm _arm;
     private double _lastServoPos;
 
     private double _lastLeftSpeed;
     private double _lastRightSpeed;
 
     private OI oi;
+    private boolean _isCompetitionBot;
 
-    public Intake(OI oi) {
+    public Intake(OI oi, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
         servo = new Servo(RobotMap.Intake.SERVO);
@@ -34,9 +37,15 @@ public class Intake extends Subsystem {
         rightMotor.setName("Intake", "Right Victor");
 
         this.oi = oi;
+        _isCompetitionBot = isCompetitionBot;
+
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
+        irUp = new AnalogInput(RobotMap.Intake.IR_UP);
+    }
 
+    public void setArm(Arm arm) {
+        _arm = arm;
     }
 
     @Override
@@ -45,15 +54,20 @@ public class Intake extends Subsystem {
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
-        if (cubeIsDetected()) {
-            if (leftSpeed==0) {leftSpeed = Constants.Intake.HOLD_SPEED; }
-            if (rightSpeed==0) {rightSpeed = Constants.Intake.HOLD_SPEED; }
-        }
+        leftSpeed = leftSpeed == 0 ? Constants.Intake.HOLD_SPEED : leftSpeed;
+        rightSpeed = rightSpeed == 0 ? Constants.Intake.HOLD_SPEED : rightSpeed;
+
         _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
 
         _lastRightSpeed = rightSpeed;
-        rightMotor.set(rightSpeed * (Constants.Intake.RIGHT_MOTORS_INVERTED ? -1 : 1));
+        rightMotor.set(
+                rightSpeed * (
+                    (
+                            _isCompetitionBot ? Constants.Intake.RIGHT_MOTORS_INVERTED_COMP : Constants.Intake.RIGHT_MOTORS_INVERTED_PROTO
+                    ) ? -1 : 1
+                )
+        );
     }
 
     public void driveServo(double val) {
@@ -74,33 +88,37 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-
-        return irBack.getValue() > Constants.Intake.BACK_IR.SECURED_THRESHOLD;
+        int dist = irBack.getValue();
+        return Constants.Intake.BACK_IR.SECURED_HIGH_END > dist && dist > Constants.Intake.BACK_IR.SECURED_LOW_END;
     }
 
     /**
-     * Checks if cube is detected
+     * Checks if cube is detected (Should not be used due to inaccuracy in IR sensor used
      * @return Whether or not the infrared sensor sees anything
      */
+    @Deprecated
     public boolean cubeIsDetected() {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-        return irBack.getValue() > Constants.Intake.BACK_IR.DETECTED_THRESHOLD;
+        int dist = irBack.getValue();
+        return Constants.Intake.BACK_IR.DETECTED_HIGH_END > dist && dist > Constants.Intake.BACK_IR.DETECTED_LOW_END;
     }
 
     public boolean isPlateDetected() {
-        if (!Constants.Intake.DOWN_IR.ENABLED) {
+        if (!Constants.Intake.UP_IR.ENABLED || _arm == null) {
             return false;
         }
-        return irDown.getValue() > Constants.Intake.DOWN_IR.DETECTION_THRESHOLD;
+        return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
     }
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
+        SmartDashboard.putNumber("Intake/IR Up raw", irUp.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
+        SmartDashboard.putBoolean("Intake/isPlateDetected()", isPlateDetected());
     }
 
     @Override
