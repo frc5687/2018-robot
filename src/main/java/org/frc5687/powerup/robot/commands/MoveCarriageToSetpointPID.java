@@ -28,7 +28,7 @@ public class MoveCarriageToSetpointPID extends Command {
     @Override
     protected boolean isFinished() {
         if (System.currentTimeMillis() >= _endMillis) {
-            DriverStation.reportError("MoveCarriageToSetpointPID timed out at " + _endMillis + "ms", false);
+            DriverStation.reportError("MoveCarriageToSetpointPID timed out after " + _timeoutMS + "ms", false);
             return true;
         }
         if (_carriage.onTarget()) {

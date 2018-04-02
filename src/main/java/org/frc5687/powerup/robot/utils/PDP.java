@@ -1,5 +1,6 @@
 package org.frc5687.powerup.robot.utils;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,7 +29,12 @@ public class PDP extends PowerDistributionPanel {
     }
     
     public boolean excessiveCurrent(int channel, double threshold) {
-        return getCurrent(channel) >= threshold;
+        double current = getCurrent(channel);
+        if (current >= threshold) {
+            DriverStation.reportError("PDP Channel: " + channel + " excessive at " + current, false);
+            return true;
+        }
+        return false;
     }
 
 }
