@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -19,6 +20,8 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
+    private boolean _isHealthy;
+    private int _healthCheckCount = 0;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -40,6 +43,7 @@ public class Carriage extends PIDSubsystem {
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
         _isCompetitionBot = isCompetitionBot;
+        _isHealthy = true;
     }
 
     public double calculateHoldSpeed() {
@@ -90,6 +94,19 @@ public class Carriage extends PIDSubsystem {
             if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
                 speed = 0.0;
             }
+            if (Math.abs(speed) > Constants.Carriage.MIN_SPEED) {
+                double currentDraw = _pdp.getCurrent(RobotMap.PDP.CARRIAGE_SP);
+                if (currentDraw > Constants.Carriage.PDP_MIN_CURRENT) {
+                    _isHealthy = true;
+                    _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
+                } else {
+                    _healthCheckCount--;
+                    if (_healthCheckCount <= 0) {
+                        _isHealthy = false;
+                        _healthCheckCount = 0;
+                    }
+                }
+            }
 
             speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
         }
@@ -138,6 +155,7 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
         SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
+        SmartDashboard.putBoolean("Carriage/Is healthy", _isHealthy);
     }
 
     public boolean isCompetitionBot() {
@@ -145,7 +163,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return true;
+        return _isHealthy;
     }
 
     public boolean isInTopZone() {
