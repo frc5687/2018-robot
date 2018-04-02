@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.KillAll;
+import org.frc5687.powerup.robot.commands.RumbleControllersForNMillis;
+import org.frc5687.powerup.robot.commands.actions.ServoDown;
+import org.frc5687.powerup.robot.commands.actions.ServoUp;
 import org.frc5687.powerup.robot.commands.auto.*;
 import org.frc5687.powerup.robot.subsystems.*;
 import org.frc5687.powerup.robot.utils.AutoChooser;
@@ -39,6 +42,8 @@ public class Robot extends TimedRobot {
     private long lastPeriod;
     private int ticksPerUpdate = 5;
     private int updateTick = 0;
+    private boolean hasRumbledForEndgame;
+    private boolean _manualLightFlashRequested;
 
 
     public Robot() {
@@ -56,12 +61,13 @@ public class Robot extends TimedRobot {
         imu = new AHRS(SPI.Port.kMXP);
         pdp = new PDP();
         oi = new OI(this);
-        jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
-        lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
+        //jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
+        //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
         intake = new Intake(oi, _isCompetitionBot);
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
+        intake.setArm(_arm);
         _lights = new Lights(this);
         _climber = new Climber(oi, pdp);
         _autoChooser = new AutoChooser(_isCompetitionBot);
@@ -105,6 +111,8 @@ public class Robot extends TimedRobot {
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
         carriage.zeroEncoder();
+        _manualLightFlashRequested = false;
+        hasRumbledForEndgame = false;
         // Reset the lights slider in case it was left on
         SmartDashboard.putNumber("DB/Slider 0", 0.0);
 
@@ -133,19 +141,25 @@ public class Robot extends TimedRobot {
         }
         int autoPosition = _autoChooser.positionSwitchValue();
         int autoMode = _autoChooser.modeSwitchValue();
+        boolean stayInYourOwnLane = _autoChooser.stayInYourOwnLane();
+        long autoDelayInMillis = _autoChooser.getDelayMillis();
         SmartDashboard.putNumber("Auto/SwitchSide", switchSide);
         SmartDashboard.putNumber("Auto/ScaleSide", scaleSide);
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
-        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
-        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, this);
+        SmartDashboard.putString("Auto/Delay", Long.toString(autoDelayInMillis) + "ms");
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", delay:" + Long.toString(autoDelayInMillis) + "ms, switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, autoDelayInMillis,stayInYourOwnLane, this);
         autoCommand.start();
     }
 
     @Override
     public void teleopInit() {
         if (autoCommand != null) autoCommand.cancel();
+        _manualLightFlashRequested = false;
         driveTrain.enableCoastMode();
+        hasRumbledForEndgame = false;
+        hasRumbledForEndgame = false;
     }
 
     @Override
@@ -158,9 +172,6 @@ public class Robot extends TimedRobot {
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
         lastPeriod = now;
-        if (oi.getDriverPOV() != 0 || oi.getOperatorPOV() != 0) {
-            new KillAll(this).start();
-        }
     }
 
     @Override
@@ -177,6 +188,28 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        double matchTime = DriverStation.getInstance().getMatchTime();
+
+        if (!hasRumbledForEndgame && matchTime <= Constants.OI.START_RUMBLE_AT) {
+            new RumbleControllersForNMillis(oi, 2000, Constants.OI.RUMBLE_DURATION).start();
+            hasRumbledForEndgame = true;
+        }
+
+        int operatorPOV = oi.getOperatorPOV();
+        int driverPOV = oi.getDriverPOV();
+
+        if (operatorPOV == 8) {
+            new ServoUp(intake).start();
+        } else if (operatorPOV == 4) {
+            new ServoDown(intake).start();
+        }
+
+        if (driverPOV == 2 || operatorPOV == 2) {
+            new KillAll(this).start();
+        }
+
+        _manualLightFlashRequested = operatorPOV == 6;
     }
 
     @Override
@@ -236,5 +269,9 @@ public class Robot extends TimedRobot {
     public boolean isInWarningPeriod() {
         double remaining = DriverStation.getInstance().getMatchTime();
         return (remaining < Constants.START_ALERT) && (remaining > Constants.END_ALERT);
+    }
+
+    public boolean isManualLightFlashRequested() {
+        return _manualLightFlashRequested;
     }
 }

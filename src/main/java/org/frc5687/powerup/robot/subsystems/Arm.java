@@ -61,10 +61,14 @@ public class Arm extends PIDSubsystem {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_PROTO;
         } else if (ang > 160) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_CUBE_PROTO;
-        } else if (ang > 90 & cubeDetected) {
+        } else if (ang > 90 && cubeDetected) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_CUBE_PROTO;
         } else if (ang > 90) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_NO_CUBE_PROTO;
+        } else if (ang > 55 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_55_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_55_CUBE_PROTO;
+        } else if (ang > 55) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_55_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_55_NO_CUBE_PROTO;
         } else if (cubeDetected) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_BOTTOM_CUBE_PROTO;
         }
@@ -84,6 +88,7 @@ public class Arm extends PIDSubsystem {
         }
         speed = Math.max(speed, Constants.Arm.MIN_SPEED);
         speed = Math.min(speed, Constants.Arm.MAX_SPEED);
+        SmartDashboard.putNumber("Arm/speedPreInversion", speed); // TODO: "EXCESSIVE" REAL TIME LOGGING
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
     }
