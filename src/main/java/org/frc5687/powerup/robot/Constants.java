@@ -4,7 +4,7 @@ public class Constants {
     public static final int CYCLES_PER_SECOND = 50;
     public static final double START_ALERT = 32;
     public static final double END_ALERT = 28;
-    public static final int HEALTH_CHECK_CYCLES = 5;
+    public static final int HEALTH_CHECK_CYCLES = 10;
 
 
     public class Lights {
@@ -296,10 +296,10 @@ public class Constants {
 
     public class Carriage {
         public static final double PDP_EXCESSIVE_CURRENT = 100.0;
-        public static final double PDP_MIN_CURRENT = .5;
+        public static final double HC_MIN_CURRENT = .5;
         public static final double DEADBAND = 0.13;
         public static final boolean MOTOR_INVERTED = true;
-        public static final double MIN_SPEED = 0.1; // Minimum speed to triggr the amp/isHalthy check
+        public static final double HC_MIN_SPEED = 0.1; // Minimum speed to triggr the amp/isHalthy check
         public class HoldSpeeds {
             public static final double PAST_TOP_PROTO = 0.42;
             public static final double PAST_TOP_GRETA = 0.5;
@@ -375,6 +375,8 @@ public class Constants {
 
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
+        public static final double HC_MIN_SPEED = 0.25;
+        public static final double HC_MIN_CURRENT = 0.5;
 
         public class Encoder {
             public static final double ENCODER_START = 0;

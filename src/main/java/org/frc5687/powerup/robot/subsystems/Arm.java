@@ -10,6 +10,8 @@ import org.frc5687.powerup.robot.commands.DriveArm;
 import org.frc5687.powerup.robot.utils.AnglePotentiometer;
 import org.frc5687.powerup.robot.utils.PDP;
 
+import static java.lang.Math.abs;
+
 public class Arm extends PIDSubsystem {
     private PDP _pdp;
     private Encoder encoder;
@@ -23,6 +25,8 @@ public class Arm extends PIDSubsystem {
     private double BOTTOM;
     private boolean _isCompetitionBot;
     private int motorInversionMultiplier;
+    private boolean _isHealthy;
+    private int _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
 
     public static final double kP = 0.03;
     public static final double kI = 0.002;
@@ -49,6 +53,7 @@ public class Arm extends PIDSubsystem {
         _pot = isCompetitionBot ?
                 new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 33.0, 0.604, 166.0,  0.205)
                 : new AnglePotentiometer(RobotMap.Arm.POTENTIOMETER, 38.0,  0.574, 163.0, 0.20);
+        _isHealthy = true;
     }
 
     public double calculateHoldSpeed() {
@@ -91,8 +96,23 @@ public class Arm extends PIDSubsystem {
         SmartDashboard.putNumber("Arm/speedPreInversion", speed); // TODO: "EXCESSIVE" REAL TIME LOGGING
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
-    }
 
+        if (Math.abs(speed) > Constants.Arm.HC_MIN_SPEED) {
+            double currentDraw = _pdp.getCurrent(RobotMap.PDP.ARM_SP);
+            if (currentDraw > Constants.Arm.HC_MIN_CURRENT) {
+                _isHealthy = true;
+                _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
+            } else {
+                DriverStation.reportError("Arm unhealthy with speed " + speed + " an amps " + currentDraw + " (" + _healthCheckCount + " checks left)", false);
+                _healthCheckCount--;
+                if (_healthCheckCount <= 0) {
+                    _isHealthy = false;
+                    _healthCheckCount = 0;
+                }
+            }
+        }
+
+    }
 
     @Override
     protected void initDefaultCommand() {
@@ -105,12 +125,12 @@ public class Arm extends PIDSubsystem {
 
     public boolean atTop() {
         double diff = getPot() - TOP;
-        return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
+        return abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public boolean atBottom() {
         double diff = getPot() - BOTTOM;
-        return Math.abs(diff) <= Constants.Arm.Pot.TOLERANCE;
+        return abs(diff) <= Constants.Arm.Pot.TOLERANCE;
     }
 
     public void zeroEncoder() {
@@ -151,6 +171,7 @@ public class Arm extends PIDSubsystem {
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
         SmartDashboard.putNumber("Arm/potAngle", getPot());
         SmartDashboard.putNumber("Arm/potRaw", _pot.getRaw());
+        SmartDashboard.putBoolean("Arm/is healthy", _isHealthy);
     }
 
     @Override
@@ -163,7 +184,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return true;
+        return _isHealthy;
     }
 
     public double estimateHeight() {
