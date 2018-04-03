@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
         //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
-        intake = new Intake(oi, _isCompetitionBot);
+        intake = new Intake(oi, pdp, _isCompetitionBot);
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
         intake.setArm(_arm);
         _lights = new Lights(this);

@@ -103,6 +103,9 @@ public class Constants {
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SWITCH_DROP_SPEED = -0.42;
 
+        public static final double HC_MIN_SPEED = 0.1;
+        public static final double HC_MIN_CURRENT = 0.5;
+
         public class SIDE_IR {
             public static final boolean ENABLED = false;
             public static final int DETECTION_THRESHOLD = 1200;
