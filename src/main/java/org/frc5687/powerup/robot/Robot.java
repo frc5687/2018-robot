@@ -225,6 +225,7 @@ public class Robot extends TimedRobot {
             carriage.updateDashboard();
             driveTrain.updateDashboard();
             intake.updateDashboard();
+            _climber.updateDashboard();
             estimateIntakeHeight();
             updateTick = 0;
         }

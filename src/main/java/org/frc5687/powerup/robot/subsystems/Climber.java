@@ -50,4 +50,10 @@ public class Climber extends Subsystem {
     }
 
     public boolean isHealthy() { return _healthChecker.IsHealthy(); }
+
+    public void updateDashboard() {
+        SmartDashboard.putBoolean("Climber/Is healthy", _healthChecker.IsHealthy());
+    }
+
+
 }

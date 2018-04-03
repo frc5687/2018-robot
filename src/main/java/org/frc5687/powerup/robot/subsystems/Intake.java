@@ -135,6 +135,9 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
         SmartDashboard.putBoolean("Intake/isPlateDetected()", isPlateDetected());
+        SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
+        SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
+        SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
     }
 
     @Override

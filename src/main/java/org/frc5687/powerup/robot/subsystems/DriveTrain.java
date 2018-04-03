@@ -383,6 +383,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
 
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Master", _leftMasterHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Follower", _leftFollowerHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Master", _rightMasterHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsHealthy());
+
+
         SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);
         SmartDashboard.clearPersistent("*");
