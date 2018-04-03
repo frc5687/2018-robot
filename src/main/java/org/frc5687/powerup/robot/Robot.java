@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
-        imu = new AHRS(SPI.Port.kMXP);
+        imu = new AHRS(SPI.Port.kMXP, (byte) 100);
         pdp = new PDP();
         oi = new OI(this);
         //jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
