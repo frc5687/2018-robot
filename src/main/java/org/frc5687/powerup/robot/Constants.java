@@ -135,9 +135,9 @@ public class Constants {
 
             public static final double SPEED = 0.9;
 
-            public static final double kP = 0.04;
-            public static final double kI = 0.003;//0.01;
-            public static final double kD = 0.80;//0.3;
+            public static final double kP = 5.0;// IPS, used to be 0.04
+            public static final double kI = 0.0;// IPS, used to be 0.003;//0.01;
+            public static final double kD = 48.0;// IPS, used to be 0.80;//0.3;
             public static final double TOLERANCE = 1.0; // 0.5
             public static final double MAX_OUTPUT = 0;
             /*

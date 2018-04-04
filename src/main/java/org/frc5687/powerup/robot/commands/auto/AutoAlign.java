@@ -79,7 +79,7 @@ public class AutoAlign extends Command implements PIDOutput {
 
         controller = new PIDController(kP, kI, kD, imu, this, 0.01);
         controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
-        controller.setOutputRange(-speed, speed);
+        controller.setOutputRange(-130, 130);
         controller.setAbsoluteTolerance(_tolerance);
         controller.setContinuous();
         controller.setSetpoint(angle);
@@ -92,7 +92,8 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void execute() {
-        driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
+        driveTrain.setVelocityIPS(pidOut, -pidOut);
+        //driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
         SmartDashboard.putData("AutoAlign/pid", controller);
@@ -100,12 +101,9 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
-        /*
         if (!controller.onTarget()) {
             _onTargetSince = 0;
-            return false;
         }
-        */
 
         if(System.currentTimeMillis() >= _endTimeMillis){
             DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms", false);
