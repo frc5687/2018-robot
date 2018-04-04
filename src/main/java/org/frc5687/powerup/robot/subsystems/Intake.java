@@ -53,7 +53,7 @@ public class Intake extends Subsystem {
         _pdp = pdp;
 
         _leftHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.INTAKE_LEFT_SP);
-        _rightHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.INTAKE_RIGHT_SP);
+        _rightHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, _isCompetitionBot ? RobotMap.PDP.INTAKE_RIGHT_SP_COMP : RobotMap.PDP.INTAKE_RIGHT_SP_PROTO);
 
     }
 

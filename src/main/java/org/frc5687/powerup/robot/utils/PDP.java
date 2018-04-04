@@ -5,8 +5,11 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PDP extends PowerDistributionPanel {
-    public PDP() {
+    private boolean _isCompetitionBot;
+
+    public PDP(boolean isCompetitionBot) {
         super();
+        _isCompetitionBot = isCompetitionBot;
     }
 
     public void updateDashboard() {
@@ -20,10 +23,15 @@ public class PDP extends PowerDistributionPanel {
         SmartDashboard.putNumber("PDP/Current/7", getCurrent(7));
         SmartDashboard.putNumber("PDP/Current/8", getCurrent(8));
         SmartDashboard.putNumber("PDP/Current/9", getCurrent(9));
-        SmartDashboard.putNumber("PDP/Current/13(intakeRightSP)", getCurrent(13));
         SmartDashboard.putNumber("PDP/Current/11", getCurrent(11));
         SmartDashboard.putNumber("PDP/Current/12(leftFrontSRX)", getCurrent(12));
-        SmartDashboard.putNumber("PDP/Current/10(climberSP)", getCurrent(10));
+        if (_isCompetitionBot) {
+            SmartDashboard.putNumber("PDP/Current/13(climberSP)", getCurrent(13));
+            SmartDashboard.putNumber("PDP/Current/10(intakeRightSP)", getCurrent(10));
+        } else {
+            SmartDashboard.putNumber("PDP/Current/10(climberSP)", getCurrent(10));
+            SmartDashboard.putNumber("PDP/Current/13(intakeRightSP)", getCurrent(13));
+        }
         SmartDashboard.putNumber("PDP/Current/14(carriageSP)", getCurrent(14));
         SmartDashboard.putNumber("PDP/Current/15(armSP)", getCurrent(15));
     }
