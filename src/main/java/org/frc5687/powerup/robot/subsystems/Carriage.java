@@ -9,6 +9,7 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveCarriage;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Carriage extends PIDSubsystem {
@@ -19,8 +20,8 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
-    private boolean _isHealthy;
-    private int _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
+
+    private MotorHealthChecker _healthChecker;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -42,7 +43,7 @@ public class Carriage extends PIDSubsystem {
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
         _isCompetitionBot = isCompetitionBot;
-        _isHealthy = true;
+        _healthChecker = new MotorHealthChecker(Constants.Carriage.HC_MIN_SPEED, Constants.Carriage.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.CARRIAGE_SP);
     }
 
     public double calculateHoldSpeed() {
@@ -93,19 +94,9 @@ public class Carriage extends PIDSubsystem {
             if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
                 speed = 0.0;
             }
-            if (Math.abs(speed) > Constants.Carriage.HC_MIN_SPEED) {
-                double currentDraw = _pdp.getCurrent(RobotMap.PDP.CARRIAGE_SP);
-                if (currentDraw > Constants.Carriage.HC_MIN_CURRENT) {
-                    _isHealthy = true;
-                    _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
-                } else {
-                    _healthCheckCount--;
-                    if (_healthCheckCount <= 0) {
-                        _isHealthy = false;
-                        _healthCheckCount = 0;
-                    }
-                }
-            }
+
+
+            _healthChecker.checkHealth(speed);
 
             speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
         }
@@ -154,7 +145,7 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
         SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
-        SmartDashboard.putBoolean("Carriage/Is healthy", _isHealthy);
+        SmartDashboard.putBoolean("Carriage/Is healthy", _healthChecker.IsHealthy());
     }
 
     public boolean isCompetitionBot() {
@@ -162,7 +153,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return _isHealthy;
+        return _healthChecker.IsHealthy();
     }
 
     public boolean isInTopZone() {
