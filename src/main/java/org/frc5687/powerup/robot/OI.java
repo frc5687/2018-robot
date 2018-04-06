@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -49,20 +50,24 @@ public class OI {
     private JoystickButton driverCarriageUp;
     private JoystickButton driverCarriageDown;
 
-    private JoystickLight leftDriveEncoderLED;
-    private JoystickLight rightDriveEncoderLED;
+
     private JoystickLight leftDriveMotorsLED;
     private JoystickLight rightDriveMotorsLED;
 
-    private JoystickLight intakeBackIRLED;
-    private JoystickLight intakeDownIRLED;
+    private JoystickLight leftIntakeMotorLED;
+    private JoystickLight rightIntakeMotorLED;
 
-    private JoystickLight carriageEncoderLED;
     private JoystickLight carriageMotorLED;
 
-    private JoystickLight armPotLED;
     private JoystickLight armMotorLED;
-    private JoystickLight armEncoderLED;
+
+    private JoystickLight leftDriveEncoderLED;
+    private JoystickLight rightDriveEncoderLED;
+
+    private JoystickLight intakeBackIRLED;
+
+    private JoystickLight carriageEncoderLED;
+    private JoystickLight armPotLED;
 
     private AxisButton climberHoldUp;
     private AxisButton climberHoldDown;
@@ -189,7 +194,7 @@ public class OI {
 
     public double getCarriageSpeed() {
         double operator = -getSpeedFromAxis(operatorGamepad, ButtonNumbers.LEFT_AXIS);
-        double driver = driverCarriageUp.get() ? 1 : (driverCarriageDown.get() ? -0.3 : 0);
+        double driver = driverCarriageUp.get() ? 1 : (driverCarriageDown.get() ? -0.99 : 0);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed, Constants.Carriage.SENSITIVITY);
         return Helpers.applyDeadband(speed, Constants.Carriage.DEADBAND);
@@ -200,10 +205,7 @@ public class OI {
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed,Constants.Arm.SENSITIVITY);
-        double holdSpeed = _robot.pickConstant(Constants.Arm.HOLD_SPEED_COMP, Constants.Arm.HOLD_SPEED_PROTO);
-        double holdSpeedWithCube = _robot.pickConstant(Constants.Arm.HOLD_SPEED_WITH_CUBE_COMP, Constants.Arm.HOLD_SPEED_WITH_CUBE_PROTO);
-        double final_speed = _robot.getIntake().cubeIsDetected() ? holdSpeedWithCube : holdSpeed;
-        return Helpers.applyDeadband(-speed, 0.05, final_speed);
+        return Helpers.applyDeadband(-speed, 0.05);
     }
 
     public double getClimberSpeed() {
@@ -263,19 +265,26 @@ public class OI {
 
     private void initializeConsole(Robot robot) {
         // LEDs
-        leftDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.A.getNumber());
-        rightDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.B.getNumber());
-        leftDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.C.getNumber());
-        rightDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.D.getNumber());
+        leftDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.D.getNumber());
+        rightDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.E.getNumber());
 
-        intakeBackIRLED = new JoystickLight(console, OperatorConsole.LEDs.E.getNumber());
-        intakeDownIRLED = new JoystickLight(console, OperatorConsole.LEDs.F.getNumber());
+        leftIntakeMotorLED = new JoystickLight(console, OperatorConsole.LEDs.F.getNumber());
+        rightIntakeMotorLED = new JoystickLight(console, OperatorConsole.LEDs.A.getNumber());
 
-        carriageEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.G.getNumber());
-        carriageMotorLED = new JoystickLight(console, OperatorConsole.LEDs.H.getNumber());
+        carriageMotorLED = new JoystickLight(console, OperatorConsole.LEDs.B.getNumber());
 
-        armPotLED = new JoystickLight(console, OperatorConsole.LEDs.I.getNumber());
-        armMotorLED = new JoystickLight(console, OperatorConsole.LEDs.J.getNumber());
+        armMotorLED = new JoystickLight(console, OperatorConsole.LEDs.C.getNumber());
+
+/*
+        leftDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.H.getNumber());
+        rightDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.G.getNumber());
+
+        intakeBackIRLED = new JoystickLight(console, OperatorConsole.LEDs.I.getNumber());
+
+        carriageEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.J.getNumber());
+
+        armPotLED = new JoystickLight(console, OperatorConsole.LEDs.K.getNumber());
+*/
 
         climberHoldUp = new AxisButton(console, OperatorConsole.Axes.A.getNumber(), 0.75, 1.0);
         climberHoldDown = new AxisButton(console, OperatorConsole.Axes.A.getNumber(), 0.25, 0.5);
@@ -307,8 +316,44 @@ public class OI {
         armCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.L.getNumber());;
         armLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.M.getNumber());;
         armKill = new JoystickButton(console, OperatorConsole.Buttons.N.getNumber());;
+    }
 
 
+    public void updateConsole() {
+        /*
+        leftDriveMotorsLED.set(!_robot.getDriveTrain().isLeftHealthy());
+        rightDriveMotorsLED.set(!_robot.getDriveTrain().isRightHealthy());
 
+        leftIntakeMotorLED.set(!_robot.getIntake().isLeftHealthy());
+        rightIntakeMotorLED.set(!_robot.getIntake().isRightHealthy());
+        carriageMotorLED.set(_robot.getCarriage().isHealthy());
+        */
+        int pos = (int)SmartDashboard.getNumber("DB/Slider 3", 0);
+
+        if (pos!=0) {
+            console.setOutput(Math.abs(pos), pos>0);
+        }
+
+        armMotorLED.set(_robot.getArm().isHealthy());
+    }
+
+    public void setDriverGamepadRumble(double leftIntensity, double rightIntensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setDriverGamepadRumble(double intensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
+
+    public void setOperatorGamepadRumble(double leftIntensity, double rightIntensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setOperatorGamepadRumble(double intensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, intensity);
     }
 }

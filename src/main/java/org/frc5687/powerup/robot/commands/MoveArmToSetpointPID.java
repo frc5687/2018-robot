@@ -1,15 +1,8 @@
 package org.frc5687.powerup.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.subsystems.Arm;
-import org.frc5687.powerup.robot.subsystems.DriveTrain;
-import org.opencv.core.KeyPoint;
 
 /**
  * Created by Ben Bernard on 1/28/2018.
@@ -55,6 +48,7 @@ public class MoveArmToSetpointPID extends Command {
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         DriverStation.reportError("MoveArmToSetpointPID Ending", false);
         _arm.disable();
+        _arm.drive(_arm.calculateHoldSpeed(true));
     }
 
     @Override
@@ -63,10 +57,17 @@ public class MoveArmToSetpointPID extends Command {
             DriverStation.reportError("MoveArmToSetpointPID timed out at " + _endMillis + "ms", false);
             return true;
         }
-        if (canFinish && _arm.onTarget()) {
-            DriverStation.reportError("MoveArmToSetpointPID completed at " + _arm.getAngle(), false);
+        if (_arm.onTarget()) {
+            /*
+            if (canFinish) {
+                DriverStation.reportError("MoveArmToSetpointPID completed at " + _arm.getAngle(), false);
+                return true;
+            }
+            */
+            DriverStation.reportError("MoveArmToSetpointPID on target but can't finish, except it can thanks to ignoring can finish in isFinished(). Angle at " + _arm.getAngle(), false);
             return true;
         }
+        //DriverStation.reportError("MoveArmToSetpointPID not on target. Angle at " + _arm.getAngle(), false); // TODO: "EXCESSIVE" logging
 
         return false;
     }

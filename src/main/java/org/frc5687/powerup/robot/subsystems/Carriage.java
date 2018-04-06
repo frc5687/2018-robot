@@ -9,6 +9,7 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveCarriage;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Carriage extends PIDSubsystem {
@@ -19,6 +20,8 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
+
+    private MotorHealthChecker _healthChecker;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -40,32 +43,36 @@ public class Carriage extends PIDSubsystem {
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
         _isCompetitionBot = isCompetitionBot;
+        _healthChecker = new MotorHealthChecker(Constants.Carriage.HC_MIN_SPEED, Constants.Carriage.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.CARRIAGE_SP);
     }
 
     public double calculateHoldSpeed() {
         double pos = getPos();
         if (pos > 0) {
-            return 0.4;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_TOP_GRETA : Constants.Carriage.HoldSpeeds.PAST_TOP_PROTO;
         } else if (pos > -20) {
-            return 0.4;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_20_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_20_PROTO;
         } else if (pos > -50) {
-            return 0.38;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_50_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_50_PROTO;
         } else if (pos > -100) {
-            return 0.35;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_100_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_100_PROTO;
         } else if (pos > -200) {
-            return 0.3;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_200_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_200_PROTO;
         } else if (pos > -400) {
-            return 0.2;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_400_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_400_PROTO;
         } else if (pos > -500) {
-            return 0.1;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_500_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_500_PROTO;
         } else if (pos > -600) {
-            return -0.2;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_600_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_600_PROTO;
         } else if (pos > -700) {
-            return -0.3;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_700_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_700_PROTO;
         } else if (pos > -800) {
-            return -0.4;
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_800_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_800_PROTO;
+        } else if (pos > -900) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_900_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_900_PROTO;
+        } else {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_900_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_900_PROTO;
         }
-        return 0.0;
     }
 
     public void drive(double desiredSpeed) {
@@ -76,9 +83,9 @@ public class Carriage extends PIDSubsystem {
         double speed = desiredSpeed;
         if (!overrideCaps) {
             if (speed > 0 && isAtTop()) {
-                speed = Constants.Carriage.HOLD_SPEED;
+                speed = calculateHoldSpeed();
             } else if (speed < 0 && isAtBottom()) {
-                speed = -Constants.Carriage.HOLD_SPEED;
+                speed = calculateHoldSpeed();
             } else if (speed > 0 && isInTopZone()) {
                 speed *= Constants.Carriage.ZONE_SPEED_LIMIT;
             } else if (speed < 0 && isInBottomZone()) {
@@ -87,6 +94,9 @@ public class Carriage extends PIDSubsystem {
             if (_pdp.excessiveCurrent(RobotMap.PDP.CARRIAGE_SP, Constants.Carriage.PDP_EXCESSIVE_CURRENT)) {
                 speed = 0.0;
             }
+
+
+            _healthChecker.checkHealth(speed);
 
             speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
         }
@@ -134,6 +144,8 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/At bottom", isAtBottom());
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
+        SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
+        SmartDashboard.putBoolean("Carriage/Is healthy", _healthChecker.IsHealthy());
     }
 
     public boolean isCompetitionBot() {
@@ -141,7 +153,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return true;
+        return _healthChecker.IsHealthy();
     }
 
     public boolean isInTopZone() {
