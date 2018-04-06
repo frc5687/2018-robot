@@ -1,13 +1,11 @@
 package org.frc5687.powerup.robot.utils;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.PIDSource;
 import org.frc5687.powerup.robot.Constants;
 
-public abstract class IRSensor extends AnalogInput implements PIDSource {
-
-    public IRSensor(int channel) {
-        super(channel);
+public abstract class IRSensor extends AnalogInput{
+    public IRSensor(int channel){
+       super(channel);
     }
 
     public double getRaw() {

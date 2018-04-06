@@ -9,9 +9,10 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.IRSensorMedium;
+import org.frc5687.powerup.robot.utils.IRSensorShort;
 import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 import org.frc5687.powerup.robot.utils.PDP;
-import org.frc5687.powerup.robot.utils.IRSensing;
 
 
 public class Intake extends Subsystem {
@@ -24,8 +25,8 @@ public class Intake extends Subsystem {
     private Servo servo;
     private Arm _arm;
     private double _lastServoPos;
-    private IRSensing.sensorShort irBackInches;
-    private IRSensing.sensorMedium irDownInches;
+    private IRSensorShort irBackInches;
+    private IRSensorMedium irDownInches;
 
     private double _lastLeftSpeed;
     private double _lastRightSpeed;

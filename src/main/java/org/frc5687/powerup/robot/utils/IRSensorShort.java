@@ -1,9 +1,8 @@
 package org.frc5687.powerup.robot.utils;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import org.frc5687.powerup.robot.Constants;
 
-public class IRSensorShort extends IR {
+public class IRSensorShort extends IRSensor {
     public IRSensorShort(int channel) {
         super(channel);
     }
