@@ -12,6 +12,11 @@ public class FarLeftToRightScaleDeadPartTwo extends DynamicPathCommand {
     }
 
     @Override
+    public double getJitterbugkT() {
+        return 0.1;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 308;
         Trajectory left = new Trajectory(num_elements);
