@@ -92,8 +92,13 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void execute() {
-        driveTrain.setVelocityIPS(pidOut, -pidOut);
-        //driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
+        if (pidOut > 0 && pidOut < Align.MINIMUM_SPEED) {
+            pidOut = Align.MINIMUM_SPEED;
+        }
+        if (pidOut < 0 && pidOut > -Align.MINIMUM_SPEED) {
+            pidOut = -Align.MINIMUM_SPEED;
+        }
+        driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
         SmartDashboard.putData("AutoAlign/pid", controller);
