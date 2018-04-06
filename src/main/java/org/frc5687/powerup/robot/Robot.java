@@ -59,17 +59,17 @@ public class Robot extends TimedRobot {
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP, (byte) 100);
-        pdp = new PDP();
+        pdp = new PDP(_isCompetitionBot);
         oi = new OI(this);
         //jeVoisProxy = new JeVoisProxy(SerialPort.Port.kUSB);
         //lidarProxy = new LidarProxy(SerialPort.Port.kMXP);
         driveTrain = new DriveTrain(this, imu, oi);
         carriage = new Carriage(oi, pdp, _isCompetitionBot);
-        intake = new Intake(oi, _isCompetitionBot);
+        intake = new Intake(oi, pdp, _isCompetitionBot);
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
         intake.setArm(_arm);
         _lights = new Lights(this);
-        _climber = new Climber(oi, pdp);
+        _climber = new Climber(oi, pdp, _isCompetitionBot);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
@@ -225,6 +225,7 @@ public class Robot extends TimedRobot {
             carriage.updateDashboard();
             driveTrain.updateDashboard();
             intake.updateDashboard();
+            _climber.updateDashboard();
             estimateIntakeHeight();
             updateTick = 0;
         }

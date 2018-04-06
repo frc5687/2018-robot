@@ -9,6 +9,7 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveCarriage;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 import org.frc5687.powerup.robot.utils.PDP;
 
 public class Carriage extends PIDSubsystem {
@@ -19,6 +20,8 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
+
+    private MotorHealthChecker _healthChecker;
 
     public static final double kP = 0.5;
     public static final double kI = 0.1;
@@ -40,6 +43,7 @@ public class Carriage extends PIDSubsystem {
         hallEffectTop = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_TOP);
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
         _isCompetitionBot = isCompetitionBot;
+        _healthChecker = new MotorHealthChecker(Constants.Carriage.HC_MIN_SPEED, Constants.Carriage.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.CARRIAGE_SP);
     }
 
     public double calculateHoldSpeed() {
@@ -91,6 +95,9 @@ public class Carriage extends PIDSubsystem {
                 speed = 0.0;
             }
 
+
+            _healthChecker.checkHealth(speed);
+
             speed = Math.max(speed, Constants.Carriage.MINIMUM_SPEED);
         }
 
@@ -138,6 +145,7 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
         SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
+        SmartDashboard.putBoolean("Carriage/Is healthy", _healthChecker.IsHealthy());
     }
 
     public boolean isCompetitionBot() {
@@ -145,7 +153,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isHealthy() {
-        return true;
+        return _healthChecker.IsHealthy();
     }
 
     public boolean isInTopZone() {

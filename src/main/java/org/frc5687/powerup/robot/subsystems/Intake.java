@@ -9,6 +9,8 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
+import org.frc5687.powerup.robot.utils.PDP;
 
 
 public class Intake extends Subsystem {
@@ -28,7 +30,12 @@ public class Intake extends Subsystem {
     private OI oi;
     private boolean _isCompetitionBot;
 
-    public Intake(OI oi, boolean isCompetitionBot) {
+    private MotorHealthChecker _leftHC;
+    private MotorHealthChecker _rightHC;
+
+    private PDP _pdp;
+
+    public Intake(OI oi, PDP pdp, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
         servo = new Servo(RobotMap.Intake.SERVO);
@@ -42,6 +49,12 @@ public class Intake extends Subsystem {
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
         irUp = new AnalogInput(RobotMap.Intake.IR_UP);
+
+        _pdp = pdp;
+
+        _leftHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.INTAKE_LEFT_SP);
+        _rightHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, _isCompetitionBot ? RobotMap.PDP.INTAKE_RIGHT_SP_COMP : RobotMap.PDP.INTAKE_RIGHT_SP_PROTO);
+
     }
 
     public void setArm(Arm arm) {
@@ -68,6 +81,9 @@ public class Intake extends Subsystem {
                     ) ? -1 : 1
                 )
         );
+
+        _leftHC.checkHealth(leftSpeed);
+        _rightHC.checkHealth(rightSpeed);
     }
 
     public void driveServo(double val) {
@@ -119,6 +135,9 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
         SmartDashboard.putBoolean("Intake/isPlateDetected()", isPlateDetected());
+        SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
+        SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
+        SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
     }
 
     @Override
@@ -150,4 +169,15 @@ public class Intake extends Subsystem {
         return (_lastRightSpeed < 0);
     }
 
+    public boolean isLeftHealthy() {
+        return _leftHC.IsHealthy();
+    }
+
+    public boolean isRightHealthy() {
+        return _rightHC.IsHealthy();
+    }
+
+    public boolean isHealthy() {
+        return isLeftHealthy() && isRightHealthy();
+    }
 }
