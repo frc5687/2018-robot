@@ -137,17 +137,18 @@ public class Constants {
 
         public class Align {
 
-            public static final double SPEED = 0.9;
+            public static final double SPEED = 1.0;
 
             public static final double kP = 0.04;
-            public static final double kI = 0.003;//0.01;
-            public static final double kD = 0.80;//0.3;
+            public static final double kI = 0.0;
+            public static final double kD = 0.3;
             public static final double TOLERANCE = 1.0; // 0.5
+            public static final double MINIMUM_SPEED = 0.35;
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
              */
-            public static final double STEADY_TIME = 40;
+            public static final double STEADY_TIME = 60;
 
         }
 
@@ -322,16 +323,16 @@ public class Constants {
             public static final double PAST_NEG_400_PROTO = 0.2;
             public static final double PAST_NEG_400_GRETA = 0.0;
 
-            public static final double PAST_NEG_500_PROTO = 0.1;
+            public static final double PAST_NEG_500_PROTO = 0.15;
             public static final double PAST_NEG_500_GRETA = 0.05;
 
-            public static final double PAST_NEG_600_PROTO = -0.2;
+            public static final double PAST_NEG_600_PROTO = 0.15;
             public static final double PAST_NEG_600_GRETA = -0.2;
 
-            public static final double PAST_NEG_700_PROTO = -0.35;
+            public static final double PAST_NEG_700_PROTO = 0.0;
             public static final double PAST_NEG_700_GRETA = -0.0; // TODO: Too low
 
-            public static final double PAST_NEG_800_PROTO = -0.45;
+            public static final double PAST_NEG_800_PROTO = 0.0;
             public static final double PAST_NEG_800_GRETA = -0.0; // TODO: Too low
 
             public static final double PAST_NEG_900_PROTO = -0.45;
@@ -391,6 +392,8 @@ public class Constants {
 
         public static final double MAX_SPEED = 0.75;
         public static final double MIN_SPEED = -.75;
+        public static final double PID_MAX_SPEED = 0.9;
+        public static final double PID_MIN_SPEED = -0.9;
 
 
         public class Pot {
@@ -437,9 +440,9 @@ public class Constants {
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
             public static final double PAST_90_NO_CUBE_GRETA = 0.1;
 
-            public static final double PAST_55_CUBE_PROTO = -0.2;
+            public static final double PAST_55_CUBE_PROTO = 0.0;
             public static final double PAST_55_CUBE_GRETA = 0.15;
-            public static final double PAST_55_NO_CUBE_PROTO = -0.2;
+            public static final double PAST_55_NO_CUBE_PROTO = 0.0;
             public static final double PAST_55_NO_CUBE_GRETA = 0.1;
 
             public static final double PAST_BOTTOM_CUBE_PROTO = -0.1;
