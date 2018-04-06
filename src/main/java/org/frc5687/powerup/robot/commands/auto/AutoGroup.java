@@ -526,8 +526,8 @@ public class AutoGroup extends CommandGroup {
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 3000));
         addParallel(new PrepIntakeForScale(robot, 1600, false));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -15, Constants.Auto.Align.SPEED, 3000));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 1500));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 1900));
         addSequential(new FarLeftToRightScaleDeadPartThree(robot));
     }
 
