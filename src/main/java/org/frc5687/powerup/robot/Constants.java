@@ -133,7 +133,7 @@ public class Constants {
 
         public class Align {
 
-            public static final double SPEED = 0.9;
+            public static final double SPEED = 1.0;
 
             public static final double kP = 0.04;
             public static final double kI = 0.0;

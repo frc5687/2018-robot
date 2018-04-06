@@ -79,7 +79,7 @@ public class AutoAlign extends Command implements PIDOutput {
 
         controller = new PIDController(kP, kI, kD, imu, this, 0.01);
         controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
-        controller.setOutputRange(-130, 130);
+        controller.setOutputRange(-speed, speed);
         controller.setAbsoluteTolerance(_tolerance);
         controller.setContinuous();
         controller.setSetpoint(angle);
