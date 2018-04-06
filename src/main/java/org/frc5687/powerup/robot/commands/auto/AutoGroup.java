@@ -406,7 +406,7 @@ public class AutoGroup extends CommandGroup {
         int carriageMiddleHeight = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_MIDDLE_COMP : Constants.Carriage.ENCODER_MIDDLE_PROTO;
         // Drive to left switch and deposit cube
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, 2740));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToLeftSwitchForSecondCube.duration - 290));
         addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
         // Move Carriage Down and Back Up
         addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
@@ -425,7 +425,7 @@ public class AutoGroup extends CommandGroup {
     private void secondCubeComingFromLeftSwitchToLeftSwitch(Robot robot) {
         double armSwitchAngle = 91;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED,2000));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED,LeftOfPowerCubeZoneToLeftSwitch.duration - 600));
         addSequential(new LeftOfPowerCubeZoneToLeftSwitch(robot));
     }
 
@@ -527,7 +527,7 @@ public class AutoGroup extends CommandGroup {
         addParallel(new PrepIntakeForScale(robot, 1600, false));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 1900));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
         addSequential(new FarLeftToRightScaleDeadPartThree(robot));
     }
 

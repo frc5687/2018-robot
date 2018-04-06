@@ -6,6 +6,9 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
 public class LeftOfPowerCubeZoneToLeftSwitch extends DynamicPathCommand {
+    public static int numSegments = 260;
+    public static double dt = 0.01;
+    public static long duration = (long) (numSegments * (dt * 1000));
     
     public LeftOfPowerCubeZoneToLeftSwitch(Robot robot) {
         super(robot);
@@ -1586,11 +1589,11 @@ public class LeftOfPowerCubeZoneToLeftSwitch extends DynamicPathCommand {
 	// WAYPOINT_DATA: [{"position":{"x":52,"y":178},"theta":0.5235833333312303,"comment":""},{"position":{"x":130,"y":208},"theta":0,"comment":""}]
 	// IS_REVERSED: false
 	// FILE_NAME: LeftOfPowerCubeZoneToLeftSwitch
-  // DT: 0.01
-  // MAX_VEL: 100
-  // MAX_ACC: 70
-  // MAX_JERK: 200
-  // WHEEL_BASE: 19.8
-  // PACKAGE: org.frc5687.powerup.robot.commands.auto.paths
-  // PARENT: DynamicPathCommand
+    // DT: 0.01
+    // MAX_VEL: 100
+    // MAX_ACC: 70
+    // MAX_JERK: 200
+    // WHEEL_BASE: 19.8
+    // PACKAGE: org.frc5687.powerup.robot.commands.auto.paths
+    // PARENT: DynamicPathCommand
 }
