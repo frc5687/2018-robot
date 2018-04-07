@@ -96,6 +96,10 @@ public class Intake extends Subsystem {
         return _lastServoPos;
     }
 
+    public double getServoRaw(){
+        return servo.get();
+    }
+
     /**
      * Checks if cube is fully in the intake.
      * @return
@@ -125,9 +129,8 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.UP_IR.ENABLED || _arm == null) {
             return false;
         }
-        return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
-    }
-
+            return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
+        }
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
@@ -138,6 +141,8 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
         SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
         SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
+        SmartDashboard.putNumber("Intake/servo value", getServoRaw());
+        SmartDashboard.putNumber("Intake/servo set", getServoRaw());
     }
 
     @Override
