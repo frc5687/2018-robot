@@ -526,16 +526,19 @@ public class AutoGroup extends CommandGroup {
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 89, Constants.Auto.Align.SPEED, 3000));
         addParallel(new PrepIntakeForScale(robot, 1600, false));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
-        addSequential(new FarLeftToRightScaleDeadPartThree(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 180, Constants.Auto.Align.SPEED, 3000));
+        addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
+        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
+        //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
+        //addSequential(new FarLeftToRightScaleDeadPartThree(robot));
         /*
         Go to intake position and turn towards second cube
          */
-        addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP, 700));
-        addSequential(new FarLeftToRightScaleDeadPartFour(robot));
-        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -110, Constants.Auto.Align.SPEED, 4000));
+        //adParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP, 700));
+        //addSequential(new FarLeftToRightScaleDeadPartFour(robot));
+        //addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
+        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -110, Constants.Auto.Align.SPEED, 4000));
     }
 
     private void farRightToLeftScale(Robot robot) {
