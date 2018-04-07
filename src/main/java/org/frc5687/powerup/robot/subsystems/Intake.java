@@ -92,11 +92,15 @@ public class Intake extends Subsystem {
         servo.set(val);
     }
 
+    public void stopServo(){
+        servo.set(servo.get());
+    }
+
     public double getServoPosition() {
         return _lastServoPos;
     }
 
-    public double getServoRaw(){
+    public double getServoValue(){
         return servo.get();
     }
 
@@ -141,8 +145,8 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
         SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
         SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
-        SmartDashboard.putNumber("Intake/servo value", getServoRaw());
-        SmartDashboard.putNumber("Intake/servo set", getServoRaw());
+        SmartDashboard.putNumber("Intake/servo value", getServoPosition());
+        SmartDashboard.putNumber("Intake/servo set", getServoValue());
     }
 
     @Override
