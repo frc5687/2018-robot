@@ -23,11 +23,11 @@ public class DriveCarriage extends Command {
         double oiSpeed = DriverStation.getInstance().isAutonomous() ? 0 : oi.getCarriageSpeed();
         if (oiSpeed != 0.0) {
             carriage.disable();
-            DriverStation.reportError("DriveCarriage requesting oiSpeed: " + Double.toString(oiSpeed), false);
+            //DriverStation.reportError("DriveCarriage requesting oiSpeed: " + Double.toString(oiSpeed), false);
             carriage.drive(oiSpeed);
         } else if (!carriage.getPIDController().isEnabled()) {
             double holdSpeed = carriage.calculateHoldSpeed();
-            DriverStation.reportError("DriveCarriage requested Hold Speed: " + Double.toString(holdSpeed), false);
+            //DriverStation.reportError("DriveCarriage requested Hold Speed: " + Double.toString(holdSpeed), false);
             carriage.drive(holdSpeed);
         }
     }

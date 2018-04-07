@@ -34,7 +34,7 @@ public class AutoDrive extends Command {
 
     private double kPdistance = 0.05; // .07;
     private double kIdistance = 0.001; // .001;
-    private double kDdistance = 0.2; //.1;
+    private double kDdistance = 0.5; //.1;
     private double kTdistance = 0.5;
 
     private double kPangle = .1;
@@ -89,7 +89,7 @@ public class AutoDrive extends Command {
             SmartDashboard.putNumber("AutoDrive/kD", kDdistance);
             SmartDashboard.putNumber("AutoDrive/kT", kTdistance);
 
-            distanceController = new PIDController(kPdistance, kIdistance, kDdistance, speed, driveTrain, distancePID);
+            distanceController = new PIDController(kPdistance, kIdistance, kDdistance, speed, driveTrain, distancePID, 0.01);
             distanceController.setAbsoluteTolerance(kTdistance);
             distanceController.setOutputRange(-speed, speed);
             distanceController.setSetpoint(distance);
@@ -97,7 +97,7 @@ public class AutoDrive extends Command {
         }
 
         anglePID = new PIDListener();
-        angleController = new PIDController(kPangle, kIangle, kDangle, imu, anglePID);
+        angleController = new PIDController(kPangle, kIangle, kDangle, imu, anglePID, 0.01);
         angleController.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         double maxSpeed = speed * Drive.AnglePID.MAX_DIFFERENCE;
         SmartDashboard.putNumber("AutoDrive/angleMaxSpeed", maxSpeed);
@@ -117,16 +117,13 @@ public class AutoDrive extends Command {
         double distanceFactor = 0;
         double angleFactor = 0;
         if (usePID) {
-            synchronized (distancePID) {
-                distanceFactor = distancePID.get();
-            }
+            distanceFactor = distancePID.get();
         } else {
             distanceFactor = distance > 0 ? speed : -speed;
         }
 
-        synchronized (anglePID) {
-            angleFactor = anglePID.get();
-        }
+        angleFactor = anglePID.get();
+
         SmartDashboard.putNumber("AutoDrive/distanceFactor", distanceFactor);
         SmartDashboard.putNumber("AutoDrive/angleFactor", angleFactor);
 
@@ -195,9 +192,7 @@ public class AutoDrive extends Command {
 
         @Override
         public void pidWrite(double output) {
-            synchronized (this) {
-                value = output;
-            }
+            value = output;
         }
 
     }

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 import org.frc5687.powerup.robot.Constants.Auto.Align;
 
@@ -34,17 +35,40 @@ public class AutoAlign extends Command implements PIDOutput {
     private DriveTrain driveTrain;
     private AHRS imu;
 
+    private double _tolerance;
+
+    public AutoAlign(Robot robot, double angle) {
+        this(robot, angle, Align.SPEED);
+    }
+
+    public AutoAlign(Robot robot, double angle, double speed) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, speed);
+    }
+
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
         this(driveTrain, imu, angle, speed, 2000);
     }
 
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout) {
+        this(driveTrain, imu, angle, speed, timeout, Align.TOLERANCE);
+    }
+
+    public AutoAlign(Robot robot, double angle, long timeout, double tolerance) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, Align.SPEED, timeout, tolerance);
+    }
+
+    public AutoAlign(Robot robot, double angle, double speed, long timeout, double tolerance) {
+        this(robot.getDriveTrain(), robot.getIMU(), angle, speed, timeout, tolerance);
+    }
+
+    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance) {
         requires(driveTrain);
         this.angle = angle;
         this.speed = speed;
         this.driveTrain = driveTrain;
         this.imu = imu;
         _timeout = timeout;
+        _tolerance = tolerance;
     }
 
     @Override
@@ -53,10 +77,10 @@ public class AutoAlign extends Command implements PIDOutput {
         double kI = Align.kI; // Double.parseDouble(SmartDashboard.getString("DB/String 1", ".006"));
         double kD = Align.kD; //Double.parseDouble(SmartDashboard.getString("DB/String 2", ".09"));
 
-        controller = new PIDController(kP, kI, kD, imu, this);
+        controller = new PIDController(kP, kI, kD, imu, this, 0.01);
         controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
         controller.setOutputRange(-speed, speed);
-        controller.setAbsoluteTolerance(Align.TOLERANCE);
+        controller.setAbsoluteTolerance(_tolerance);
         controller.setContinuous();
         controller.setSetpoint(angle);
         controller.enable();
@@ -68,6 +92,12 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void execute() {
+        if (pidOut > 0 && pidOut < Align.MINIMUM_SPEED) {
+            pidOut = Align.MINIMUM_SPEED;
+        }
+        if (pidOut < 0 && pidOut > -Align.MINIMUM_SPEED) {
+            pidOut = -Align.MINIMUM_SPEED;
+        }
         driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
@@ -76,12 +106,9 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
-        /*
         if (!controller.onTarget()) {
             _onTargetSince = 0;
-            return false;
         }
-        */
 
         if(System.currentTimeMillis() >= _endTimeMillis){
             DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms", false);
@@ -105,17 +132,16 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void end() {
+        driveTrain.setPower(0,0, true);
         DriverStation.reportError("AutoAlign finished: angle = " + imu.getYaw() + ", time = " + (System.currentTimeMillis() - startTimeMillis), false);
         controller.disable();
-        driveTrain.setPower(0,0, true);
+        DriverStation.reportError("AutoAlign.end() controller disabled", false);
     }
 
     @Override
     public void pidWrite(double output) {
-        synchronized (this) {
-            pidOut = output;
-            SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
-        }
+        pidOut = output;
+        //SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
     }
 
     public void setAngle(double angle) {

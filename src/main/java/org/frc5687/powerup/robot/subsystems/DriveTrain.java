@@ -17,6 +17,7 @@ import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
 import org.frc5687.powerup.robot.utils.Helpers;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 
 /**
  * Created by Baxter on 3/22/2017.
@@ -27,6 +28,14 @@ public class DriveTrain extends Subsystem implements PIDSource {
     private VictorSPX leftFollower; // left rear motor
     private TalonSRX rightMaster; // right front motor
     private VictorSPX rightFollower; // right rear motor
+
+    private MotorHealthChecker _leftMasterHC;
+    private MotorHealthChecker _rightMasterHC;
+    private MotorHealthChecker _leftFollowerHC;
+    private MotorHealthChecker _rightFollowerHC;
+
+    private int _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
+
 
     private Robot _robot;
 
@@ -107,6 +116,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
         //leftMaster.configMotionProfileTrajectoryPeriod(10, 0);
         //leftMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10, 0);
 
+        _leftMasterHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.LEFT_FRONT_SRX);
+        _rightMasterHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.RIGHT_FRONT_SRX);
+        _leftFollowerHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.LEFT_REAR_SPX);
+        _rightFollowerHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.RIGHT_REAR_SPX);
+
         resetDriveEncoders();
 
         this.imu = imu;
@@ -119,18 +133,26 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void enableBrakeMode() {
-        leftMaster.setNeutralMode(NeutralMode.Brake);
-        leftFollower.setNeutralMode(NeutralMode.Brake);
-        rightMaster.setNeutralMode(NeutralMode.Brake);
-        rightFollower.setNeutralMode(NeutralMode.Brake);
+        try {
+            leftMaster.setNeutralMode(NeutralMode.Brake);
+            leftFollower.setNeutralMode(NeutralMode.Brake);
+            rightMaster.setNeutralMode(NeutralMode.Brake);
+            rightFollower.setNeutralMode(NeutralMode.Brake);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.enableBrakeMode exception: " + e.toString(), false);
+        }
         SmartDashboard.putString("DriveTrain/neutralMode", "Brake");
     }
 
     public void enableCoastMode() {
-        leftMaster.setNeutralMode(NeutralMode.Coast);
-        leftFollower.setNeutralMode(NeutralMode.Coast);
-        rightMaster.setNeutralMode(NeutralMode.Coast);
-        rightFollower.setNeutralMode(NeutralMode.Coast);
+        try {
+            leftMaster.setNeutralMode(NeutralMode.Coast);
+            leftFollower.setNeutralMode(NeutralMode.Coast);
+            rightMaster.setNeutralMode(NeutralMode.Coast);
+            rightFollower.setNeutralMode(NeutralMode.Coast);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.enableCoastMode exception: " + e.toString(), false);
+        }
         SmartDashboard.putString("DriveTrain/neutralMode", "Coast");
     }
     public void setPower(double leftSpeed, double rightSpeed) {
@@ -151,18 +173,31 @@ public class DriveTrain extends Subsystem implements PIDSource {
             rightSpeed = Math.min(rightSpeed, _priorRight + cap);
             rightSpeed = Math.max(rightSpeed, _priorRight - cap);
         }
-        leftMaster.set(ControlMode.PercentOutput, leftSpeed);
-        rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+        try {
+            leftMaster.set(ControlMode.PercentOutput, leftSpeed);
+            rightMaster.set(ControlMode.PercentOutput, rightSpeed);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.setPower exception: " + e.toString(), false);
+        }
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
+
+        _leftMasterHC.checkHealth(leftSpeed);
+        _rightMasterHC.checkHealth(rightSpeed);
+        _leftFollowerHC.checkHealth(leftSpeed);
+        _rightFollowerHC.checkHealth(rightSpeed);
 
         _priorLeft = leftSpeed;
         _priorRight = rightSpeed;
     }
 
     public void setVelocity(double left, double right) {
-        leftMaster.set(ControlMode.Velocity, left);
-        rightMaster.set(ControlMode.Velocity, right);
+        try {
+            leftMaster.set(ControlMode.Velocity, left);
+            rightMaster.set(ControlMode.Velocity, right);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.setVelocity exception: " + e.toString(), false);
+        }
     }
 
     public void setVelocityIPS(double left, double right) {
@@ -170,8 +205,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public void resetDriveEncoders() {
-        leftMaster.setSelectedSensorPosition(0,0,0);
-        rightMaster.setSelectedSensorPosition(0, 0, 0);
+        try {
+            leftMaster.setSelectedSensorPosition(0,0,0);
+            rightMaster.setSelectedSensorPosition(0, 0, 0);
+        } catch (Exception e) {
+            DriverStation.reportError("DriveTrain.resetDriveEncoders exception. I suppose this is really bad. : " + e.toString(), false);
+        }
     }
 
     public float getYaw() {
@@ -343,6 +382,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
         SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
+
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Master", _leftMasterHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Follower", _leftFollowerHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Master", _rightMasterHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsHealthy());
+
 
         SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);

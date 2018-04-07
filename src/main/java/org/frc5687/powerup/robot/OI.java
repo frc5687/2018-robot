@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -204,4 +205,23 @@ public class OI {
         DriverStation.reportError("arm " + (robot.getArm()==null), false);
     }
 
+    public void setDriverGamepadRumble(double leftIntensity, double rightIntensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setDriverGamepadRumble(double intensity) {
+        driverGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        driverGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
+
+    public void setOperatorGamepadRumble(double leftIntensity, double rightIntensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, rightIntensity);
+    }
+
+    public void setOperatorGamepadRumble(double intensity) {
+        operatorGamepad.setRumble(RumbleType.kLeftRumble, intensity);
+        operatorGamepad.setRumble(RumbleType.kRightRumble, intensity);
+    }
 }
