@@ -543,6 +543,7 @@ public class AutoGroup extends CommandGroup {
         addSequential(new FarRightToLeftScaleDeadPartOne(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, Constants.Auto.Align.SPEED, 4000));
         addParallel(new PrepIntakeForScale(robot, 1600, false));
+        addParallel(new PrepIntakeForScale(robot, 1600, false));
         addSequential(new FarRightToLeftScaleDeadPartTwo(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 18, Constants.Auto.Align.SPEED, 2000));
         addSequential(new FarRightToLeftScaleDeadPartThree(robot));

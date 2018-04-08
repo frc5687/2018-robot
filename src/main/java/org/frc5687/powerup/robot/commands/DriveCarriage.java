@@ -34,6 +34,11 @@ public class DriveCarriage extends Command {
 
     @Override
     protected boolean isFinished() {
-        return false;
+        if (carriage.isDisabled) {
+            DriverStation.reportError("Carriage disabled manually", false);
+            return true;
+        } else{
+            return false;
+        }
     }
 }

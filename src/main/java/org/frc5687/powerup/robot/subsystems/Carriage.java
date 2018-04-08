@@ -27,6 +27,7 @@ public class Carriage extends PIDSubsystem {
     public static final double kI = 0.1;
     public static final double kD = 0.1;
     public static final double kF = 0.5;
+    public boolean isDisabled = false;
 
     public Carriage(OI oi, PDP pdp, boolean isCompetitionBot) {
         super("Carriage", kP, kI, kD, kF);

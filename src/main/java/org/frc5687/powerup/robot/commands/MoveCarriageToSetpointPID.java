@@ -31,6 +31,11 @@ public class MoveCarriageToSetpointPID extends Command {
             DriverStation.reportError("MoveCarriageToSetpointPID timed out after " + _timeoutMS + "ms", false);
             return true;
         }
+
+        if (_carriage.isDisabled){
+            DriverStation.reportError("Carriage Manually Disabled", false);
+            return true
+        }
         if (_carriage.onTarget()) {
             DriverStation.reportError("MoveCarriageToSetpointPID completed at " + _carriage.getPosition(), false);
             return true;
