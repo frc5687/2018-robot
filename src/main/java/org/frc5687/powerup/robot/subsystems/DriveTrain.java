@@ -400,6 +400,13 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     }
 
+    public boolean isLeftHealthy() {
+        return _leftMasterHC.IsHealthy() && _leftFollowerHC.IsHealthy();
+    }
+
+    public boolean isRightHealthy() {
+        return _rightMasterHC.IsHealthy() && _rightFollowerHC.IsHealthy();
+    }
 
     private boolean checkCIM(double priorSpeed, boolean lost, int pdpChannel, String side, String pos) {
         double currentDraw = _robot.getPDP().getCurrent(pdpChannel);

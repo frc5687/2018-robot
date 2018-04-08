@@ -17,6 +17,7 @@ import org.frc5687.powerup.robot.utils.AutoChooser;
 import org.frc5687.powerup.robot.utils.JeVoisProxy;
 import org.frc5687.powerup.robot.utils.LidarProxy;
 import org.frc5687.powerup.robot.utils.PDP;
+import sun.util.resources.cldr.or.CalendarData_or_IN;
 
 public class Robot extends TimedRobot {
 
@@ -227,6 +228,8 @@ public class Robot extends TimedRobot {
             intake.updateDashboard();
             _climber.updateDashboard();
             estimateIntakeHeight();
+
+            oi.updateConsole();
             updateTick = 0;
         }
     }
