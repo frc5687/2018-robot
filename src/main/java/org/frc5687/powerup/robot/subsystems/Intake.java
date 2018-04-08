@@ -93,7 +93,7 @@ public class Intake extends Subsystem {
     }
 
     public void stopServo(){
-        servo.set(servo.get());
+        servo.setAngle(85);
     }
 
     public double getServoPosition() {
@@ -146,7 +146,7 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
         SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
         SmartDashboard.putNumber("Intake/servo value", getServoPosition());
-        SmartDashboard.putNumber("Intake/servo set", getServoValue());
+        SmartDashboard.putNumber("Intake/servo set", servo.get());
     }
 
     @Override
