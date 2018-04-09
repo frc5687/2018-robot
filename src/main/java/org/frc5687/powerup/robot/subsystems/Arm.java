@@ -160,7 +160,7 @@ public class Arm extends PIDSubsystem {
         SmartDashboard.putBoolean("Arm/atBottom()", atBottom());
         SmartDashboard.putNumber("Arm/potAngle", getPot());
         SmartDashboard.putNumber("Arm/potRaw", _pot.getRaw());
-        SmartDashboard.putBoolean("Arm/is healthy", _healthChecker.IsHealthy());
+        SmartDashboard.putBoolean("Arm/is healthy", _healthChecker.IsMotorHealthy());
     }
 
     @Override
@@ -173,7 +173,7 @@ public class Arm extends PIDSubsystem {
     }
 
     public boolean isMotorHealthy() {
-        return _healthChecker.IsHealthy();
+        return _healthChecker.IsMotorHealthy();
     }
 
     public boolean isPotHealthy() {

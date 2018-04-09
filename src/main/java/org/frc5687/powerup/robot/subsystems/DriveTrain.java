@@ -36,6 +36,8 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     private int _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
 
+    private boolean _disableAmpCaps = false;
+    private boolean _disableAccelerationLimits = false;
 
     private Robot _robot;
 
@@ -383,10 +385,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
 
-        SmartDashboard.putBoolean("DriveTrain/HC/Left Master", _leftMasterHC.IsHealthy());
-        SmartDashboard.putBoolean("DriveTrain/HC/Left Follower", _leftFollowerHC.IsHealthy());
-        SmartDashboard.putBoolean("DriveTrain/HC/Right Master", _rightMasterHC.IsHealthy());
-        SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Master", _leftMasterHC.IsMotorHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Follower", _leftFollowerHC.IsMotorHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Master", _rightMasterHC.IsMotorHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsMotorHealthy());
 
 
         SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
@@ -401,11 +403,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
     }
 
     public boolean isLeftMotorHealthy() {
-        return _leftMasterHC.IsHealthy() && _leftFollowerHC.IsHealthy();
+        return _leftMasterHC.IsMotorHealthy() && _leftFollowerHC.IsMotorHealthy();
     }
 
     public boolean isRightMotorHealthy() {
-        return _rightMasterHC.IsHealthy() && _rightFollowerHC.IsHealthy();
+        return _rightMasterHC.IsMotorHealthy() && _rightFollowerHC.IsMotorHealthy();
     }
 
     public boolean isLeftEncoderHealthy() {
@@ -436,5 +438,14 @@ public class DriveTrain extends Subsystem implements PIDSource {
     @Override
     public void periodic() {
 
+    }
+
+
+    public void setAmpCapsDisabled(boolean value) {
+        _disableAmpCaps = value;
+    }
+
+    public void setAccelerationLimitsDisabled(boolean value) {
+        _disableAccelerationLimits = value;
     }
 }

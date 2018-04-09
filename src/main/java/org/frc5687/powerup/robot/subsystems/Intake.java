@@ -176,11 +176,11 @@ public class Intake extends Subsystem {
     }
 
     public boolean isLeftMotorHealthy() {
-        return _leftHC.IsHealthy();
+        return _leftHC.IsMotorHealthy();
     }
 
     public boolean isRightMotorHealthy() {
-        return _rightHC.IsHealthy();
+        return _rightHC.IsMotorHealthy();
     }
 
     public boolean isHealthy() {

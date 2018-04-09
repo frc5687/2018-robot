@@ -146,7 +146,7 @@ public class Carriage extends PIDSubsystem {
         SmartDashboard.putBoolean("Carriage/In top zone", isInTopZone());
         SmartDashboard.putBoolean("Carriage/In bottom zone", isInBottomZone());
         SmartDashboard.putNumber("Carriage/theoreticalHoldSpeed", calculateHoldSpeed());
-        SmartDashboard.putBoolean("Carriage/Is healthy", _healthChecker.IsHealthy());
+        SmartDashboard.putBoolean("Carriage/Is healthy", _healthChecker.IsMotorHealthy());
     }
 
     public boolean isCompetitionBot() {
@@ -154,7 +154,7 @@ public class Carriage extends PIDSubsystem {
     }
 
     public boolean isMotorHealthy() {
-        return _healthChecker.IsHealthy();
+        return _healthChecker.IsMotorHealthy();
     }
 
     public boolean isEncoderHealthy() {

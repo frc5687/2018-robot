@@ -52,10 +52,10 @@ public class Climber extends Subsystem {
         return _lastSpeed;
     }
 
-    public boolean isHealthy() { return _healthChecker.IsHealthy(); }
+    public boolean isHealthy() { return _healthChecker.IsMotorHealthy(); }
 
     public void updateDashboard() {
-        SmartDashboard.putBoolean("Climber/Is healthy", _healthChecker.IsHealthy());
+        SmartDashboard.putBoolean("Climber/Is healthy", _healthChecker.IsMotorHealthy());
     }
 
     public boolean isEnabled() {

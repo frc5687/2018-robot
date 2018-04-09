@@ -343,14 +343,46 @@ public class OI {
 
         armPotLED.set(_robot.getArm().isPotHealthy());
 
-        /*
+        /*  Code used to identify LEDs for testing.  s
         int pos = (int)SmartDashboard.getNumber("DB/Slider 3", 0);
 
         if (pos!=0) {
             console.setOutput(Math.abs(pos), pos>0);
         }
-*/
+        */
     }
+
+    public void pollConsole() {
+
+        // Poll kill switches
+        boolean climberDisabled = false;
+        try {
+            climberDisabled = climberKill.get();
+        } catch (Exception e) { }
+        _robot.getClimber().setDisabled(climberDisabled);
+
+        boolean intakeDisabled = false;
+        try {
+            intakeDisabled = intakeKill.get();
+        } catch (Exception e) { }
+        _robot.getIntake().setDisabled(intakeDisabled);
+
+
+        boolean carriageDisabled = false;
+        try {
+            carriageDisabled = carriageKill.get();
+        } catch (Exception e) { }
+        _robot.getCarriage().setDisabled(carriageDisabled);
+
+        boolean armDisabled = false;
+        try {
+            armDisabled = armKill.get();
+        } catch (Exception e) { }
+        _robot.getArm().setDisabled(armDisabled);
+
+
+    }
+
 
     public void setDriverGamepadRumble(double leftIntensity, double rightIntensity) {
         driverGamepad.setRumble(RumbleType.kLeftRumble, leftIntensity);

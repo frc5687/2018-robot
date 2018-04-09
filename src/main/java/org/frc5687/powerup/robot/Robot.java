@@ -169,6 +169,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
+        oi.pollConsole();
         updateDashboard();
         long now = System.currentTimeMillis();
         SmartDashboard.putNumber("millisSinceLastPeriodic", now - lastPeriod);
