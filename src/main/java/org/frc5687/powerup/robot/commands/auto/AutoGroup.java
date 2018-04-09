@@ -19,7 +19,7 @@ public class AutoGroup extends CommandGroup {
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
         /*
-        if (robot.getCarriage().isHealthy()) {
+        if (robot.getCarriage().isMotorHealthy()) {
             addParallel(new AutoZeroCarriage(robot.getCarriage()));
         }
         */
@@ -77,14 +77,14 @@ public class AutoGroup extends CommandGroup {
                     case -Constants.AutoChooser.Position.CENTER: // Position 3, left side
                         DriverStation.reportError("Switch Only. Position 3. Left Side", false);
                         centerLeftToLeftSwitch(robot);
-                        if (robot.getCarriage().isHealthy()) {
+                        if (robot.getCarriage().isEnabled()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         break;
                     case Constants.AutoChooser.Position.CENTER: // Position 3, right side
                         DriverStation.reportError("Switch Only. Position 3. Right Side", false);
                         centerLeftToRightSwitch(robot);
-                        if (robot.getCarriage().isHealthy()) {
+                        if (robot.getCarriage().isEnabled()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         break;
@@ -100,15 +100,15 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT: // Position 6, left side
                         /*
-                        armTarget = robot.getCarriage().isHealthy() ? 100 : 72;
+                        armTarget = robot.getCarriage().isMotorHealthy() ? 100 : 72;
                         armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
-                        if (robot.getArm().isHealthy()) {
+                        if (robot.getArm().isMotorHealthy()) {
                             addParallel(armPid);
                         }
                         addSequential(new FarRightToLeftSwitchBehind(robot));
                         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -179, 0.5));
                         addSequential(new AutoEject(robot.getIntake()));
-                        if (robot.getCarriage().isHealthy()) {
+                        if (robot.getCarriage().isMotorHealthy()) {
                             addParallel(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         */
@@ -242,7 +242,7 @@ public class AutoGroup extends CommandGroup {
                         /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
-                        if (robot.getCarriage().isHealthy()) {
+                        if (robot.getCarriage().isMotorHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         */
@@ -253,7 +253,7 @@ public class AutoGroup extends CommandGroup {
                         Drive to right switch and deposit cube
                          */
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Right Side", false);
-                        armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+                        armSwitchAngle = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
                         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
@@ -301,7 +301,7 @@ public class AutoGroup extends CommandGroup {
                         /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
-                        if (robot.getCarriage().isHealthy()) {
+                        if (robot.getCarriage().isMotorHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
                         */
@@ -313,7 +313,7 @@ public class AutoGroup extends CommandGroup {
                         Drive to right switch and deposit cube
                          */
                         DriverStation.reportError("Switch Then Switch. Position 3. Right Side", false);
-                        armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+                        armSwitchAngle = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
                         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
                         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
                         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
@@ -385,16 +385,16 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void centerLeftToLeftSwitch(Robot robot) {
-        double armTarget = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        double armTarget = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addParallel(armPid);
         }
         //addParallel(new EjectWhenSwitchDetected(robot));
         addSequential(new CenterLeftToLeftSwitch(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addParallel(new FinishArmPid(armPid));
         }
     }
@@ -402,7 +402,7 @@ public class AutoGroup extends CommandGroup {
     private void centerLeftToLeftSwitchThenPickupSecondCube(Robot robot) {
         int carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
         double armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
-        double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        double armSwitchAngle = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         int carriageMiddleHeight = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_MIDDLE_COMP : Constants.Carriage.ENCODER_MIDDLE_PROTO;
         // Drive to left switch and deposit cube
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
@@ -431,36 +431,36 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
-        double armTarget = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        double armTarget = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addParallel(armPid);
         }
         //addParallel(new EjectWhenSwitchDetected(robot));
         addSequential(new CenterLeftToRightSwitch(robot));
         //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addParallel(new FinishArmPid(armPid));
         }
     }
 
     private void farRightToRightSwitch(Robot robot) {
-        double armTarget = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        double armTarget = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addParallel(armPid);
         }
         addSequential(new FarRightToRightSwitchSide(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, Constants.Auto.Align.SPEED));
         addSequential(new AutoEject(robot.getIntake()));
-        if (robot.getCarriage().isHealthy()) {
+        if (robot.getCarriage().isEnabled()) {
             addParallel(new AutoZeroCarriage(robot.getCarriage()));
         }
     }
 
     private void farLeftToLeftSwitch(Robot robot) {
-        double armTarget = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        double armTarget = robot.getCarriage().isEnabled() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armTarget));
         addSequential(new FarRightToRightSwitchSide(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED));
@@ -544,7 +544,7 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void farRightToRightScale(Robot robot) {
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addParallel(new PrepIntakeForScale(robot, 50, 1500, true, false));
         }
         addSequential(new FarRightToRightScale(robot));

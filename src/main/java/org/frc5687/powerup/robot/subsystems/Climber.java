@@ -18,6 +18,7 @@ public class Climber extends Subsystem {
     private PDP _pdp;
     private double _lastSpeed = 0;
     private int pdpPort;
+    private boolean _disabled;
 
     private MotorHealthChecker _healthChecker;
 
@@ -57,5 +58,11 @@ public class Climber extends Subsystem {
         SmartDashboard.putBoolean("Climber/Is healthy", _healthChecker.IsHealthy());
     }
 
+    public boolean isEnabled() {
+        return !_disabled;
+    }
 
+    public void setDisabled(boolean value) {
+        _disabled = value;
+    }
 }

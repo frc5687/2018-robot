@@ -400,12 +400,20 @@ public class DriveTrain extends Subsystem implements PIDSource {
 
     }
 
-    public boolean isLeftHealthy() {
+    public boolean isLeftMotorHealthy() {
         return _leftMasterHC.IsHealthy() && _leftFollowerHC.IsHealthy();
     }
 
-    public boolean isRightHealthy() {
+    public boolean isRightMotorHealthy() {
         return _rightMasterHC.IsHealthy() && _rightFollowerHC.IsHealthy();
+    }
+
+    public boolean isLeftEncoderHealthy() {
+        return true;
+    }
+
+    public boolean isRightEncoderHealthy() {
+        return true;
     }
 
     private boolean checkCIM(double priorSpeed, boolean lost, int pdpChannel, String side, String pos) {

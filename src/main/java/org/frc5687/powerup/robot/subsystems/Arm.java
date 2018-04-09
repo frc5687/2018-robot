@@ -28,6 +28,8 @@ public class Arm extends PIDSubsystem {
     private int motorInversionMultiplier;
     private MotorHealthChecker _healthChecker;
 
+    private boolean _disabled = false;
+
     public static final double kP = 0.03;
     public static final double kI = 0.002;
     public static final double kD = 0.0002;
@@ -170,12 +172,24 @@ public class Arm extends PIDSubsystem {
         return _isCompetitionBot;
     }
 
-    public boolean isHealthy() {
+    public boolean isMotorHealthy() {
         return _healthChecker.IsHealthy();
+    }
+
+    public boolean isPotHealthy() {
+        return true;
     }
 
     public double estimateHeight() {
         double armAngleRadians = Math.toRadians(getAngle() - 90);
         return Math.sin(armAngleRadians) * Constants.Arm.LENGTH;
+    }
+
+    public boolean isEnabled() {
+        return !_disabled;
+    }
+
+    public void setDisabled(boolean value) {
+        _disabled = value;
     }
 }

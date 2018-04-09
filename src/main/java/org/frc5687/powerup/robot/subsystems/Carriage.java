@@ -20,6 +20,7 @@ public class Carriage extends PIDSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private boolean _isCompetitionBot;
+    private boolean _disabled = false;
 
     private MotorHealthChecker _healthChecker;
 
@@ -152,8 +153,12 @@ public class Carriage extends PIDSubsystem {
         return _isCompetitionBot;
     }
 
-    public boolean isHealthy() {
+    public boolean isMotorHealthy() {
         return _healthChecker.IsHealthy();
+    }
+
+    public boolean isEncoderHealthy() {
+        return true;
     }
 
     public boolean isInTopZone() {
@@ -170,5 +175,14 @@ public class Carriage extends PIDSubsystem {
         } else {
             return Constants.Carriage.TOP_INCHES + ((getPosition() / Constants.Carriage.ENCODER_RANGE_PROTO) * Constants.Carriage.RANGE_INCHES);
         }
+    }
+
+
+    public boolean isEnabled() {
+        return !_disabled;
+    }
+
+    public void setDisabled(boolean value) {
+        _disabled = value;
     }
 }

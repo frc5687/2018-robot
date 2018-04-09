@@ -265,76 +265,91 @@ public class OI {
 
     private void initializeConsole(Robot robot) {
         // LEDs
-        leftDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.D.getNumber());
-        rightDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.E.getNumber());
+        leftDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.K.getNumber());
+        rightDriveMotorsLED = new JoystickLight(console, OperatorConsole.LEDs.F.getNumber());
 
-        leftIntakeMotorLED = new JoystickLight(console, OperatorConsole.LEDs.F.getNumber());
+        leftIntakeMotorLED = new JoystickLight(console, OperatorConsole.LEDs.E.getNumber());
         rightIntakeMotorLED = new JoystickLight(console, OperatorConsole.LEDs.A.getNumber());
 
-        carriageMotorLED = new JoystickLight(console, OperatorConsole.LEDs.B.getNumber());
+        carriageMotorLED = new JoystickLight(console, OperatorConsole.LEDs.J.getNumber());
 
-        armMotorLED = new JoystickLight(console, OperatorConsole.LEDs.C.getNumber());
+        armMotorLED = new JoystickLight(console, OperatorConsole.LEDs.H.getNumber());
 
-/*
-        leftDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.H.getNumber());
-        rightDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.G.getNumber());
 
-        intakeBackIRLED = new JoystickLight(console, OperatorConsole.LEDs.I.getNumber());
+        leftDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.A.getNumber());
+        rightDriveEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.B.getNumber());
 
-        carriageEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.J.getNumber());
+        intakeBackIRLED = new JoystickLight(console, OperatorConsole.LEDs.C.getNumber());
 
-        armPotLED = new JoystickLight(console, OperatorConsole.LEDs.K.getNumber());
-*/
+        carriageEncoderLED = new JoystickLight(console, OperatorConsole.LEDs.I.getNumber());
 
-        climberHoldUp = new AxisButton(console, OperatorConsole.Axes.A.getNumber(), 0.75, 1.0);
-        climberHoldDown = new AxisButton(console, OperatorConsole.Axes.A.getNumber(), 0.25, 0.5);
+        armPotLED = new JoystickLight(console, OperatorConsole.LEDs.G.getNumber());
 
-        intakeHoldUp = new AxisButton(console, OperatorConsole.Axes.B.getNumber(), 0.75, 1.0);
-        intakeHoldDown = new AxisButton(console, OperatorConsole.Axes.B.getNumber(), 0.25, 0.5);
 
-        carriageHoldUp = new AxisButton(console, OperatorConsole.Axes.C.getNumber(), 0.75, 1.0);
-        carriageHoldDown = new AxisButton(console, OperatorConsole.Axes.C.getNumber(), 0.25, 0.5);
+        climberHoldUp = new AxisButton(console, OperatorConsole.Axes.AX.getNumber(), 0.75, 1.0);
+        climberHoldDown = new AxisButton(console, OperatorConsole.Axes.AX.getNumber(), 0.25, 0.5);
 
-        armHoldUp = new AxisButton(console, OperatorConsole.Axes.D.getNumber(), 0.75, 1.0);
-        armHoldDown = new AxisButton(console, OperatorConsole.Axes.D.getNumber(), 0.25, 0.5);
+        intakeHoldUp = new AxisButton(console, OperatorConsole.Axes.AY.getNumber(), 0.75, 1.0);
+        intakeHoldDown = new AxisButton(console, OperatorConsole.Axes.AY.getNumber(), 0.25, 0.5);
 
-        driveCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.A.getNumber());
-        driveLimitsOverride= new JoystickButton(console, OperatorConsole.Buttons.B.getNumber());;
+        carriageHoldUp = new AxisButton(console, OperatorConsole.Axes.AZ.getNumber(), 0.75, 1.0);
+        carriageHoldDown = new AxisButton(console, OperatorConsole.Axes.AZ.getNumber(), 0.25, 0.5);
+
+        armHoldUp = new AxisButton(console, OperatorConsole.Axes.AXR.getNumber(), 0.75, 1.0);
+        armHoldDown = new AxisButton(console, OperatorConsole.Axes.AXR.getNumber(), 0.25, 0.5);
+
+        driveCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.G.getNumber());
+        driveLimitsOverride= new JoystickButton(console, OperatorConsole.Buttons.K.getNumber());;
 
         climberKill = new JoystickButton(console, OperatorConsole.Buttons.C.getNumber());;
 
-        intakeIROverride = new JoystickButton(console, OperatorConsole.Buttons.D.getNumber());;
-        intakeKill = new JoystickButton(console, OperatorConsole.Buttons.E.getNumber());;
+        // intakeIROverride = new JoystickButton(console, OperatorConsole.Buttons.?.getNumber());;
 
-        carriageZero = new JoystickButton(console, OperatorConsole.Buttons.F.getNumber());;
-        carriageCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.G.getNumber());;
-        carriageLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.H.getNumber());;
-        carriageKill = new JoystickButton(console, OperatorConsole.Buttons.I.getNumber());;
+        intakeKill = new JoystickButton(console, OperatorConsole.Buttons.B.getNumber());;
 
-        armZeroTop = new JoystickButton(console, OperatorConsole.Buttons.J.getNumber());;
-        armZeroBottom = new JoystickButton(console, OperatorConsole.Buttons.K.getNumber());;
-        armCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.L.getNumber());;
-        armLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.M.getNumber());;
-        armKill = new JoystickButton(console, OperatorConsole.Buttons.N.getNumber());;
+        carriageZero = new JoystickButton(console, OperatorConsole.Buttons.A.getNumber());;
+
+        // carriageCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.?.getNumber());;
+        carriageLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.I.getNumber());;
+        carriageKill = new JoystickButton(console, OperatorConsole.Buttons.F.getNumber());;
+
+        armZeroTop = new JoystickButton(console, OperatorConsole.Buttons.H.getNumber());;
+        armZeroBottom = new JoystickButton(console, OperatorConsole.Buttons.E.getNumber());;
+
+        // armCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.?.getNumber());;
+        armLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.C.getNumber());;
+        armKill = new JoystickButton(console, OperatorConsole.Buttons.J.getNumber());;
     }
 
 
     public void updateConsole() {
-        /*
-        leftDriveMotorsLED.set(!_robot.getDriveTrain().isLeftHealthy());
-        rightDriveMotorsLED.set(!_robot.getDriveTrain().isRightHealthy());
 
-        leftIntakeMotorLED.set(!_robot.getIntake().isLeftHealthy());
-        rightIntakeMotorLED.set(!_robot.getIntake().isRightHealthy());
-        carriageMotorLED.set(_robot.getCarriage().isHealthy());
-        */
+        leftDriveMotorsLED.set(!_robot.getDriveTrain().isLeftMotorHealthy());
+        rightDriveMotorsLED.set(!_robot.getDriveTrain().isRightMotorHealthy());
+
+        leftIntakeMotorLED.set(!_robot.getIntake().isLeftMotorHealthy());
+        rightIntakeMotorLED.set(!_robot.getIntake().isRightMotorHealthy());
+
+        carriageMotorLED.set(_robot.getCarriage().isMotorHealthy());
+
+        armMotorLED.set(_robot.getArm().isMotorHealthy());
+
+        leftDriveEncoderLED.set(!_robot.getDriveTrain().isLeftEncoderHealthy());
+        rightDriveEncoderLED.set(!_robot.getDriveTrain().isRightEncoderHealthy());
+
+        intakeBackIRLED.set(!_robot.getIntake().isIRHealthy());
+
+        carriageEncoderLED.set(_robot.getCarriage().isEncoderHealthy());
+
+        armPotLED.set(_robot.getArm().isPotHealthy());
+
+        /*
         int pos = (int)SmartDashboard.getNumber("DB/Slider 3", 0);
 
         if (pos!=0) {
             console.setOutput(Math.abs(pos), pos>0);
         }
-
-        armMotorLED.set(_robot.getArm().isHealthy());
+*/
     }
 
     public void setDriverGamepadRumble(double leftIntensity, double rightIntensity) {

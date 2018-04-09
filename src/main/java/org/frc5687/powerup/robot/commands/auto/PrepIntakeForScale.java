@@ -3,12 +3,8 @@ package org.frc5687.powerup.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
-import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
-import org.frc5687.powerup.robot.subsystems.Arm;
-import org.frc5687.powerup.robot.subsystems.Carriage;
-import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 /**
  * Created by Ben Bernard on 2/12/2018.
@@ -32,11 +28,11 @@ public class PrepIntakeForScale extends CommandGroup {
             addParallel(new AutoZeroCarriageThenLower(robot));
         }
         addSequential(new AutoWaitForDistance(robot.getDriveTrain(), inches, millis));
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
         }
         int carriageHeight = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
-        if (robot.getCarriage().isHealthy()) {
+        if (robot.getCarriage().isEnabled()) {
             addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageHeight, 5000));
         }
     }
@@ -46,10 +42,10 @@ public class PrepIntakeForScale extends CommandGroup {
             addParallel(new AutoZeroCarriageThenLower(robot));
         }
         addSequential(new AutoWaitForMillis(millis));
-        if (robot.getArm().isHealthy()) {
+        if (robot.getArm().isEnabled()) {
             addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
         }
-        if (robot.getCarriage().isHealthy()) {
+        if (robot.getCarriage().isEnabled()) {
             int carriageHeight = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_TOP_COMP : Constants.Carriage.ENCODER_TOP_PROTO;
             addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageHeight, 5000));
         }
