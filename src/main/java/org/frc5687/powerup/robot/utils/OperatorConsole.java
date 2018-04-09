@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.Joystick;
 public class OperatorConsole extends Joystick {
 
     public static enum Axes {
-        A(0),
-        B(1),
-        C(2),
-        D(3);
+        AX(0),
+        AY(1),
+        AZ(2),
+        AXR(3);
 
         private final int number;
         Axes(int number) {
@@ -37,10 +37,7 @@ public class OperatorConsole extends Joystick {
         H(8),
         I(9),
         J(10),
-        K(11),
-        L(12),
-        M(13),
-        N(14);
+        K(11);
 
         private final int number;
         Buttons(int number) {

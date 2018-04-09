@@ -33,6 +33,8 @@ public class Intake extends Subsystem {
     private MotorHealthChecker _leftHC;
     private MotorHealthChecker _rightHC;
 
+    private boolean _disabled = false;
+
     private PDP _pdp;
 
     public Intake(OI oi, PDP pdp, boolean isCompetitionBot) {
@@ -128,6 +130,10 @@ public class Intake extends Subsystem {
         return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
     }
 
+    public boolean isIRHealthy() {
+        return true;
+    }
+
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
@@ -136,8 +142,8 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
         SmartDashboard.putBoolean("Intake/isPlateDetected()", isPlateDetected());
         SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
-        SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
-        SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
+        SmartDashboard.putBoolean("Intake/is left healthy", isLeftMotorHealthy());
+        SmartDashboard.putBoolean("Intake/is right healthy", isRightMotorHealthy());
     }
 
     @Override
@@ -169,15 +175,23 @@ public class Intake extends Subsystem {
         return (_lastRightSpeed < 0);
     }
 
-    public boolean isLeftHealthy() {
+    public boolean isLeftMotorHealthy() {
         return _leftHC.IsHealthy();
     }
 
-    public boolean isRightHealthy() {
+    public boolean isRightMotorHealthy() {
         return _rightHC.IsHealthy();
     }
 
     public boolean isHealthy() {
-        return isLeftHealthy() && isRightHealthy();
+        return isLeftMotorHealthy() && isRightMotorHealthy();
+    }
+
+    public boolean isEnabled() {
+        return !_disabled;
+    }
+
+    public void setDisabled(boolean value) {
+        _disabled = value;
     }
 }
