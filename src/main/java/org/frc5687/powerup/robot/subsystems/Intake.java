@@ -92,8 +92,16 @@ public class Intake extends Subsystem {
         servo.set(val);
     }
 
+    public void stopServo(){
+        servo.setAngle(85);
+    }
+
     public double getServoPosition() {
         return _lastServoPos;
+    }
+
+    public double getServoValue(){
+        return servo.get();
     }
 
     /**
@@ -125,9 +133,8 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.UP_IR.ENABLED || _arm == null) {
             return false;
         }
-        return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
-    }
-
+            return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
+        }
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
@@ -138,6 +145,8 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
         SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
         SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
+        SmartDashboard.putNumber("Intake/servo value", getServoPosition());
+        SmartDashboard.putNumber("Intake/servo set", servo.get());
     }
 
     @Override

@@ -178,6 +178,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
         driveTrain.enableCoastMode();
+        intake.stopServo();
     }
 
     @Override

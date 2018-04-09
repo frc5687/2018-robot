@@ -24,6 +24,11 @@ public class DriveIntake extends Command {
         double right = oi.getRightIntakeSpeed();
 
         intake.drive(left, right);
+        if(intake.isEjecting()){
+            intake.driveServo(1);
+        } else{
+            intake.driveServo(0);
+        }
     }
 
     @Override
