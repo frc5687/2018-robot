@@ -8,7 +8,9 @@ import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.commands.*;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
+import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
+import org.frc5687.powerup.robot.commands.auto.AutoIntake;
 
 /**
  * Created by Ben Bernard on 2/2/2018.
@@ -523,10 +525,16 @@ public class AutoGroup extends CommandGroup {
     private void farLeftToRightScale(Robot robot) {
         addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 5000));
-        //addSequential(new FarRightToLeftScaleDefensiveOne(robot));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 52, 0.75, false, true, 3000, "move a bit"));
         //addParallel(new PrepIntakeForScale(robot, 1600, false));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 300));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -80, 0.75, false, true, 3000, "move a bit"));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 125, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoIntake(robot.getIntake()));
+        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 24, 0.75, false, true, 3000, "move a bit"));
         //addSequential(new FarRightToLeftScaleDefensiveTwo(robot));
         //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
         //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
