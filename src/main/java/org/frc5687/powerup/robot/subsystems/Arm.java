@@ -43,7 +43,7 @@ public class Arm extends PIDSubsystem {
         TOP = isCompetitionBot ? Constants.Arm.Pot.TOP_COMP : Constants.Arm.Pot.TOP_PROTO;
         BOTTOM = isCompetitionBot ? Constants.Arm.Pot.BOTTOM_COMP : Constants.Arm.Pot.BOTTOM_PROTO;
         setInputRange(BOTTOM, TOP);
-        setOutputRange(Constants.Arm.MIN_SPEED, Constants.Arm.MAX_SPEED);
+        setOutputRange(Constants.Arm.PID_MIN_SPEED, Constants.Arm.PID_MAX_SPEED);
         _oi=oi;
         _intake = intake;
         _pdp = pdp;
