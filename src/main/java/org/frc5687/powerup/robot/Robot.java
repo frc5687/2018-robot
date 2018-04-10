@@ -32,7 +32,8 @@ public class Robot extends TimedRobot {
     private Arm _arm;
     private Lights _lights;
     public AHRS imu;
-    private UsbCamera camera;
+    private UsbCamera camera0;
+    private UsbCamera camera1;
     private PDP pdp;
     private AutoChooser _autoChooser;
     public JeVoisProxy jeVoisProxy;
@@ -76,7 +77,13 @@ public class Robot extends TimedRobot {
         setPeriod(1 / Constants.CYCLES_PER_SECOND);
 
         try {
-            camera = CameraServer.getInstance().startAutomaticCapture(0);
+            camera0 = CameraServer.getInstance().startAutomaticCapture(0);
+        } catch (Exception e) {
+            DriverStation.reportError(e.getMessage(), true);
+        }
+
+        try {
+            camera1 = CameraServer.getInstance().startAutomaticCapture(1);
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
