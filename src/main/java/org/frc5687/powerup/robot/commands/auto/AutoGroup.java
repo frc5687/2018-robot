@@ -554,28 +554,21 @@ public class AutoGroup extends CommandGroup {
     private void farLeftToRightScale(Robot robot) {
         addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
-        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 5000));
-        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 52, 0.75, false, true, 3000, "move a bit"));
-        //addParallel(new PrepIntakeForScale(robot, 1600, false));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 300));
-        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -80, 0.75, false, true, 3000, "move a bit"));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 125, Constants.Auto.Align.SPEED, 3000));
-        addParallel(new AutoIntake(robot.getIntake()));
-        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-        //addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 24, 0.75, false, true, 3000, "move a bit"));
-        //addSequential(new FarRightToLeftScaleDefensiveTwo(robot));
-        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
-        //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
-        //addSequential(new FarLeftToRightScaleDeadPartThree(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 89, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new PrepIntakeForScale(robot, 1600, false));
+        addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
+        addSequential(new FarLeftToRightScaleDeadPartThree(robot));
         /*
         Go to intake position and turn towards second cube
          */
-        //adParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP, 700));
-        //addSequential(new FarLeftToRightScaleDeadPartFour(robot));
-        //addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
-        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -110, Constants.Auto.Align.SPEED, 4000));
+        addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP, 700));
+        addSequential(new FarLeftToRightScaleDeadPartFour(robot));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -110, Constants.Auto.Align.SPEED, 4000));
     }
+
 
     private void farLeftDefensive(Robot robot) {
         addParallel(new AutoZeroCarriageThenLower(robot));
