@@ -44,7 +44,7 @@ public class OI {
 
     private JoystickButton carriageZeroEncoder;
 
-    private JoystickButton servoToggle;
+    //private JoystickButton servoToggle;
 
     private JoystickButton driverArmUp;
     private JoystickButton driverArmDown;
@@ -76,7 +76,7 @@ public class OI {
         intakeLeftIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
-        servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
+        //servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
 
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         driverArmDown = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_STICK.getNumber());
@@ -193,7 +193,7 @@ public class OI {
         operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
-        servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
+        //servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
 
         DriverStation.reportError("driverArmToIntakeButton " + (driverArmToIntakeButton ==null), false);
         DriverStation.reportError("driverArmToDriveButton " + (driverArmToDriveButton ==null), false);
