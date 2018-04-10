@@ -43,8 +43,6 @@ public class OI {
 
     private JoystickButton carriageZeroEncoder;
 
-    //private JoystickButton servoToggle;
-
     private JoystickButton driverArmUp;
     private JoystickButton driverArmDown;
     private JoystickButton driverCarriageUp;
@@ -99,6 +97,7 @@ public class OI {
 
 
 
+
     private POV driverPOV;
 
     private Robot _robot;
@@ -125,7 +124,6 @@ public class OI {
         intakeLeftIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
-        //servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
 
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         driverArmDown = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_STICK.getNumber());
@@ -231,7 +229,6 @@ public class OI {
 
     public void initializeButtons(Robot robot) {
         carriageZeroEncoder.whenPressed(new AutoZeroCarriage(robot.getCarriage()));
-        servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
 
         initializeDriverGamepad(robot);
         initializeOperatorGamepad(robot);
@@ -307,7 +304,8 @@ public class OI {
 
         intakeKill = new JoystickButton(console, OperatorConsole.Buttons.B.getNumber());;
 
-        carriageZero = new JoystickButton(console, OperatorConsole.Buttons.A.getNumber());;
+        carriageZero = new JoystickButton(console, OperatorConsole.Buttons.A.getNumber());
+        carriageZero.whenPressed(new AutoZeroCarriage(_robot.getCarriage()));
 
         // carriageCapsOverride = new JoystickButton(console, OperatorConsole.Buttons.?.getNumber());;
         carriageLimitsOverride = new JoystickButton(console, OperatorConsole.Buttons.I.getNumber());;
