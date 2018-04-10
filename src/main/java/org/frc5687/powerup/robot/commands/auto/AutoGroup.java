@@ -150,6 +150,35 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+            case Constants.AutoChooser.Mode.DEFENSIVE_OPPOSITE:
+                SmartDashboard.putString("Auto/Mode", "DEFENSIVE_OPPOSITE");
+                switch (scaleFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                        farLeftToLeftScale(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        if (!stayInYourOwnLane) { // Traverse allowed
+                            farLeftToRightScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
+                            farLeftToLeftSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        if (!stayInYourOwnLane) { // Traverse allowed
+                            farRightToLeftScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
+                            farRightToRightSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        farRightToRightScale(robot);
+                        break;
+                }
+                break;
             case Constants.AutoChooser.Mode.SCALE_THEN_SCALE:
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
@@ -546,6 +575,19 @@ public class AutoGroup extends CommandGroup {
         //addSequential(new FarLeftToRightScaleDeadPartFour(robot));
         //addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
         //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -110, Constants.Auto.Align.SPEED, 4000));
+    }
+
+    private void farLeftDefensive(Robot robot) {
+        addParallel(new AutoZeroCarriageThenLower(robot));
+        addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 5000));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 52, 0.75, false, true, 3000, "goes halfway accross field"));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 300));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -80, 0.75, false, true, 3000, "moves back"));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 125, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoIntake(robot.getIntake()));
+        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
     }
 
     private void farRightToLeftScale(Robot robot) {

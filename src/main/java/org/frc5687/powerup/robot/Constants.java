@@ -486,6 +486,7 @@ public class Constants {
             public static final int SCALE_THEN_SCALE = 3;
             public static final int SWITCH_THEN_SWITCH = 4;
             public static final int SCALE_THEN_SWITCH = 5;
+            public static final int DEFENSIVE_OPPOSITE = 6;
             public static final int SWITCH_DRIVE = 1001;
             public static final int SWITCH_ONLY = 10002;
             public static final int SCALE_DRIVE = 1003;
