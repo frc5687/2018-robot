@@ -158,7 +158,7 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!stayInYourOwnLane) { // Traverse allowed
-                            farLeftToRightScale(robot);
+                            farLeftDefensive(robot);
                         } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
                             farLeftToLeftSwitch(robot);
                         } else {
