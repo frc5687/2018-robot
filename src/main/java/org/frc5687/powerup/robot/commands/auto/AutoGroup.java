@@ -523,12 +523,11 @@ public class AutoGroup extends CommandGroup {
     private void farLeftToRightScale(Robot robot) {
         addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 89, Constants.Auto.Align.SPEED, 3000));
-        addParallel(new PrepIntakeForScale(robot, 1600, false));
-        addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 5000));
+        //addSequential(new FarRightToLeftScaleDefensiveOne(robot));
+        //addParallel(new PrepIntakeForScale(robot, 1600, false));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 180, Constants.Auto.Align.SPEED, 3000));
-        addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
+        //addSequential(new FarRightToLeftScaleDefensiveTwo(robot));
         //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
         //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
         //addSequential(new FarLeftToRightScaleDeadPartThree(robot));
