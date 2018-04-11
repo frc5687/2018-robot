@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
@@ -158,7 +159,7 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!stayInYourOwnLane) { // Traverse allowed
-                            farLeftDefensive(robot);
+                            farLeftDefensive(robot, switchSide == Constants.AutoChooser.LEFT);
                         } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
                             farLeftToLeftSwitch(robot);
                         } else {
@@ -167,7 +168,7 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
                         if (!stayInYourOwnLane) { // Traverse allowed
-                            farRightToLeftScale(robot);
+                            farRightDefensive(robot, switchSide == Constants.AutoChooser.RIGHT);
                         } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
                             farRightToRightSwitch(robot);
                         } else {
@@ -570,17 +571,50 @@ public class AutoGroup extends CommandGroup {
     }
 
 
-    private void farLeftDefensive(Robot robot) {
+    private void farLeftDefensive(Robot robot, boolean doSwitch) {
         addParallel(new AutoZeroCarriageThenLower(robot));
-        addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        // addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 204, 0.75, true, true, 6000, "pass the switch"));
         addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 5000));
-        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 52, 0.75, false, true, 3000, "goes halfway accross field"));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, 300));
-        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -80, 0.75, false, true, 3000, "moves back"));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 125, Constants.Auto.Align.SPEED, 3000));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 4000));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 52, 0.75, true, true, 3000, "goes halfway accross field"));
+        addParallel(new AutoEject(robot.getIntake(), Constants.Intake.DROP_SPEED));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -72, 0.75, true, true, 3000, "moves back"));
+        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 150, Constants.Auto.Align.SPEED, 3000));
         addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.6, true, true, 2000, "attack cube"));
+        if (doSwitch) {
+            DriverStation.reportError("Attacking swithc", false);
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 2000));
+            addSequential(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+            addSequential(new AutoEject(robot.getIntake(), Constants.Intake.OUTTAKE_SPEED));
+        }
+        addParallel(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -24, 0.6, true, true, 2000, "reposition"));
+    }
+
+    private void farRightDefensive(Robot robot, boolean doSwitch) {
+        addParallel(new AutoZeroCarriageThenLower(robot));
+        // addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 204, 0.75, true, true, 6000, "pass the switch"));
         addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, Constants.Auto.Align.SPEED, 4000));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 78, 0.75, true, true, 3000, "goes halfway accross field"));
+        addParallel(new AutoEject(robot.getIntake(), Constants.Intake.DROP_SPEED));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -72, 0.75, true, true, 3000, "moves back"));
+        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -150, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 24, 0.6, true, true, 2000, "attack cube"));
+        if (doSwitch) {
+            DriverStation.reportError("Attacking swithc", false);
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 2000));
+            addSequential(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+            addSequential(new AutoEject(robot.getIntake(), Constants.Intake.OUTTAKE_SPEED));
+        }
+        addParallel(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -24, 0.6, true, true, 2000, "reposition"));
     }
 
     private void farRightToLeftScale(Robot robot) {
