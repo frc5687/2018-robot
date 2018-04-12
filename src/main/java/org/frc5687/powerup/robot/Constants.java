@@ -6,6 +6,12 @@ public class Constants {
     public static final double END_ALERT = 28;
     public static final int HEALTH_CHECK_CYCLES = 10;
 
+    public enum typeOfTurn {
+        shortest,
+        leftOnly,
+        rightOnly
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -101,6 +107,7 @@ public class Constants {
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
         public static final double SCALE_DROP_SPEED = -0.6;
         public static final double SCALE_SHOOT_SPEED = -0.70;
+        public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.90;
         public static final double SWITCH_DROP_SPEED = -0.42;
 
         public static final double HC_MIN_SPEED = 0.1;
@@ -403,7 +410,7 @@ public class Constants {
             public static final double BOTTOM_COMP = 33.0;
             public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
 
-            public static final double INTAKE_COMP = 50.0;
+            public static final double INTAKE_COMP = 49.0;
             public static final double INTAKE_PROTO = 47.0;
 
             public static final double DRIVE_COMP = 41.0;
