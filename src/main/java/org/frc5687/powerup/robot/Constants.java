@@ -105,7 +105,7 @@ public class Constants {
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
-        public static final double SCALE_DROP_SPEED = -0.6;
+        public static final double SCALE_DROP_SPEED = -0.8;
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.80;
         public static final double SWITCH_DROP_SPEED = -0.42;
