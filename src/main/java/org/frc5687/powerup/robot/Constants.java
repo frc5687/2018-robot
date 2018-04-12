@@ -143,7 +143,7 @@ public class Constants {
             public static final double kI = 0.0;
             public static final double kD = 0.3;
             public static final double TOLERANCE = 1.0; // 0.5
-            public static final double MINIMUM_SPEED = 0.35;
+            public static final double MINIMUM_SPEED = 0.5;
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
