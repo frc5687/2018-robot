@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
@@ -359,6 +360,42 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+            case Constants.AutoChooser.Mode.SCALE_THEN_BACKOFF:
+                switch (scaleFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                        // Far Left with Scale on Left Side
+                        farLeftToLeftScale(robot);
+                        leftScaleBackup(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        // Far Left with Scale on Right Side
+                        if (!stayInYourOwnLane) {
+                            // Allowed to traverse
+                            farLeftToRightScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) {
+                            farLeftToLeftSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        // Far Right with Scale on Left Side
+                        if (!stayInYourOwnLane) {
+                            // Allowed to traverse
+                            farRightToLeftScale(robot);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT) {
+                            farRightToRightSwitch(robot);
+                        } else {
+                            buildAutoCross(robot);
+                        }
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        // Far Right with Scale on Right Side
+                        farRightToRightScale(robot);
+                        rightScaleBackup(robot);
+                        break;
+                }
+                break;
             case 11:
                 addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 1.0, 2500, 2.0));
                 break;
@@ -471,6 +508,16 @@ public class AutoGroup extends CommandGroup {
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED));
         addSequential(new AutoEject(robot.getIntake()));
         addParallel(new AutoZeroCarriage(robot.getCarriage()));
+    }
+
+    private void leftScaleBackup(Robot robot) {
+        addSequential(new LeftScaleBackup(robot));
+        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+    }
+
+    private void rightScaleBackup(Robot robot) {
+        addSequential(new RightScaleBackup(robot));
+        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
     }
 
     private void farLeftToLeftScale(Robot robot) {
