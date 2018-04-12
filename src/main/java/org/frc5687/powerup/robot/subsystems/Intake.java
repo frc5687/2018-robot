@@ -102,7 +102,7 @@ public class Intake extends Subsystem {
     }
 
     public void stopServo(){
-        DriverStation.reportError("Stopping servo", false);
+        //DriverStation.reportError("Stopping servo", false);
         _stopped = true;
         servo.set(0.51);
     }
