@@ -26,8 +26,12 @@ public class DynamicPathCommand extends Command {
     private Thread _thread;
 
     public double getkT() {
-        return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT;
+        return _robot.isCompetitionBot() ? getGretakT() : getJitterbugkT();
     }
+
+    public double getJitterbugkT() { return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT; }
+
+    public double getGretakT() { return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kT; }
 
     public double getFollowerkP() {
         return Constants.Auto.Drive.TrajectoryFollowing.Cheese.kP;

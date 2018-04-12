@@ -92,6 +92,12 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void execute() {
+        if (pidOut > 0 && pidOut < Align.MINIMUM_SPEED) {
+            pidOut = Align.MINIMUM_SPEED;
+        }
+        if (pidOut < 0 && pidOut > -Align.MINIMUM_SPEED) {
+            pidOut = -Align.MINIMUM_SPEED;
+        }
         driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
@@ -100,12 +106,9 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
-        /*
         if (!controller.onTarget()) {
             _onTargetSince = 0;
-            return false;
         }
-        */
 
         if(System.currentTimeMillis() >= _endTimeMillis){
             DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms", false);
