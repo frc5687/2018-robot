@@ -492,7 +492,7 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
         // should be 149
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 149, Constants.Auto.Align.SPEED));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 155, Constants.Auto.Align.SPEED));
         /*
         Prepare intake
          */
