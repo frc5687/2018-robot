@@ -115,7 +115,7 @@ public class AutoAlign extends Command implements PIDOutput {
         }
 
         if(System.currentTimeMillis() >= _endTimeMillis){
-            DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms", false);
+            DriverStation.reportError("AutoAlign timed out after " + _timeout + "ms at " + imu.getYaw(), false);
             return true;
         }
 
