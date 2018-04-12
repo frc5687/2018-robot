@@ -92,6 +92,13 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected void execute() {
+        //actOnPidOut();
+        SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
+        SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
+        SmartDashboard.putData("AutoAlign/pid", controller);
+    }
+
+    private void actOnPidOut() {
         if (pidOut > 0 && pidOut < Align.MINIMUM_SPEED) {
             pidOut = Align.MINIMUM_SPEED;
         }
@@ -99,9 +106,6 @@ public class AutoAlign extends Command implements PIDOutput {
             pidOut = -Align.MINIMUM_SPEED;
         }
         driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
-        SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
-        SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
-        SmartDashboard.putData("AutoAlign/pid", controller);
     }
 
     @Override
@@ -141,6 +145,7 @@ public class AutoAlign extends Command implements PIDOutput {
     @Override
     public void pidWrite(double output) {
         pidOut = output;
+        actOnPidOut();
         //SmartDashboard.putNumber("AutoAlign/pidOut", pidOut);
     }
 
