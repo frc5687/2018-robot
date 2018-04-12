@@ -299,15 +299,13 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
-                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        */
-                        centerLeftToLeftSwitchThenPickupSecondCube(robot);
-                        secondCubeComingFromLeftSwitchToLeftSwitch(robot);
+                        //centerLeftToLeftSwitchThenPickupSecondCube(robot);
+                        //secondCubeComingFromLeftSwitchToLeftSwitch(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         /*
