@@ -516,8 +516,8 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void rightScaleBackup(Robot robot) {
+        addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 1000));
         addSequential(new RightScaleBackup(robot));
-        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
     }
 
     private void farLeftToLeftScale(Robot robot) {
