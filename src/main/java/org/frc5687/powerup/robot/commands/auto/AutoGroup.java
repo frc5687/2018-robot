@@ -360,6 +360,9 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+            case 11:
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 1.0, 2500, 2.0));
+                break;
             case Constants.AutoChooser.Mode.SWITCH_DRIVE:
                 buildSimpleSwitch(robot, switchFactor);
                 break;
@@ -409,8 +412,11 @@ public class AutoGroup extends CommandGroup {
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToLeftSwitchForSecondCube.duration - 290));
         addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
         // Move Carriage Down and Back Up
-        addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
-        addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
+        //addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
+        //addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
+        //The previous two commands did not get to the intake reliably, so we switched to the below which should be
+        //More reliable.
+        addParallel(new IntakeToFloorButZeroCarriageFirst(robot.getCarriage(), robot.getArm()));
         addSequential(new LeftSwitchBackup(robot));
         // Move Arm Down while aligning
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 9, Constants.Auto.Align.SPEED, 1750));
@@ -472,7 +478,10 @@ public class AutoGroup extends CommandGroup {
         addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
         addSequential(new FarLeftToLeftScale(robot));
         // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
-        addSequential(new AutoAlign(robot, 27.8, Constants.Auto.Align.SPEED, 1000, 2.0));
+        // Timeout used to be 1000, but because of too high scrub we would time out.
+        // We changed the min. speed for auto align, so we don't "need" a greater timeout, but we haven't been able to test
+        // it, so if it appears that we're stalling for too long, bump up the min. speed and or decrease this timeout
+        addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
     }
 
@@ -481,7 +490,8 @@ public class AutoGroup extends CommandGroup {
         Align towards second cube
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 165, Constants.Auto.Align.SPEED));
+        // should be 149
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 149, Constants.Auto.Align.SPEED));
         /*
         Prepare intake
          */
@@ -498,18 +508,18 @@ public class AutoGroup extends CommandGroup {
         Go back to the scale while raising the carriage to drive config
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_DRIVE_COMP));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
         addSequential(new LeftScaleToCubeReversed(robot));
         /*
         Prepare intake
          */
-        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
-        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
         /*
         Rotate towards scale
          */
-        addSequential(new AutoAlign(robot, -140, 1500, 7));
+        //addSequential(new AutoAlign(robot, -140, 1500, 7));
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
         addSequential(new AutoAlign(robot, 22.8));
-        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED));
+        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED_SECOND_CUBE));
     }
 
     private void secondCubeToLeftSwitch(Robot robot) {

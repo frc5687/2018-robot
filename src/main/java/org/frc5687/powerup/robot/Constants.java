@@ -107,7 +107,7 @@ public class Constants {
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
         public static final double SCALE_DROP_SPEED = -0.6;
         public static final double SCALE_SHOOT_SPEED = -0.70;
-        public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.90;
+        public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.80;
         public static final double SWITCH_DROP_SPEED = -0.42;
 
         public static final double HC_MIN_SPEED = 0.1;
