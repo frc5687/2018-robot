@@ -1,6 +1,5 @@
 package org.frc5687.powerup.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -9,17 +8,16 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.frc5687.powerup.robot.utils.MotorHealthChecker;
-import org.frc5687.powerup.robot.utils.PDP;
+import org.frc5687.powerup.robot.utils.*;
 
 
 public class Intake extends Subsystem {
 
     private VictorSP leftMotor;
     private VictorSP rightMotor;
-    private AnalogInput irBack;
-    private AnalogInput irDown;
-    private AnalogInput irUp;
+    private IRSensorShort irBack;
+    private IRSensorMedium irDown;
+    private IRSensorLong irUp;
     private Servo servo;
     private Arm _arm;
     private double _lastServoPos;
@@ -46,9 +44,9 @@ public class Intake extends Subsystem {
         this.oi = oi;
         _isCompetitionBot = isCompetitionBot;
 
-        irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
-        irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
-        irUp = new AnalogInput(RobotMap.Intake.IR_UP);
+        irBack = new IRSensorShort(RobotMap.Intake.IR_BACK);
+        irDown = new IRSensorMedium(RobotMap.Intake.IR_DOWN);
+        irUp = new IRSensorLong(RobotMap.Intake.IR_UP);
 
         _pdp = pdp;
 
@@ -137,8 +135,11 @@ public class Intake extends Subsystem {
         }
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
-        SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
+        SmartDashboard.putNumber("Intake/IR Down raw", irDown.getValue());
         SmartDashboard.putNumber("Intake/IR Up raw", irUp.getValue());
+        SmartDashboard.putNumber("Intake/IR Back inches", irBack.getDistance());
+        SmartDashboard.putNumber("Intake/IR Down inches", irDown.getDistance());
+        SmartDashboard.putNumber("Intake/IR Up inches", irUp.getDistance());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
         SmartDashboard.putBoolean("Intake/isPlateDetected()", isPlateDetected());

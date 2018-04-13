@@ -6,6 +6,50 @@ public class Constants {
     public static final double END_ALERT = 28;
     public static final int HEALTH_CHECK_CYCLES = 10;
 
+    public enum IR_SENSOR {
+        GP2Y0A21YK, // 10cm to 80cm
+        GP2Y0A41SK0F // 4cm to 30cm
+    }
+
+    public class IRPID {
+        /**
+         * a in the voltage-to-distance equation distance = a * voltage ^ b
+         */
+        public static final double TRANSFORM_COEFFICIENT_SHORT = 14.88;
+        public static final double TRANSFORM_COEFFICIENT_MEDIUM = 16.98;
+        public static final double TRANSFORM_COEFFICIENT_LONG = 23.91;
+        /**
+         * b in the voltage-to-distance equation distance = a * voltage ^ b
+         */
+        public static final double TRANSFORM_POWER_SHORT = -1.3;
+        public static final double TRANSFORM_POWER_MEDIUM = -0.86;
+        public static final double TRANSFORM_POWER_LONG = -0.753;
+
+        /**
+         * a in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double CUBIC_COEFFICIENT_SHORT = -11.3317;
+        public static final double CUBIC_COEFFICIENT_MEDIUM = -21.13;
+        public static final double CUBIC_COEFFICIENT_LONG = -23.4003;
+        /**
+         * b in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double QUADRATIC_COEFFICIENT_SHORT = 55.4675;
+        public static final double QUADRATIC_COEFFICIENT_MEDIUM = 122.201;
+        public static final double QUADRATIC_COEFFICIENT_LONG = 139.973;        /**
+         * c in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double LINEAR_COEFFICIENT_SHORT = -93.7915;
+        public static final double LINEAR_COEFFICIENT_MEDIUM = -228.095;
+        public static final double LINEAR_COEFFICIENT_LONG = -293.567;
+        /**
+         * d in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double CONSTANT_COEFFICIENT_SHORT = 62.367;
+        public static final double CONSTANT_COEFFICIENT_MEDIUM = 146.139;
+        public static final double CONSTANT_COEFFICIENT_LONG = 244.715;
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -106,17 +150,16 @@ public class Constants {
         public static final double HC_MIN_SPEED = 0.1;
         public static final double HC_MIN_CURRENT = 0.5;
 
-        public class SIDE_IR {
-            public static final boolean ENABLED = false;
-            public static final int DETECTION_THRESHOLD = 1200;
-        }
-
         public class DOWN_IR {
+            public final IR_SENSOR COMP_HARDWARE = IR_SENSOR.GP2Y0A21YK; // TODO: Verify
+            public final IR_SENSOR PROTO_HARDWARE = IR_SENSOR.GP2Y0A41SK0F; // TODO: Verify
             public static final boolean ENABLED = true;
             public static final int DETECTION_THRESHOLD = 800;
         }
 
         public class BACK_IR {
+            public final IR_SENSOR COMP_HARDWARE = IR_SENSOR.GP2Y0A21YK; // TODO: Verify
+            public final IR_SENSOR PROTO_HARDWARE = IR_SENSOR.GP2Y0A41SK0F; // TODO: Verify
             public static final boolean ENABLED = true;
             public static final int SECURED_LOW_END = 1500;
             public static final int SECURED_HIGH_END = Integer.MAX_VALUE;
@@ -198,22 +241,6 @@ public class Constants {
                         public static final double INCHES = 1.0;//1.0 / MaxAcceleration.INCHES;
                     }
                 }
-            }
-
-            public class IRPID {
-                public static final double kP = 0.05;
-                public static final double kI = 0.00;
-                public static final double kD = 0.03;
-                public static final double TOLERANCE = .5;
-
-                /**
-                 * a in the voltage-to-distance equation distance = a * voltage ^ b
-                 */
-                public static final double TRANSFORM_COEFFICIENT = 27.385;
-                /**
-                 * b in the voltage-to-distance equation distance = a * voltage ^ b
-                 */
-                public static final double TRANSFORM_POWER = -1.203;
             }
 
             public class EncoderPID {
