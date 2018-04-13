@@ -582,7 +582,7 @@ public class AutoGroup extends CommandGroup {
     private void farLeftToRightScale(Robot robot) {
         addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 89, Constants.Auto.Align.SPEED, 3000));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 88, Constants.Auto.Align.SPEED, 5000, 1.0));
         addParallel(new PrepIntakeForScale(robot, 1600, false));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
