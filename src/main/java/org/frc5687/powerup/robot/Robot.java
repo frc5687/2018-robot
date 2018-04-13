@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
         intake.setArm(_arm);
         _lights = new Lights(this);
-        _climber = new Climber(oi, pdp, _isCompetitionBot);
+        _climber = new Climber(oi, pdp, intake, _isCompetitionBot);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();

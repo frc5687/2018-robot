@@ -5,21 +5,18 @@ package org.frc5687.powerup.robot.commands.auto;
  */
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
+import org.frc5687.powerup.robot.Constants.Auto.Align;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
-import org.frc5687.powerup.robot.Constants.Auto.Align;
 
 /**
  * Autonomous command to turn to specified angle
  */
-public class AutoAlign extends Command implements PIDOutput {
+public class AutoAlignExperimental extends Command implements PIDOutput {
 
     private PIDController controller;
     private double endTime;
@@ -32,38 +29,43 @@ public class AutoAlign extends Command implements PIDOutput {
     private long _onTargetSince;
     private long startTimeMillis;
     private long _endTimeMillis;
-    private boolean _aborted = false;
 
     private DriveTrain driveTrain;
     private AHRS imu;
+    private IMUSource imuSource;
+    private Constants.typeOfTurn _typeOfTurn;
 
     private double _tolerance;
 
-    public AutoAlign(Robot robot, double angle) {
+    public AutoAlignExperimental(Robot robot, double angle) {
         this(robot, angle, Align.SPEED);
     }
 
-    public AutoAlign(Robot robot, double angle, double speed) {
+    public AutoAlignExperimental(Robot robot, double angle, double speed) {
         this(robot.getDriveTrain(), robot.getIMU(), angle, speed);
     }
 
-    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
+    public AutoAlignExperimental(DriveTrain driveTrain, AHRS imu, double angle, double speed) {
         this(driveTrain, imu, angle, speed, 2000);
     }
 
-    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout) {
+    public AutoAlignExperimental(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout) {
         this(driveTrain, imu, angle, speed, timeout, Align.TOLERANCE);
     }
 
-    public AutoAlign(Robot robot, double angle, long timeout, double tolerance) {
+    public AutoAlignExperimental(Robot robot, double angle, long timeout, double tolerance) {
         this(robot.getDriveTrain(), robot.getIMU(), angle, Align.SPEED, timeout, tolerance);
     }
 
-    public AutoAlign(Robot robot, double angle, double speed, long timeout, double tolerance) {
+    public AutoAlignExperimental(Robot robot, double angle, double speed, long timeout, double tolerance) {
         this(robot.getDriveTrain(), robot.getIMU(), angle, speed, timeout, tolerance);
     }
 
-    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance) {
+    public AutoAlignExperimental(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance) {
+        this(driveTrain, imu, angle, speed, timeout, tolerance, Constants.typeOfTurn.shortest);
+    }
+
+    public AutoAlignExperimental(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance, Constants.typeOfTurn typeOfTurn) {
         requires(driveTrain);
         this.angle = angle;
         this.speed = speed;
@@ -71,6 +73,67 @@ public class AutoAlign extends Command implements PIDOutput {
         this.imu = imu;
         _timeout = timeout;
         _tolerance = tolerance;
+        _typeOfTurn = typeOfTurn;
+        imuSource = new IMUSource(this.imu, _typeOfTurn);
+    }
+
+    private class IMUSource implements PIDSource {
+        private AHRS _imu;
+        private int _angleOffset;
+        private PIDSourceType _pidSourcetype;
+        private double minIMU;
+        private double maxIMU;
+        private boolean shouldSetContinuous;
+        private double _setpoint;
+
+        public void setPIDSourceType(PIDSourceType pidSource) {
+            _pidSourcetype = pidSource;
+        }
+
+        public PIDSourceType getPIDSourceType() {
+            return _pidSourcetype;
+        }
+
+        public IMUSource(AHRS imu, Constants.typeOfTurn typeOfTurn) {
+            _imu = imu;
+            _pidSourcetype = PIDSourceType.kDisplacement;
+            if (typeOfTurn == Constants.typeOfTurn.rightOnly) {
+                _angleOffset = 90;
+                shouldSetContinuous = false;
+            } else if (typeOfTurn == Constants.typeOfTurn.leftOnly) {
+                _angleOffset = -90;
+                shouldSetContinuous = false;
+            } else {
+                _angleOffset = 0;
+                shouldSetContinuous = true;
+            }
+            minIMU = Constants.Auto.MIN_IMU_ANGLE + _angleOffset;
+            maxIMU = Constants.Auto.MAX_IMU_ANGLE + _angleOffset;
+        }
+
+        public double pidGet() {
+            return _imu.getYaw() + _angleOffset;
+        }
+
+        public double getMinIMU() {
+            return minIMU;
+        }
+
+        public double getMaxIMU() {
+            return maxIMU;
+        }
+
+        public boolean shouldSetContinuous() {
+            return shouldSetContinuous;
+        }
+
+        public void setSetpoint(double setpoint) {
+            _setpoint = setpoint;
+        }
+
+        public double getSetpoint() {
+            return _setpoint + _angleOffset;
+        }
     }
 
     @Override
@@ -80,11 +143,14 @@ public class AutoAlign extends Command implements PIDOutput {
         double kD = Align.kD; //Double.parseDouble(SmartDashboard.getString("DB/String 2", ".09"));
 
         controller = new PIDController(kP, kI, kD, imu, this, 0.01);
-        controller.setInputRange(Constants.Auto.MIN_IMU_ANGLE, Constants.Auto.MAX_IMU_ANGLE);
+        controller.setInputRange(imuSource.getMinIMU(), imuSource.getMaxIMU());
         controller.setOutputRange(-speed, speed);
         controller.setAbsoluteTolerance(_tolerance);
-        controller.setContinuous();
-        controller.setSetpoint(angle);
+        if (imuSource.shouldSetContinuous()) {
+            controller.setContinuous();
+        }
+        imuSource.setSetpoint(angle);
+        controller.setSetpoint(imuSource.getSetpoint());
         controller.enable();
         DriverStation.reportError("AutoAlign initialized to " + angle + " at " + speed, false);
         DriverStation.reportError("kP="+kP+" , kI="+kI+", kD="+kD + ",T="+ Align.TOLERANCE, false);
@@ -95,25 +161,6 @@ public class AutoAlign extends Command implements PIDOutput {
     @Override
     protected void execute() {
         //actOnPidOut();
-        // Check pitch and tilt
-        double pitch = imu.getPitch();
-        double roll = imu.getRoll();
-
-        if (Math.abs(pitch) > Constants.Auto.MAX_PITCH) {
-            DriverStation.reportError("Excessive pitch detected (" + pitch + ")", false);
-            this.controller.disable();
-            _aborted = true;
-            Scheduler.getInstance().removeAll();
-        }
-
-        if (Math.abs(roll) > Constants.Auto.MAX_ROLL) {
-            DriverStation.reportError("Excessive roll detected (" + roll + ")", false);
-            this.controller.disable();
-            _aborted = true;
-            Scheduler.getInstance().removeAll();
-        }
-
-
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
         SmartDashboard.putData("AutoAlign/pid", controller);
@@ -131,7 +178,6 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
-        if (_aborted) { return true; }
         if (!controller.onTarget()) {
             _onTargetSince = 0;
         }
