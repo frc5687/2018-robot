@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
     private long lastPeriod;
-    private int ticksPerUpdate = 5;
+    private int ticksPerUpdate = 20;
     private int updateTick = 0;
     private boolean hasRumbledForEndgame;
     private boolean _manualLightFlashRequested;

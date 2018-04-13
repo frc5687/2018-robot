@@ -406,12 +406,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
         double checkSpeed = Math.abs(priorSpeed);
         if (lost) {
             if ((checkSpeed > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED) && (currentDraw < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS)) {
-                DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                //DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
                 return false;
             }
         } else {
             if (Math.abs(_priorLeft) > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED && _robot.getPDP().getCurrent(pdpChannel) < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS) {
-                DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                //DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
                 return true;
             }
         }
