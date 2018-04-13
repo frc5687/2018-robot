@@ -486,12 +486,28 @@ public class Constants {
             public static final int SCALE_THEN_SCALE = 3;
             public static final int SWITCH_THEN_SWITCH = 4;
             public static final int SCALE_THEN_SWITCH = 5;
-            public static final int DEFENSIVE_OPPOSITE = 6;
             public static final int SWITCH_DRIVE = 1001;
             public static final int SWITCH_ONLY = 10002;
             public static final int SCALE_DRIVE = 1003;
             public static final int SCALE_ONLY = 1004;
         }
+
+        public class Coop {
+            public static final int DELAY_0 = 0;
+            public static final int DELAY_1 = 1;
+            public static final int DELAY_2 = 2;
+            public static final int DELAY_3 = 3;
+            public static final int DELAY_4 = 4;
+            public static final int DELAY_5 = 5;
+            public static final int DELAY_6 = 6;
+            public static final int DELAY_7 = 7;
+            public static final int DELAY_8 = 8;
+            public static final int DELAY_9 = 9;
+            public static final int DEFENSE = 10;
+            public static final int STAY_IN_LANE = 11;
+        }
+
+
     }
     public class Limits {
         /***

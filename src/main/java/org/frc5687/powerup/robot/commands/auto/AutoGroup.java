@@ -17,10 +17,12 @@ import org.frc5687.powerup.robot.commands.auto.AutoIntake;
  * Created by Ben Bernard on 2/2/2018.
  */
 public class AutoGroup extends CommandGroup {
-    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, boolean stayInYourOwnLane, Robot robot) {
+    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, int coopMode, Robot robot) {
         super();
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
+        boolean stayInYourOwnLane = coopMode == Constants.AutoChooser.Coop.STAY_IN_LANE;
+        boolean defensive = coopMode == Constants.AutoChooser.Coop.DEFENSE;
         /*
         if (robot.getCarriage().isHealthy()) {
             addParallel(new AutoZeroCarriage(robot.getCarriage()));
@@ -129,8 +131,11 @@ public class AutoGroup extends CommandGroup {
                         farLeftToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        if (!stayInYourOwnLane) { // Traverse allowed
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
                             farLeftToRightScale(robot);
+                        } else if (defensive) {
+                            // Drop off the cube...then
+                            farLeftDefensive(robot, switchSide == Constants.AutoChooser.LEFT);
                         } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
                             farLeftToLeftSwitch(robot);
                         } else {
@@ -138,8 +143,10 @@ public class AutoGroup extends CommandGroup {
                         }
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        if (!stayInYourOwnLane) { // Traverse allowed
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
                             farRightToLeftScale(robot);
+                        } else if (defensive) {
+                            farRightDefensive(robot, switchSide == Constants.AutoChooser.RIGHT);
                         } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
                             farRightToRightSwitch(robot);
                         } else {
@@ -151,7 +158,7 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
-            case Constants.AutoChooser.Mode.DEFENSIVE_OPPOSITE:
+ /*           case Constants.AutoChooser.Mode.DEFENSIVE_OPPOSITE:
                 SmartDashboard.putString("Auto/Mode", "DEFENSIVE_OPPOSITE");
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
@@ -180,6 +187,7 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+*/
             case Constants.AutoChooser.Mode.SCALE_THEN_SCALE:
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
