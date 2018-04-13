@@ -519,7 +519,9 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void farLeftToLeftScale(Robot robot) {
-        addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
+        //addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
+        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 140));
         addSequential(new FarLeftToLeftScale(robot));
         // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
         // Timeout used to be 1000, but because of too high scrub we would time out.
