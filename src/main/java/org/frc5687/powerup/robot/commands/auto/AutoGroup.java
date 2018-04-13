@@ -549,6 +549,7 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new AutoIntake(robot.getIntake()));
         addSequential(new LeftScaleToCube(robot));
+        addSequential(new AbortIfNoCubeDetected(robot.getIntake()));
     }
 
     private void secondCubeToLeftScale(Robot robot) {
@@ -566,6 +567,7 @@ public class AutoGroup extends CommandGroup {
          */
         //addSequential(new AutoAlign(robot, -140, 1500, 7));
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
+        addSequential(new AbortIfNoCubeDetected(robot.getIntake()));
         addSequential(new AutoAlign(robot, 22.8));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED_SECOND_CUBE));
     }
