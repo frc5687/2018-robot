@@ -389,8 +389,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsHealthy());
 
 
-        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);
+        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
+        SmartDashboard.putNumber("IMU/pitch", imu.getPitch());
+        SmartDashboard.putNumber("IMU/roll", imu.getRoll());
         SmartDashboard.clearPersistent("*");
 
         _leftFrontLost = checkCIM(_priorLeft, _leftFrontLost, RobotMap.PDP.LEFT_FRONT_SRX, "left", "front");
