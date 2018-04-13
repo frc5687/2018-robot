@@ -8,7 +8,8 @@ public class IRSensorShort extends IRSensor {
     }
 
     public double getDistance() {
-        return Constants.IRPID.TRANSFORM_COEFFICIENT_SHORT * Math.pow(getRaw(), Constants.IRPID.TRANSFORM_POWER_SHORT) / 2.54;
-
-    }
+        return (Constants.IRPID.CUBIC_COEFFICIENT_SHORT * Math.pow(getRaw(), 3) +
+                Constants.IRPID.QUADRATIC_COEFFICIENT_SHORT * Math.pow(getRaw(),2) +
+                Constants.IRPID.LINEAR_COEFFICIENT_SHORT * getRaw() +
+                Constants.IRPID.CONSTANT_COEFFICIENT_SHORT )/ 2.54;    }
 }

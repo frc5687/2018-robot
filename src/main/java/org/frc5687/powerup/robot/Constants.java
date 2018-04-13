@@ -24,6 +24,30 @@ public class Constants {
         public static final double TRANSFORM_POWER_SHORT = -1.3;
         public static final double TRANSFORM_POWER_MEDIUM = -0.86;
         public static final double TRANSFORM_POWER_LONG = -0.753;
+
+        /**
+         * a in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double CUBIC_COEFFICIENT_SHORT = -11.3317;
+        public static final double CUBIC_COEFFICIENT_MEDIUM = -21.13;
+        public static final double CUBIC_COEFFICIENT_LONG = -23.4003;
+        /**
+         * b in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double QUADRATIC_COEFFICIENT_SHORT = 55.4675;
+        public static final double QUADRATIC_COEFFICIENT_MEDIUM = 122.201;
+        public static final double QUADRATIC_COEFFICIENT_LONG = 139.973;        /**
+         * c in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double LINEAR_COEFFICIENT_SHORT = -93.7915;
+        public static final double LINEAR_COEFFICIENT_MEDIUM = -228.095;
+        public static final double LINEAR_COEFFICIENT_LONG = -293.567;
+        /**
+         * d in the voltage-to-distance equation distance = ax^3 + bx^2 + cx + d
+         */
+        public static final double CONSTANT_COEFFICIENT_SHORT = 62.367;
+        public static final double CONSTANT_COEFFICIENT_MEDIUM = 146.139;
+        public static final double CONSTANT_COEFFICIENT_LONG = 244.715;
     }
 
 
