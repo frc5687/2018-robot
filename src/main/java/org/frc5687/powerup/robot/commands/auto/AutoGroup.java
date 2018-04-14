@@ -472,7 +472,7 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
         addSequential(new RightGoPickupCubeReversed(robot));
-        addSequential(new AbortIfNoCubeDetected(robot));
+        addSequential(new AbortIfCubeNotSecured(robot));
     }
 
     private void secondCubeComingFromRightSwitchToRightSwitch(Robot robot) {
