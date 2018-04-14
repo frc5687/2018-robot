@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -44,6 +45,12 @@ public class Carriage extends PIDSubsystem {
         hallEffectBottom = new DigitalInput(RobotMap.Carriage.HALL_EFFECT_BOTTOM);
         _isCompetitionBot = isCompetitionBot;
         _healthChecker = new MotorHealthChecker(Constants.Carriage.HC_MIN_SPEED, Constants.Carriage.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.CARRIAGE_SP);
+    }
+
+    @Override
+    public void disable() {
+        super.disable();
+        DriverStation.reportError("Carriage PIDSubsystem Disabling", false);
     }
 
     public double calculateHoldSpeed() {

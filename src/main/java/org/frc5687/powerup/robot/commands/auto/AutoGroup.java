@@ -280,14 +280,14 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
-
+                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-
-                        // centerLeftToLeftSwitchThenPickupSecondCube(robot);
+                        */
+                        centerLeftToLeftSwitchThenPickupSecondCube(robot);
 
                         break;
                     case Constants.AutoChooser.Position.CENTER:
@@ -322,13 +322,15 @@ public class AutoGroup extends CommandGroup {
                         break;
                     case -Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Left Side", false);
+                        /*
                         // Revert to this if needed
                         centerLeftToLeftSwitch(robot);
                         if (robot.getCarriage().isHealthy()) {
                             addSequential(new AutoZeroCarriage(robot.getCarriage()));
                         }
-                        //centerLeftToLeftSwitchThenPickupSecondCube(robot);
-                        //secondCubeComingFromLeftSwitchToLeftSwitch(robot);
+                        */
+                        centerLeftToLeftSwitchThenPickupSecondCube(robot);
+                        secondCubeComingFromLeftSwitchToLeftSwitch(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Right Side", false);
@@ -487,8 +489,8 @@ public class AutoGroup extends CommandGroup {
         double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         double carriageTopPosition = Constants.Carriage.ENCODER_TOP_COMP;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 100));
         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
-        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
         /*
         Move Carriage Down and backup
          */
@@ -504,11 +506,13 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new AutoIntake(robot.getIntake()));
         addSequential(new RightGoPickupCube(robot));
+        addParallel(new AbortIfNoCubeDetected(robot));
         /*
         Raise Carriage while backing up
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
         addSequential(new RightGoPickupCubeReversed(robot));
+        addSequential(new AbortIfCubeNotSecured(robot));
     }
 
     private void secondCubeComingFromRightSwitchToRightSwitch(Robot robot) {
@@ -587,6 +591,7 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new AutoIntake(robot.getIntake()));
         addSequential(new LeftScaleToCube(robot));
+        addSequential(new AbortIfNoCubeDetected(robot));
     }
 
     private void secondCubeToLeftScale(Robot robot) {
@@ -604,6 +609,7 @@ public class AutoGroup extends CommandGroup {
          */
         //addSequential(new AutoAlign(robot, -140, 1500, 7));
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
+        addSequential(new AbortIfCubeNotSecured(robot));
         addSequential(new AutoAlign(robot, 22.8));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED_SECOND_CUBE));
     }
@@ -620,7 +626,7 @@ public class AutoGroup extends CommandGroup {
     private void farLeftToRightScale(Robot robot) {
         addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 89, Constants.Auto.Align.SPEED, 3000));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 88, Constants.Auto.Align.SPEED, 5000, 1.0));
         addParallel(new PrepIntakeForScale(robot, 1600, false));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
