@@ -5,22 +5,22 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.Intake;
 
-public class AbortIfNoCubeDetected extends Command {
+public class AbortIfCubeNotSecured extends Command {
     private Robot _robot;
     private Intake _intake;
     private boolean _isFinished;
 
-    public AbortIfNoCubeDetected(Robot robot) {
+    public AbortIfCubeNotSecured(Robot robot) {
         _robot = robot;
         _intake = robot.getIntake();
     }
 
     @Override
     protected void initialize() {
-        DriverStation.reportError("AbortIfNoCubeDetected initialized", false);
+        DriverStation.reportError("AbortIfCubeNotSecured initialized", false);
         _isFinished = true;
-        if (!_intake.cubeIsDetected()) {
-            DriverStation.reportError("AbortIfNoCubeDetected no cube detected.. calling robot.requestAbortAuton()", false);
+        if (!_intake.cubeIsSecured()) {
+            DriverStation.reportError("AbortIfCubeNotSecured cube not secured!!.. calling robot.requestAbortAuton()", false);
             _robot.requestAbortAuton();
         }
     }
