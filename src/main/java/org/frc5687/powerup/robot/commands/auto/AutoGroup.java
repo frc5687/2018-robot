@@ -466,11 +466,13 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new AutoIntake(robot.getIntake()));
         addSequential(new RightGoPickupCube(robot));
+        addParallel(new AbortIfNoCubeDetected(robot));
         /*
         Raise Carriage while backing up
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageTopPosition));
         addSequential(new RightGoPickupCubeReversed(robot));
+        addSequential(new AbortIfNoCubeDetected(robot));
     }
 
     private void secondCubeComingFromRightSwitchToRightSwitch(Robot robot) {
