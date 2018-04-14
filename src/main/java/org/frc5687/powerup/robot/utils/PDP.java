@@ -77,7 +77,7 @@ public class PDP extends PowerDistributionPanel {
                     for (int i = 0; i < 16; i++) {
                         _pdp.cache[i] = _pdp.getCurrent(i, true);
                     }
-                    Thread.sleep(20);
+                    Thread.sleep(250);
                 } catch (Exception e) {
                     DriverStation.reportError("PDPCacheUpdater exception: " + e.toString(), false);
                 }
