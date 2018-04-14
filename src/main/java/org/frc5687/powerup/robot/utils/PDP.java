@@ -6,10 +6,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PDP extends PowerDistributionPanel {
     private boolean _isCompetitionBot;
+    private double[] cache;
+    private Thread _thread;
+    private PDPCacheUpdater _pdpCacheUpdater;
 
     public PDP(boolean isCompetitionBot) {
         super();
         _isCompetitionBot = isCompetitionBot;
+        cache = new double[16];
+        _pdpCacheUpdater = new PDPCacheUpdater(this);
+        _thread = new Thread(_pdpCacheUpdater);
+        _thread.start();
+    }
+
+    @Override
+    public double getCurrent(int channel) {
+        return getCurrent(channel, false);
+    }
+
+    public double getCurrent(int channel, boolean overrideCache) {
+        if (overrideCache) {
+            return super.getCurrent(channel);
+        }
+        return cache[channel];
     }
 
     public void updateDashboard() {
@@ -43,6 +62,27 @@ public class PDP extends PowerDistributionPanel {
             return true;
         }
         return false;
+    }
+
+    private class PDPCacheUpdater implements Runnable {
+        private PDP _pdp;
+
+        public PDPCacheUpdater(PDP pdp) {
+            _pdp = pdp;
+        }
+
+        public void run() {
+            while (true) {
+                try {
+                    for (int i = 0; i < 16; i++) {
+                        _pdp.cache[i] = _pdp.getCurrent(i, true);
+                    }
+                    Thread.sleep(20);
+                } catch (Exception e) {
+                    DriverStation.reportError("PDPCacheUpdater exception: " + e.toString(), false);
+                }
+            }
+        }
     }
 
 }
