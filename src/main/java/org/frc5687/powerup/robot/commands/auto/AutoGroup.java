@@ -449,8 +449,8 @@ public class AutoGroup extends CommandGroup {
         double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         double carriageTopPosition = Constants.Carriage.ENCODER_TOP_COMP;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 100));
         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
-        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
         /*
         Move Carriage Down and backup
          */
