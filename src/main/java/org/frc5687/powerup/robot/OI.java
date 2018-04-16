@@ -91,6 +91,14 @@ public class OI {
         return Helpers.applySensitivityFactor(speed, Constants.DriveTrain.SENSITIVITY);
     }
 
+    public boolean isYesPressed(){
+        return operatorGamepad.getRawButton(Gamepad.Buttons.BACK);
+    }
+
+    public boolean isNoPressed(){
+        return operatorGamepad.getRawButton(Gamepad.Buttons.START);
+    }
+
     public double getRightSpeed() {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.RIGHT_AXIS);
         speed = Helpers.applyDeadband(speed, Constants.DriveTrain.DEADBAND);
