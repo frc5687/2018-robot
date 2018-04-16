@@ -6,14 +6,22 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
 public class CenterLeftToLeftSwitchForSecondCube extends DynamicPathCommand {
-    
+    public static int numSegments = 303;
+    public static double dt = 0.01;
+    public static long duration = (long) (numSegments * (dt * 1000));
+
     public CenterLeftToLeftSwitchForSecondCube(Robot robot) {
         super(robot);
     }
 
     @Override
-    public double getkT() {
+    public double getGretakT() {
         return 0.3;
+    }
+
+    @Override
+    public double getJitterbugkT() {
+        return 1.2;
     }
 
     @Override
