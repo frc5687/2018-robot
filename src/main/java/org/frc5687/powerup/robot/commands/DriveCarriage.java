@@ -22,7 +22,9 @@ public class DriveCarriage extends Command {
     protected void execute() {
         double oiSpeed = DriverStation.getInstance().isAutonomous() ? 0 : oi.getCarriageSpeed();
         if (oiSpeed != 0.0) {
-            carriage.disable();
+            if (carriage.getPIDController().isEnabled()) {
+                carriage.disable();
+            }
             //DriverStation.reportError("DriveCarriage requesting oiSpeed: " + Double.toString(oiSpeed), false);
             carriage.drive(oiSpeed);
         } else if (!carriage.getPIDController().isEnabled()) {
