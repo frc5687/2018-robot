@@ -1,4 +1,4 @@
-package org.frc5687.powerup.robot.commands;
+package org.frc5687.powerup.robot.commands.testing;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.frc5687.powerup.robot.Constants;
