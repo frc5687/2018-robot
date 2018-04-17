@@ -41,10 +41,11 @@ public class Robot extends TimedRobot {
     private DigitalInput _identityFlag;
     private boolean _isCompetitionBot;
     private long lastPeriod;
-    private int ticksPerUpdate = 5;
+    private int ticksPerUpdate = 20;
     private int updateTick = 0;
     private boolean hasRumbledForEndgame;
     private boolean _manualLightFlashRequested;
+    private boolean abortAuton;
 
 
     public Robot() {
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
         _arm = new Arm(oi, pdp, intake, _isCompetitionBot);
         intake.setArm(_arm);
         _lights = new Lights(this);
-        _climber = new Climber(oi, pdp, _isCompetitionBot);
+        _climber = new Climber(oi, pdp, intake, _isCompetitionBot);
         _autoChooser = new AutoChooser(_isCompetitionBot);
         SmartDashboard.putString("Identity", (_isCompetitionBot ? "Diana" : "Jitterbug"));
         lastPeriod = System.currentTimeMillis();
@@ -120,6 +121,7 @@ public class Robot extends TimedRobot {
         carriage.zeroEncoder();
         _manualLightFlashRequested = false;
         hasRumbledForEndgame = false;
+        abortAuton = false;
         // Reset the lights slider in case it was left on
         SmartDashboard.putNumber("DB/Slider 0", 0.0);
 
@@ -191,6 +193,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        if (abortAuton && autoCommand != null) {
+            autoCommand.cancel();
+        }
     }
 
     @Override
@@ -282,5 +287,9 @@ public class Robot extends TimedRobot {
 
     public boolean isManualLightFlashRequested() {
         return _manualLightFlashRequested;
+    }
+
+    public void requestAbortAuton() {
+        abortAuton = true;
     }
 }

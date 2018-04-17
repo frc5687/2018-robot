@@ -6,6 +6,12 @@ public class Constants {
     public static final double END_ALERT = 28;
     public static final int HEALTH_CHECK_CYCLES = 10;
 
+    public enum typeOfTurn {
+        shortest,
+        leftOnly,
+        rightOnly
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -99,8 +105,9 @@ public class Constants {
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
-        public static final double SCALE_DROP_SPEED = -0.6;
+        public static final double SCALE_DROP_SPEED = -0.9;
         public static final double SCALE_SHOOT_SPEED = -0.70;
+        public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
         public static final double SWITCH_DROP_SPEED = -0.42;
 
         public static final double HC_MIN_SPEED = 0.1;
@@ -143,7 +150,7 @@ public class Constants {
             public static final double kI = 0.0;
             public static final double kD = 0.3;
             public static final double TOLERANCE = 1.0; // 0.5
-            public static final double MINIMUM_SPEED = 0.35;
+            public static final double MINIMUM_SPEED = 0.5;
             public static final double MAX_OUTPUT = 0;
             /*
              *time the angle must be on target for to be considered steady
@@ -403,7 +410,7 @@ public class Constants {
             public static final double BOTTOM_COMP = 33.0;
             public static final double BOTTOM_PROTO = 33.0; // TODO: Tune
 
-            public static final double INTAKE_COMP = 50.0;
+            public static final double INTAKE_COMP = 49.0;
             public static final double INTAKE_PROTO = 47.0;
 
             public static final double DRIVE_COMP = 41.0;
@@ -486,10 +493,11 @@ public class Constants {
             public static final int SCALE_THEN_SCALE = 3;
             public static final int SWITCH_THEN_SWITCH = 4;
             public static final int SCALE_THEN_SWITCH = 5;
+            public static final int SCALE_THEN_BACKOFF = 6;
+            public static final int SWITCH_ONLY = 7;
+            public static final int SCALE_ONLY = 8;
             public static final int SWITCH_DRIVE = 1001;
-            public static final int SWITCH_ONLY = 10002;
             public static final int SCALE_DRIVE = 1003;
-            public static final int SCALE_ONLY = 1004;
         }
     }
     public class Limits {
