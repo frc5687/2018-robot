@@ -37,7 +37,9 @@ public class AutoGroup extends CommandGroup {
         int carriageTopPosition;
         MoveArmToSetpointPID armPid;
 
-        addSequential(new AutoWaitForMillis(delayInMillis));
+        if (delayInMillis != 0) {
+            addSequential(new AutoWaitForMillis(delayInMillis));
+        }
 
         switch (mode) {
             case Constants.AutoChooser.Mode.STAY_PUT:
@@ -449,7 +451,7 @@ public class AutoGroup extends CommandGroup {
         double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         double carriageTopPosition = Constants.Carriage.ENCODER_TOP_COMP;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 100));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 200));
         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
         /*
         Move Carriage Down and backup
@@ -460,7 +462,8 @@ public class AutoGroup extends CommandGroup {
         Move Arm Down while aligning
          */
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, Constants.Auto.Align.SPEED));
+        // -12.9
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -12.9, Constants.Auto.Align.SPEED));
         /*
         Intake second cube
          */
