@@ -350,6 +350,9 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+            case 10:
+                addSequential(new AggressiveCrossAutoLine(robot));
+                break;
             case 11:
                 addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 1.0, 2500, 2.0));
                 break;
@@ -527,15 +530,17 @@ public class AutoGroup extends CommandGroup {
 
     private void farLeftToLeftScale(Robot robot) {
         //addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
-        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
-        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 140));
-        addSequential(new FarLeftToLeftScale(robot));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE_MAX));
+        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 100));
+        //addSequential(new FarLeftToLeftScale(robot));
+        addSequential(new FarLeftToLeftScaleWithTightTurnThree(robot));
+        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+        //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToLeftScaleWithTightTurn.duration - 20));
         // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
         // Timeout used to be 1000, but because of too high scrub we would time out.
         // We changed the min. speed for auto align, so we don't "need" a greater timeout, but we haven't been able to test
         // it, so if it appears that we're stalling for too long, bump up the min. speed and or decrease this timeout
-        addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
-        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+        //addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
     }
 
     private void leftScaleToSecondCube(Robot robot) {
