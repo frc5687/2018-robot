@@ -155,8 +155,8 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         farLeftToLeftScale(robot);
-                        leftScaleToSecondCube(robot);
-                        secondCubeToLeftScale(robot);
+                        //leftScaleToSecondCube(robot);
+                        //secondCubeToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!stayInYourOwnLane) { // Traverse allowed
@@ -533,7 +533,7 @@ public class AutoGroup extends CommandGroup {
         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE_MAX));
         addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 100));
         //addSequential(new FarLeftToLeftScale(robot));
-        addSequential(new FarLeftToLeftScaleWithTightTurnThree(robot));
+        addSequential(new FarLeftToLeftScaleWithTightTurnFour(robot));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
         //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToLeftScaleWithTightTurn.duration - 20));
         // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
