@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.testing.*;
 import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
 import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
@@ -44,7 +45,7 @@ public class OI {
 
     private JoystickButton carriageZeroEncoder;
 
-    //private JoystickButton servoToggle;
+    private JoystickButton selfTest;
 
     private JoystickButton driverArmUp;
     private JoystickButton driverArmDown;
@@ -70,14 +71,14 @@ public class OI {
         operatorArmToDriveButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
         operatorArmToIntakeButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.A.getNumber());
 
+
         climberUnwind = new JoystickButton(driverGamepad, Gamepad.Buttons.BACK.getNumber());
         climberWind = new JoystickButton(driverGamepad, Gamepad.Buttons.START.getNumber());
 
         intakeLeftIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
-        //servoToggle = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
-
+        selfTest = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         driverArmDown = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_STICK.getNumber());
 
@@ -201,7 +202,7 @@ public class OI {
         operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
-        //servoToggle.whenPressed(new ServoToggle(robot.getIntake()));
+        selfTest.whenPressed(new SelfTestBootstrapper(robot.getIntake()));
 
         DriverStation.reportError("driverArmToIntakeButton " + (driverArmToIntakeButton ==null), false);
         DriverStation.reportError("driverArmToDriveButton " + (driverArmToDriveButton ==null), false);
