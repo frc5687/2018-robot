@@ -108,7 +108,7 @@ public class Constants {
         public static final double SCALE_DROP_SPEED = -0.9;
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
-        public static final double SWITCH_DROP_SPEED = -0.42;
+        public static final double SWITCH_DROP_SPEED = -0.22;
 
         public static final double HC_MIN_SPEED = 0.1;
         public static final double HC_MIN_CURRENT = 0.5;
@@ -185,7 +185,7 @@ public class Constants {
 
             public class TrajectoryFollowing {
                 public class Talon {
-                    public static final double kP = 0.15; // Talon doesn't use kP
+                    public static final double kP = 0.3; // Talon doesn't use kP
                     public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
                     public static final double kF = 0.2; // 0.28 works well
@@ -428,6 +428,7 @@ public class Constants {
             public static final double DRIVE = 33.0;
 
             public static final double SCALE = 150.0;
+            public static final double SCALE_MAX = 163.0;
             public static final double SWITCH_HEIGHT_WITH_CARRIAGE = 100;
             public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
             public static final double switchHeightWithCarriageHalfwayUp = 91;
@@ -437,9 +438,9 @@ public class Constants {
         public static final double LENGTH = 34.0;
 
         public class HoldSpeeds {
-            public static final double PAST_160_CUBE_PROTO = 0.0;
+            public static final double PAST_160_CUBE_PROTO = 0.2;
             public static final double PAST_160_CUBE_GRETA = 0.25;
-            public static final double PAST_160_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_160_NO_CUBE_PROTO = 0.2;
             public static final double PAST_160_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
