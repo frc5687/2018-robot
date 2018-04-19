@@ -12,6 +12,12 @@ public class Constants {
         rightOnly
     }
 
+    public enum DriveTrainBehavior {
+        bothSides,
+        leftOnly,
+        rightOnly
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf

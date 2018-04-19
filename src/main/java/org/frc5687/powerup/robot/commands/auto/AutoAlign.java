@@ -35,6 +35,8 @@ public class AutoAlign extends Command implements PIDOutput {
     private DriveTrain driveTrain;
     private AHRS imu;
 
+    private Constants.DriveTrainBehavior _driveTrainBehavior;
+
     private double _tolerance;
 
     public AutoAlign(Robot robot, double angle) {
@@ -62,6 +64,10 @@ public class AutoAlign extends Command implements PIDOutput {
     }
 
     public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance) {
+        this(driveTrain, imu, angle, speed, timeout, tolerance, Constants.DriveTrainBehavior.bothSides);
+    }
+
+    public AutoAlign(DriveTrain driveTrain, AHRS imu, double angle, double speed, long timeout, double tolerance, Constants.DriveTrainBehavior driveTrainBehavior) {
         requires(driveTrain);
         this.angle = angle;
         this.speed = speed;
@@ -69,6 +75,7 @@ public class AutoAlign extends Command implements PIDOutput {
         this.imu = imu;
         _timeout = timeout;
         _tolerance = tolerance;
+        _driveTrainBehavior = driveTrainBehavior;
     }
 
     @Override
@@ -105,7 +112,12 @@ public class AutoAlign extends Command implements PIDOutput {
         if (pidOut < 0 && pidOut > -Align.MINIMUM_SPEED) {
             pidOut = -Align.MINIMUM_SPEED;
         }
-        driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
+        if (_driveTrainBehavior == Constants.DriveTrainBehavior.bothSides) {
+            driveTrain.setPower(pidOut, -pidOut, true); // positive output is clockwise
+        } else if (_driveTrainBehavior == Constants.DriveTrainBehavior.rightOnly) {
+            driveTrain.setLeftVelocityIPS(0);
+            driveTrain.setRightPower(-pidOut);
+        }
     }
 
     @Override
