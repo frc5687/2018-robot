@@ -536,7 +536,7 @@ public class AutoGroup extends CommandGroup {
         addSequential(new FarLeftToLeftScaleWithTightTurnFour(robot));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
         //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToLeftScaleWithTightTurn.duration - 20));
-        // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
+        // Faster path makes it so we don't need auto align, except if we exclude it we need to turn to 105deg to get 2nd cube
         // Timeout used to be 1000, but because of too high scrub we would time out.
         // We changed the min. speed for auto align, so we don't "need" a greater timeout, but we haven't been able to test
         // it, so if it appears that we're stalling for too long, bump up the min. speed and or decrease this timeout
