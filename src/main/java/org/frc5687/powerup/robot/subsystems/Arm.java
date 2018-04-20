@@ -64,9 +64,13 @@ public class Arm extends PIDSubsystem {
     public double calculateHoldSpeed(boolean cubeDetected) {
         double ang = getPot();
         if (ang > 160 && cubeDetected) {
-            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_PROTO;
-        } else if (ang > 160) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_CUBE_PROTO;
+        } else if (ang > 160) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_160_NO_CUBE_PROTO;
+        } else if (ang > 150 && cubeDetected) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_150_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_150_CUBE_PROTO;
+        } else if (ang > 150) {
+            return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_150_NO_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_150_NO_CUBE_PROTO;
         } else if (ang > 90 && cubeDetected) {
             return _isCompetitionBot ? Constants.Arm.HoldSpeeds.PAST_90_CUBE_GRETA : Constants.Arm.HoldSpeeds.PAST_90_CUBE_PROTO;
         } else if (ang > 90) {

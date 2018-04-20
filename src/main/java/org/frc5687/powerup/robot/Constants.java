@@ -12,6 +12,12 @@ public class Constants {
         rightOnly
     }
 
+    public enum DriveTrainBehavior {
+        bothSides,
+        leftOnly,
+        rightOnly
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -108,7 +114,7 @@ public class Constants {
         public static final double SCALE_DROP_SPEED = -0.9;
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
-        public static final double SWITCH_DROP_SPEED = -0.42;
+        public static final double SWITCH_DROP_SPEED = -0.22;
 
         public static final double HC_MIN_SPEED = 0.1;
         public static final double HC_MIN_CURRENT = 0.5;
@@ -185,7 +191,7 @@ public class Constants {
 
             public class TrajectoryFollowing {
                 public class Talon {
-                    public static final double kP = 0.15; // Talon doesn't use kP
+                    public static final double kP = 0.3; // Talon doesn't use kP
                     public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
                     public static final double kF = 0.2; // 0.28 works well
@@ -312,20 +318,23 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
         public static final double HC_MIN_SPEED = 0.1; // Minimum speed to triggr the amp/isHalthy check
         public class HoldSpeeds {
-            public static final double PAST_TOP_PROTO = 0.42;
+            public static final double PAST_TOP_PROTO = 0.5;
             public static final double PAST_TOP_GRETA = 0.5;
 
-            public static final double PAST_NEG_20_PROTO = 0.42;
+            public static final double PAST_NEG_20_PROTO = 0.6;
             public static final double PAST_NEG_20_GRETA = 0.5;
 
-            public static final double PAST_NEG_50_PROTO = 0.42;
+            public static final double PAST_NEG_50_PROTO = 0.6;
             public static final double PAST_NEG_50_GRETA = 0.5;
 
-            public static final double PAST_NEG_100_PROTO = 0.42;
+            public static final double PAST_NEG_100_PROTO = 0.5;
             public static final double PAST_NEG_100_GRETA = 0.5;
 
-            public static final double PAST_NEG_200_PROTO = 0.3;
+            public static final double PAST_NEG_200_PROTO = 0.42;
             public static final double PAST_NEG_200_GRETA = 0.0;
+
+            public static final double PAST_NEG_300_PROTO = 0.42;
+            public static final double PAST_NEG_300_GRETA = 0.0;
 
             public static final double PAST_NEG_400_PROTO = 0.2;
             public static final double PAST_NEG_400_GRETA = 0.0;
@@ -428,6 +437,7 @@ public class Constants {
             public static final double DRIVE = 33.0;
 
             public static final double SCALE = 150.0;
+            public static final double SCALE_MAX = 163.0;
             public static final double SWITCH_HEIGHT_WITH_CARRIAGE = 100;
             public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
             public static final double switchHeightWithCarriageHalfwayUp = 91;
@@ -437,10 +447,15 @@ public class Constants {
         public static final double LENGTH = 34.0;
 
         public class HoldSpeeds {
-            public static final double PAST_160_CUBE_PROTO = 0.0;
+            public static final double PAST_160_CUBE_PROTO = 0.2;
             public static final double PAST_160_CUBE_GRETA = 0.25;
-            public static final double PAST_160_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_160_NO_CUBE_PROTO = 0.2;
             public static final double PAST_160_NO_CUBE_GRETA = 0.25;
+
+            public static final double PAST_150_CUBE_PROTO = 0.2;
+            public static final double PAST_150_CUBE_GRETA = 0.25;
+            public static final double PAST_150_NO_CUBE_PROTO = 0.2;
+            public static final double PAST_150_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
             public static final double PAST_90_CUBE_GRETA = 0.1;

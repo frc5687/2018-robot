@@ -37,7 +37,9 @@ public class AutoGroup extends CommandGroup {
         int carriageTopPosition;
         MoveArmToSetpointPID armPid;
 
-        addSequential(new AutoWaitForMillis(delayInMillis));
+        if (delayInMillis != 0) {
+            addSequential(new AutoWaitForMillis(delayInMillis));
+        }
 
         switch (mode) {
             case Constants.AutoChooser.Mode.STAY_PUT:
@@ -348,6 +350,9 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+            case 10:
+                addSequential(new AggressiveCrossAutoLine(robot));
+                break;
             case 11:
                 addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 1.0, 2500, 2.0));
                 break;
@@ -449,7 +454,7 @@ public class AutoGroup extends CommandGroup {
         double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         double carriageTopPosition = Constants.Carriage.ENCODER_TOP_COMP;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 100));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 200));
         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
         /*
         Move Carriage Down and backup
@@ -460,7 +465,8 @@ public class AutoGroup extends CommandGroup {
         Move Arm Down while aligning
          */
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, Constants.Auto.Align.SPEED));
+        // -12.9
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -12.9, Constants.Auto.Align.SPEED));
         /*
         Intake second cube
          */
@@ -524,15 +530,17 @@ public class AutoGroup extends CommandGroup {
 
     private void farLeftToLeftScale(Robot robot) {
         //addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
-        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
-        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 140));
-        addSequential(new FarLeftToLeftScale(robot));
-        // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE_MAX));
+        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 136));
+        //addSequential(new FarLeftToLeftScale(robot));
+        addSequential(new FarLeftToLeftScaleWithTightTurnFour(robot));
+        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+        //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToLeftScaleWithTightTurn.duration - 20));
+        // Faster path makes it so we don't need auto align, except if we exclude it we need to turn to 105deg to get 2nd cube
         // Timeout used to be 1000, but because of too high scrub we would time out.
         // We changed the min. speed for auto align, so we don't "need" a greater timeout, but we haven't been able to test
         // it, so if it appears that we're stalling for too long, bump up the min. speed and or decrease this timeout
-        addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
-        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+        //addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
     }
 
     private void leftScaleToSecondCube(Robot robot) {
@@ -540,17 +548,24 @@ public class AutoGroup extends CommandGroup {
         Align towards second cube
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
-        // should be 149
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 160, Constants.Auto.Align.SPEED));
+        //addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 135, Constants.Auto.Align.SPEED));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 2000, Constants.Auto.Align.TOLERANCE, Constants.DriveTrainBehavior.rightOnly));
         /*
         Prepare intake
          */
-        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
+        class AlignAndPrepareIntake extends CommandGroup {
+            AlignAndPrepareIntake(Robot robot) {
+                addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
+                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 158, Constants.Auto.Align.SPEED, 2000, Constants.Auto.Align.TOLERANCE, Constants.DriveTrainBehavior.bothSides));
+            }
+        }
+        addSequential(new AlignAndPrepareIntake(robot));
         /*
         Approach second cube and intake
          */
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new LeftScaleToCube(robot));
+        addSequential(new LeftScaleToCubeAlternativeTwo(robot));
+        //addSequential(new LeftScaleToCube(robot));
         addSequential(new AbortIfNoCubeDetected(robot));
     }
 
@@ -560,7 +575,8 @@ public class AutoGroup extends CommandGroup {
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_DRIVE_COMP));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
-        addSequential(new LeftScaleToCubeReversed(robot));
+        //addSequential(new LeftScaleToCubeReversed(robot));
+        addSequential(new LeftScaleToCubeAlternativeTwoReverse(robot));
         /*
         Prepare intake
          */
@@ -570,7 +586,8 @@ public class AutoGroup extends CommandGroup {
         //addSequential(new AutoAlign(robot, -140, 1500, 7));
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
         addSequential(new AbortIfCubeNotSecured(robot));
-        addSequential(new AutoAlign(robot, 22.8));
+        //addSequential(new AutoAlign(robot, 22.8));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 45, Constants.Auto.Align.SPEED, 2000, Constants.Auto.Align.TOLERANCE, Constants.DriveTrainBehavior.rightOnly));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED_SECOND_CUBE));
     }
 
@@ -584,13 +601,20 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void farLeftToRightScale(Robot robot) {
-        addParallel(new AutoZeroCarriageThenLower(robot));
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 88, Constants.Auto.Align.SPEED, 5000, 1.0));
-        addParallel(new PrepIntakeForScale(robot, 1600, false));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 88, Constants.Auto.Align.SPEED, 5000, 1.0, Constants.DriveTrainBehavior.leftOnly));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE_MAX));
+        //addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 100));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 340));
+        class RaiseCarriageAfterWaitingNMillis extends CommandGroup {
+            public RaiseCarriageAfterWaitingNMillis(Robot robot, long millis) {
+                addSequential(new AutoWaitForMillis(millis));
+                addSequential(new AutoZeroCarriage(robot.getCarriage()));
+            }
+        }
+        addParallel(new RaiseCarriageAfterWaitingNMillis(robot, 300));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.bothSides));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 220));
         addSequential(new FarLeftToRightScaleDeadPartThree(robot));
         /*
         Go to intake position and turn towards second cube
