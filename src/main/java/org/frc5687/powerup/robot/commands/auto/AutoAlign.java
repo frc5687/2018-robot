@@ -117,6 +117,9 @@ public class AutoAlign extends Command implements PIDOutput {
         } else if (_driveTrainBehavior == Constants.DriveTrainBehavior.rightOnly) {
             driveTrain.setLeftVelocityIPS(0);
             driveTrain.setRightPower(-pidOut);
+        } else if (_driveTrainBehavior == Constants.DriveTrainBehavior.leftOnly) {
+            driveTrain.setLeftPower(pidOut);
+            driveTrain.setRightVelocityIPS(0);
         }
     }
 
