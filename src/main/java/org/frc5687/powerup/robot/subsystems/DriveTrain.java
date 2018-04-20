@@ -208,6 +208,14 @@ public class DriveTrain extends Subsystem implements PIDSource {
         leftMaster.set(ControlMode.Velocity, Helpers.ips2talon(ips));
     }
 
+    public void setRightVelocityIPS(double ips) {
+        rightMaster.set(ControlMode.Velocity, Helpers.ips2talon(ips));
+    }
+
+    public void setLeftPower(double power) {
+        leftMaster.set(ControlMode.PercentOutput, power);
+    }
+
     public void setRightPower(double power) {
         rightMaster.set(ControlMode.PercentOutput, power);
     }
