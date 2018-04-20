@@ -17,6 +17,7 @@ import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveWith2Joysticks;
 import org.frc5687.powerup.robot.utils.Helpers;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 
 /**
  * Created by Baxter on 3/22/2017.
@@ -27,6 +28,14 @@ public class DriveTrain extends Subsystem implements PIDSource {
     private VictorSPX leftFollower; // left rear motor
     private TalonSRX rightMaster; // right front motor
     private VictorSPX rightFollower; // right rear motor
+
+    private MotorHealthChecker _leftMasterHC;
+    private MotorHealthChecker _rightMasterHC;
+    private MotorHealthChecker _leftFollowerHC;
+    private MotorHealthChecker _rightFollowerHC;
+
+    private int _healthCheckCount = Constants.HEALTH_CHECK_CYCLES;
+
 
     private Robot _robot;
 
@@ -107,6 +116,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
         //leftMaster.configMotionProfileTrajectoryPeriod(10, 0);
         //leftMaster.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10, 0);
 
+        _leftMasterHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.LEFT_FRONT_SRX);
+        _rightMasterHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.RIGHT_FRONT_SRX);
+        _leftFollowerHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.LEFT_REAR_SPX);
+        _rightFollowerHC = new MotorHealthChecker(Constants.DriveTrain.MONITOR_THRESHOLD_SPEED, Constants.DriveTrain.MONITOR_THRESHOLD_AMPS, Constants.HEALTH_CHECK_CYCLES, _robot.getPDP(), RobotMap.PDP.RIGHT_REAR_SPX);
+
         resetDriveEncoders();
 
         this.imu = imu;
@@ -167,6 +181,11 @@ public class DriveTrain extends Subsystem implements PIDSource {
         }
         SmartDashboard.putNumber("DriveTrain/Speed/Right", rightSpeed);
         SmartDashboard.putNumber("DriveTrain/Speed/Left", leftSpeed);
+
+        _leftMasterHC.checkHealth(leftSpeed);
+        _rightMasterHC.checkHealth(rightSpeed);
+        _leftFollowerHC.checkHealth(leftSpeed);
+        _rightFollowerHC.checkHealth(rightSpeed);
 
         _priorLeft = leftSpeed;
         _priorRight = rightSpeed;
@@ -364,8 +383,16 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putBoolean("DriveTrain/Inverted/Right", Constants.DriveTrain.RIGHT_MOTORS_INVERTED);
         SmartDashboard.putBoolean("DriveTrain/Inverted/Left", Constants.DriveTrain.LEFT_MOTORS_INVERTED);
 
-        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Master", _leftMasterHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Left Follower", _leftFollowerHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Master", _rightMasterHC.IsHealthy());
+        SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsHealthy());
+
+
         SmartDashboard.putData("IMU", imu);
+        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
+        SmartDashboard.putNumber("IMU/pitch", imu.getPitch());
+        SmartDashboard.putNumber("IMU/roll", imu.getRoll());
         SmartDashboard.clearPersistent("*");
 
         _leftFrontLost = checkCIM(_priorLeft, _leftFrontLost, RobotMap.PDP.LEFT_FRONT_SRX, "left", "front");
@@ -381,12 +408,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
         double checkSpeed = Math.abs(priorSpeed);
         if (lost) {
             if ((checkSpeed > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED) && (currentDraw < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS)) {
-                DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                //DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
                 return false;
             }
         } else {
             if (Math.abs(_priorLeft) > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED && _robot.getPDP().getCurrent(pdpChannel) < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS) {
-                DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                //DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
                 return true;
             }
         }

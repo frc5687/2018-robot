@@ -1,7 +1,6 @@
 package org.frc5687.powerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Climber;
@@ -31,7 +30,6 @@ public class DriveClimber extends Command {
         } else if (_holdOn) {
             speed = Constants.Climber.HOLD_SPEED;
         }
-
         climber.drive(speed);
     }
 

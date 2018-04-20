@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.subsystems.Intake;
@@ -24,6 +25,17 @@ public class DriveIntake extends Command {
         double right = oi.getRightIntakeSpeed();
 
         intake.drive(left, right);
+
+        if(intake.isEjecting()){
+            intake.driveServo(1);
+        } else{
+            intake.driveServo(0);
+        }
+        /*
+        double val = SmartDashboard.getNumber("DB/Slider 2", 0.5);
+        intake.driveServo(val);
+        */
+
     }
 
     @Override

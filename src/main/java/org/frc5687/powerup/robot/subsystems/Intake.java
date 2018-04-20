@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -9,6 +10,8 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.MotorHealthChecker;
+import org.frc5687.powerup.robot.utils.PDP;
 
 
 public class Intake extends Subsystem {
@@ -28,7 +31,14 @@ public class Intake extends Subsystem {
     private OI oi;
     private boolean _isCompetitionBot;
 
-    public Intake(OI oi, boolean isCompetitionBot) {
+    private MotorHealthChecker _leftHC;
+    private MotorHealthChecker _rightHC;
+
+    private PDP _pdp;
+
+    private boolean _stopped = false;
+
+    public Intake(OI oi, PDP pdp, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
         servo = new Servo(RobotMap.Intake.SERVO);
@@ -42,6 +52,12 @@ public class Intake extends Subsystem {
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
         irUp = new AnalogInput(RobotMap.Intake.IR_UP);
+
+        _pdp = pdp;
+
+        _leftHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.INTAKE_LEFT_SP);
+        _rightHC = new MotorHealthChecker(Constants.Intake.HC_MIN_SPEED, Constants.Intake.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, _isCompetitionBot ? RobotMap.PDP.INTAKE_RIGHT_SP_COMP : RobotMap.PDP.INTAKE_RIGHT_SP_PROTO);
+
     }
 
     public void setArm(Arm arm) {
@@ -56,6 +72,8 @@ public class Intake extends Subsystem {
     public void drive(double leftSpeed, double rightSpeed) {
         leftSpeed = leftSpeed == 0 ? Constants.Intake.HOLD_SPEED : leftSpeed;
         rightSpeed = rightSpeed == 0 ? Constants.Intake.HOLD_SPEED : rightSpeed;
+        if (Math.abs(leftSpeed) > Math.abs(Constants.Intake.HOLD_SPEED)) { _stopped = false; }
+        if (Math.abs(rightSpeed) > Math.abs(Constants.Intake.HOLD_SPEED)) { _stopped = false; }
 
         _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
@@ -68,16 +86,33 @@ public class Intake extends Subsystem {
                     ) ? -1 : 1
                 )
         );
+
+        _leftHC.checkHealth(leftSpeed);
+        _rightHC.checkHealth(rightSpeed);
     }
 
     public void driveServo(double val) {
+        if (_stopped) { val = 0.51; }
         _lastServoPos = val;
-        SmartDashboard.putNumber("Intake/Servo", val);
         servo.set(val);
+    }
+
+    public void enableServo() {
+        _stopped = false;
+    }
+
+    public void stopServo(){
+        //DriverStation.reportError("Stopping servo", false);
+        _stopped = true;
+        servo.set(0.51);
     }
 
     public double getServoPosition() {
         return _lastServoPos;
+    }
+
+    public double getServoValue(){
+        return servo.get();
     }
 
     /**
@@ -109,9 +144,8 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.UP_IR.ENABLED || _arm == null) {
             return false;
         }
-        return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
-    }
-
+            return _arm.getPot() > Constants.Intake.UP_IR.MIN_ARM_ANGLE && irUp.getValue() > Constants.Intake.UP_IR.PLATE_DETECTION_THRESHOLD;
+        }
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
@@ -119,6 +153,11 @@ public class Intake extends Subsystem {
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
         SmartDashboard.putBoolean("Intake/cubeIsSecured()", cubeIsSecured());
         SmartDashboard.putBoolean("Intake/isPlateDetected()", isPlateDetected());
+        SmartDashboard.putBoolean("Intake/is healthy", isHealthy());
+        SmartDashboard.putBoolean("Intake/is left healthy", isLeftHealthy());
+        SmartDashboard.putBoolean("Intake/is right healthy", isRightHealthy());
+        SmartDashboard.putNumber("Intake/servo value", getServoPosition());
+        SmartDashboard.putNumber("Intake/servo set", servo.get());
     }
 
     @Override
@@ -150,4 +189,15 @@ public class Intake extends Subsystem {
         return (_lastRightSpeed < 0);
     }
 
+    public boolean isLeftHealthy() {
+        return _leftHC.IsHealthy();
+    }
+
+    public boolean isRightHealthy() {
+        return _rightHC.IsHealthy();
+    }
+
+    public boolean isHealthy() {
+        return isLeftHealthy() && isRightHealthy();
+    }
 }
