@@ -152,7 +152,7 @@ public class OI {
     }
 
     public double getArmSpeed() {
-        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.5 : 0);
+        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 1.0 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed,Constants.Arm.SENSITIVITY);
