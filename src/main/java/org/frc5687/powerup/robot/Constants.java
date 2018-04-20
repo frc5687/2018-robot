@@ -449,6 +449,11 @@ public class Constants {
             public static final double PAST_160_NO_CUBE_PROTO = 0.2;
             public static final double PAST_160_NO_CUBE_GRETA = 0.25;
 
+            public static final double PAST_150_CUBE_PROTO = 0.2;
+            public static final double PAST_150_CUBE_GRETA = 0.25;
+            public static final double PAST_150_NO_CUBE_PROTO = 0.2;
+            public static final double PAST_150_NO_CUBE_GRETA = 0.25;
+
             public static final double PAST_90_CUBE_PROTO = 0.0;
             public static final double PAST_90_CUBE_GRETA = 0.1;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
