@@ -28,6 +28,9 @@ public class TestDriveTrain extends Command {
     private PDP _pdp;
     private Lights _lights;
 
+    boolean pass=true;
+
+
     public TestDriveTrain(DriveTrain driveTrain, PDP pdp, Lights lights) {
         requires(driveTrain);
 
@@ -51,7 +54,6 @@ public class TestDriveTrain extends Command {
         _endMillis = System.currentTimeMillis() + _runMillis;
         _driveTrain.resetDriveEncoders();
     }
-    boolean pass=true;
 
 
     protected void execute() {

@@ -16,7 +16,7 @@ public class FullSelfTest extends CommandGroup {
         addSequential(new TestDriveTrain(robot.getDriveTrain(), robot.getPDP(), robot.getLights()));
 
         addSequential(new ConfirmTest(robot.getOI(), "Please be sure that the carriage is clear and press Start to continue.", "Test started.", "Test aborted."));
-        // addSequential(new TestCarriage(robot.getCarriage(), robot.getPDP(), robot.getLights()));
+        addSequential(new TestCarriage(robot.getCarriage(), robot.getPDP(), robot.getLights()));
 
         addSequential(new ConfirmTest(robot.getOI(), "Please be sure that the arm is clear and press Start to continue.", "Test started.", "Test aborted."));
 
