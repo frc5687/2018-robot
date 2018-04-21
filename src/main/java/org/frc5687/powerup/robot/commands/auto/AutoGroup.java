@@ -404,6 +404,7 @@ public class AutoGroup extends CommandGroup {
         // Drive to left switch and deposit cube
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToLeftSwitchForSecondCube.duration - 290));
+        // Should end up facing 16.750
         addSequential(new CenterLeftToLeftSwitchForSecondCube(robot));
         // Move Carriage Down and Back Up
         //addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot, carriageIntakePosition));
@@ -449,7 +450,22 @@ public class AutoGroup extends CommandGroup {
         addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 59, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.rightOnly));
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new LeftSideOfPowerCubeZoneIntakeThirdCube(robot));
+        class LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured extends LeftSideOfPowerCubeZoneIntakeThirdCube {
+            public LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(Robot robot) {
+                super(robot);
+            }
+
+            @Override
+            protected boolean isFinished() {
+                if(System.currentTimeMillis() > endMillis){
+                    DriverStation.reportError("DynamicPathCommand (" + path.getName() + ") timed out", false);
+                    return false;
+                }
+
+                return robot.getIntake().cubeIsSecured() || followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
+            }
+        }
+        addSequential(new LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(robot));
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
