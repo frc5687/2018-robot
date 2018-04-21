@@ -50,6 +50,11 @@ public class Lights extends Subsystem {
         setRight(rightVal);
     }
 
+    public void setBoth(double val) {
+        setLeft(val);
+        setRight(val);
+    }
+
     public void setColors() {
         Intake intake = _robot.getIntake();
         Climber climber = _robot.getClimber();

@@ -15,16 +15,18 @@ public class ConfirmTest extends Command {
     private String _failure;
     private boolean _clear;
     private String _key;
-    private OI oi;
+    private OI _oi;
 
-    public ConfirmTest(String message, String success, String failure) {
+    public ConfirmTest(OI oi, String message, String success, String failure) {
+        _oi = oi;
         _message = message;
         _success = success;
         _failure = failure;
         _clear = false;
     }
 
-    public ConfirmTest(String message, String key) {
+    public ConfirmTest(OI oi,  String message, String key) {
+        _oi = oi;
         _message = message;
         _key = key;
         _clear = false;
@@ -39,18 +41,14 @@ public class ConfirmTest extends Command {
     @Override
     protected void execute() {
         if (!_clear) {
-            _clear = !(oi.isNoPressed() || oi.isYesPressed());
+            _clear = !_oi.isStartPressed();
         }
     }
 
     @Override
     protected boolean isFinished() {
         if (_clear) {
-            if (oi.isYesPressed()) {
-                if (_key!=null) { SmartDashboard.putBoolean(_key, true); }
-                return true;
-            } else if (oi.isNoPressed()) {
-                if (_key!=null) { SmartDashboard.putBoolean(_key, false); }
+            if (_oi.isStartPressed()) {
                 return true;
             }
         }

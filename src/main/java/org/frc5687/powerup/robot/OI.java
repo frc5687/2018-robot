@@ -92,11 +92,8 @@ public class OI {
         return Helpers.applySensitivityFactor(speed, Constants.DriveTrain.SENSITIVITY);
     }
 
-    public boolean isYesPressed(){
-        return operatorGamepad.getRawButton(Gamepad.Buttons.BACK);
-    }
 
-    public boolean isNoPressed(){
+    public boolean isStartPressed(){
         return operatorGamepad.getRawButton(Gamepad.Buttons.START);
     }
 
@@ -202,7 +199,7 @@ public class OI {
         operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
-        selfTest.whenPressed(new SelfTestBootstrapper(robot.getIntake()));
+        selfTest.whenPressed(new SelfTestBootstrapper(robot));
 
         DriverStation.reportError("driverArmToIntakeButton " + (driverArmToIntakeButton ==null), false);
         DriverStation.reportError("driverArmToDriveButton " + (driverArmToDriveButton ==null), false);

@@ -69,6 +69,11 @@ public class Constants {
         public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
+        public static final double TEST_RUNNING = 0;
+        public static final double TEST_WAITING = 0;
+
+        public static final double TEST_PASSED = SOLID_GREEN;
+        public static final double TEST_FAILED = SOLID_RED;
     }
     public class OI {
         public static final double RUMBLE_INTENSITY = 1;

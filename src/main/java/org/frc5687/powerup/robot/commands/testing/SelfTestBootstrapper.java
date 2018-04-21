@@ -7,21 +7,22 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import org.frc5687.powerup.robot.OI;
+import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.Intake;
 
 public class SelfTestBootstrapper extends Command {
-    private Intake intake;
+    private Robot _robot;
     private boolean done = false;
 
-    public SelfTestBootstrapper(Intake intake) {
-    this.intake = intake;
+    public SelfTestBootstrapper(Robot robot) {
+    _robot = robot;
         }
 
     @Override
     protected void execute(){
 
-        if(!done && DriverStation.getInstance().isFMSAttached()){
-            Scheduler.getInstance().add(new FullSelfTest(intake));
+        if(!done && !DriverStation.getInstance().isFMSAttached()){
+            Scheduler.getInstance().add(new FullSelfTest(_robot));
             done = true;
         }
 
