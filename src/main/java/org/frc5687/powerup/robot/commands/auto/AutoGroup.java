@@ -464,15 +464,20 @@ public class AutoGroup extends CommandGroup {
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle, true));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, CenterLeftToRightSwitchForSecondCube.duration - 200));
         addSequential(new CenterLeftToRightSwitchForSecondCube(robot));
+        class PrepIntake extends CommandGroup {
+            public PrepIntake(Robot robot) {
+                addSequential(new MoveCarriageToSetpointPIDButFirstZeroIt(robot.getCarriage(), carriageIntakePosition));
+                addSequential(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
+            }
+        }
         /*
         Move Carriage Down and backup
          */
-        addParallel(new MoveCarriageToSetpointPIDButFirstZeroIt(robot.getCarriage(), carriageIntakePosition));
+        addParallel(new PrepIntake(robot));
         addSequential(new RightSwitchBackup(robot));
         /*
         Move Arm Down while aligning
          */
-        addParallel(new MoveArmToSetpointPID(robot.getArm(), armIntakeAngle));
         // -12.9
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -12.9, Constants.Auto.Align.SPEED));
         /*
