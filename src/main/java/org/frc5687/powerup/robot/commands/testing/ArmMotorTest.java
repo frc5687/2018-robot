@@ -13,71 +13,125 @@ import static java.lang.Math.abs;
 
 
 public class ArmMotorTest extends Command {
-    private Arm arm;
-    private Carriage carriage;
-    private PDP pdp;
-    private long upMillis;
-    private long downMillis;
-    private long stopMillis;
-    private boolean finished;
-    private double amps;
-    private double bottomAngle;
-    private double topAngle;
-    private double startAngle;
+    private Arm _arm;
+    private Carriage _carriage;
+    private PDP _pdp;
+    private double _runSpeed;
+    private double _runMillis;
+    private double _targetAmps;
+    private double _targetTicks;
+    private double _endMillis;
+    private int _targetTicks;
+    private double _maxAmps = 0;
+    private Lights _lights;
+    private double _currentAngle;
+    private double _increacedAngle;
+    public double _decreacedAngle;
 
-    public ArmMotorTest(Arm arm, Carriage carriage){
-     requires(arm);
-     requires(carriage);
+    public ArmMotorTest(Arm arm, PDP pdp, Carriage carriage, Lights lights) {
+        requires(arm);
+        requires(carriage);
 
-     this.arm = arm;
-     this.carriage = carriage;
+        _arm = arm;
+        _pdp = pdp;
+        _runSpeed = 1.0;
+        _runMillis = 500;
+        _targetAmps = 3;
+        _targetTicks = 16000;
+        _lights = lights;
+
+
     }
 
     @Override
     protected void initialize() {
-        finished = false;
-        upMillis = System.currentTimeMillis() + 125;
-        stopMillis = System.currentTimeMillis() + 250;
-        downMillis = System.currentTimeMillis() + 375;
-        amps = 0;
-        topAngle = 0;
-        startAngle = arm.getAngle();
+        DriverStation.reportError("Startig arm self test", false);
+        _state = State.MoveUp;
+        _maxAmps = 0;
+        _endMillis = System.currentTimeMillis() + _runMillis;
+        _arm.zeroEncoder;
+        _currentAngle = _arm.getAngle();
     }
+    boolean pass=true;
 
-    @Override
+
     protected void execute() {
-        if (System.currentTimeMillis()< upMillis){
-            arm.drive(0.75);
-            amps = Math.max(amps, pdp.getCurrent(RobotMap.PDP.ARM_SP));
-            topAngle = Math.max(topAngle, arm.getAngle());
 
+        switch (_state) {
+            case MoveUp:
+                _lights.setBoth(Constants.Lights.TEST_RUNNING, Constants.Lights.TEST_RUNNING);
+                _arm.drive(0.2)
+                _maxAmps = Math.max(_maxAmps, _pdp.getCurrent(RobotMap.PDP.ARM_SP));
+                if (System.currentTimeMillis() > _endMillis) {
+                    _arm.drive(0);
+                    _state = State.MOVEUPDONE;
+                }
+                break;
+            case MOVEUPDONE:
+                _arm.drive(0);
+                report("Move arm up");
+                _increacedAngle = _arm.getangle();
+                _state = State.MOVEDOWN;
+                break;
+            case MOVEDOWN:
+                _arm.drive(-0.2)
+                _maxAmps = Math.max(_maxAmps, _pdp.getCurrent(RobotMap.PDP.ARM_SP));
+                if (System.currentTimeMillis() > _endMillis) {
+                    _arm.drive(0);
+                    _state = State.MOVEDOWNDONE;
+                }
+                break;
+            case MOVEDOWNDONE:
+                _arm.drive(0);
+                report("Move arm down");
+                _state = State.MOVETOSTART;
+                _arm.setSetpoint(Constants.Arm.Encoder.ENCODER_START);
+                break;
+            case MOVETOSTART:
+                if (_arm.isOnTarget()) {
+                    _state = State.MOVETOTOP;
+                }
+                break;
+            case MOVETOTOP:
+                if(arm.isOnTarget()){
+                    report("left front", _driveTrain.getLeftTicks());
+                    _state = State.DONE;
+                }
+                break;
         }
-        else if (System.currentTimeMillis()< stopMillis){
-            arm.drive(0);
-            bottomAngle = topAngle;
-        }
-        else {
-            arm.drive(-0.75);
-            amps = Math.max(amps, pdp.getCurrent(RobotMap.PDP.ARM_SP));
-            bottomAngle = Math.min(bottomAngle, arm.getAngle());
-        }
+
     }
-
+    private void report(String side) {
+        if (_maxAmps < _targetAmps) {
+            pass = false;
+            SmartDashboard.putBoolean("SelfTest/Arm/" + side + "/Amps/Passed", false);
+            DriverStation.reportError("Target amperage not reached on " + side  + ".  Expected " + _targetAmps + " but measured " + _maxAmps + ".", false);
+        } else {
+            SmartDashboard.putBoolean("SelfTest/Arm/" + side + "/Amps/Passed", true);
+            DriverStation.reportError("Amp draw passed on " + side  + ".  Expected " + _targetAmps + " and measured  " + _maxAmps + ".", false);
+        }
+        SmartDashboard.putNumber("SelfTest/Arm/" + side + "/Amps/Measured", _maxAmps);
+        _arm.zeroEncodert();
+        _maxAmps = 0;
+        _endMillis = System.currentTimeMillis() + _runMillis;
+    }
     @Override
     protected void end() {
-        if (amps < Constants.Arm.MIN_AMPS) {
-            DriverStation.reportError(amps + " amps drawn", false);
-        }
-        if (abs(startAngle - topAngle) < 20) {
-            DriverStation.reportError("angle change " + (startAngle - topAngle), false);
-        }
-        if (abs(topAngle - bottomAngle) > 20) {
-            DriverStation.reportError("angle change " + (bottomAngle - topAngle), false);
-        }
+        _arm.drive(0);
     }
 
     @Override
-    public boolean isFinished() {
-        return System.currentTimeMillis() > downMillis;
+    protected boolean isFinished() {
+        return _state == State.DONE;
     }
-}
+
+
+    private enum State {
+        MoveUp,
+        MOVEUPDONE,
+        MOVEDOWN,
+        MOVEDOWNDONE,
+        MOVETOSTART,
+        MOVETOTOP,
+        DONE
+    }
