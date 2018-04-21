@@ -10,6 +10,7 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.AnalogInputFilter;
 import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 import org.frc5687.powerup.robot.utils.PDP;
 
@@ -19,6 +20,7 @@ public class Intake extends Subsystem {
     private VictorSP leftMotor;
     private VictorSP rightMotor;
     private AnalogInput irBack;
+    private AnalogInputFilter irBackFilter;
     private AnalogInput irDown;
     private AnalogInput irUp;
     private Servo servo;
@@ -50,6 +52,7 @@ public class Intake extends Subsystem {
         _isCompetitionBot = isCompetitionBot;
 
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
+        irBackFilter = new AnalogInputFilter(irBack, 10);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
         irUp = new AnalogInput(RobotMap.Intake.IR_UP);
 
@@ -148,6 +151,7 @@ public class Intake extends Subsystem {
         }
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
+        SmartDashboard.putNumber("Intake/IR Back Filtered", irBackFilter.get());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
         SmartDashboard.putNumber("Intake/IR Up raw", irUp.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
@@ -162,7 +166,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void periodic(){
-
+        irBackFilter.pidGet();
     }
 
     public boolean isIntaking() {

@@ -36,8 +36,6 @@ public class AutoChooser {
         modeLabels.put(5, "Scale Then Switch");
         modeLabels.put(6, "Scale Then Backoff");
         modeLabels.put(7, "Switch Only");
-        modeLabels.put(9, "Switch using AutoDrive");
-        modeLabels.put(10, "Scale using AutoDrive");
 
         delayQuantities = new HashMap<Integer, Integer>();
         delayQuantities.put(0, 0);
