@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -47,6 +48,12 @@ public class Carriage extends PIDSubsystem {
         _healthChecker = new MotorHealthChecker(Constants.Carriage.HC_MIN_SPEED, Constants.Carriage.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, RobotMap.PDP.CARRIAGE_SP);
     }
 
+    @Override
+    public void disable() {
+        super.disable();
+        DriverStation.reportError("Carriage PIDSubsystem Disabling", false);
+    }
+
     public double calculateHoldSpeed() {
         double pos = getPos();
         if (pos > 0) {
@@ -59,6 +66,8 @@ public class Carriage extends PIDSubsystem {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_100_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_100_PROTO;
         } else if (pos > -200) {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_200_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_200_PROTO;
+        } else if (pos > -300) {
+            return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_300_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_300_PROTO;
         } else if (pos > -400) {
             return _isCompetitionBot ? Constants.Carriage.HoldSpeeds.PAST_NEG_400_GRETA : Constants.Carriage.HoldSpeeds.PAST_NEG_400_PROTO;
         } else if (pos > -500) {

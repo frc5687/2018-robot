@@ -18,16 +18,18 @@ public class Climber extends Subsystem {
     private PDP _pdp;
     private double _lastSpeed = 0;
     private int pdpPort;
+    private Intake _intake;
     private boolean _disabled;
 
     private MotorHealthChecker _healthChecker;
 
-    public Climber(OI oi, PDP pdp, boolean isCompetitionBot) {
+    public Climber(OI oi, PDP pdp, Intake intake, boolean isCompetitionBot) {
         motor = new VictorSP(RobotMap.Climber.MOTOR);
         motor.setName("Climber");
         this.oi = oi;
         _pdp = pdp;
         _lastSpeed = 0;
+        _intake = intake;
         pdpPort = isCompetitionBot ? RobotMap.PDP.CLIMBER_SP_COMP : RobotMap.PDP.CLIMBER_SP_PROTO;
         _healthChecker = new MotorHealthChecker(Constants.Climber.HC_MIN_SPEED, Constants.Climber.HC_MIN_CURRENT, Constants.HEALTH_CHECK_CYCLES, _pdp, pdpPort);
     }
@@ -39,6 +41,9 @@ public class Climber extends Subsystem {
 
     public void drive(double speed) {
         speed *= (Constants.Climber.MOTOR_INVERT ? -1 : 1);
+        if (Math.abs(speed) > .5) {
+            _intake.stopServo();
+        }
         if (_pdp.excessiveCurrent(pdpPort, Constants.Climber.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }

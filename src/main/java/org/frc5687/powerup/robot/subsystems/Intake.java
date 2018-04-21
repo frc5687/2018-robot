@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -9,6 +10,7 @@ import org.frc5687.powerup.robot.OI;
 import org.frc5687.powerup.robot.RobotMap;
 import org.frc5687.powerup.robot.commands.DriveIntake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.utils.AnalogInputFilter;
 import org.frc5687.powerup.robot.utils.MotorHealthChecker;
 import org.frc5687.powerup.robot.utils.PDP;
 
@@ -18,6 +20,7 @@ public class Intake extends Subsystem {
     private VictorSP leftMotor;
     private VictorSP rightMotor;
     private AnalogInput irBack;
+    private AnalogInputFilter irBackFilter;
     private AnalogInput irDown;
     private AnalogInput irUp;
     private Servo servo;
@@ -37,6 +40,8 @@ public class Intake extends Subsystem {
 
     private PDP _pdp;
 
+    private boolean _stopped = false;
+
     public Intake(OI oi, PDP pdp, boolean isCompetitionBot) {
         leftMotor = new VictorSP(RobotMap.Intake.LEFT_MOTOR);
         rightMotor = new VictorSP(RobotMap.Intake.RIGHT_MOTOR);
@@ -49,6 +54,7 @@ public class Intake extends Subsystem {
         _isCompetitionBot = isCompetitionBot;
 
         irBack = new AnalogInput(RobotMap.Intake.IR_BACK);
+        irBackFilter = new AnalogInputFilter(irBack, 10);
         irDown = new AnalogInput(RobotMap.Intake.IR_SIDE);
         irUp = new AnalogInput(RobotMap.Intake.IR_UP);
 
@@ -71,6 +77,8 @@ public class Intake extends Subsystem {
     public void drive(double leftSpeed, double rightSpeed) {
         leftSpeed = leftSpeed == 0 ? Constants.Intake.HOLD_SPEED : leftSpeed;
         rightSpeed = rightSpeed == 0 ? Constants.Intake.HOLD_SPEED : rightSpeed;
+        if (Math.abs(leftSpeed) > Math.abs(Constants.Intake.HOLD_SPEED)) { _stopped = false; }
+        if (Math.abs(rightSpeed) > Math.abs(Constants.Intake.HOLD_SPEED)) { _stopped = false; }
 
         _lastLeftSpeed = leftSpeed;
         leftMotor.set(leftSpeed * (Constants.Intake.LEFT_MOTORS_INVERTED ? -1 : 1));
@@ -89,13 +97,19 @@ public class Intake extends Subsystem {
     }
 
     public void driveServo(double val) {
+        if (_stopped) { val = 0.51; }
         _lastServoPos = val;
-        SmartDashboard.putNumber("Intake/Servo", val);
         servo.set(val);
     }
 
+    public void enableServo() {
+        _stopped = false;
+    }
+
     public void stopServo(){
-        servo.setAngle(85);
+        //DriverStation.reportError("Stopping servo", false);
+        _stopped = true;
+        servo.set(0.51);
     }
 
     public double getServoPosition() {
@@ -143,6 +157,7 @@ public class Intake extends Subsystem {
 
     public void updateDashboard() {
         SmartDashboard.putNumber("Intake/IR Back raw", irBack.getValue());
+        SmartDashboard.putNumber("Intake/IR Back Filtered", irBackFilter.get());
         SmartDashboard.putNumber("Intake/IR Side raw", irDown.getValue());
         SmartDashboard.putNumber("Intake/IR Up raw", irUp.getValue());
         SmartDashboard.putBoolean("Intake/cubeIsDetected()", cubeIsDetected());
@@ -157,7 +172,7 @@ public class Intake extends Subsystem {
 
     @Override
     public void periodic(){
-
+        irBackFilter.pidGet();
     }
 
     public boolean isIntaking() {

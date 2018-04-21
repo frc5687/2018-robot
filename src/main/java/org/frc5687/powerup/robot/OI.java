@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.commands.*;
+import org.frc5687.powerup.robot.commands.testing.*;
 import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
 import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
@@ -42,6 +43,8 @@ public class OI {
     private JoystickButton operatorArmToDriveButton;
 
     private JoystickButton carriageZeroEncoder;
+
+    private JoystickButton selfTest;
 
     private JoystickButton driverArmUp;
     private JoystickButton driverArmDown;
@@ -118,13 +121,14 @@ public class OI {
         operatorArmToDriveButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.X.getNumber());
         operatorArmToIntakeButton = new JoystickButton(operatorGamepad, Gamepad.Buttons.A.getNumber());
 
+
         climberUnwind = new JoystickButton(driverGamepad, Gamepad.Buttons.BACK.getNumber());
         climberWind = new JoystickButton(driverGamepad, Gamepad.Buttons.START.getNumber());
 
         intakeLeftIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.LEFT_BUMPER.getNumber());
         intakeRightIn = new JoystickButton(operatorGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         carriageZeroEncoder = new JoystickButton(operatorGamepad, Gamepad.Buttons.BACK.getNumber());
-
+        selfTest = new JoystickButton(operatorGamepad, Gamepad.Buttons.START.getNumber());
         driverArmUp = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_BUMPER.getNumber());
         driverArmDown = new JoystickButton(driverGamepad, Gamepad.Buttons.RIGHT_STICK.getNumber());
 
@@ -136,6 +140,11 @@ public class OI {
         double speed = -getSpeedFromAxis(driverGamepad, ButtonNumbers.LEFT_AXIS);
         speed = Helpers.applyDeadband(speed, Constants.DriveTrain.DEADBAND);
         return Helpers.applySensitivityFactor(speed, Constants.DriveTrain.SENSITIVITY);
+    }
+
+
+    public boolean isStartPressed(){
+        return operatorGamepad.getRawButton(Gamepad.Buttons.START);
     }
 
     public double getRightSpeed() {
@@ -199,7 +208,7 @@ public class OI {
     }
 
     public double getArmSpeed() {
-        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 0.5 : 0);
+        double driver = driverArmUp.get() ? -0.75 : (driverArmDown.get() ? 1.0 : 0);
         double operator = getSpeedFromAxis(operatorGamepad, ButtonNumbers.RIGHT_AXIS);
         double speed = Helpers.absMax(operator, driver);
         speed = Helpers.applySensitivityFactor(speed,Constants.Arm.SENSITIVITY);
@@ -258,6 +267,7 @@ public class OI {
         operatorArmToSwitchButton.whenPressed(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
         operatorArmToScaleButton.whenPressed(new IntakeToScale(robot.getCarriage(), robot.getArm()));
 
+        selfTest.whenPressed(new SelfTestBootstrapper(robot));
     }
 
     private void initializeConsole(Robot robot) {
@@ -328,18 +338,18 @@ public class OI {
         leftIntakeMotorLED.set(!_robot.getIntake().isLeftMotorHealthy());
         rightIntakeMotorLED.set(!_robot.getIntake().isRightMotorHealthy());
 
-        carriageMotorLED.set(_robot.getCarriage().isMotorHealthy());
+        carriageMotorLED.set(!_robot.getCarriage().isMotorHealthy());
 
-        armMotorLED.set(_robot.getArm().isMotorHealthy());
+        armMotorLED.set(!_robot.getArm().isMotorHealthy());
 
         leftDriveEncoderLED.set(!_robot.getDriveTrain().isLeftEncoderHealthy());
         rightDriveEncoderLED.set(!_robot.getDriveTrain().isRightEncoderHealthy());
 
         intakeBackIRLED.set(!_robot.getIntake().isIRHealthy());
 
-        carriageEncoderLED.set(_robot.getCarriage().isEncoderHealthy());
+        carriageEncoderLED.set(!_robot.getCarriage().isEncoderHealthy());
 
-        armPotLED.set(_robot.getArm().isPotHealthy());
+        armPotLED.set(!_robot.getArm().isPotHealthy());
 
         /*  Code used to identify LEDs for testing.  s
         int pos = (int)SmartDashboard.getNumber("DB/Slider 3", 0);

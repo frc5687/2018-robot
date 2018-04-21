@@ -206,6 +206,22 @@ public class DriveTrain extends Subsystem implements PIDSource {
         setVelocity(Helpers.ips2talon(left), Helpers.ips2talon(right));
     }
 
+    public void setLeftVelocityIPS(double ips) {
+        leftMaster.set(ControlMode.Velocity, Helpers.ips2talon(ips));
+    }
+
+    public void setRightVelocityIPS(double ips) {
+        rightMaster.set(ControlMode.Velocity, Helpers.ips2talon(ips));
+    }
+
+    public void setLeftPower(double power) {
+        leftMaster.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setRightPower(double power) {
+        rightMaster.set(ControlMode.PercentOutput, power);
+    }
+
     public void resetDriveEncoders() {
         try {
             leftMaster.setSelectedSensorPosition(0,0,0);
@@ -391,8 +407,10 @@ public class DriveTrain extends Subsystem implements PIDSource {
         SmartDashboard.putBoolean("DriveTrain/HC/Right Follower", _rightFollowerHC.IsMotorHealthy());
 
 
-        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
         SmartDashboard.putData("IMU", imu);
+        SmartDashboard.putNumber("IMU/yaw", imu.getYaw());
+        SmartDashboard.putNumber("IMU/pitch", imu.getPitch());
+        SmartDashboard.putNumber("IMU/roll", imu.getRoll());
         SmartDashboard.clearPersistent("*");
 
         _leftFrontLost = checkCIM(_priorLeft, _leftFrontLost, RobotMap.PDP.LEFT_FRONT_SRX, "left", "front");
@@ -423,12 +441,12 @@ public class DriveTrain extends Subsystem implements PIDSource {
         double checkSpeed = Math.abs(priorSpeed);
         if (lost) {
             if ((checkSpeed > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED) && (currentDraw < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS)) {
-                DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                //DriverStation.reportError("Regained " + side + pos + " at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
                 return false;
             }
         } else {
             if (Math.abs(_priorLeft) > Constants.DriveTrain.MONITOR_THRESHOLD_SPEED && _robot.getPDP().getCurrent(pdpChannel) < Constants.DriveTrain.MONITOR_THRESHOLD_AMPS) {
-                DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
+                //DriverStation.reportError("Lost " + side + pos + " CIM at " + DriverStation.getInstance().getMatchTime() + " (speed=" + checkSpeed + ",amps="+currentDraw + ")", false);
                 return true;
             }
         }
