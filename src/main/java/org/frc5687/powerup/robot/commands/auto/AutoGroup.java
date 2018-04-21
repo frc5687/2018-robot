@@ -602,11 +602,18 @@ public class AutoGroup extends CommandGroup {
 
     private void farLeftToRightScale(Robot robot) {
         addSequential(new FarLeftToRightScaleDeadPartOne(robot));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 88, Constants.Auto.Align.SPEED, 5000, 1.0));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 88, Constants.Auto.Align.SPEED, 5000, 1.0, Constants.DriveTrainBehavior.leftOnly));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE_MAX));
+        //addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 100));
         addSequential(new FarLeftToRightScaleDeadPartTwo(robot));
-        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 100));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000));
+        class RaiseCarriageAfterWaitingNMillis extends CommandGroup {
+            public RaiseCarriageAfterWaitingNMillis(Robot robot, long millis) {
+                addSequential(new AutoWaitForMillis(millis));
+                addSequential(new AutoZeroCarriage(robot.getCarriage()));
+            }
+        }
+        addParallel(new RaiseCarriageAfterWaitingNMillis(robot, 300));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.bothSides));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 220));
         addSequential(new FarLeftToRightScaleDeadPartThree(robot));
         /*
