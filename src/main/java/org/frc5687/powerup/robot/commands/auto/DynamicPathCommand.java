@@ -195,7 +195,7 @@ public class DynamicPathCommand extends Command {
     @Override
     protected void end() {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
-        DriverStation.reportError("DynamicPathCommand ended", false);
+        DriverStation.reportError("Ended, did DynamicPathCommand (" + path.getName() + ")", false);
         _driveTrain.setPower(0, 0);
         _thread.stop();
         DriverStation.reportError("ran stop() method on thread", false);
@@ -209,7 +209,7 @@ public class DynamicPathCommand extends Command {
     @Override
     protected boolean isFinished() {
         if(System.currentTimeMillis()>endMillis){
-            DriverStation.reportError("DynamicPathCommand timed out", false);
+            DriverStation.reportError("DynamicPathCommand (" + path.getName() + ") timed out", false);
             return false;
         }
 
