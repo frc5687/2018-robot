@@ -194,7 +194,7 @@ public class Constants {
                     public static final double kP = 0.3; // Talon doesn't use kP
                     public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.2; // 0.28 works well
+                    public static final double kF = 0.35; // 0.28 works well
                 }
 
                 public class Cheese {
