@@ -12,6 +12,12 @@ public class Constants {
         rightOnly
     }
 
+    public enum DriveTrainBehavior {
+        bothSides,
+        leftOnly,
+        rightOnly
+    }
+
 
     public class Lights {
         // Values obtained from page 16- of http://www.revrobotics.com/content/docs/REV-11-1105-UM.pdf
@@ -69,6 +75,11 @@ public class Constants {
         public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
+        public static final double TEST_RUNNING = 0;
+        public static final double TEST_WAITING = 0;
+
+        public static final double TEST_PASSED = SOLID_GREEN;
+        public static final double TEST_FAILED = SOLID_RED;
     }
     public class OI {
         public static final double RUMBLE_INTENSITY = 1;
@@ -108,7 +119,7 @@ public class Constants {
         public static final double SCALE_DROP_SPEED = -0.9;
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
-        public static final double SWITCH_DROP_SPEED = -0.42;
+        public static final double SWITCH_DROP_SPEED = -0.22;
 
         public static final double HC_MIN_SPEED = 0.1;
         public static final double HC_MIN_CURRENT = 0.5;
@@ -188,7 +199,7 @@ public class Constants {
 
             public class TrajectoryFollowing {
                 public class Talon {
-                    public static final double kP = 0.15; // Talon doesn't use kP
+                    public static final double kP = 0.3; // Talon doesn't use kP
                     public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
                     public static final double kF = 0.2; // 0.28 works well
@@ -315,20 +326,23 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
         public static final double HC_MIN_SPEED = 0.1; // Minimum speed to triggr the amp/isHalthy check
         public class HoldSpeeds {
-            public static final double PAST_TOP_PROTO = 0.42;
+            public static final double PAST_TOP_PROTO = 0.5;
             public static final double PAST_TOP_GRETA = 0.5;
 
-            public static final double PAST_NEG_20_PROTO = 0.42;
+            public static final double PAST_NEG_20_PROTO = 0.6;
             public static final double PAST_NEG_20_GRETA = 0.5;
 
-            public static final double PAST_NEG_50_PROTO = 0.42;
+            public static final double PAST_NEG_50_PROTO = 0.6;
             public static final double PAST_NEG_50_GRETA = 0.5;
 
-            public static final double PAST_NEG_100_PROTO = 0.42;
+            public static final double PAST_NEG_100_PROTO = 0.5;
             public static final double PAST_NEG_100_GRETA = 0.5;
 
-            public static final double PAST_NEG_200_PROTO = 0.3;
+            public static final double PAST_NEG_200_PROTO = 0.42;
             public static final double PAST_NEG_200_GRETA = 0.0;
+
+            public static final double PAST_NEG_300_PROTO = 0.42;
+            public static final double PAST_NEG_300_GRETA = 0.0;
 
             public static final double PAST_NEG_400_PROTO = 0.2;
             public static final double PAST_NEG_400_GRETA = 0.0;
@@ -386,6 +400,7 @@ public class Constants {
 
     public class Arm {
         public static final double PDP_EXCESSIVE_CURRENT = 40.0;
+        public static final double MIN_AMPS = 3.5;
 
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
@@ -431,6 +446,7 @@ public class Constants {
             public static final double DRIVE = 33.0;
 
             public static final double SCALE = 150.0;
+            public static final double SCALE_MAX = 163.0;
             public static final double SWITCH_HEIGHT_WITH_CARRIAGE = 100;
             public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
             public static final double switchHeightWithCarriageHalfwayUp = 91;
@@ -440,10 +456,15 @@ public class Constants {
         public static final double LENGTH = 34.0;
 
         public class HoldSpeeds {
-            public static final double PAST_160_CUBE_PROTO = 0.0;
+            public static final double PAST_160_CUBE_PROTO = 0.2;
             public static final double PAST_160_CUBE_GRETA = 0.25;
-            public static final double PAST_160_NO_CUBE_PROTO = 0.0;
+            public static final double PAST_160_NO_CUBE_PROTO = 0.2;
             public static final double PAST_160_NO_CUBE_GRETA = 0.25;
+
+            public static final double PAST_150_CUBE_PROTO = 0.2;
+            public static final double PAST_150_CUBE_GRETA = 0.25;
+            public static final double PAST_150_NO_CUBE_PROTO = 0.2;
+            public static final double PAST_150_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
             public static final double PAST_90_CUBE_GRETA = 0.1;
@@ -498,9 +519,9 @@ public class Constants {
             public static final int SCALE_THEN_SWITCH = 5;
             public static final int SCALE_THEN_BACKOFF = 6;
             public static final int SWITCH_ONLY = 7;
+            public static final int SCALE_ONLY = 8;
             public static final int SWITCH_DRIVE = 1001;
             public static final int SCALE_DRIVE = 1003;
-            public static final int SCALE_ONLY = 1004;
         }
 
         public class Coop {

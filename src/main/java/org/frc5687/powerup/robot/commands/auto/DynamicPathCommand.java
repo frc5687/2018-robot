@@ -101,7 +101,7 @@ public class DynamicPathCommand extends Command {
 
     @Override
     protected void initialize() {
-        DriverStation.reportError("Starting DynamicPathCommand", false);
+        DriverStation.reportError("Starting DynamicPathCommand (" + path.getName() + ")", false);
         _driveTrain.resetDriveEncoders();
         //_imu.reset();
         endMillis = System.currentTimeMillis() + 15000;
