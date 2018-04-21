@@ -20,6 +20,11 @@ public class RightOfPowerCubeZoneToRightSwitch extends DynamicPathCommand {
     }
 
     @Override
+    public double getJitterbugkT() {
+        return 1.2;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 196;
         Trajectory left = new Trajectory(num_elements);
