@@ -14,8 +14,8 @@ import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 public class DynamicPathCommand extends Command {
-    private TrajectoryFollower followerLeft = new TrajectoryFollower("left");
-    private TrajectoryFollower followerRight = new TrajectoryFollower("right");
+    public TrajectoryFollower followerLeft = new TrajectoryFollower("left");
+    public TrajectoryFollower followerRight = new TrajectoryFollower("right");
     private double starting_heading;
     public Path path;
     private DriveTrain _driveTrain;
@@ -73,7 +73,7 @@ public class DynamicPathCommand extends Command {
             }
         }
     }
-    private long endMillis;
+    public long endMillis;
         
     public DynamicPathCommand(Robot robot) {
         _driveTrain = robot.getDriveTrain();

@@ -415,8 +415,23 @@ public class AutoGroup extends CommandGroup {
         // Move Arm Down while aligning
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 9, Constants.Auto.Align.SPEED, 1750));
         // Intake second cube
+        class LeftGoPickupCubeUntilCubeSecured extends LeftGoPickupCube {
+            public LeftGoPickupCubeUntilCubeSecured(Robot robot) {
+                super(robot);
+            }
+
+            @Override
+            protected boolean isFinished() {
+                if(System.currentTimeMillis() > endMillis){
+                    DriverStation.reportError("DynamicPathCommand (" + path.getName() + ") timed out", false);
+                    return false;
+                }
+
+                return robot.getIntake().cubeIsSecured() || followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
+            }
+        }
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new LeftGoPickupCube(robot));
+        addSequential(new LeftGoPickupCubeUntilCubeSecured(robot));
         // Raise Carriage while backing up
         addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageMiddleHeight, 55));
         addSequential(new LeftGoPickupCubeReversed(robot));
