@@ -318,20 +318,23 @@ public class Constants {
         public static final boolean MOTOR_INVERTED = true;
         public static final double HC_MIN_SPEED = 0.1; // Minimum speed to triggr the amp/isHalthy check
         public class HoldSpeeds {
-            public static final double PAST_TOP_PROTO = 0.42;
+            public static final double PAST_TOP_PROTO = 0.5;
             public static final double PAST_TOP_GRETA = 0.5;
 
-            public static final double PAST_NEG_20_PROTO = 0.42;
+            public static final double PAST_NEG_20_PROTO = 0.6;
             public static final double PAST_NEG_20_GRETA = 0.5;
 
-            public static final double PAST_NEG_50_PROTO = 0.42;
+            public static final double PAST_NEG_50_PROTO = 0.6;
             public static final double PAST_NEG_50_GRETA = 0.5;
 
-            public static final double PAST_NEG_100_PROTO = 0.42;
+            public static final double PAST_NEG_100_PROTO = 0.5;
             public static final double PAST_NEG_100_GRETA = 0.5;
 
-            public static final double PAST_NEG_200_PROTO = 0.3;
+            public static final double PAST_NEG_200_PROTO = 0.42;
             public static final double PAST_NEG_200_GRETA = 0.0;
+
+            public static final double PAST_NEG_300_PROTO = 0.42;
+            public static final double PAST_NEG_300_GRETA = 0.0;
 
             public static final double PAST_NEG_400_PROTO = 0.2;
             public static final double PAST_NEG_400_GRETA = 0.0;
