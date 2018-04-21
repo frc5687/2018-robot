@@ -78,13 +78,13 @@ public class Robot extends TimedRobot {
         setPeriod(1 / Constants.CYCLES_PER_SECOND);
 
         try {
-            camera0 = CameraServer.getInstance().startAutomaticCapture(0);
+            // camera0 = CameraServer.getInstance().startAutomaticCapture(0);
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
 
         try {
-            camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+            // camera1 = CameraServer.getInstance().startAutomaticCapture(1);
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
@@ -105,6 +105,7 @@ public class Robot extends TimedRobot {
     public Lights getLights() { return _lights; }
     public JeVoisProxy getJeVoisProxy() { return jeVoisProxy; }
     public LidarProxy getLidarProxy() { return lidarProxy; }
+    public OI getOI() { return oi; }
 
 
 
