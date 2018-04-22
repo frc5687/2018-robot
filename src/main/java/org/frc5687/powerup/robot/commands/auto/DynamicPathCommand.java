@@ -24,6 +24,7 @@ public class DynamicPathCommand extends Command {
     private Robot _robot;
     public boolean turnInverted;
     private Thread _thread;
+    private boolean _finishOnceCubeSecured;
 
     public double getkT() {
         return _robot.isCompetitionBot() ? getGretakT() : getJitterbugkT();
@@ -76,9 +77,14 @@ public class DynamicPathCommand extends Command {
     public long endMillis;
         
     public DynamicPathCommand(Robot robot) {
+        this(robot, false);
+    }
+
+    public DynamicPathCommand(Robot robot, boolean finishOnceCubeSecured) {
         _driveTrain = robot.getDriveTrain();
         _imu = robot.getIMU();
         _robot = robot;
+        _finishOnceCubeSecured = finishOnceCubeSecured;
         requires(_driveTrain);
 
         loadPath();
@@ -211,6 +217,10 @@ public class DynamicPathCommand extends Command {
         if(System.currentTimeMillis()>endMillis){
             DriverStation.reportError("DynamicPathCommand (" + path.getName() + ") timed out", false);
             return false;
+        }
+
+        if (_finishOnceCubeSecured && _robot.getIntake().cubeIsSecured()) {
+            return true;
         }
 
         return followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
