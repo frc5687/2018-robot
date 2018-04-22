@@ -11,7 +11,6 @@ import org.frc5687.powerup.robot.commands.MoveArmToSetpointPID;
 
 public class TestArm extends CommandGroup{
     public TestArm(Robot robot){
-        addSequential(new ArmMotorTest(robot.getArm(), robot.getCarriage()));
         addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Encoder.ENCODER_START));
         addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Encoder.ENCODER_TOP));
 

@@ -8,6 +8,8 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.utils.PDP;
 import org.frc5687.powerup.robot.commands.MoveCarriageToSetpointPID;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.frc5687.powerup.robot.subsystems.Lights;
 
 import static java.lang.Math.abs;
 
@@ -19,7 +21,6 @@ public class ArmMotorTest extends Command {
     private double _runSpeed;
     private double _runMillis;
     private double _targetAmps;
-    private double _targetTicks;
     private double _endMillis;
     private int _targetTicks;
     private double _maxAmps = 0;
@@ -27,6 +28,7 @@ public class ArmMotorTest extends Command {
     private double _currentAngle;
     private double _increacedAngle;
     public double _decreacedAngle;
+    private State _state;
 
     public ArmMotorTest(Arm arm, PDP pdp, Carriage carriage, Lights lights) {
         requires(arm);
@@ -37,7 +39,6 @@ public class ArmMotorTest extends Command {
         _runSpeed = 1.0;
         _runMillis = 500;
         _targetAmps = 3;
-        _targetTicks = 16000;
         _lights = lights;
 
 
@@ -49,10 +50,11 @@ public class ArmMotorTest extends Command {
         _state = State.MoveUp;
         _maxAmps = 0;
         _endMillis = System.currentTimeMillis() + _runMillis;
-        _arm.zeroEncoder;
+        _arm.zeroEncoder();
         _currentAngle = _arm.getAngle();
     }
-    boolean pass=true;
+
+    boolean pass = true;
 
 
     protected void execute() {
@@ -60,7 +62,7 @@ public class ArmMotorTest extends Command {
         switch (_state) {
             case MoveUp:
                 _lights.setBoth(Constants.Lights.TEST_RUNNING, Constants.Lights.TEST_RUNNING);
-                _arm.drive(0.2)
+                _arm.drive(0.2);
                 _maxAmps = Math.max(_maxAmps, _pdp.getCurrent(RobotMap.PDP.ARM_SP));
                 if (System.currentTimeMillis() > _endMillis) {
                     _arm.drive(0);
@@ -70,11 +72,11 @@ public class ArmMotorTest extends Command {
             case MOVEUPDONE:
                 _arm.drive(0);
                 report("Move arm up");
-                _increacedAngle = _arm.getangle();
+                _increacedAngle = _arm.getAngle();
                 _state = State.MOVEDOWN;
                 break;
             case MOVEDOWN:
-                _arm.drive(-0.2)
+                _arm.drive(-0.2);
                 _maxAmps = Math.max(_maxAmps, _pdp.getCurrent(RobotMap.PDP.ARM_SP));
                 if (System.currentTimeMillis() > _endMillis) {
                     _arm.drive(0);
@@ -88,33 +90,35 @@ public class ArmMotorTest extends Command {
                 _arm.setSetpoint(Constants.Arm.Encoder.ENCODER_START);
                 break;
             case MOVETOSTART:
-                if (_arm.isOnTarget()) {
+                if (_arm.onTarget()) {
                     _state = State.MOVETOTOP;
                 }
                 break;
             case MOVETOTOP:
-                if(arm.isOnTarget()){
-                    report("left front", _driveTrain.getLeftTicks());
+                if (_arm.onTarget()) {
+                    report("left front");
                     _state = State.DONE;
                 }
                 break;
         }
 
     }
+
     private void report(String side) {
         if (_maxAmps < _targetAmps) {
             pass = false;
             SmartDashboard.putBoolean("SelfTest/Arm/" + side + "/Amps/Passed", false);
-            DriverStation.reportError("Target amperage not reached on " + side  + ".  Expected " + _targetAmps + " but measured " + _maxAmps + ".", false);
+            DriverStation.reportError("Target amperage not reached on " + side + ".  Expected " + _targetAmps + " but measured " + _maxAmps + ".", false);
         } else {
             SmartDashboard.putBoolean("SelfTest/Arm/" + side + "/Amps/Passed", true);
-            DriverStation.reportError("Amp draw passed on " + side  + ".  Expected " + _targetAmps + " and measured  " + _maxAmps + ".", false);
+            DriverStation.reportError("Amp draw passed on " + side + ".  Expected " + _targetAmps + " and measured  " + _maxAmps + ".", false);
         }
         SmartDashboard.putNumber("SelfTest/Arm/" + side + "/Amps/Measured", _maxAmps);
-        _arm.zeroEncodert();
+        _arm.zeroEncoder();
         _maxAmps = 0;
         _endMillis = System.currentTimeMillis() + _runMillis;
     }
+
     @Override
     protected void end() {
         _arm.drive(0);
@@ -135,3 +139,4 @@ public class ArmMotorTest extends Command {
         MOVETOTOP,
         DONE
     }
+}
