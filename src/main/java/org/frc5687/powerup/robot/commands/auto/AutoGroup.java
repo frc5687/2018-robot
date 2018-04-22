@@ -414,7 +414,7 @@ public class AutoGroup extends CommandGroup {
         addParallel(new IntakeToFloorButZeroCarriageFirst(robot.getCarriage(), robot.getArm()));
         addSequential(new LeftSwitchBackup(robot));
         // Move Arm Down while aligning
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 9, Constants.Auto.Align.SPEED, 1750));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 18.8, Constants.Auto.Align.SPEED, 1750));
         // Intake second cube
         class LeftGoPickupCubeUntilCubeSecured extends LeftGoPickupCube {
             public LeftGoPickupCubeUntilCubeSecured(Robot robot) {
@@ -435,14 +435,15 @@ public class AutoGroup extends CommandGroup {
         addSequential(new LeftGoPickupCubeUntilCubeSecured(robot));
         // Raise Carriage while backing up
         addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageMiddleHeight, 55));
-        addSequential(new LeftGoPickupCubeReversed(robot));
     }
 
     private void secondCubeComingFromLeftSwitchToLeftSwitch(Robot robot) {
         double armSwitchAngle = 91;
-        addSequential(new AutoAlign(robot, -30));
+        //addSequential(new LeftGoPickupCubeReversed(robot));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -30, Constants.Auto.Align.SPEED, 2000, 1.0, Constants.DriveTrainBehavior.leftOnly));
+        //addSequential(new AutoAlign(robot, -30));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED,LeftOfPowerCubeZoneToLeftSwitch.duration - 600));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED,LeftOfPowerCubeZoneToLeftSwitch.duration - 60));
         addSequential(new LeftOfPowerCubeZoneToLeftSwitch(robot));
     }
 
