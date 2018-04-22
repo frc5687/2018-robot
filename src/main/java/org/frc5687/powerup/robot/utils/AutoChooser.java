@@ -37,6 +37,7 @@ public class AutoChooser {
         modeLabels.put(5, "Scale Then Switch");
         modeLabels.put(6, "Scale Then Backoff");
         modeLabels.put(7, "Switch Only");
+        modeLabels.put(7, "Scale Only");
 
         coopLabels = new HashMap<Integer, String>();
         coopLabels.put(0, "0");
@@ -48,8 +49,9 @@ public class AutoChooser {
         coopLabels.put(6, "1500");
         coopLabels.put(7, "1750");
         coopLabels.put(8, "2000");
-        coopLabels.put(9, "Defensive");
-        coopLabels.put(10, "Stay in Lane");
+        coopLabels.put(9, "2500");
+        coopLabels.put(10, "Defensive");
+        coopLabels.put(11, "Stay in Lane");
 
         delayQuantities = new HashMap<Integer, Integer>();
         delayQuantities.put(0, 0);
@@ -62,9 +64,8 @@ public class AutoChooser {
         delayQuantities.put(7, 1750);
         delayQuantities.put(8, 2000);
         delayQuantities.put(9, 2500);
-        delayQuantities.put(10, 3000);
-        delayQuantities.put(11, 3500);
-        delayQuantities.put(10, 3000);
+        delayQuantities.put(10, 0);
+        delayQuantities.put(11, 0);
 
         if (isCompetitionBot) {
             positionSwitch = new RotarySwitch(RobotMap.AutoChooser.POSITION_SWITCH,  Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);

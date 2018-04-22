@@ -20,7 +20,7 @@ import org.frc5687.powerup.robot.utils.PDP;
 
 public class Robot extends TimedRobot {
 
-    // I really don't like the idea of public static refrences to subsystems...
+    private static Robot _instance;
 
     private Command autoCommand;
 
@@ -58,6 +58,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        _instance = this;
         _identityFlag = new DigitalInput(RobotMap.IDENTITY_FLAG);
         _isCompetitionBot = _identityFlag.get();
         imu = new AHRS(SPI.Port.kMXP, (byte) 100);
@@ -78,13 +79,17 @@ public class Robot extends TimedRobot {
         setPeriod(1 / Constants.CYCLES_PER_SECOND);
 
         try {
-            // camera0 = CameraServer.getInstance().startAutomaticCapture(0);
+            if (isCompetitionBot()) {
+                camera0 = CameraServer.getInstance().startAutomaticCapture(0);
+            }
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
 
         try {
-            // camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+            if (isCompetitionBot()) {
+                camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+            }
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
         }
@@ -159,8 +164,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Auto/Position", autoPosition);
         SmartDashboard.putNumber("Auto/Mode", autoMode);
         SmartDashboard.putNumber("Auto/Coop", coopMode);
-        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", delay:" + Long.toString(autoDelayInMillis) + "ms, switchSide: " + switchSide + ", scaleSide: " + scaleSide, false);
-        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, autoDelayInMillis,coopMode, this);
+        DriverStation.reportError("Running AutoGroup with mode: " + autoMode + ", position: " + autoPosition + ", delay:" + Long.toString(autoDelayInMillis) + "ms, switchSide: " + switchSide + ", scaleSide: " + scaleSide + ", coop: " + coopMode, false);
+        autoCommand = new AutoGroup(autoMode, autoPosition, switchSide, scaleSide, autoDelayInMillis, coopMode, this);
         autoCommand.start();
     }
 
@@ -293,5 +298,11 @@ public class Robot extends TimedRobot {
 
     public void requestAbortAuton() {
         abortAuton = true;
+        DriverStation.reportError("Auto abort requested", true);
     }
+
+    public static void requestAbortAutonStatic() {
+        _instance.requestAbortAuton();
+    }
+
 }

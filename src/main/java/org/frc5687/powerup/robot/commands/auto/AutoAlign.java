@@ -110,14 +110,14 @@ public class AutoAlign extends Command implements PIDOutput {
             DriverStation.reportError("Excessive pitch detected (" + pitch + ")", false);
             this.controller.disable();
             _aborted = true;
-            Scheduler.getInstance().removeAll();
+            Robot.requestAbortAutonStatic();
         }
 
         if (Math.abs(roll) > Constants.Auto.MAX_ROLL) {
             DriverStation.reportError("Excessive roll detected (" + roll + ")", false);
             this.controller.disable();
             _aborted = true;
-            Scheduler.getInstance().removeAll();
+            Robot.requestAbortAutonStatic();
         }
 
 
