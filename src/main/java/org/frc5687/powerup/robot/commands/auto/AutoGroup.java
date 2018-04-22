@@ -450,7 +450,8 @@ public class AutoGroup extends CommandGroup {
         addParallel(new IntakeToFloorButZeroCarriageFirst(robot.getCarriage(), robot.getArm()));
         addSequential(new LeftSwitchBackup(robot));
         // Move Arm Down while aligning
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 18.8, Constants.Auto.Align.SPEED, 1750));
+        // Would save a lot of time without this
+        //////addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 18.8, Constants.Auto.Align.SPEED, 1750));
         // Intake second cube
         class LeftGoPickupCubeUntilCubeSecured extends LeftGoPickupCube {
             public LeftGoPickupCubeUntilCubeSecured(Robot robot) {

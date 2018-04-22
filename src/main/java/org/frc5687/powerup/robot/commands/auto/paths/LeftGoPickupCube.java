@@ -19,6 +19,11 @@ public class LeftGoPickupCube extends DynamicPathCommand {
     }
 
     @Override
+    public double getJitterbugkT() {
+        return 10.0;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 156;
         Trajectory left = new Trajectory(num_elements);
