@@ -13,9 +13,10 @@ import java.util.Map;
 public class AutoChooser {
     private RotarySwitch positionSwitch;
     private RotarySwitch modeSwitch;
-    private RotarySwitch delaySwitch;
+    private RotarySwitch coopSwitch;
     private Map<Integer, String> positionLabels;
     private Map<Integer, String> modeLabels;
+    private Map<Integer, String> coopLabels;
     private Map<Integer, Integer> delayQuantities;
 
     public AutoChooser(boolean isCompetitionBot) {
@@ -36,6 +37,21 @@ public class AutoChooser {
         modeLabels.put(5, "Scale Then Switch");
         modeLabels.put(6, "Scale Then Backoff");
         modeLabels.put(7, "Switch Only");
+        modeLabels.put(7, "Scale Only");
+
+        coopLabels = new HashMap<Integer, String>();
+        coopLabels.put(0, "0");
+        coopLabels.put(1, "250");
+        coopLabels.put(2, "500");
+        coopLabels.put(3, "750");
+        coopLabels.put(4, "1000");
+        coopLabels.put(5, "1250");
+        coopLabels.put(6, "1500");
+        coopLabels.put(7, "1750");
+        coopLabels.put(8, "2000");
+        coopLabels.put(9, "2500");
+        coopLabels.put(10, "Defensive");
+        coopLabels.put(11, "Stay in Lane");
 
         delayQuantities = new HashMap<Integer, Integer>();
         delayQuantities.put(0, 0);
@@ -48,16 +64,17 @@ public class AutoChooser {
         delayQuantities.put(7, 1750);
         delayQuantities.put(8, 2000);
         delayQuantities.put(9, 2500);
-        delayQuantities.put(10, 3000);
+        delayQuantities.put(10, 0);
+        delayQuantities.put(11, 0);
 
         if (isCompetitionBot) {
             positionSwitch = new RotarySwitch(RobotMap.AutoChooser.POSITION_SWITCH,  Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
             modeSwitch = new RotarySwitch(RobotMap.AutoChooser.MODE_SWITCH,  Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
-            delaySwitch = new RotarySwitch(RobotMap.AutoChooser.DELAY_SWITCH, Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
+            coopSwitch = new RotarySwitch(RobotMap.AutoChooser.COOP_SWITCH, Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
         } else {
             positionSwitch = new RotarySwitch(RobotMap.AutoChooser.POSITION_SWITCH, Constants.RotarySwitch.TOLERANCE * 3, .092, .235, .505, .680, .823, .958);
             modeSwitch = new RotarySwitch(RobotMap.AutoChooser.MODE_SWITCH, Constants.RotarySwitch.TOLERANCE, .09, .17, .23, .31, .5, .59, .68, .75, .82, .91, .96);
-            delaySwitch = new RotarySwitch(RobotMap.AutoChooser.DELAY_SWITCH, Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
+            coopSwitch = new RotarySwitch(RobotMap.AutoChooser.COOP_SWITCH, Constants.RotarySwitch.TOLERANCE, 0.07692, 0.15384, 0.23076, 0.30768, 0.3846, 0.46152, 0.53844, 0.61536, 0.69228, 0.7692, 0.84612, 0.92304);
         }
     }
 
@@ -70,8 +87,8 @@ public class AutoChooser {
         return modeSwitch.get();
     }
 
-    public int delaySwitchValue(){
-        return delaySwitch.get();
+    public int coopSwitchValue(){
+        return coopSwitch.get();
     }
 
     private String getPositionLabel() {
@@ -88,18 +105,29 @@ public class AutoChooser {
         return modeLabels.getOrDefault(mode, "Unused");
     }
 
+    private String getCoopLabel() {
+        int coop = coopSwitchValue();
+        return coopLabels.getOrDefault(coop, "Unused");
+    }
+
     private String getModeLabel(int mode) {
         return modeLabels.getOrDefault(mode, "Unused");
     }
 
     public Integer getDelayMillis() {
-        int val = delaySwitchValue();
-        return delayQuantities.getOrDefault(val, 0);
+        int val = coopSwitchValue();
+        switch (val) {
+            case Constants.AutoChooser.Coop.DEFENSE:
+            case Constants.AutoChooser.Coop.STAY_IN_LANE:
+                return delayQuantities.getOrDefault(0, 0);
+            default:
+                return delayQuantities.getOrDefault(val, 0);
+        }
     }
 
     public boolean stayInYourOwnLane() {
-        int val = delaySwitchValue();
-        return val == 11;
+        int val = coopSwitchValue();
+        return val == Constants.AutoChooser.Coop.STAY_IN_LANE;
     }
 
     private Integer getDelayMillis(int val) {
@@ -109,14 +137,15 @@ public class AutoChooser {
     public void updateDashboard(){
         SmartDashboard.putString("AutoChooser/Label/Position", getPositionLabel());
         SmartDashboard.putString("AutoChooser/Label/Mode", getModeLabel());
-        SmartDashboard.putString("AutoChooser/Label/Delay", Long.toString(getDelayMillis()) + "ms");
+        SmartDashboard.putString("AutoChooser/Label/Coop", getCoopLabel());
+        SmartDashboard.putNumber("AutoChooser/Label/Delay", getDelayMillis());
         SmartDashboard.putBoolean("AutoChooser/Label/stayInYourOwnLane", stayInYourOwnLane());
         SmartDashboard.putNumber("AutoChooser/Raw/Position", positionSwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Raw/Mode", modeSwitch.getRaw());
-        SmartDashboard.putNumber("AutoChooser/Raw/Delay", delaySwitch.getRaw());
+        SmartDashboard.putNumber("AutoChooser/Raw/Coop", coopSwitch.getRaw());
         SmartDashboard.putNumber("AutoChooser/Numeric/Position", positionSwitchValue());
         SmartDashboard.putNumber("AutoChooser/Numeric/Mode", modeSwitchValue());
-        SmartDashboard.putNumber("AutoChooser/Numeric/Delay", delaySwitchValue());
+        SmartDashboard.putNumber("AutoChooser/Numeric/Coop", coopSwitchValue());
 //        SmartDashboard.putString("AutoChooser/Selection", AutoGroup.getDescription(springSwitch.get(), gearSwitch.get(), hopperSwitch.get()));
   }
 }
