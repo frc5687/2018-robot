@@ -487,23 +487,8 @@ public class AutoGroup extends CommandGroup {
         addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 500));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 48, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.rightOnly));
 
-        class LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured extends LeftSideOfPowerCubeZoneIntakeThirdCube {
-            public LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(Robot robot) {
-                super(robot);
-            }
-
-            @Override
-            protected boolean isFinished() {
-                if(System.currentTimeMillis() > endMillis){
-                    DriverStation.reportError("DynamicPathCommand (" + path.getName() + ") timed out", false);
-                    return false;
-                }
-
-                return robot.getIntake().cubeIsSecured() || followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
-            }
-        }
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(robot));
+        addSequential(new LeftSideOfPowerCubeZoneIntakeThirdCube(robot, true));
     }
 
     private void thirdCubeNearLeftSwitchToLeftSwitch(Robot robot) {

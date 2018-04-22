@@ -9,9 +9,13 @@ public class LeftSideOfPowerCubeZoneIntakeThirdCube extends DynamicPathCommand {
     public static int numSegments = 162;
     public static double dt = 0.01;
     public static long duration = (long) (numSegments * (dt * 1000));
-    
+
     public LeftSideOfPowerCubeZoneIntakeThirdCube(Robot robot) {
-        super(robot);
+        this(robot, false);
+    }
+
+    public LeftSideOfPowerCubeZoneIntakeThirdCube(Robot robot, boolean finishOnceCubeSecured) {
+        super(robot, finishOnceCubeSecured);
     }
 
     @Override
