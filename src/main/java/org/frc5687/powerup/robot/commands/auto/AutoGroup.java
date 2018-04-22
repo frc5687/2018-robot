@@ -450,7 +450,7 @@ public class AutoGroup extends CommandGroup {
     private void leftSwitchToThirdCube(Robot robot) {
         addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 59, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.rightOnly));
-        addParallel(new AutoIntake(robot.getIntake()));
+
         class LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured extends LeftSideOfPowerCubeZoneIntakeThirdCube {
             public LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(Robot robot) {
                 super(robot);
@@ -466,6 +466,7 @@ public class AutoGroup extends CommandGroup {
                 return robot.getIntake().cubeIsSecured() || followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();
             }
         }
+        addParallel(new AutoIntake(robot.getIntake()));
         addSequential(new LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(robot));
     }
 
