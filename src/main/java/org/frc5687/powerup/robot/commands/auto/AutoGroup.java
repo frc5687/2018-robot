@@ -454,6 +454,7 @@ public class AutoGroup extends CommandGroup {
         //////addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 18.8, Constants.Auto.Align.SPEED, 1750));
         // Intake second cube
         addParallel(new AutoIntake(robot.getIntake()));
+        // TODO: might want to adjust the angle on this since we changed the approach to this spot.
         addSequential(new LeftGoPickupCube(robot, true));
         // Raise Carriage while backing up
         addParallel(new MoveCarriageToSetpointPIDButWaitForNMillisFirst(robot.getCarriage(), carriageMiddleHeight, 55));
@@ -469,7 +470,7 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void leftSwitchToThirdCube(Robot robot) {
-        addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 500));
+        addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 550));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 48, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.rightOnly));
 
         addParallel(new AutoIntake(robot.getIntake()));
@@ -479,7 +480,7 @@ public class AutoGroup extends CommandGroup {
     private void thirdCubeNearLeftSwitchToLeftSwitch(Robot robot) {
         double armSwitchAngle = 91;
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
-        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.leftOnly));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -20, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.leftOnly));
         addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, LeftOfPowerCubeZoneToLeftSwitchForThirdCube.duration - 60));
         addSequential(new LeftOfPowerCubeZoneToLeftSwitchForThirdCube(robot));
     }
