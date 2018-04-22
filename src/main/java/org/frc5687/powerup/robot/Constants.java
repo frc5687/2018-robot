@@ -106,7 +106,7 @@ public class Constants {
         public static final double SERVO_UP = 1;
         public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.30;
+        public static final double HOLD_SPEED = 0.36;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 1500;
