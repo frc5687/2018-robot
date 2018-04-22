@@ -442,14 +442,13 @@ public class AutoGroup extends CommandGroup {
         double armSwitchAngle = 91;
         //addSequential(new LeftGoPickupCubeReversed(robot));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -30, Constants.Auto.Align.SPEED, 2000, 1.0, Constants.DriveTrainBehavior.leftOnly));
-        //addSequential(new AutoAlign(robot, -30));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED,LeftOfPowerCubeZoneToLeftSwitch.duration - 60));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED,LeftOfPowerCubeZoneToLeftSwitch.duration));
         addSequential(new LeftOfPowerCubeZoneToLeftSwitch(robot));
     }
 
     private void leftSwitchToThirdCube(Robot robot) {
-        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 500));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 48, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.rightOnly));
 
         class LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured extends LeftSideOfPowerCubeZoneIntakeThirdCube {
