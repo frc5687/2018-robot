@@ -1,6 +1,7 @@
 package org.frc5687.powerup.robot.commands.testing;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
@@ -14,7 +15,7 @@ import org.frc5687.powerup.robot.subsystems.Carriage;
 import org.frc5687.powerup.robot.subsystems.Lights;
 import org.frc5687.powerup.robot.utils.PDP;
 
-public class TestCarriage extends CommandGroup {
+public class TestCarriage extends Command {
     private Carriage _carriage;
     private PDP _pdp;
     private Lights _lights;
