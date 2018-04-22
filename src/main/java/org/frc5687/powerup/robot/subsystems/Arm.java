@@ -102,6 +102,9 @@ public class Arm extends PIDSubsystem {
         speed = Math.min(speed, Constants.Arm.MAX_SPEED);
         SmartDashboard.putNumber("Arm/speedPreInversion", speed); // TODO: "EXCESSIVE" REAL TIME LOGGING
         speed *= motorInversionMultiplier;
+        if (_disabled) {
+            speed = 0;
+        }
         _motor.setSpeed(speed);
 
         _healthChecker.checkHealth(speed);

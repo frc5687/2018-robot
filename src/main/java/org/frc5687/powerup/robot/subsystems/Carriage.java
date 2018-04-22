@@ -113,6 +113,9 @@ public class Carriage extends PIDSubsystem {
 
         SmartDashboard.putNumber("Carriage/rawSpeed", desiredSpeed);
         SmartDashboard.putNumber("Carriage/speed", speed);
+        if (_disabled) {
+            speed = 0;
+        }
         _motor.setSpeed(speed * (Constants.Carriage.MOTOR_INVERTED ? -1 : 1));
     }
 
