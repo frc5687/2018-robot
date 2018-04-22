@@ -294,6 +294,7 @@ public class AutoGroup extends CommandGroup {
                         centerLeftToLeftSwitchThenPickupSecondCube(robot);
                         secondCubeComingFromLeftSwitchToLeftSwitch(robot);
                         leftSwitchToThirdCube(robot);
+                        thirdCubeNearLeftSwitchToLeftSwitch(robot);
                         break;
                     case Constants.AutoChooser.Position.CENTER:
                         DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Right Side", false);
@@ -468,6 +469,10 @@ public class AutoGroup extends CommandGroup {
         }
         addParallel(new AutoIntake(robot.getIntake()));
         addSequential(new LeftSideOfPowerCubeZoneIntakeThirdCubeUntilCubeSecured(robot));
+    }
+
+    private void thirdCubeNearLeftSwitchToLeftSwitch(Robot robot) {
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.leftOnly));
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
