@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
@@ -31,6 +32,7 @@ public class AutoAlign extends Command implements PIDOutput {
     private long _onTargetSince;
     private long startTimeMillis;
     private long _endTimeMillis;
+    private boolean _aborted = false;
 
     private DriveTrain driveTrain;
     private AHRS imu;
@@ -100,6 +102,25 @@ public class AutoAlign extends Command implements PIDOutput {
     @Override
     protected void execute() {
         //actOnPidOut();
+        // Check pitch and tilt
+        double pitch = imu.getPitch();
+        double roll = imu.getRoll();
+
+        if (Math.abs(pitch) > Constants.Auto.MAX_PITCH) {
+            DriverStation.reportError("Excessive pitch detected (" + pitch + ")", false);
+            this.controller.disable();
+            _aborted = true;
+            Robot.requestAbortAutonStatic();
+        }
+
+        if (Math.abs(roll) > Constants.Auto.MAX_ROLL) {
+            DriverStation.reportError("Excessive roll detected (" + roll + ")", false);
+            this.controller.disable();
+            _aborted = true;
+            Robot.requestAbortAutonStatic();
+        }
+
+
         SmartDashboard.putBoolean("AutoAlign/onTarget", controller.onTarget());
         SmartDashboard.putNumber("AutoAlign/imu", imu.getYaw());
         SmartDashboard.putData("AutoAlign/pid", controller);
@@ -125,6 +146,7 @@ public class AutoAlign extends Command implements PIDOutput {
 
     @Override
     protected boolean isFinished() {
+        if (_aborted) { return true; }
         if (!controller.onTarget()) {
             _onTargetSince = 0;
         }
