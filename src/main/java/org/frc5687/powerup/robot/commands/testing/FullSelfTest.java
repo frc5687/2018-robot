@@ -3,6 +3,7 @@ package org.frc5687.powerup.robot.commands.testing;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.Intake;
 
@@ -19,6 +20,7 @@ public class FullSelfTest extends CommandGroup {
         addSequential(new TestCarriage(robot.getCarriage(), robot.getPDP(), robot.getLights()));
 
         addSequential(new ConfirmTest(robot.getOI(), "Please be sure that the arm is clear and press Start to continue.", "Test started.", "Test aborted."));
+        addSequential(new ArmMotorTest(robot.getArm(), robot.getPDP(), robot.getCarriage(), robot.getLights()));
 
         addSequential(new ConfirmTest(robot.getOI(), "Please be sure that the intake is clear and press Start to continue.", "Test started.", "Test aborted."));
         addSequential(new TestIntake(robot.getIntake(), robot.getPDP(), robot.getLights()));
