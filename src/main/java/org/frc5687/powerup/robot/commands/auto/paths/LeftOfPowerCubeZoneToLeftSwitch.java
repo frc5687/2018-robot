@@ -15,6 +15,11 @@ public class LeftOfPowerCubeZoneToLeftSwitch extends DynamicPathCommand {
     }
 
     @Override
+    public double getJitterbugkT() {
+        return 5.2;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 232;
         Trajectory left = new Trajectory(num_elements);
