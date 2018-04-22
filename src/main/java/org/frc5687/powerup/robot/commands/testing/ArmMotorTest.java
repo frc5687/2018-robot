@@ -22,13 +22,14 @@ public class ArmMotorTest extends Command {
     private double _runMillis;
     private double _targetAmps;
     private double _endMillis;
-    private int _targetTicks;
     private double _maxAmps = 0;
     private Lights _lights;
     private double _currentAngle;
     private double _increacedAngle;
-    public double _decreacedAngle;
+    private double _decreacedAngle;
     private State _state;
+    private double _angleUpTarget;
+    private double _angleDownTarget;
 
     public ArmMotorTest(Arm arm, PDP pdp, Carriage carriage, Lights lights) {
         requires(arm);
@@ -40,6 +41,8 @@ public class ArmMotorTest extends Command {
         _runMillis = 500;
         _targetAmps = 3;
         _lights = lights;
+        _angleUpTarget = 10;
+        _angleDownTarget = 10;
 
 
     }
@@ -72,8 +75,13 @@ public class ArmMotorTest extends Command {
             case MOVEUPDONE:
                 _arm.drive(0);
                 report("Move arm up");
-                _increacedAngle = _arm.getAngle();
+                _increacedAngle = _arm.getAngle() - _currentAngle;
                 _state = State.MOVEDOWN;
+                if(_increacedAngle > _angleUpTarget){
+                    SmartDashboard.putBoolean("SelfTest/Arm/UpAngleTarget", false);
+                } else {
+                    SmartDashboard.putBoolean("SelfTest/Arm/UpAngleTarget", true);
+                }
                 break;
             case MOVEDOWN:
                 _arm.drive(-0.2);
@@ -85,9 +93,15 @@ public class ArmMotorTest extends Command {
                 break;
             case MOVEDOWNDONE:
                 _arm.drive(0);
+                _decreacedAngle = _arm.getAngle() - _currentAngle;
                 report("Move arm down");
-                _state = State.MOVETOSTART;
+                if(_decreacedAngle < _angleDownTarget){
+                    SmartDashboard.putBoolean("SelfTest/Arm/DownAngleTarget", false);
+                } else {
+                    SmartDashboard.putBoolean("SelfTest/Arm/DownAngleTarget", true);
+                }
                 _arm.setSetpoint(Constants.Arm.Encoder.ENCODER_START);
+                _state = State.MOVETOSTART;
                 break;
             case MOVETOSTART:
                 if (_arm.onTarget()) {
@@ -113,8 +127,9 @@ public class ArmMotorTest extends Command {
             SmartDashboard.putBoolean("SelfTest/Arm/" + side + "/Amps/Passed", true);
             DriverStation.reportError("Amp draw passed on " + side + ".  Expected " + _targetAmps + " and measured  " + _maxAmps + ".", false);
         }
+
         SmartDashboard.putNumber("SelfTest/Arm/" + side + "/Amps/Measured", _maxAmps);
-        _arm.zeroEncoder();
+        _currentAngle = _arm.getAngle();
         _maxAmps = 0;
         _endMillis = System.currentTimeMillis() + _runMillis;
     }
