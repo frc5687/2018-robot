@@ -75,6 +75,11 @@ public class Constants {
         public static final double CLIMBER_HOLD = -0.89; // Party stobe
         public static final double CLIMBER_DOWN = PULSING_BLUE;
         public static final double TIME_WARNING = -.07;
+        public static final double TEST_RUNNING = 0;
+        public static final double TEST_WAITING = 0;
+
+        public static final double TEST_PASSED = SOLID_GREEN;
+        public static final double TEST_FAILED = SOLID_RED;
     }
     public class OI {
         public static final double RUMBLE_INTENSITY = 1;
@@ -147,6 +152,9 @@ public class Constants {
     public class Auto {
         public static final double MIN_IMU_ANGLE = -180;
         public static final double MAX_IMU_ANGLE = 180;
+
+        public static final double MAX_PITCH = 7.0;
+        public static final double MAX_ROLL = 7.0;
 
         public class Align {
 
@@ -392,6 +400,7 @@ public class Constants {
 
     public class Arm {
         public static final double PDP_EXCESSIVE_CURRENT = 40.0;
+        public static final double MIN_AMPS = 3.5;
 
         public static final boolean MOTOR_INVERTED_PROTO = false;
         public static final boolean MOTOR_INVERTED_COMP = true;
@@ -514,6 +523,23 @@ public class Constants {
             public static final int SWITCH_DRIVE = 1001;
             public static final int SCALE_DRIVE = 1003;
         }
+
+        public class Coop {
+            public static final int DELAY_0 = 0;
+            public static final int DELAY_1 = 1;
+            public static final int DELAY_2 = 2;
+            public static final int DELAY_3 = 3;
+            public static final int DELAY_4 = 4;
+            public static final int DELAY_5 = 5;
+            public static final int DELAY_6 = 6;
+            public static final int DELAY_7 = 7;
+            public static final int DELAY_8 = 8;
+            public static final int DELAY_9 = 9;
+            public static final int DEFENSE = 10;
+            public static final int STAY_IN_LANE = 11;
+        }
+
+
     }
     public class Limits {
         /***

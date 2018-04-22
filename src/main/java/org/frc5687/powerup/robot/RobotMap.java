@@ -47,7 +47,7 @@ public class RobotMap {
     public class AutoChooser {
         public static final int POSITION_SWITCH = ANALOG.RIO2;
         public static final int MODE_SWITCH = ANALOG.RIO3;
-        public static final int DELAY_SWITCH = ANALOG.navX5;
+        public static final int COOP_SWITCH = ANALOG.navX5;
     }
 
     public class PDP {
