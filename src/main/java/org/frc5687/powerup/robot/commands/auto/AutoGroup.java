@@ -472,7 +472,11 @@ public class AutoGroup extends CommandGroup {
     }
 
     private void thirdCubeNearLeftSwitchToLeftSwitch(Robot robot) {
+        double armSwitchAngle = 91;
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 0, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.leftOnly));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, LeftOfPowerCubeZoneToLeftSwitchForThirdCube.duration - 60));
+        addSequential(new LeftOfPowerCubeZoneToLeftSwitchForThirdCube(robot));
     }
 
     private void centerLeftToRightSwitch(Robot robot) {
