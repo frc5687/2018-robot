@@ -130,7 +130,7 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         DriverStation.reportError("AUTO: Left scale only from far left", false);
-                        experimentalFarLeftToLeftScale(robot);
+                        farLeftToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
@@ -173,9 +173,9 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         DriverStation.reportError("AUTO: Left scale x 2 from far left", false);
-                        experimentalFarLeftToLeftScale(robot);
-                        experimentalLeftScaleToSecondCube(robot);
-                        experimentalSecondCubeToLeftScale(robot);
+                        farLeftToLeftScale(robot);
+                        leftScaleToSecondCube(robot);
+                        secondCubeToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
@@ -227,14 +227,14 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.SCALE_THEN_SWITCH:
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
-                        experimentalFarLeftToLeftScale(robot);
-                        experimentalLeftScaleToSecondCube(robot);
+                        farLeftToLeftScale(robot);
+                        leftScaleToSecondCube(robot);
                         switch (switchFactor) {
                             case -Constants.AutoChooser.Position.FAR_LEFT:
                                 secondCubeToLeftSwitch(robot);
                                 break;
                             case Constants.AutoChooser.Position.FAR_LEFT:
-                                experimentalSecondCubeToLeftScale(robot);
+                                secondCubeToLeftScale(robot);
                                 break;
                         }
                         break;
@@ -353,7 +353,7 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         // Far Left with Scale on Left Side
-                        experimentalFarLeftToLeftScale(robot);
+                        farLeftToLeftScale(robot);
                         leftScaleBackup(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
@@ -624,6 +624,58 @@ public class AutoGroup extends CommandGroup {
     private void rightScaleBackup(Robot robot) {
         addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 1000));
         addSequential(new RightScaleBackup(robot));
+    }
+
+    private void farLeftToLeftScale(Robot robot) {
+        //addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
+        addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 140));
+        addSequential(new FarLeftToLeftScale(robot));
+        // Faster path makes it so we don't need auto aline, except if we exclude it we need to turn to 105deg to get 2nd cube
+        // Timeout used to be 1000, but because of too high scrub we would time out.
+        // We changed the min. speed for auto align, so we don't "need" a greater timeout, but we haven't been able to test
+        // it, so if it appears that we're stalling for too long, bump up the min. speed and or decrease this timeout
+        addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
+        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
+    }
+
+    private void leftScaleToSecondCube(Robot robot) {
+        /*
+        Align towards second cube
+         */
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_BOTTOM_COMP));
+        // should be 149
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 160, Constants.Auto.Align.SPEED));
+        /*
+        Prepare intake
+         */
+        addSequential(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
+        /*
+        Approach second cube and intake
+         */
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new LeftScaleToCube(robot));
+        addSequential(new AbortIfNoCubeDetected(robot));
+    }
+
+    private void secondCubeToLeftScale(Robot robot) {
+        /*
+        Go back to the scale while raising the carriage to drive config
+         */
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_DRIVE_COMP));
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
+        addSequential(new LeftScaleToCubeReversed(robot));
+        /*
+        Prepare intake
+         */
+        /*
+        Rotate towards scale
+         */
+        //addSequential(new AutoAlign(robot, -140, 1500, 7));
+        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP));
+        addSequential(new AbortIfCubeNotSecured(robot));
+        addSequential(new AutoAlign(robot, 22.8));
+        addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_SHOOT_SPEED_SECOND_CUBE));
     }
 
     private void experimentalFarLeftToLeftScale(Robot robot) {
