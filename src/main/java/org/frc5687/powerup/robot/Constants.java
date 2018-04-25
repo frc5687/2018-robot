@@ -6,12 +6,24 @@ public class Constants {
     public static final double END_ALERT = 28;
     public static final int HEALTH_CHECK_CYCLES = 10;
 
+    /*
+    Used by AutoAlignExperimental to select which types of turns to do.
+    shortest will turn left or right, whichever will get it to the target angle quickest. This is possible with wpilib's pidcontroller thanks to the setContinuous flag.
+     leftOnly, or, counterClockwise only, will turn to the target angle by only going counterClockwise
+     rightOnly, or, clockwise only, wil turn to the target angle by only going clockwise.
+     */
     public enum typeOfTurn {
         shortest,
         leftOnly,
         rightOnly
     }
 
+    /*
+    Used in AutoAlign to select which types of turns to do.
+    bothSides will turn normally, or "in place" (hah!)
+    leftOnly will use the pidOut to drive the left side of the drivetrain, but the right side will be in 0in/s talon velocity pid mode.
+    rightOnly will use the pidOut to drive the right side of the drivetrain, but the left side will be in 0in/s talon velocity pid mode.
+     */
     public enum DriveTrainBehavior {
         bothSides,
         leftOnly,
