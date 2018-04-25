@@ -556,6 +556,45 @@ public class AutoGroup extends CommandGroup {
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED));
     }
 
+    private void experimentalCenterLeftToRightSwitchThenPickupSecondCube(Robot robot) {
+        int carriageIntakePosition = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
+        double armIntakeAngle = robot.isCompetitionBot() ? Constants.Arm.Pot.INTAKE_COMP : Constants.Arm.Pot.INTAKE_PROTO;
+        double armSwitchAngle = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
+        // Drive to right switch and deposit cube
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, ExperimentalCenterLeftToRightSwitchForSecondCube.duration - 290));
+        addSequential(new ExperimentalCenterLeftToRightSwitchForSecondCube(robot));
+        addParallel(new IntakeToFloorButZeroCarriageFirst(robot.getCarriage(), robot.getArm()));
+        addSequential(new ExperimentalRightSwitchBackup(robot));
+        // Move Arm Down
+        // Intake second cube
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new ExperimentalRightGoPickupCube(robot, true));
+    }
+
+    private void experimentalSecondCubeComingFromRightSwitchToRightSwitch(Robot robot) {
+        double armSwitchAngle = 91;
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
+        addSequential(new ExperimentalRightGoPickupCubeReversed(robot));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, ExperimentalRightSwitchDepositSecondCube.duration - 290));
+        addSequential(new ExperimentalRightSwitchDepositSecondCube(robot));
+    }
+
+    private void experimentalRightSwitchIntakeThirdCube(Robot robot) {
+        addParallel(new IntakeToFloorButWaitNMillisFirst(robot.getCarriage(), robot.getArm(), 500));
+        addSequential(new ExperimentalRightSwitchBackupForThirdCube(robot));
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new ExperimentalRightGoPickupThirdCube(robot, true));
+    }
+
+    private void experimentalRightSwitchDepositThirdCube(Robot robot) {
+        double armSwitchAngle = 91;
+        addParallel(new MoveArmToSetpointPID(robot.getArm(), armSwitchAngle));
+        addSequential(new ExperimentalRightGoPickupCubeReversed(robot));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SWITCH_DROP_SPEED, ExperimentalRightSwitchDepositThirdCube.duration - 290));
+        addSequential(new ExperimentalRightSwitchDepositThirdCube(robot));
+    }
+
     private void farRightToRightSwitch(Robot robot) {
         double armTarget = robot.getCarriage().isHealthy() ? Constants.Arm.Pot.SWITCH_HEIGHT_WITH_CARRIAGE : Constants.Arm.Pot.SWITCH_HEIGHT_BROKEN_CARRIAGE;
         MoveArmToSetpointPID armPid = new MoveArmToSetpointPID(robot.getArm(), armTarget, true);
