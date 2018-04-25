@@ -5,12 +5,12 @@ import org.frc5687.powerup.robot.commands.auto.DynamicPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
-public class FarLeftToLeftScale extends DynamicPathCommand {
+public class ExperimentalFarLeftToLeftScale extends DynamicPathCommand {
     public static int numSegments = 360;
     public static double dt = 0.01;
     public static long duration = (long) (numSegments * (dt * 1000));
     
-    public FarLeftToLeftScale(Robot robot) {
+    public ExperimentalFarLeftToLeftScale(Robot robot) {
         super(robot);
     }
 
@@ -2186,14 +2186,14 @@ public class FarLeftToLeftScale extends DynamicPathCommand {
 
 
         
-        path = new Path("FarLeftToLeftScale", new Trajectory.Pair(left, right));
+        path = new Path("ExperimentalFarLeftToLeftScale", new Trajectory.Pair(left, right));
         return true;
     }
 
   
 	// WAYPOINT_DATA: [{"position":{"x":26,"y":280},"theta":0,"comment":""},{"position":{"x":212,"y":280},"theta":0,"comment":""},{"position":{"x":289,"y":260},"theta":-0.7853749999968453,"comment":""}]
 	// IS_REVERSED: false
-	// FILE_NAME: FarLeftToLeftScale
+	// FILE_NAME: ExperimentalFarLeftToLeftScale
     // DT: 0.01
     // MAX_VEL: 120
     // MAX_ACC: 90

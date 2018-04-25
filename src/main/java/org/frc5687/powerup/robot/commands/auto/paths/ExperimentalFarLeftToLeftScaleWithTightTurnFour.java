@@ -5,12 +5,12 @@ import org.frc5687.powerup.robot.commands.auto.DynamicPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
-public class FarLeftToLeftScaleWithTightTurnFour extends DynamicPathCommand {
+public class ExperimentalFarLeftToLeftScaleWithTightTurnFour extends DynamicPathCommand {
     public static int numSegments = 353;
     public static double dt = 0.01;
     public static long duration = (long) (numSegments * (dt * 1000));
     
-    public FarLeftToLeftScaleWithTightTurnFour(Robot robot) {
+    public ExperimentalFarLeftToLeftScaleWithTightTurnFour(Robot robot) {
         super(robot);
     }
 
@@ -2139,14 +2139,14 @@ public class FarLeftToLeftScaleWithTightTurnFour extends DynamicPathCommand {
 
 
         
-        path = new Path("FarLeftToLeftScaleWithTightTurnFour", new Trajectory.Pair(left, right));
+        path = new Path("ExperimentalFarLeftToLeftScaleWithTightTurnFour", new Trajectory.Pair(left, right));
         return true;
     }
 
   
 	// WAYPOINT_DATA: [{"position":{"x":23,"y":276},"theta":0,"comment":""},{"position":{"x":195,"y":276},"theta":0,"comment":""},{"position":{"x":280,"y":262},"theta":-0.6282999999974763,"comment":""}]
 	// IS_REVERSED: false
-	// FILE_NAME: FarLeftToLeftScaleWithTightTurnFour
+	// FILE_NAME: ExperimentalFarLeftToLeftScaleWithTightTurnFour
     // DT: 0.01
     // MAX_VEL: 120
     // MAX_ACC: 90

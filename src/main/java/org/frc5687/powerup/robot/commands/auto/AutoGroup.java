@@ -10,9 +10,7 @@ import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
-import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
-import org.frc5687.powerup.robot.commands.auto.AutoIntake;
 
 /**
  * Created by Ben Bernard on 2/2/2018.
@@ -132,7 +130,7 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         DriverStation.reportError("AUTO: Left scale only from far left", false);
-                        farLeftToLeftScale(robot);
+                        experimentalFarLeftToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
@@ -175,9 +173,9 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         DriverStation.reportError("AUTO: Left scale x 2 from far left", false);
-                        farLeftToLeftScale(robot);
-                        leftScaleToSecondCube(robot);
-                        secondCubeToLeftScale(robot);
+                        experimentalFarLeftToLeftScale(robot);
+                        experimentalLeftScaleToSecondCube(robot);
+                        experimentalSecondCubeToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
                         if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
@@ -229,14 +227,14 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.SCALE_THEN_SWITCH:
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
-                        farLeftToLeftScale(robot);
-                        leftScaleToSecondCube(robot);
+                        experimentalFarLeftToLeftScale(robot);
+                        experimentalLeftScaleToSecondCube(robot);
                         switch (switchFactor) {
                             case -Constants.AutoChooser.Position.FAR_LEFT:
                                 secondCubeToLeftSwitch(robot);
                                 break;
                             case Constants.AutoChooser.Position.FAR_LEFT:
-                                secondCubeToLeftScale(robot);
+                                experimentalSecondCubeToLeftScale(robot);
                                 break;
                         }
                         break;
@@ -355,7 +353,7 @@ public class AutoGroup extends CommandGroup {
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
                         // Far Left with Scale on Left Side
-                        farLeftToLeftScale(robot);
+                        experimentalFarLeftToLeftScale(robot);
                         leftScaleBackup(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
@@ -628,12 +626,12 @@ public class AutoGroup extends CommandGroup {
         addSequential(new RightScaleBackup(robot));
     }
 
-    private void farLeftToLeftScale(Robot robot) {
+    private void experimentalFarLeftToLeftScale(Robot robot) {
         //addParallel(new PrepIntakeForScale(robot, 100, 3000, true));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE_MAX));
         addParallel(new MoveCarriageToSetpointPIDButWaitForNInchesFirst(robot.getDriveTrain(), robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 136));
-        //addSequential(new FarLeftToLeftScale(robot));
-        addSequential(new FarLeftToLeftScaleWithTightTurnFour(robot));
+        //addSequential(new ExperimentalFarLeftToLeftScale(robot));
+        addSequential(new ExperimentalFarLeftToLeftScaleWithTightTurnFour(robot));
         addSequential(new AutoEject(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED));
         //addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToLeftScaleWithTightTurn.duration - 20));
         // Faster path makes it so we don't need auto align, except if we exclude it we need to turn to 105deg to get 2nd cube
@@ -643,7 +641,7 @@ public class AutoGroup extends CommandGroup {
         //addSequential(new AutoAlign(robot, 40, Constants.Auto.Align.SPEED, 2500, 1.0));
     }
 
-    private void leftScaleToSecondCube(Robot robot) {
+    private void experimentalLeftScaleToSecondCube(Robot robot) {
         /*
         Align towards second cube
          */
@@ -664,19 +662,19 @@ public class AutoGroup extends CommandGroup {
         Approach second cube and intake
          */
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new LeftScaleToCubeAlternativeTwo(robot));
-        //addSequential(new LeftScaleToCube(robot));
+        addSequential(new ExperimentalLeftScaleToCubeAlternativeTwo(robot));
+        //addSequential(new ExperimentalLeftScaleToCube(robot));
         addSequential(new AbortIfNoCubeDetected(robot));
     }
 
-    private void secondCubeToLeftScale(Robot robot) {
+    private void experimentalSecondCubeToLeftScale(Robot robot) {
         /*
         Go back to the scale while raising the carriage to drive config
          */
         addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_DRIVE_COMP));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.SCALE));
-        //addSequential(new LeftScaleToCubeReversed(robot));
-        addSequential(new LeftScaleToCubeAlternativeTwoReverse(robot));
+        //addSequential(new ExperimentalLeftScaleToCubeReversed(robot));
+        addSequential(new ExperimentalLeftScaleToCubeAlternativeTwoReverse(robot));
         /*
         Prepare intake
          */
