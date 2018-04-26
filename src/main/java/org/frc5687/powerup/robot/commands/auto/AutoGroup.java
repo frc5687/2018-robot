@@ -732,7 +732,7 @@ public class AutoGroup extends CommandGroup {
         Approach second cube and intake
          */
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new LeftScaleToCube(robot));
+        addSequential(new LeftScaleToCube(robot, true));
         addSequential(new AbortIfNoCubeDetected(robot));
     }
 
