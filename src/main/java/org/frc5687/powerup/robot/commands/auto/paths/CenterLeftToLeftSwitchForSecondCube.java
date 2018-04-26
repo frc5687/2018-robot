@@ -16,7 +16,7 @@ public class CenterLeftToLeftSwitchForSecondCube extends DynamicPathCommand {
 
     @Override
     public double getGretakT() {
-        return 1.2;
+        return 3.8;
     }
 
     @Override
