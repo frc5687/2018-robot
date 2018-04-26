@@ -842,7 +842,7 @@ public class AutoGroup extends CommandGroup {
         }
         addParallel(new RaiseCarriageAfterWaitingNMillis(robot, 300));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -25, Constants.Auto.Align.SPEED, 3000, 1.0, Constants.DriveTrainBehavior.bothSides));
-        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 220));
+        addParallel(new AutoEjectAfterNMillis(robot.getIntake(), Constants.Intake.SCALE_TRAVERSE_DROP_SPEED, FarLeftToRightScaleDeadPartThree.duration - 220));
         addSequential(new FarLeftToRightScaleDeadPartThree(robot));
         /*
         Go to intake position and turn towards second cube
