@@ -165,8 +165,8 @@ public class Constants {
         public static final double MIN_IMU_ANGLE = -180;
         public static final double MAX_IMU_ANGLE = 180;
 
-        public static final double MAX_PITCH = 7.0;
-        public static final double MAX_ROLL = 7.0;
+        public static final double MAX_PITCH = 10.0;
+        public static final double MAX_ROLL = 10.0;
 
         public class Align {
 
