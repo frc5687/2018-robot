@@ -420,6 +420,61 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
+            case Constants.AutoChooser.Mode.EXPERIMENTAL_SCALE_THEN_SCALE:
+                switch (scaleFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                        DriverStation.reportError("AUTO: Left scale x 2 from far left", false);
+                        experimentalFarLeftToLeftScale(robot);
+                        experimentalLeftScaleToSecondCube(robot);
+                        experimentalSecondCubeToLeftScale(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
+                            DriverStation.reportError("AUTO: Right scale from far left", false);
+                            farLeftToRightScale(robot);
+                        } else if (defensive) {
+                            // Drop off the cube...then
+                            DriverStation.reportError("AUTO: Defensive from far left", false);
+                            farLeftDefensive(robot, switchSide == Constants.AutoChooser.LEFT);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
+                            DriverStation.reportError("AUTO: Left switch from far left", false);
+                            farLeftToLeftSwitch(robot);
+                        } else {
+                            DriverStation.reportError("AUTO: Cross the line from far left", false);
+                            buildAutoCross(robot);
+                        }
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
+                            DriverStation.reportError("AUTO: Left scale from far right", false);
+                            farRightToLeftScale(robot);
+                        } else if (defensive) {
+                            DriverStation.reportError("AUTO: Defensive from far right", false);
+                            farRightDefensive(robot, switchSide == Constants.AutoChooser.RIGHT);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
+                            DriverStation.reportError("AUTO: RIght switch from far right", false);
+                            farRightToRightSwitch(robot);
+                        } else {
+                            DriverStation.reportError("AUTO: Cross the line from far right", false);
+                            buildAutoCross(robot);
+                        }
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        DriverStation.reportError("AUTO: Right scale only from far right", false);
+                        farRightToRightScale(robot);
+                        /*
+                        // Second cube not competition ready, so it is commented out.
+                        int carriageBottom = robot.isCompetitionBot() ? Constants.Carriage.ENCODER_BOTTOM_COMP : Constants.Carriage.ENCODER_BOTTOM_PROTO;
+                        addParallel(new MoveCarriageToSetpointPID(robot.getCarriage(), carriageBottom));
+                        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -157, Constants.Auto.Align.SPEED));
+                        addSequential(new MoveArmToSetpointPID(robot.getArm(), 48));
+
+                        addParallel(new AutoIntake(robot.getIntake()));
+                        addSequential(new RightScaleToSecondCubePartOne(robot));
+                        */
+                        break;
+                }
+                break;
         }
     }
 
