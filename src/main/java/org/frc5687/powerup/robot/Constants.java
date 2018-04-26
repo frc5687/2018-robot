@@ -535,7 +535,7 @@ public class Constants {
             public static final int EXPERIMENTAL_SWITCH_THEN_SWITCH = 9;
             public static final int SWITCH_DRIVE = 1001;
             public static final int SCALE_DRIVE = 1003;
-            public static final int EXPERIMENTAL_SCALE_THEN_SCALE = 1004;
+            public static final int EXPERIMENTAL_SCALE_THEN_SCALE = 10;
         }
 
         public class Coop {
