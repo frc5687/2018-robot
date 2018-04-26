@@ -464,7 +464,12 @@ public class Constants {
             public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
             public static final double switchHeightWithCarriageHalfwayUp = 91;
             public static final double switchHeightWithCarriageAllTheWayUp = 80;
+
+            public static final double TOP_ZONE = 140.0;
+            public static final double BOTTOM_ZONE = 33.0;
         }
+
+        public static final double ZONE_SPEED_LIMIT = 0.50;
 
         public static final double LENGTH = 34.0;
 
@@ -480,9 +485,9 @@ public class Constants {
             public static final double PAST_150_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.1;
+            public static final double PAST_90_CUBE_GRETA = 0.05;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.05;
 
             public static final double PAST_55_CUBE_PROTO = 0.0;
             public static final double PAST_55_CUBE_GRETA = 0.15;

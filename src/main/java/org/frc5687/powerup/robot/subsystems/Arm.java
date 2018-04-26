@@ -98,11 +98,25 @@ public class Arm extends PIDSubsystem {
         }
         speed = Math.max(speed, Constants.Arm.MIN_SPEED);
         speed = Math.min(speed, Constants.Arm.MAX_SPEED);
+
+        if (speed > 0 && isInTopZone()) {
+            speed *= Constants.Arm.ZONE_SPEED_LIMIT;
+        } else if (speed < 0 && isInBottomZone()) {
+            speed *= Constants.Arm.ZONE_SPEED_LIMIT;
+        }
         SmartDashboard.putNumber("Arm/speedPreInversion", speed); // TODO: "EXCESSIVE" REAL TIME LOGGING
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
 
         _healthChecker.checkHealth(speed);
+    }
+
+    public boolean isInTopZone() {
+        return getPot() > Constants.Arm.Pot.TOP_ZONE;
+    }
+
+    public boolean isInBottomZone() {
+        return getPot() < Constants.Arm.Pot.BOTTOM_ZONE;
     }
 
     @Override
