@@ -469,7 +469,7 @@ public class Constants {
             public static final double BOTTOM_ZONE = 33.0;
         }
 
-        public static final double ZONE_SPEED_LIMIT = 0.50;
+        public static final double ZONE_SPEED_LIMIT = 1.0;
 
         public static final double LENGTH = 34.0;
 
