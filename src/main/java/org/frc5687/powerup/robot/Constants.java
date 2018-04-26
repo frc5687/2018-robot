@@ -428,7 +428,7 @@ public class Constants {
         }
         public static final double SENSITIVITY = 0.75;
 
-        public static final double MAX_SPEED = 0.75;
+        public static final double MAX_SPEED = 1.0;
         public static final double MIN_SPEED = -.75;
         public static final double PID_MAX_SPEED = 0.9;
         public static final double PID_MIN_SPEED = -0.9;
