@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
 
         try {
             if (isCompetitionBot()) {
-                camera1 = CameraServer.getInstance().startAutomaticCapture(1);
+                // DISABLED for champs camera1 = CameraServer.getInstance().startAutomaticCapture(1);
             }
         } catch (Exception e) {
             DriverStation.reportError(e.getMessage(), true);
