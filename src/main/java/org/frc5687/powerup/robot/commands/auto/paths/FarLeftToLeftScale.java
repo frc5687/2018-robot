@@ -15,6 +15,11 @@ public class FarLeftToLeftScale extends DynamicPathCommand {
     }
 
     @Override
+    public double getGretakT() {
+        return 3.0;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 360;
         Trajectory left = new Trajectory(num_elements);
