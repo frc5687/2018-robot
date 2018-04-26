@@ -153,6 +153,9 @@ public class Constants {
         public static final double MIN_IMU_ANGLE = -180;
         public static final double MAX_IMU_ANGLE = 180;
 
+        public static final double MAX_PITCH = 7.0;
+        public static final double MAX_ROLL = 7.0;
+
         public class Align {
 
             public static final double SPEED = 1.0;
@@ -520,6 +523,23 @@ public class Constants {
             public static final int SWITCH_DRIVE = 1001;
             public static final int SCALE_DRIVE = 1003;
         }
+
+        public class Coop {
+            public static final int DELAY_0 = 0;
+            public static final int DELAY_1 = 1;
+            public static final int DELAY_2 = 2;
+            public static final int DELAY_3 = 3;
+            public static final int DELAY_4 = 4;
+            public static final int DELAY_5 = 5;
+            public static final int DELAY_6 = 6;
+            public static final int DELAY_7 = 7;
+            public static final int DELAY_8 = 8;
+            public static final int DELAY_9 = 9;
+            public static final int DEFENSE = 10;
+            public static final int STAY_IN_LANE = 11;
+        }
+
+
     }
     public class Limits {
         /***

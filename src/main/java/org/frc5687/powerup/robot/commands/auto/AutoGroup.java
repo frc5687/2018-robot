@@ -7,18 +7,23 @@ import org.frc5687.powerup.robot.Constants;
 import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.commands.*;
 import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
+import org.frc5687.powerup.robot.commands.actions.IntakeToDrive;
 import org.frc5687.powerup.robot.commands.actions.IntakeToScale;
 import org.frc5687.powerup.robot.commands.actions.IntakeToSwitch;
+import org.frc5687.powerup.robot.commands.actions.IntakeToFloor;
 import org.frc5687.powerup.robot.commands.auto.paths.*;
+import org.frc5687.powerup.robot.commands.auto.AutoIntake;
 
 /**
  * Created by Ben Bernard on 2/2/2018.
  */
 public class AutoGroup extends CommandGroup {
-    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, boolean stayInYourOwnLane, Robot robot) {
+    public AutoGroup(int mode, int position, int switchSide, int scaleSide, long delayInMillis, int coopMode, Robot robot) {
         super();
         int switchFactor = switchSide * (position );
         int scaleFactor = scaleSide * (position);
+        boolean stayInYourOwnLane = coopMode == Constants.AutoChooser.Coop.STAY_IN_LANE;
+        boolean defensive = coopMode == Constants.AutoChooser.Coop.DEFENSE;
         /*
         if (robot.getCarriage().isHealthy()) {
             addParallel(new AutoZeroCarriage(robot.getCarriage()));
@@ -126,27 +131,42 @@ public class AutoGroup extends CommandGroup {
                 SmartDashboard.putString("Auto/Mode", "Scale Only");
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
+                        DriverStation.reportError("AUTO: Left scale only from far left", false);
                         farLeftToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        if (!stayInYourOwnLane) { // Traverse allowed
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
+                            DriverStation.reportError("AUTO: Right scale only from far left", false);
                             farLeftToRightScale(robot);
+                        } else if (defensive) {
+                            // Drop off the cube...then
+                            DriverStation.reportError("AUTO: Defensive from far left", false);
+                            farLeftDefensive(robot, switchSide == Constants.AutoChooser.LEFT);
                         } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
+                            DriverStation.reportError("AUTO: Left switch from far left", false);
                             farLeftToLeftSwitch(robot);
                         } else {
+                            DriverStation.reportError("AUTO: Auto cross from far left", false);
                             buildAutoCross(robot);
                         }
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        if (!stayInYourOwnLane) { // Traverse allowed
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
+                            DriverStation.reportError("AUTO: Left scale only from far right", false);
                             farRightToLeftScale(robot);
+                        } else if (defensive) {
+                            DriverStation.reportError("AUTO: Defensive from far right", false);
+                            farRightDefensive(robot, switchSide == Constants.AutoChooser.RIGHT);
                         } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
+                            DriverStation.reportError("AUTO: RIght switch from far right", false);
                             farRightToRightSwitch(robot);
                         } else {
+                            DriverStation.reportError("AUTO: Cross the line from far right", false);
                             buildAutoCross(robot);
                         }
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
+                        DriverStation.reportError("AUTO: Right scale only from far right", false);
                         farRightToRightScale(robot);
                         break;
                 }
@@ -154,29 +174,44 @@ public class AutoGroup extends CommandGroup {
             case Constants.AutoChooser.Mode.SCALE_THEN_SCALE:
                 switch (scaleFactor) {
                     case -Constants.AutoChooser.Position.FAR_LEFT:
+                        DriverStation.reportError("AUTO: Left scale x 2 from far left", false);
                         farLeftToLeftScale(robot);
                         leftScaleToSecondCube(robot);
                         secondCubeToLeftScale(robot);
                         break;
                     case Constants.AutoChooser.Position.FAR_LEFT:
-                        if (!stayInYourOwnLane) { // Traverse allowed
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
+                            DriverStation.reportError("AUTO: Right scale from far left", false);
                             farLeftToRightScale(robot);
-                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse !allowed. Get switch.
+                        } else if (defensive) {
+                            // Drop off the cube...then
+                            DriverStation.reportError("AUTO: Defensive from far left", false);
+                            farLeftDefensive(robot, switchSide == Constants.AutoChooser.LEFT);
+                        } else if (switchSide == Constants.AutoChooser.LEFT) { // Traverse not allowed. Go for switch
+                            DriverStation.reportError("AUTO: Left switch from far left", false);
                             farLeftToLeftSwitch(robot);
                         } else {
+                            DriverStation.reportError("AUTO: Cross the line from far left", false);
                             buildAutoCross(robot);
                         }
                         break;
                     case -Constants.AutoChooser.Position.FAR_RIGHT:
-                        if (!stayInYourOwnLane) { // Traverse allowed.
+                        if (!(stayInYourOwnLane || defensive)) { // Traverse allowed
+                            DriverStation.reportError("AUTO: Left scale from far right", false);
                             farRightToLeftScale(robot);
-                        } else if (switchSide == Constants.AutoChooser.RIGHT) { // Traverse !allowed. Get switch.
+                        } else if (defensive) {
+                            DriverStation.reportError("AUTO: Defensive from far right", false);
+                            farRightDefensive(robot, switchSide == Constants.AutoChooser.RIGHT);
+                        } else if (switchSide == Constants.AutoChooser.RIGHT){ // Traverse !allowed. Go for switch
+                            DriverStation.reportError("AUTO: RIght switch from far right", false);
                             farRightToRightSwitch(robot);
                         } else {
+                            DriverStation.reportError("AUTO: Cross the line from far right", false);
                             buildAutoCross(robot);
                         }
                         break;
                     case Constants.AutoChooser.Position.FAR_RIGHT:
+                        DriverStation.reportError("AUTO: Right scale only from far right", false);
                         farRightToRightScale(robot);
                         /*
                         // Second cube not competition ready, so it is commented out.
@@ -623,6 +658,53 @@ public class AutoGroup extends CommandGroup {
         addSequential(new FarLeftToRightScaleDeadPartFour(robot));
         addParallel(new MoveArmToSetpointPID(robot.getArm(), Constants.Arm.Pot.INTAKE));
         addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -110, Constants.Auto.Align.SPEED, 4000));
+    }
+
+
+    private void farLeftDefensive(Robot robot, boolean doSwitch) {
+        addParallel(new AutoZeroCarriageThenLower(robot));
+        // addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 210, 0.75, true, true, 6000, "pass the switch"));
+        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, Constants.Auto.Align.SPEED, 4000));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 52, 0.75, true, true, 3000, "goes halfway accross field"));
+        addParallel(new AutoEject(robot.getIntake(), Constants.Intake.DROP_SPEED));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -54, 0.75, true, true, 3000, "moves back"));
+        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 150, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 12, 0.6, true, true, 2000, "attack cube"));
+        if (doSwitch) {
+            DriverStation.reportError("Attacking swithc", false);
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 2000));
+            addSequential(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+            addSequential(new AutoEject(robot.getIntake(), Constants.Intake.OUTTAKE_SPEED));
+        }
+        addParallel(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -24, 0.6, true, true, 2000, "reposition"));
+    }
+
+    private void farRightDefensive(Robot robot, boolean doSwitch) {
+        addParallel(new AutoZeroCarriageThenLower(robot));
+        // addSequential(new FarLeftToRightScaleDeadPartOne(robot));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 214, 0.75, true, true, 6000, "pass the switch"));
+        addParallel(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -90, Constants.Auto.Align.SPEED, 4000));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 78, 0.75, true, true, 3000, "goes halfway accross field"));
+        addParallel(new AutoEject(robot.getIntake(), Constants.Intake.DROP_SPEED));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -60, 0.75, true, true, 3000, "moves back"));
+        addSequential(new IntakeToFloor(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), -150, Constants.Auto.Align.SPEED, 3000));
+        addParallel(new AutoIntake(robot.getIntake()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), 24, 0.6, true, true, 2000, "attack cube"));
+        if (doSwitch) {
+            DriverStation.reportError("Attacking swithc", false);
+            addSequential(new MoveCarriageToSetpointPID(robot.getCarriage(), Constants.Carriage.ENCODER_TOP_COMP, 2000));
+            addSequential(new IntakeToSwitch(robot.getCarriage(), robot.getArm()));
+            addSequential(new AutoEject(robot.getIntake(), Constants.Intake.OUTTAKE_SPEED));
+        }
+        addParallel(new IntakeToDrive(robot.getCarriage(), robot.getArm()));
+        addSequential(new AutoDrive(robot.getDriveTrain(), robot.getIMU(), -24, 0.6, true, true, 2000, "reposition"));
     }
 
     private void farRightToLeftScale(Robot robot) {
