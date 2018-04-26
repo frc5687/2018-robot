@@ -38,6 +38,7 @@ public class AutoChooser {
         modeLabels.put(6, "Scale Then Backoff");
         modeLabels.put(7, "Switch Only");
         modeLabels.put(8, "Scale Only");
+        modeLabels.put(9, "Experimental Switch Then Switch");
 
         coopLabels = new HashMap<Integer, String>();
         coopLabels.put(0, "0");

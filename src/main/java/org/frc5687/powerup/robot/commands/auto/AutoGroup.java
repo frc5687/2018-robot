@@ -385,17 +385,40 @@ public class AutoGroup extends CommandGroup {
                         break;
                 }
                 break;
-            case 10:
-                addSequential(new AggressiveCrossAutoLine(robot));
-                break;
-            case 11:
-                addSequential(new AutoAlign(robot.getDriveTrain(), robot.getIMU(), 90, 1.0, 2500, 2.0));
-                break;
             case Constants.AutoChooser.Mode.SWITCH_DRIVE:
                 buildSimpleSwitch(robot, switchFactor);
                 break;
             case Constants.AutoChooser.Mode.SCALE_DRIVE:
                 buildSimpleScale(robot, scaleFactor);
+                break;
+            case Constants.AutoChooser.Mode.EXPERIMENTAL_SWITCH_THEN_SWITCH:
+                switch (switchFactor) {
+                    case -Constants.AutoChooser.Position.FAR_LEFT:
+                        farLeftToLeftSwitch(robot);
+                    case Constants.AutoChooser.Position.FAR_LEFT:
+                        buildAutoCross(robot);
+                        break;
+                    case -Constants.AutoChooser.Position.CENTER:
+                        DriverStation.reportError("Switch Then Switch Then Switch. Position 3. Left Side", false);
+                        centerLeftToLeftSwitchThenPickupSecondCube(robot);
+                        secondCubeComingFromLeftSwitchToLeftSwitch(robot);
+                        leftSwitchToThirdCube(robot);
+                        thirdCubeNearLeftSwitchToLeftSwitch(robot);
+                        break;
+                    case Constants.AutoChooser.Position.CENTER:
+                        DriverStation.reportError("Switch Then Pick Up Cube. Position 3. Right Side", false);
+                        experimentalCenterLeftToRightSwitchThenPickupSecondCube(robot);
+                        experimentalSecondCubeComingFromRightSwitchToRightSwitch(robot);
+                        experimentalRightSwitchIntakeThirdCube(robot);
+                        experimentalRightSwitchDepositThirdCube(robot);
+                        break;
+                    case -Constants.AutoChooser.Position.FAR_RIGHT:
+                        buildAutoCross(robot);
+                        break;
+                    case Constants.AutoChooser.Position.FAR_RIGHT:
+                        farRightToRightSwitch(robot);
+                        break;
+                }
                 break;
         }
     }
