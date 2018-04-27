@@ -608,7 +608,7 @@ public class AutoGroup extends CommandGroup {
         Intake second cube
          */
         addParallel(new AutoIntake(robot.getIntake()));
-        addSequential(new RightGoPickupCube(robot));
+        addSequential(new RightGoPickupCube(robot, true));
         addParallel(new AbortIfNoCubeDetected(robot));
         /*
         Raise Carriage while backing up
