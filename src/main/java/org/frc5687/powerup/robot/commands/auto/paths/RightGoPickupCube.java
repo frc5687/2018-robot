@@ -6,9 +6,13 @@ import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
 public class RightGoPickupCube extends DynamicPathCommand {
-    
+
     public RightGoPickupCube(Robot robot) {
-        super(robot);
+        this(robot, false);
+    }
+
+    public RightGoPickupCube(Robot robot, boolean finishOnceCubeSecured) {
+        super(robot, finishOnceCubeSecured);
     }
 
     @Override
