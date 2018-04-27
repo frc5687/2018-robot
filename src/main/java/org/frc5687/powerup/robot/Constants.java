@@ -129,7 +129,7 @@ public class Constants {
         public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
         public static final double SCALE_DROP_SPEED = -0.9;
-        public static final double SCALE_TRAVERSE_DROP_SPEED = -0.85;
+        public static final double SCALE_TRAVERSE_DROP_SPEED = -0.82;
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
         public static final double SWITCH_DROP_SPEED = -0.22;
