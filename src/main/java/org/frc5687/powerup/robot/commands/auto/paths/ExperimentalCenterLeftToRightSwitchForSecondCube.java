@@ -19,6 +19,11 @@ public class ExperimentalCenterLeftToRightSwitchForSecondCube extends DynamicPat
     }
 
     @Override
+    public double getGretakT() {
+        return 4.0;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 217;
         Trajectory left = new Trajectory(num_elements);
