@@ -86,23 +86,46 @@ public class Arm extends PIDSubsystem {
     }
 
     public void drive(double speed) {
-        if(atTop() && speed > 0) {
-            SmartDashboard.putString("Arm/Capped)", "Top");
-            speed = 0.0;
-        } else if (atBottom() && speed < 0) {
-            SmartDashboard.putString("Arm/Capped)", "Bottom");
-            speed = 0.0;
+        drive(speed, false);
+    }
+
+    public void drive(double speed, boolean overrideLimits) {
+        if (!overrideLimits) {
+            if(atTop() && speed > 0) {
+                SmartDashboard.putString("Arm/Capped)", "Top");
+                speed = 0.0;
+            } else if (atBottom() && speed < 0) {
+                SmartDashboard.putString("Arm/Capped)", "Bottom");
+                speed = 0.0;
+            }
+
+            speed = Math.max(speed, Constants.Arm.MIN_SPEED);
+            speed = Math.min(speed, Constants.Arm.MAX_SPEED);
+
+            if (speed > 0 && isInTopZone()) {
+                speed *= Constants.Arm.ZONE_SPEED_LIMIT;
+            } else if (speed < 0 && isInBottomZone()) {
+                speed *= Constants.Arm.ZONE_SPEED_LIMIT;
+            }
         }
+
         if (_pdp.excessiveCurrent(RobotMap.PDP.ARM_SP, Constants.Arm.PDP_EXCESSIVE_CURRENT)) {
             speed = 0.0;
         }
-        speed = Math.max(speed, Constants.Arm.MIN_SPEED);
-        speed = Math.min(speed, Constants.Arm.MAX_SPEED);
+
         SmartDashboard.putNumber("Arm/speedPreInversion", speed); // TODO: "EXCESSIVE" REAL TIME LOGGING
         speed *= motorInversionMultiplier;
         _motor.setSpeed(speed);
 
         _healthChecker.checkHealth(speed);
+    }
+
+    public boolean isInTopZone() {
+        return getPot() > Constants.Arm.Pot.TOP_ZONE;
+    }
+
+    public boolean isInBottomZone() {
+        return getPot() < Constants.Arm.Pot.BOTTOM_ZONE;
     }
 
     @Override
@@ -150,7 +173,7 @@ public class Arm extends PIDSubsystem {
     @Override
     protected void usePIDOutput(double output) {
         SmartDashboard.putNumber("Arm/PID output", output);
-        drive(output);
+        drive(output, true);
     }
 
     public void updateDashboard() {

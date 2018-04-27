@@ -126,7 +126,8 @@ public class Intake extends Subsystem {
         if (!Constants.Intake.BACK_IR.ENABLED) {
             return false;
         }
-        int dist = irBack.getValue();
+        //int dist = irBack.getValue();
+        int dist = (int) irBackFilter.get();
         return Constants.Intake.BACK_IR.SECURED_HIGH_END > dist && dist > Constants.Intake.BACK_IR.SECURED_LOW_END;
     }
 

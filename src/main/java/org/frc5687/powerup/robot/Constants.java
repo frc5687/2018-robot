@@ -6,12 +6,24 @@ public class Constants {
     public static final double END_ALERT = 28;
     public static final int HEALTH_CHECK_CYCLES = 10;
 
+    /*
+    Used by AutoAlignExperimental to select which types of turns to do.
+    shortest will turn left or right, whichever will get it to the target angle quickest. This is possible with wpilib's pidcontroller thanks to the setContinuous flag.
+     leftOnly, or, counterClockwise only, will turn to the target angle by only going counterClockwise
+     rightOnly, or, clockwise only, wil turn to the target angle by only going clockwise.
+     */
     public enum typeOfTurn {
         shortest,
         leftOnly,
         rightOnly
     }
 
+    /*
+    Used in AutoAlign to select which types of turns to do.
+    bothSides will turn normally, or "in place" (hah!)
+    leftOnly will use the pidOut to drive the left side of the drivetrain, but the right side will be in 0in/s talon velocity pid mode.
+    rightOnly will use the pidOut to drive the right side of the drivetrain, but the left side will be in 0in/s talon velocity pid mode.
+     */
     public enum DriveTrainBehavior {
         bothSides,
         leftOnly,
@@ -111,12 +123,13 @@ public class Constants {
         public static final double SERVO_UP = 1;
         public static final long EJECT_TIME = 350;
 
-        public static final double HOLD_SPEED = 0.30;
+        public static final double HOLD_SPEED = 0.36;
         public static final double INTAKE_SPEED = 0.75;
         public static final double SENSITIVITY = 0.5;
         public static final long SETTLE_TIME = 1500;
         public static final double PLATE_MINIMUM_CLARANCE = 24.0;
         public static final double SCALE_DROP_SPEED = -0.9;
+        public static final double SCALE_TRAVERSE_DROP_SPEED = -0.82;
         public static final double SCALE_SHOOT_SPEED = -0.70;
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
         public static final double SWITCH_DROP_SPEED = -0.22;
@@ -153,8 +166,8 @@ public class Constants {
         public static final double MIN_IMU_ANGLE = -180;
         public static final double MAX_IMU_ANGLE = 180;
 
-        public static final double MAX_PITCH = 7.0;
-        public static final double MAX_ROLL = 7.0;
+        public static final double MAX_PITCH = 20.0;
+        public static final double MAX_ROLL = 20.0;
 
         public class Align {
 
@@ -202,7 +215,7 @@ public class Constants {
                     public static final double kP = 0.3; // Talon doesn't use kP
                     public static final double kI = 0.001;//02;
                     public static final double kD = 0.0;
-                    public static final double kF = 0.2; // 0.28 works well
+                    public static final double kF = 0.35; // 0.28 works well
                 }
 
                 public class Cheese {
@@ -415,7 +428,7 @@ public class Constants {
         }
         public static final double SENSITIVITY = 0.75;
 
-        public static final double MAX_SPEED = 0.75;
+        public static final double MAX_SPEED = 1.0;
         public static final double MIN_SPEED = -.75;
         public static final double PID_MAX_SPEED = 0.9;
         public static final double PID_MIN_SPEED = -0.9;
@@ -451,7 +464,12 @@ public class Constants {
             public static final double SWITCH_HEIGHT_BROKEN_CARRIAGE = 72; // I guess this shouldn't be lower, but I'm just removing a magic number..
             public static final double switchHeightWithCarriageHalfwayUp = 91;
             public static final double switchHeightWithCarriageAllTheWayUp = 80;
+
+            public static final double TOP_ZONE = 140.0;
+            public static final double BOTTOM_ZONE = 33.0;
         }
+
+        public static final double ZONE_SPEED_LIMIT = 1.0;
 
         public static final double LENGTH = 34.0;
 
@@ -467,9 +485,9 @@ public class Constants {
             public static final double PAST_150_NO_CUBE_GRETA = 0.25;
 
             public static final double PAST_90_CUBE_PROTO = 0.0;
-            public static final double PAST_90_CUBE_GRETA = 0.1;
+            public static final double PAST_90_CUBE_GRETA = 0.05;
             public static final double PAST_90_NO_CUBE_PROTO = 0.0;
-            public static final double PAST_90_NO_CUBE_GRETA = 0.1;
+            public static final double PAST_90_NO_CUBE_GRETA = 0.05;
 
             public static final double PAST_55_CUBE_PROTO = 0.0;
             public static final double PAST_55_CUBE_GRETA = 0.15;
@@ -520,8 +538,10 @@ public class Constants {
             public static final int SCALE_THEN_BACKOFF = 6;
             public static final int SWITCH_ONLY = 7;
             public static final int SCALE_ONLY = 8;
+            public static final int EXPERIMENTAL_SWITCH_THEN_SWITCH = 9;
             public static final int SWITCH_DRIVE = 1001;
             public static final int SCALE_DRIVE = 1003;
+            public static final int EXPERIMENTAL_SCALE_THEN_SCALE = 10;
         }
 
         public class Coop {

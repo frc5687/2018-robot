@@ -14,8 +14,8 @@ import org.frc5687.powerup.robot.Robot;
 import org.frc5687.powerup.robot.subsystems.DriveTrain;
 
 public class DynamicPathCommand extends Command {
-    private TrajectoryFollower followerLeft = new TrajectoryFollower("left");
-    private TrajectoryFollower followerRight = new TrajectoryFollower("right");
+    public TrajectoryFollower followerLeft = new TrajectoryFollower("left");
+    public TrajectoryFollower followerRight = new TrajectoryFollower("right");
     private double starting_heading;
     public Path path;
     private DriveTrain _driveTrain;
@@ -24,6 +24,7 @@ public class DynamicPathCommand extends Command {
     private Robot _robot;
     public boolean turnInverted;
     private Thread _thread;
+    private boolean _finishOnceCubeSecured;
 
     public double getkT() {
         return _robot.isCompetitionBot() ? getGretakT() : getJitterbugkT();
@@ -73,12 +74,17 @@ public class DynamicPathCommand extends Command {
             }
         }
     }
-    private long endMillis;
+    public long endMillis;
         
     public DynamicPathCommand(Robot robot) {
+        this(robot, false);
+    }
+
+    public DynamicPathCommand(Robot robot, boolean finishOnceCubeSecured) {
         _driveTrain = robot.getDriveTrain();
         _imu = robot.getIMU();
         _robot = robot;
+        _finishOnceCubeSecured = finishOnceCubeSecured;
         requires(_driveTrain);
 
         loadPath();
@@ -195,7 +201,7 @@ public class DynamicPathCommand extends Command {
     @Override
     protected void end() {
         SmartDashboard.putBoolean("AADynamicPathCommand/finished", true);
-        DriverStation.reportError("DynamicPathCommand ended", false);
+        DriverStation.reportError("Ended, did DynamicPathCommand (" + path.getName() + ")", false);
         _driveTrain.setPower(0, 0);
         _thread.stop();
         DriverStation.reportError("ran stop() method on thread", false);
@@ -209,8 +215,12 @@ public class DynamicPathCommand extends Command {
     @Override
     protected boolean isFinished() {
         if(System.currentTimeMillis()>endMillis){
-            DriverStation.reportError("DynamicPathCommand timed out", false);
+            DriverStation.reportError("DynamicPathCommand (" + path.getName() + ") timed out", false);
             return false;
+        }
+
+        if (_finishOnceCubeSecured && _robot.getIntake().cubeIsSecured()) {
+            return true;
         }
 
         return followerLeft.isFinishedTrajectory() && followerRight.isFinishedTrajectory();

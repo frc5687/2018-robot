@@ -5,12 +5,12 @@ import org.frc5687.powerup.robot.commands.auto.DynamicPathCommand;
 import com.team254.lib.trajectory.Path;
 import com.team254.lib.trajectory.Trajectory;
 
-public class LeftScaleToCubeAlternativeTwoReverse extends DynamicPathCommand {
+public class ExperimentalLeftScaleToCubeAlternativeTwoReverse extends DynamicPathCommand {
     public static int numSegments = 205;
     public static double dt = 0.01;
     public static long duration = (long) (numSegments * (dt * 1000));
     
-    public LeftScaleToCubeAlternativeTwoReverse(Robot robot) {
+    public ExperimentalLeftScaleToCubeAlternativeTwoReverse(Robot robot) {
         super(robot);
     }
 
@@ -1251,14 +1251,14 @@ public class LeftScaleToCubeAlternativeTwoReverse extends DynamicPathCommand {
 
 
         
-        path = new Path("LeftScaleToCubeAlternativeTwoReverse", new Trajectory.Pair(right, left));
+        path = new Path("ExperimentalLeftScaleToCubeAlternativeTwoReverse", new Trajectory.Pair(right, left));
         return true;
     }
 
   
 	// WAYPOINT_DATA: [{"position":{"x":222,"y":241},"theta":-2.6528222222115665,"comment":""},{"position":{"x":267,"y":266},"theta":-2.6528222222115665,"comment":""}]
 	// IS_REVERSED: true
-	// FILE_NAME: LeftScaleToCubeAlternativeTwoReverse
+	// FILE_NAME: ExperimentalLeftScaleToCubeAlternativeTwoReverse
     // DT: 0.01
     // MAX_VEL: 70
     // MAX_ACC: 50
