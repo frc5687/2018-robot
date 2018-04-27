@@ -19,6 +19,11 @@ public class FarLeftToRightScaleDeadPartTwo extends DynamicPathCommand {
     }
 
     @Override
+    public double getGretakT() {
+        return 10.0;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 294;
         Trajectory left = new Trajectory(num_elements);
