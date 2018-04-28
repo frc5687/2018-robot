@@ -19,6 +19,11 @@ public class ExperimentalRightSwitchDepositSecondCube extends DynamicPathCommand
     }
 
     @Override
+    public double getGretakT() {
+        return 10.0;
+    }
+
+    @Override
     protected boolean loadPath() {
         int num_elements = 188;
         Trajectory left = new Trajectory(num_elements);
