@@ -103,9 +103,9 @@ public class Arm extends PIDSubsystem {
             speed = Math.min(speed, Constants.Arm.MAX_SPEED);
 
             if (speed > 0 && isInTopZone()) {
-                speed *= Constants.Arm.ZONE_SPEED_LIMIT;
+                speed = Math.min(speed, Constants.Arm.TOP_ZONE_SPEED_CEILING);
             } else if (speed < 0 && isInBottomZone()) {
-                speed *= Constants.Arm.ZONE_SPEED_LIMIT;
+                speed = Math.max(speed, Constants.Arm.BOTTOM_ZONE_SPEED_FLOOR);
             }
         }
 
