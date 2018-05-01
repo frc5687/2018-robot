@@ -126,6 +126,7 @@ public class Robot extends TimedRobot {
         imu.reset();
         driveTrain.resetDriveEncoders();
         driveTrain.enableBrakeMode();
+        driveTrain.setCurrentLimiting(100);
         carriage.zeroEncoder();
         _manualLightFlashRequested = false;
         hasRumbledForEndgame = false;
@@ -176,6 +177,7 @@ public class Robot extends TimedRobot {
         if (autoCommand != null) autoCommand.cancel();
         _manualLightFlashRequested = false;
         driveTrain.enableCoastMode();
+        driveTrain.setCurrentLimiting(40);
         hasRumbledForEndgame = false;
         hasRumbledForEndgame = false;
     }

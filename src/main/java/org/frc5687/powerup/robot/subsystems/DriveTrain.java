@@ -132,6 +132,13 @@ public class DriveTrain extends Subsystem implements PIDSource {
         setDefaultCommand(new DriveWith2Joysticks(this, oi));
     }
 
+    public void setCurrentLimiting(int amps) {
+        leftMaster.configContinuousCurrentLimit(amps, 0);
+        leftMaster.configPeakCurrentLimit(0, 0);
+        rightMaster.configContinuousCurrentLimit(amps, 0);
+        rightMaster.configPeakCurrentLimit(0, 0);
+    }
+
     public void enableBrakeMode() {
         try {
             leftMaster.setNeutralMode(NeutralMode.Brake);

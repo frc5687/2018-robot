@@ -539,10 +539,11 @@ public class Constants {
             public static final int SCALE_THEN_BACKOFF = 6;
             public static final int SWITCH_ONLY = 7;
             public static final int SCALE_ONLY = 8;
-            public static final int EXPERIMENTAL_SWITCH_THEN_SWITCH = 9;
+            public static final int CURIE = 9;
+            public static final int EXPERIMENTAL_SCALE_THEN_SCALE = 1000;
             public static final int SWITCH_DRIVE = 1001;
             public static final int SCALE_DRIVE = 1003;
-            public static final int EXPERIMENTAL_SCALE_THEN_SCALE = 10;
+            public static final int EXPERIMENTAL_SWITCH_THEN_SWITCH = 1009;
         }
 
         public class Coop {
