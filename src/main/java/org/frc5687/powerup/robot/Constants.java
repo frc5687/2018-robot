@@ -134,6 +134,11 @@ public class Constants {
         public static final double SCALE_SHOOT_SPEED_SECOND_CUBE = -0.75;
         public static final double SWITCH_DROP_SPEED = -0.22;
 
+        public static final double TEST_INTAKE_SPEED = 0.5;
+        public static final double TEST_EJECT_SPEED = -0.5;
+
+        public static final double PDP_OPERATING_MIN = 1.0; // TODO: Tune
+        public static final double PDP_OPERATING_MAX = 45.0; // TODO: Tune
         public static final double HC_MIN_SPEED = 0.1;
         public static final double HC_MIN_CURRENT = 0.5;
 
